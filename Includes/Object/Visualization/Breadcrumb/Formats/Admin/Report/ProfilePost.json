@@ -1,0 +1,22 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_ADMIN"
+            }
+        },
+        "report": {
+            "data": {
+                "href": "/admin/report/",
+                "title": "L_REPORT"
+            }
+        },
+        "profile": {
+            "data": {
+                "href": "/admin/report/profile/",
+                "title": "L_REPORT_PROFILE_POST"
+            }
+        }
+    }
+}

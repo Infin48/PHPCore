@@ -1,0 +1,12 @@
+<div>
+    <input type="file" name="<?= $rowName ?>">
+    <?php if (!empty($this->data->field['_data']['user_profile_image']) and !in_array($this->data->field['_data']['user_profile_image'], PROFILE_IMAGES_COLORS)) : ?>
+        <div class="checkbox">
+            <input id="delete_user_profile_image" type="checkbox" name="delete_user_profile_image" value="1">
+            <label for="delete_user_profile_image">
+                <span class="checkbox-icon"><i class="fas fa-check"></i></span>
+                <span><?= $L_USER_PROFILE_IMAGE_DELETE ?></span>
+            </label>
+        </div>
+    <?php endif; ?>
+</div>

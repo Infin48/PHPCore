@@ -1,0 +1,15 @@
+<?= $this->build->user->image($row['data']) ?>
+<div class="inner">
+    <span class="grey">
+        <?= $this->build->user->link($row['data'], true) ?>
+        <?php if ((int)$row['data']['profile_id'] !== (int)$row['data']['user_id']) : ?>
+            <i class="fas fa-caret-right"></i>
+            <?= $this->build->user->link($row['data'], true, 'two_') ?>
+        <?php endif; ?>
+    </span>
+    <br>
+    <span class="trumbowyg">
+        <?= truncate($row['data']['profile_post_text'], 100) ?>
+    </span>
+    <span class="grey"><?= $this->build->date->long($row['data']['profile_post_created'], true) ?></span>
+</div>

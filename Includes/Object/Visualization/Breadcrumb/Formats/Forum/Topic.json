@@ -1,0 +1,22 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/forum/",
+                "title": "L_FORUM"
+            }
+        },
+        "category": {
+            "data": {
+                "href": "/forum/",
+                "title": "$"
+            }
+        },
+        "forum": {
+            "data": {
+                "href": "",
+                "title": "$"
+            }
+        }
+    }
+}

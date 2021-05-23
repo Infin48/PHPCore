@@ -1,0 +1,50 @@
+{
+    "body": {
+        "conversation": {
+            "body": {
+                "conversation_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_USER_CONVERSATION_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "add_recipient": {
+                    "options": {
+                        "type": "text",
+                        "hide": true,
+                        "template": {
+                            "text": "$/User/Conversation/AddRecipient.phtml"
+                        }
+                    },
+                    "data": {
+                        "title": "L_USER_CONVERSATION_RECIPIENT",
+                        "placeholder": "L_USERNAME"
+                    }
+                },
+                "recipients": {
+                    "options": {
+                        "hide": true,
+                        "template": {
+                            "option": "$/User/Conversation/Recipient.phtml"
+                        }
+                    },
+                    "data": {
+                        "title": "L_USER_CONVERSATION_RECIPIENT_LIST"
+                    }
+                },
+                "conversation_text": {
+                    "options": {
+                        "type": "textarea"
+                    },
+                    "data": {
+                        "class": "editor",
+                        "placeholder": "L_TEXT"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "body": {
+        "type": {
+            "data": {
+                "icon": "fas fa-font",
+                "title": "L_CONTENT_TYPE",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "reasons": {
+            "data": {
+                "icon": "fas fa-flag",
+                "title": "L_REPORT_SHOW_REASONS",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "first_report": {
+            "data": {
+                "icon": "fas fa-clock",
+                "title": "L_REPORT_SHOW_FIRST_REPORT",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "status": {
+            "data": {
+                "icon": "fas fa-info-circle",
+                "title": "L_REPORT_SHOW_STATUS",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

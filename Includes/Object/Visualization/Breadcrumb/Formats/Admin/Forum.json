@@ -1,0 +1,16 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_ADMIN"
+            }
+        },
+        "forum": {
+            "data": {
+                "href": "/admin/forum/",
+                "title": "L_FORUM"
+            }
+        }
+    }
+}

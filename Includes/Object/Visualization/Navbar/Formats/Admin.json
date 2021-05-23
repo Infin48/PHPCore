@@ -1,0 +1,244 @@
+{
+    "body": {
+        "settings": {
+            "data": {
+                "title": "L_SECTION_SETTINGS"
+            },
+            "body": {
+                "index": {
+                    "data": {
+                        "href": "/admin/",
+                        "icon": "fas fa-home",
+                        "title": "L_INDEX"
+                    }
+                },
+                "settings": {
+                    "options": {
+                        "permission": "admin.settings"
+                    },
+                    "data": {
+                        "icon": "fas fa-cogs",
+                        "title": "L_SETTINGS"
+                    },
+                    "body": {
+                        "site": {
+                            "data": {
+                                "href": "/admin/settings/",
+                                "title": "L_SETTINGS_SITE"
+                            }
+                        },
+                        "registration": {
+                            "data": {
+                                "href": "/admin/settings/registration/",
+                                "title": "L_SETTINGS_REGISTRATION"
+                            }
+                        },
+                        "email": {
+                            "data": {
+                                "href": "/admin/settings/email/",
+                                "title": "L_SETTINGS_EMAIL"
+                            }
+                        },
+                        "others": {
+                            "data": {
+                                "href": "/admin/settings/other/",
+                                "title": "L_SETTINGS_OTHER"
+                            }
+                        }
+                    }
+                },
+                "template": {
+                    "options": {
+                        "permission": "admin.template"
+                    },
+                    "data": {
+                        "icon": "fas fa-paint-brush",
+                        "href": "/admin/template/",
+                        "title": "L_TEMPLATE"
+                    }
+                },
+                "group": {
+                    "options": {
+                        "permission": "admin.group"
+                    },
+                    "data": {
+                        "icon": "fas fa-users",
+                        "href": "/admin/group/",
+                        "title": "L_GROUP"
+                    }
+                },
+                "user": {
+                    "options": {
+                        "permission": "admin.user"
+                    },
+                    "data": {
+                        "icon": "fas fa-user-cog",
+                        "href": "/admin/user/",
+                        "title": "L_USER"
+                    }
+                },
+                "notification": {
+                    "options": {
+                        "permission": "admin.notification"
+                    },
+                    "data": {
+                        "icon": "fas fa-bell",
+                        "href": "/admin/notification/",
+                        "title": "L_NOTIFICATION"
+                    }
+                },
+                "page": {
+                    "options": {
+                        "permission": "admin.page"
+                    },
+                    "data": {
+                        "icon": "fas fa-file",
+                        "href": "/admin/page/",
+                        "title": "L_PAGE"
+                    }
+                },
+                "menu": {
+                    "options": {
+                        "permission": "admin.menu"
+                    },
+                    "data": {
+                        "icon": "fas fa-bars",
+                        "href": "/admin/menu/",
+                        "title": "L_MENU"
+                    }
+                }
+            }
+        },
+        "forum": {
+            "options": {
+                "permission": ["admin.forum", "admin.label"]
+            },
+            "data": {
+                "title": "L_SECTION_FORUM"
+            },
+            "body": {
+                "forum": {
+                    "options": {
+                        "permission": "admin.forum"
+                    },
+                    "data": {
+                        "icon": "fas fa-comments",
+                        "href": "/admin/forum/",
+                        "title": "L_FORUM"
+                    }
+                },
+                "label": {
+                    "options": {
+                        "permission": "admin.label"
+                    },
+                    "data": {
+                        "icon": "fas fa-tags",
+                        "href": "/admin/label/",
+                        "title": "L_LABEL"
+                    }
+                },
+                "deleted": {
+                    "options": {
+                        "permission": "admin.forum"
+                    },
+                    "data": {
+                        "icon": "fas fa-trash",
+                        "href": "/admin/deleted/",
+                        "title": "L_DELETED_CONTENT"
+                    }
+                },
+                "reported": {
+                    "options": {
+                        "permission": "admin.forum"
+                    },
+                    "data": {
+                        "icon": "fas fa-bug",
+                        "title": "L_REPORTED_CONTENT"
+                    },
+                    "body": {
+                        "index": {
+                            "data": {
+                                "href": "/admin/report/",
+                                "title": "L_REPORTED_CONTENT"
+                            }
+                        },
+                        "topic": {
+                            "data": {
+                                "href": "/admin/report/topic/",
+                                "title": "L_REPORTED_TOPIC"
+                            }
+                        },
+                        "post": {
+                            "data": {
+                                "href": "/admin/report/post/",
+                                "title": "L_REPORTED_POST"
+                            }
+                        },
+                        "profilepost": {
+                            "data": {
+                                "href": "/admin/report/profile/",
+                                "title": "L_REPORTED_PROFILE_POST"
+                            }
+                        },
+                        "profilepostcomment": {
+                            "data": {
+                                "href": "/admin/report/comment/",
+                                "title": "L_REPORTED_PROFILE_POST_COMMENT"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "other": {
+            "options": {
+                "permission": ["admin.?", "admin.settings"]
+            },
+            "data": {
+                "title": "L_SECTION_OTHER"
+            },
+            "body": {
+                "status": {
+                    "options": {
+                        "permission": "admin.?"
+                    },
+                    "data": {
+                        "icon": "fas fa-info-circle",
+                        "href": "/admin/status/",
+                        "title": "L_STATUS"
+                    }
+                },
+                "log": {
+                    "options": {
+                        "permission": "admin.?"
+                    },
+                    "data": {
+                        "icon": "fas fa-clipboard-list",
+                        "href": "/admin/log/",
+                        "title": "L_LOG"
+                    }
+                },
+                "update": {
+                    "options": {
+                        "permission": "admin.settings"
+                    },
+                    "data": {
+                        "icon": "fas fa-sync-alt",
+                        "href": "/admin/update/",
+                        "title": "L_UPDATE"
+                    }
+                },
+                "stats": {
+                    "options": {
+                        "permission": "admin.?"
+                    },
+                    "data": {
+                        "icon": "fas fa-chart-bar",
+                        "href": "/admin/statistics/",
+                        "title": "L_STATISTICS"
+                    }
+                }
+            }
+        }
+    }
+}

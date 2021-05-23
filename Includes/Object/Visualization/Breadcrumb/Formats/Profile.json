@@ -1,0 +1,16 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/",
+                "title": "L_TITLE_PAGE"
+            }
+        },
+        "users": {
+            "data": {
+                "href": "/users/",
+                "title": "L_USERS"
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+<meta charset="UTF-8" />
+<title><?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="<?= $this->data->head['description'] ?>" />
+<meta name="keywords" content="<?= $this->data->head['keyWords'] ?? '' ?>" />
+
+<link rel="icon" href="<?= $this->data->data['favicon'] ?>?<?= $this->system->settings->get('session') ?>" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<?= $_SERVER['SERVER_NAME'] ?>">
+<meta property="og:url" content="<?= $this->getURL() ?>">
+<meta property="og:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?>">
+<meta property="og:description" content="<?= $this->data->head['description'] ?>">
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:site" content="<?= $_SERVER['SERVER_NAME'] ?>">
+<meta property="twitter:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?>">
+<meta property="twitter:description" content="<?= $this->data->head['description'] ?>">
+
+<?php if ($this->data->data['topic_image'] ?? false and $this->data->data['topic_id'] ?? false) : ?>
+    <meta property="og:image" content="/Uploads/Topic/<?= $this->data->data['topic_id'] ?>.<?= $this->data->data['topic_image'] ?>">
+    <meta property="twitter:image:src" content="/Uploads/Topic/<?= $this->data->data['topic_id'] ?>.<?= $this->data->data['topic_image'] ?>">
+<?php endif; ?>
+
+<?php if ($this->user->isLogged()) : ?>
+    <?php if (isset($this->data->data['editor'])) : ?>
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?12">
+    <?php endif; ?>
+<?php endif; ?>
+
+<?php if (isset($this->data->data['page_id'])) : ?>
+    <link defer rel="stylesheet" type="text/css" href="/Pages/<?= $this->data->data['page_id'] ?>/css.css?<?= RAND ?>">
+<?php endif; ?>
+
+<?php if($this->system->settings->get('background_image')) : ?>
+    <link rel="preload" as="image" href="/Uploads/Site/header.<?= $this->system->settings->get('background_image') ?>?<?= $this->system->settings->get('session') ?>">
+<?php endif; ?>
+
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->settings->get('session') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->settings->get('session') ?>">
+
+<link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css">
+
+<link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">

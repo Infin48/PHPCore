@@ -1,0 +1,74 @@
+{
+    "body": {
+        "topic": {
+            "options": {
+                "hide": true
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "Topic"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "topic_id",
+                            "text": "topic_text",
+                            "name": "topic_name",
+                            "created": "topic_created",
+                            "edited_time": "topic_edited"
+                        },
+                        "type": "topic",
+                        "button": {
+                            "report": {},
+                            "like": {},
+                            "unlike": {}
+                        }
+                    }
+                }
+            }
+        },
+        "post": {
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "Post"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "post_id",
+                            "text": "post_text",
+                            "name": "topic_name",
+                            "created": "post_created",
+                            "edited_time": "post_edited"
+                        },
+                        "type": "post",
+                        "notice": {
+                            "reported": {
+                                "hide": true
+                            },
+                            "deleted": {
+                                "hide": true
+                            }
+                        },
+                        "button": {
+                            "quote": {},
+                            "report": {},
+                            "like": {},
+                            "unlike": {},
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                },
+                "bottom": {
+                    "options": {
+                        "hide": true,
+                        "template": {
+                            "body": "$/PostNew.phtml"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "body": {
+        "groups": {
+            "data": {
+                "desc": "L_FORUM_PERMISSION_DESC",
+                "title": "L_FORUM_PERMISSION"
+            },
+            "body": {
+                "top": {
+                    "options": {
+                        "template": {
+                            
+                            "option": "/Forum/Category/Permission/Head.phtml"
+                        }
+                    },
+                    "data": {
+                        "title": "L_GROUP_NAME"
+                    }
+                },
+                "default": {
+                    "options": {
+                        "template": {
+                            "text": "/Forum/Category/Permission/Text.phtml",
+                            "option": "/Forum/Category/Permission/Option.phtml"
+                        }
+                    },
+                    "data": {
+                        "name": "see_groups"
+                    }
+                }
+            }
+        }
+    }
+}

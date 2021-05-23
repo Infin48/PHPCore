@@ -1,0 +1,48 @@
+{
+    "body": {
+        "info": {
+            "options": {
+                "type":"table"
+            },
+            "data":{
+                "title":"L_USER_CONVERSATION_INFO"
+            },
+            "body": {
+                "messages": {
+                    "data": {
+                        "title":"L_USER_CONVERSATION_MESSAGE_COUNT",
+                        "value": ""
+                    }
+                },
+                "recipients": {
+                    "data": {
+                        "title":"L_USER_CONVERSATION_RECIPIENT_COUNT",
+                        "value": ""
+                    }
+                }
+            }
+        },
+        "recipients": {
+            "data":{
+                "type": "default",
+                "title":"L_USER_CONVERSATION_RECIPIENT_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "$/Conversation/Recipients/Recipient.phtml"
+                        }
+                    }
+                },
+                "bottom": {
+                    "options": {
+                        "template": {
+                            "body": "$/Conversation/Recipients/AddRecipient.phtml"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

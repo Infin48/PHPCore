@@ -1,0 +1,201 @@
+<?php 
+
+    $cache = $this->data->block['body'];
+    $this->data->block['body'] = [
+        'user' => $cache['user'],
+        'users' => $cache['users'],
+        'user_deleted' => $cache['user_deleted'],
+    ];
+
+?>
+<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+
+<div class="chart-two">
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_USER_MONTH ?></div>
+        <div class="chart-body">
+            <div id="userDay" style="height:300px;"></div>
+        </div>
+    </div>
+
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_USER_YEAR ?></div>
+        <div class="chart-body">
+            <div id="userMonth" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+
+<?php 
+
+    $this->data->block['body'] = [
+        'topic' => $cache['topic'],
+        'topic_reported' => $cache['topic_reported'],
+        'topic_deleted' => $cache['topic_deleted'],
+    ];
+
+?>
+<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+
+<div class="chart-two">
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_TOPIC_MONTH ?></div>
+        <div class="chart-body">
+            <div id="topicDay" style="height:300px;"></div>
+        </div>
+    </div>
+    
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_TOPIC_YEAR ?></div>
+        <div class="chart-body">
+            <div id="topicMonth" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+
+<?php 
+
+    $this->data->block['body'] = [
+        'post' => $cache['post'],
+        'post_reported' => $cache['post_reported'],
+        'post_deleted' => $cache['post_deleted'],
+    ];
+
+?>
+<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+
+<div class="chart-two">
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_POST_MONTH ?></div>
+        <div class="chart-body">
+            <div id="postDay" style="height:300px;"></div>
+        </div>
+    </div>
+    
+    <div class="chart">
+        <div class="chart-head"><?= $L_STATISTICS_POST_YEAR ?></div>
+        <div class="chart-body">
+            <div id="postMonth" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/Assets/ApexCharts/ApexCharts.min.js"></script>
+<script>
+
+    var data = JSON.parse(JSON.stringify(<?= $this->data->chart ?>));
+
+    var chart = new ApexCharts(document.querySelector("#userDay"), {
+        colors:['#3174d7'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Uživatelů',
+                data: data.day.users
+            }
+        ],
+        xaxis: {
+            categories: data.day.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#userMonth"), {
+        colors:['#3174d7'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Uživatelů',
+                data: data.month.users
+            }
+        ],
+        xaxis: {
+            categories: data.month.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#topicDay"), {
+        colors:['#e68900'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Témat',
+                data: data.day.topics
+            }
+        ],
+        xaxis: {
+            categories: data.day.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#topicMonth"), {
+        colors:['#e68900'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Témat',
+                data: data.month.topics
+            }
+        ],
+        xaxis: {
+            categories: data.month.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#postDay"), {
+        colors:['#de4b4b'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Příspěvků',
+                data: data.day.posts
+            }
+        ],
+        xaxis: {
+            categories: data.day.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#postMonth"), {
+        colors:['#de4b4b'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {show: false}
+        },
+        dataLabels: {enabled: false},
+        series: [{
+                name: 'Příspěvků',
+                data: data.month.posts
+            }
+        ],
+        xaxis: {
+            categories: data.month.date
+        }
+    });
+    chart.render();
+</script>

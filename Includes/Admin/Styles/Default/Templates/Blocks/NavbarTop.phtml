@@ -1,0 +1,26 @@
+<div class="navbar navbar-top" ajax-selector="navbar navbar-top">
+    <div class="navbar-content">
+        <div class="navbar-button">
+            <a href="/">
+                <i class="fas fa-angle-left"></i>
+                <span><?= $L_NAVBAR['L_BACK'] ?></span>
+            </a>
+        </div>
+        <div class="navbar-button navbar-button-collapse" style="display: none;">
+            <a id="open" ajax="collapse">
+                <i class="fas fa-bars"></i></span>
+            </a>
+        </div>
+        <div class="loading" ajax-selector="loading" style="display: none;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="breadcrumb">
+        <?php foreach ($this->data->breadcrumb['body'] as $breadcrumb) : ?>
+            <a href="<?= $this->system->url->build($breadcrumb['data']['href']) ?>"><?= $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
+        <?php endforeach; ?>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="vertical-align">
+    <?= $this->build->user->image($row['data']) ?>
+    <div class="inner">
+    <?php if ($row['data']['report_reason_type'] == 0 ) : ?>
+        <?= $this->build->user->link($row['data'], true) ?> <?= $this->build->date->long($row['data']['report_reason_created'], true) ?>
+        <br>
+        <?= $row['data']['report_reason_text'] ?>
+    <?php else : ?>
+        <?= $this->build->date->long($row['data']['report_reason_created'], true) ?>
+        <br>
+        <?= $this->build->user->link($row['data'], true) ?> <?= $L_REPORT_REASON_TYPE_CLOSED ?>
+    <?php endif; ?>
+    </div>
+</div>

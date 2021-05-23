@@ -1,0 +1,21 @@
+{
+    "body": {
+        "topic": {
+            "options": {
+                "empty": "L_TOPIC_NO"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Topic/Big.phtml",
+                            "small": "/Topic/Small.phtml",
+                            "medium": "/Topic/Medium.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

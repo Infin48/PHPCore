@@ -1,0 +1,11 @@
+{
+    "name": "Výchozí vzhled PHPCore",
+    "body": {
+        "Terms": "Body2",
+        "Login": "Body2",
+        "Register": "Body2",
+        "Forgot/Change": "Body2",
+        "Forgot/Send": "Body2",
+        "Error": "Body2"
+    }
+}

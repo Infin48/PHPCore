@@ -1,0 +1,66 @@
+{
+    "body": {
+        "basic": {
+            "options": {
+                "type":"menu"
+            },
+            "data": {
+                "title":"L_BAR_USER_SETTINGS"
+            },
+            "body": {
+                "about": {
+                    "data": {
+                        "href":"/user/",
+                        "icon":"fas fa-info",
+                        "title":"L_BAR_ABOUT"
+                    }
+                },
+                "settings": {
+                    "data": {
+                        "href":"/user/settings/",
+                        "icon":"fas fa-cogs",
+                        "title":"L_BAR_PROFILE"
+                    }   
+                },
+                "account": {
+                    "data": {
+                        "href":"/user/account/",
+                        "icon":"fas fa-user",
+                        "title":"L_BAR_OPTIONS"
+                    }
+                },
+                "signature": {
+                    "data": {
+                        "href":"/user/signature/",
+                        "icon":"fas fa-signature",
+                        "title":"L_BAR_SIGNATURE"
+                    }
+                }
+            }
+        },
+        "conversation": {
+            "options": {
+                "type":"menu"
+            },
+            "data": {
+                "title":"L_BAR_CONVERSATION"
+            },
+            "body": {
+                "about": {
+                    "data": {
+                        "href":"/user/conversation/",
+                        "icon":"fas fa-inbox",
+                        "title":"L_BAR_CONVERSATION_LIST"
+                    }
+                },
+                "settings": {
+                    "data": {
+                        "href":"/user/conversation/add/",
+                        "icon":"fas fa-pen",
+                        "title":"L_USER_CONVERSATION_NEW"
+                    }
+                }
+            }
+        }
+    }
+}

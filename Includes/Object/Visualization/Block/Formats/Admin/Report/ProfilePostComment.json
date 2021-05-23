@@ -1,0 +1,12 @@
+{
+    "body": {
+        "profile_post_comment": {
+            "data": {
+                "icon": "fas fa-bug",
+                "title": "L_STATISTICS_PROFILE_POST_COMMENT_REPORTED",
+                "value": "",
+                "color": "red"
+            }
+        }
+    }
+}

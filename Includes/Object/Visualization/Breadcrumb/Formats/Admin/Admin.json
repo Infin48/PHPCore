@@ -1,0 +1,10 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_ADMIN"
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "body": {
+        "new": {
+            "options": {
+                "type": "button",
+                "hide": true
+            },
+            "data": {
+                "href": "/add/",
+                "icon": "fas fa-reply",
+                "title": "L_TOPIC_CREATE"
+            }
+        }
+    }
+}

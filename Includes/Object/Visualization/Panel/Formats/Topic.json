@@ -1,0 +1,128 @@
+{
+    "body": {
+        "move": {
+            "options": {
+                "hide": true,
+                "type": "dropdown"
+            },
+            "data": {
+                "icon": "fas fa-arrows-alt",
+                "title": "L_TOPIC_MOVE"
+            },
+            "body":{
+                "default": {
+                    "data": {
+                        "href": "/move-{id}",
+                        "convert": {
+                            "id": "forum_id",
+                            "title": "forum_name"
+                        }
+                    }
+                }
+            }
+        },
+        "labels": {
+            "options": {
+                "hide": true,
+                "type": "form"
+            },
+            "data": {
+                "icon": "fas fa-tags",
+                "form": {
+                    "title": "L_LABEL_LIST",
+                    "button": {
+                        "name": "confirm",
+                        "value": "L_CONFIRM"
+                    }
+                }
+            },
+            "body":{
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "$/Labels/Body.phtml",
+                            "bottom": "$/Labels/Bottom.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        },
+        "tools": {
+            "options": {
+                "type": "dropdown"
+            },
+            "data": {
+                "icon": "fas fa-wrench",
+                "title": "L_TOPIC_TOOLS"
+            },
+            "body":{
+                "edit":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_EDIT",
+                        "href": "/edit/"
+                    }
+                },
+                "delete":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_DELETE",
+                        "href": "/delete/"
+                    }
+                },
+                "lock":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_TOPIC_LOCK",
+                        "href": "/lock/"
+                    }
+                },
+                "unlock":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_TOPIC_UNLOCK",
+                        "href": "/unlock/"
+                    }
+                },
+                "stick":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_TOPIC_STICK",
+                        "href": "/stick/"
+                    }
+                },
+                "unstick":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_TOPIC_UNSTICK",
+                        "href": "/unstick/"
+                    }
+                }
+            }
+        },
+        "new":{
+            "options": {
+                "type": "button",
+                "hide": true
+            },
+            "data": {
+                "href": "#new",
+                "icon": "fas fa-reply",
+                "title": "L_POST_CREATE"
+            }
+        }
+    }
+}

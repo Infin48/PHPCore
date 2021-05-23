@@ -1,0 +1,13 @@
+<div id="new" class="block" ajax-selector="block block-form">
+    <form method="post">
+        <div class="block-head">
+            <?= $this->build->user->image($this->user->get()) ?>
+            <div class="inner vertical-align space-between">
+                <div class="block-title"><?= $L_RE ?>: <?= $this->data->data['topic_name'] ?></div>
+                <a class="button f-right" ajax="create" data-id="<?= $this->getID() ?>" data-type="Post"><?= $L_SUBMIT ?></a>
+                <input type="hidden" name="key" value="<?= SESSION_ID ?>">
+            </div>
+        </div>
+        <textarea name="post_text" class="editor" placeholder="<?= $L_TEXT ?>"></textarea>
+    </form>
+</div>

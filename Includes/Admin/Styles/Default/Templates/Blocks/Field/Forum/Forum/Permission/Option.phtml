@@ -1,0 +1,32 @@
+<div class="align wh-full">
+    <?php if (empty($this->data->field['_data']['forum_link'])) : ?>
+        <div class="align wh-full checkbox group--<?= $row['data']['group_class_name'] ?>">
+            <?php if ($row['data']['group_id'] != 0) : ?>
+                <input id="gp<?= $row['data']['group_id'] ?>" type="checkbox" name="forum_permission_post[]" value="<?= $row['data']['group_id'] ?>"<?= in_array($row['data']['group_id'], isset($this->data->field['_data']['post']) ? $this->data->field['_data']['post'] : []) ? ' checked' : '' ?>>
+                <label for="gp<?= $row['data']['group_id'] ?>">
+                    <span class="checkbox-icon">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </label>
+            <?php endif; ?>
+        </div>
+        <div class="align wh-full checkbox group--<?= $row['data']['group_class_name'] ?>">
+            <?php if ($row['data']['group_id'] != 0) : ?>
+                <input id="gt<?= $row['data']['group_id'] ?>" type="checkbox" name="forum_permission_topic[]" value="<?= $row['data']['group_id'] ?>"<?= in_array($row['data']['group_id'], isset($this->data->field['_data']['topic']) ? $this->data->field['_data']['topic'] : []) ? ' checked' : '' ?>>
+                <label for="gt<?= $row['data']['group_id'] ?>">
+                    <span class="checkbox-icon">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </label>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <div class="align wh-full checkbox group--<?= $row['data']['group_class_name'] ?>">
+        <input id="gs<?= $row['data']['group_id'] ?>" type="checkbox" name="forum_permission_see[]" value="<?= $row['data']['group_id'] ?>"<?= in_array($row['data']['group_id'], isset($this->data->field['_data']['see']) ? $this->data->field['_data']['see'] : []) ? ' checked' : '' ?>>
+        <label for="gs<?= $row['data']['group_id'] ?>">
+            <span class="checkbox-icon">
+                <i class="fas fa-check"></i>
+            </span>
+        </label>
+    </div>
+</div>

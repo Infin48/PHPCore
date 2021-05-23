@@ -1,0 +1,101 @@
+<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+<?php
+        $cache = $this->data->list;
+        $this->data->list['body'] = ['news' => $cache['body']['news']];
+    ?>
+<div class="lists">
+    <div class="lists-middle">
+        <div class="chart">
+            <div class="chart-head"><?= $L_STATISTICS_TOPIC_POST_MONTH ?></div>
+            <div class="chart-body">
+                <div id="forum" style="height:300px;"></div>
+            </div>
+        </div>
+        <?php
+            $this->data->list['body'] = ['news' => $cache['body']['news']];;
+        ?>
+        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+    </div>
+    <?php
+        $this->data->list['body'] = ['users' => $cache['body']['users']];;
+    ?>
+    <div class="lists-middle">
+        <div class="chart">
+            <div class="chart-head"><?= $L_STATISTICS_USER_MONTH ?></div>
+            <div class="chart-body">
+                <div id="users" style="height:300px;"></div>
+            </div>
+        </div>
+        <?php
+            $this->data->list['body'] = ['users' => $cache['body']['users']];;
+        ?>
+        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+    </div>
+    <?php
+        $this->data->list['body'] = ['log' => $cache['body']['log']];;
+    ?>
+    <div class="lists-middle">
+        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+
+        <?php require $this->template->template('/Blocks/Field/Field.phtml'); ?>
+    </div>
+</div>
+<script src="/Assets/ApexCharts/ApexCharts.min.js"></script>
+<script>
+
+    var data = JSON.parse(JSON.stringify(<?= $this->data->chart ?>));
+
+    var chart = new ApexCharts(document.querySelector("#forum"), {
+        colors:['#3174d7', '#4CAF50'],
+        legend: {show: false},
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [
+            {
+                name: 'Příspěvků',
+                data: data.posts
+            },
+            {
+                name: 'Témat',
+                data: data.topics
+            }
+        ],
+        xaxis: {
+            categories: data.date
+        }
+    });
+    chart.render();
+
+    var chart = new ApexCharts(document.querySelector("#users"), {
+        colors:['#e68900'],
+        chart: {
+            height: '100%',
+            type: 'area',
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [
+            {
+                name: 'Uživatelů',
+                data: data.users
+            }
+        ],
+        xaxis: {
+            categories: data.date
+        }
+    });
+    
+    chart.render();
+</script>

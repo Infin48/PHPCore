@@ -1,0 +1,21 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "title": "L_USER_SERACH"
+            },
+            "body": {
+                "user_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_USERNAME",
+                        "desc": "L_USER_SEARCH_DESC",
+                        "placeholder": "L_USERNAME"
+                    }
+                }
+            }
+        }
+    }
+}

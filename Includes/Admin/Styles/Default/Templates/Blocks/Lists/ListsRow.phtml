@@ -1,0 +1,9 @@
+<?php if (isset($row['options']['template']['big'])) : ?>
+    <?php require $row['options']['template']['big']; ?>
+<?php else : ?>
+    <span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
+    <?php if (isset($row['data']['desc'])) : ?>
+        <br>
+        <span><?= str_starts_with($row['data']['desc'], '$') ? substr($row['data']['desc'] , 1) : $row['data']['desc'] ?></span>
+    <?php endif; ?>
+<?php endif; ?>

@@ -1,0 +1,166 @@
+{
+    "body": {
+        "menu": {
+            "body": {
+                "collapse": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-bars"
+                    }
+                },
+                "home": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-home",
+                        "href": "/",
+                        "title": "L_HOME"
+                    }
+                },
+                "forum": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-comments",
+                        "href": "/forum/",
+                        "title": "L_FORUM"
+                    }
+                },
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "/ButtonCustom.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "title": "button_name",
+                            "link": "button_link"
+                        }
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "body": "/ButtonCustom.phtml"
+                                }
+                            },
+                            "data": {
+                                "convert": {
+                                    "title": "button_sub_name",
+                                    "link": "button_sub_link"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "logged": {
+            "options": {
+                "hide": true
+            },
+            "body": {
+                "conversation": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "type": "button",
+                        "icon": "fas fa-envelope",
+                        "href": "/user/conversation/"
+                    }
+                },
+                "notification": {
+                    "options": {
+                        "type": "menu",
+                        "empty": "L_NOTIFICATION_NO",
+                        "template": {
+                            "bottom": "$/Notification/Bottom.phtml"
+                        }
+                    },
+                    "data": {
+                        "icon": "fas fa-bell",
+                        "selector": "notification",
+                        "menu": {
+                            "title": "L_NOTIFICATION_NAME"
+                        }
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "body": "$/Notification/Body.phtml"
+                                }
+                            },
+                            "data": {}
+                        }
+                    }
+                },
+                "user": {
+                    "options": {
+                        "type": "dropdown",
+                        "template": {
+                            "body": "/User.phtml"
+                        }
+                    },
+                    "data": {
+                        "title": ""
+                    },
+                    "body": {
+                        "profile": {
+                            "data": {
+                                "href": "",
+                                "title": "L_PROFILE"
+                            }
+                        },
+                        "user": {
+                            "data": {
+                                "href": "/user/",
+                                "title": "L_USER_PANEL"
+                            }
+                        },
+                        "logout": {
+                            "data": {
+                                "href": "/logout/",
+                                "title": "L_LOG_OUT"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "not-logged": {
+            "options": {
+                "hide": true
+            },
+            "body": {
+                "login": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-sign-in-alt",
+                        "href": "/login/",
+                        "title": "L_LOGIN"
+                    }
+                },
+                "register": {
+                    "options": {
+                        "type": "button",
+                        "hide": true
+                    },
+                    "data": {
+                        "icon": "fas fa-user-plus",
+                        "href": "/register/",
+                        "title": "L_REGISTER"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+{
+    "body": {
+        "dropdown": {
+            "data": {
+                "title": ""
+            },
+            "body": {
+                "button_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_MENU_DROPDOWN_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                }
+            }
+        },
+        "icon": {
+            "data": {
+                "title": "L_ICON"
+            },
+            "body": {
+                "link": {
+                    "options": {
+                        "type": "button",
+                        "target": "_blank"
+                    },
+                    "data": {
+                        "desc": "L_ICON_LIST_DESC",
+                        "icon": "fas fa-icons",
+                        "href": "$https://fontawesome.com/icons?d=gallery&p=2&m=free",
+                        "title": "L_ICON_LIST",
+                        "button": "L_ICON_LIST"
+                    }
+                },
+                "button_icon": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_ICON_NAME",
+                        "placeholder": "L_ICON"
+                    }
+                },
+                "button_icon_style": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title": "L_ICON_STYLE"
+                    },
+                    "body": {
+                        "fas": {
+                            "data": {
+                                "value": "fas",
+                                "title": "L_FAS"
+                            }
+                        },
+                        "far": {
+                            "data": {
+                                "value": "far",
+                                "title": "L_FAR"
+                            }
+                        },
+                        "fab": {
+                            "data": {
+                                "value": "fab",
+                                "title": "L_FAB"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

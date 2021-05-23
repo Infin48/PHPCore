@@ -1,0 +1,34 @@
+{
+    "body": {
+        "label": {
+            "options": {
+                "empty": "L_LABEL_LIST_NO"
+            },
+            "data": {
+                "title": "L_LABEL_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "Label",
+                        "template": {
+                            "big": "/Label.phtml"
+                        }
+                    },
+                    "data": {
+                        "type": "label",
+                        "convert": {
+                            "id": "label_id"
+                        },
+                        "button": {
+                            "up": {},
+                            "down": {},
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

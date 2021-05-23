@@ -1,0 +1,16 @@
+<?php if ($this->user->isLogged()) : ?>
+    <?php if ($this->user->perm->has('profilepost.create')) : ?>
+        <div id="p0" class="block block-clear block-margin" ajax-selector="block block-form">
+            <form method="post" id="form">
+                <div class="block-body ">
+                    <a class="button d-none" ajax="create" data-id="<?= $this->getID() ?>" data-type="ProfilePost" ajax-selector="button">
+                        <i class="fas fa-check"></i>
+                    </a>
+                    <?= $this->build->user->image($this->user->get()) ?>
+                    <textarea ajax="textarea" name="profile_post_text" <?php if ($this->data->data['user_id'] == LOGGED_USER_ID) : ?> placeholder="<?= $L_PROFILE_MESSAGE_TO_MY_PROFILE ?>" <?php else : ?> placeholder="<?= $L_PROFILE_MESSAGE_TO_PROFILE ?>" <?php endif; ?> ></textarea>
+                    <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                </div>
+            </form>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

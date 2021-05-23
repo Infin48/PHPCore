@@ -1,0 +1,25 @@
+<form method="post" enctype="multipart/form-data">
+    <div class="field">
+        <div class="field-head">
+            <span><?= $L_NAVBAR['L_LANGUAGE'] ?></span>
+        </div>
+        <div class="field-body">
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_LANGUAGE_CHOOSE ?>:</span>
+                </div>
+                <div class="field-option">
+                    <select name="language">
+                        <?php foreach ($this->data->data['languages'] as $_language) :?>
+                            <option value="<?= $_language['iso'] ?>"><?= $_language['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="field-submit">
+        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+        <input type="submit" name="submit" class="button" value="<?= $L_NEXT ?>">
+    </div>
+</form>

@@ -1,0 +1,89 @@
+{
+    "body": {
+        "users": {
+            "options": {
+                "type": "list",
+                "empty": "L_ONLINE_USERS_NO"
+            },
+            "data":{
+                "title":"L_ONLINE_USERS"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "/OnlineUser.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        },
+        "posts": {
+            "options": {
+                "type": "default",
+                "empty": "L_POST_NO"
+            },
+            "data":{
+                "title":"L_POST_RECENT"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "/LastPost.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        },
+        "profile": {
+            "options": {
+                "type": "default",
+                "empty": "L_LAST_PROFILE_POSTS_NO"
+            },
+            "data":{
+                "title":"L_LAST_PROFILE_POSTS"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "/ProfilePost.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        },
+        "stats": {
+            "options": {
+                "type": "table"
+            },
+            "data":{
+                "title":"L_STATISTICS"
+            },
+            "body": {
+                "topics": {
+                    "data": {
+                        "title":"L_TOTAL_TOPICS",
+                        "value": ""
+                    }
+                },
+                "posts": {
+                    "data": {
+                        "title":"L_TOTAL_POSTS",
+                        "value": ""
+                    }
+                },
+                "users": {
+                    "data": {
+                        "title":"L_TOTAL_REGISTERED_USERS",
+                        "value": ""
+                    }
+                }
+            }
+        }
+    }
+}

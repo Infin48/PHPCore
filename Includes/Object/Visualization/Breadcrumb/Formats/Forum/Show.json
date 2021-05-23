@@ -1,0 +1,16 @@
+{
+    "body": {
+        "forum": {
+            "data": {
+                "href": "/forum/",
+                "title": "L_FORUM"
+            }
+        },
+        "category": {
+            "data": {
+                "href": "/forum/",
+                "title": "$"
+            }
+        }
+    }
+}

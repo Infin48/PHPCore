@@ -1,0 +1,13 @@
+<a class="hover-disable label-text label--<?= $row['data']['label_class_name'] ?>">
+    <label for="<?= $row['data']['label_id'] ?>">
+        <?= $row['data']['label_name'] ?>
+    </label>
+    <div class="checkbox">
+        <input id="<?= $row['data']['label_id'] ?>" type="checkbox" name="topic_label[]" value="<?= $row['data']['label_id'] ?>"<?php if (in_array($row['data']['label_id'], array_column($this->data->data['labels'] ?? [], 'label_id'))) : ?><?= 'checked' ?><?php endif; ?>>
+        <label for="<?= $row['data']['label_id'] ?>">
+            <span class="checkbox-icon">
+                <i class="check fas fa-check"></i>
+            </span>
+        </label>
+    </div>
+</a>

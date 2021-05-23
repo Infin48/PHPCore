@@ -1,0 +1,32 @@
+{
+    "body": {
+        "about": {
+            "body": {
+                "user_name": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_USERNAME"
+                    }
+                },
+                "user_email": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_EMAIL"
+                    }
+                },
+                "user_registered": {
+                    "options": {
+                        "type": "date"
+                    },
+                    "data": {
+                        "title": "L_REGISTERED"
+                    }
+                }
+            }
+        }
+    }
+}

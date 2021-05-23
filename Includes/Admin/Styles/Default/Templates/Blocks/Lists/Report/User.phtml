@@ -1,0 +1,8 @@
+<div class="vertical-align">
+    <?= $this->build->user->image($row['data']) ?>
+    <div class="inner">
+        <?= $this->build->user->link($row['data'], true) ?>
+        <br>
+        <?= $L_REPORT_USERS_COUNT ?>: <strong><?= $row['data']['count'] ?></strong>
+    </div>
+</div>

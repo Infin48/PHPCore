@@ -1,0 +1,41 @@
+<html lang="cs-cz">
+    <head>
+        <meta charset="UTF-8">
+        <title><?= $L_INSTALLATION ?> | PHPCore</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" type="image/x-icon" href="/Uploads/Site/PHPCore_icon.svg">
+
+        <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Light.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Light.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Regular.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Regular.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Medium.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Medium.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Bold.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Bold.woff" crossorigin>
+        <link rel="stylesheet" type="text/css" href="/Install/Style/Themes/Quicksand.min.css?25">
+        <link rel="stylesheet" type="text/css" href="/Install/Style/Themes/Stylesheet.min.css">
+        <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+    </head> 
+    <body id="body">
+
+        <?php require ROOT . '/Install/Style/Templates/Blocks/Navbar.phtml' ?>
+        <div class="page">
+            <?php if (isset($this->data->data['notice'])) : ?>
+                <div class="page-alert">
+                    <div class="page-alert-body">
+                        <?= $this->data->data['notice'] ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php $this->page->showPage(); ?>
+        </div>
+        <script src="/Assets/jQuery/jQuery.min.js"></script>
+        <script src="/Install/Style/Themes/Addons.min.js"></script>
+
+        <?php if (isset($this->data->data['install'])) : ?>
+            <script src="/Install/Style/Themes/Install.min.js?45"></script>
+        <?php endif; ?>
+    </body>
+</html>

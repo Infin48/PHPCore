@@ -1,0 +1,12 @@
+<div class="vertical-align">
+    <?php if ($row['data']['forum_icon']) : ?>
+        <div class="list-icon">
+            <i class="<?= $row['data']['forum_icon_style'] ?> fa-<?= $row['data']['forum_icon'] ?>"></i>
+        </div>
+    <?php endif; ?>
+    <div class="inner">
+        <a href="<?= $row['data']['forum_link'] ? $row['data']['forum_link'] : $this->build->url->forum($row['data']) ?>"><?= $row['data']['forum_name'] ?></a>
+        <br>
+        <span class="title-sub"><?= $row['data']['forum_description'] ?></span>
+    </div>
+</div>

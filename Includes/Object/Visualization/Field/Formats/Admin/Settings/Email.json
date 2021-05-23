@@ -1,0 +1,122 @@
+{
+    "body": {
+        "test": {
+            "data": {
+                "title": "L_SETTINGS_EMAIL_TEST"
+            },
+            "body": {
+                "send": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "f0e0",
+                        "desc": "L_SETTINGS_EMAIL_TEST_SEND_DESC",
+                        "title": "L_SETTINGS_EMAIL_TEST_SEND",
+                        "button": "L_SEND"
+                    }
+                }
+            }
+        },
+        "email": {
+            "data": {
+                "title": "L_SETTINGS_EMAIL_OUTGOING"
+            },
+            "body": {
+                "email.prefix": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_EMAIL_PREFIX",
+                        "placeholder": "L_EMAIL"
+                    }
+                }
+            }
+        },
+        "smtp": {
+            "data": {
+                "title": "L_SETTINGS_EMAIL"
+            },
+            "body": {
+                "email_smtp_enabled": {
+                    "options": {
+                        "type": "radio"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_EMAIL_TYPE",
+                        "value": "email.smtp_enabled",
+                        "placeholder": "L_NAME"
+                    },
+                    "body": {
+                        "mail": {
+                            "data": {
+                                "title": "$mail()",
+                                "value": 0
+                            }
+                        },
+                        "smtp": {
+                            "data": {
+                                "title": "$SMTP",
+                                "value": 1
+                            }
+                        }
+                    }
+                },
+                "email_smtp_host": {
+                    "options": {
+                        "type": "text",
+                        "on": {
+                            "show": "email_smtp_enabled"
+                        }
+                    },
+                    "data": {
+                        "title": "L_HOST",
+                        "value": "email.smtp_host",
+                        "placeholder": "L_HOST"
+                    }
+                },
+                "email_smtp_username": {
+                    "options": {
+                        "type": "text",
+                        "on": {
+                            "show": "email_smtp_enabled"
+                        }
+                    },
+                    "data": {
+                        "title": "L_USERNAME",
+                        "value": "email.smtp_username",
+                        "placeholder": "L_USERNAME"
+                    }
+                },
+                "email_smtp_password": {
+                    "options": {
+                        "type": "password",
+                        "on": {
+                            "show": "email_smtp_enabled"
+                        }
+                    },
+                    "data": {
+                        "title": "L_PASSWORD",
+                        "value": "email.smtp_password",
+                        "placeholder": "L_PASSWORD"
+                    }
+                },
+                "email_smtp_port": {
+                    "options": {
+                        "type": "text",
+                        "on": {
+                            "show": "email_smtp_enabled"
+                        }
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_EMAIL_SMTP_PORT_DESC",
+                        "title": "L_PORT",
+                        "value": "email.smtp_port",
+                        "placeholder": "L_PORT"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "body": {
+        "group": {
+            "data": {
+                "title": "L_GROUP_NEW"
+            },
+            "body": {
+                "group_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_GROUP_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                }
+            }
+        }
+    },
+    "button": {
+        "submit": {
+            "data": {
+                "type": "submit",
+                "value": "L_GROUP_NEW"
+            }
+        }
+    }
+}

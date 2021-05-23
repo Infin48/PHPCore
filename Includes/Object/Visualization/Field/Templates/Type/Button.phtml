@@ -1,0 +1,10 @@
+<?php if (isset($row['data']['href']) or isset($row['data']['ajax'])) : ?>
+    <a class="button button-<?= $rowName ?>"<?php if (isset($row['data']['href'])) : ?> href="<?= $row['data']['href'] ?>"<?php else : ?> ajax="<?= $row['data']['ajax'] ?? '' ?>"<?php endif; ?><?php if (isset($row['options']['target'])) : ?> target="<?= $row['options']['target'] ?>"<?php endif; ?>>
+        <?php if (isset($row['data']['icon'])) : ?>
+            <i class="<?= $row['data']['icon'] ?>"></i>
+        <?php endif; ?>
+        <?= ${$row['data']['button']} ?>
+    </a>
+<?php else : ?>
+    <input class="button button-<?= $row['data']['color'] ?? 'blue' ?>" type="submit" name="<?= $row['data']['name'] ?? $rowName ?>" value="<?= isset($row['data']['icon']) ? '&#x' . $row['data']['icon'] . ' ' : '' ?><?= ${$row['data']['button']} ?>">
+<?php endif; ?>

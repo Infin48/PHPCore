@@ -1,0 +1,100 @@
+{
+    "body": {
+        "show": {
+            "options": {
+                "id": "deleted_id",
+                "type": "Deleted"
+            },
+            "data": {
+                "title": "L_DELETED_DETAILS"
+            },
+            "body": {
+                "topic_id": {
+                    "options": {
+                        "type": "id",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_TOPIC_ID_DESC",
+                        "title": "L_TOPIC_ID"
+                    }
+                },
+                "post_id": {
+                    "options": {
+                        "type": "id",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_POST_ID_DESC",
+                        "title": "L_POST_ID"
+                    }
+                },
+                "profile_post_id": {
+                    "options": {
+                        "type": "id",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_PROFILE_POST_ID_DESC",
+                        "title": "L_PROFILE_POST_ID"
+                    }
+                },
+                "profile_post_comment_id": {
+                    "options": {
+                        "type": "id",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_PROFILE_POST_COMMENT_ID_DESC",
+                        "title": "L_PROFILE_POST_COMMENT_ID"
+                    }
+                },
+                "deleted": {
+                    "options": {
+                        "type": "user"
+                    },
+                    "data": {
+                        "desc": "L_DELETED_BY_DESC",
+                        "title": "L_DELETED_BY"
+                    }
+                },
+                "show": {
+                    "options": {
+                        "type": "button",
+                        "target": "_blank"
+                    },
+                    "data": {
+                        "icon": "fas fa-eye",
+                        "desc": "L_DELETED_SHOW_DESC",
+                        "title": "L_DELETED_SHOW",
+                        "button": "L_SHOW"
+                    }
+                },
+                "back": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "ajax": "back",
+                        "desc": "L_DELETED_RETURN_DESC",
+                        "icon": "fas fa-undo-alt",
+                        "title": "L_DELETED_RETURN",
+                        "button": "L_DELETED_RETURN"
+                    }
+                },
+                "delete": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "ajax": "delete",
+                        "desc": "L_DELETED_DELETE_DESC",
+                        "icon": "fas fa-trash",
+                        "title": "L_DELETED_DELETE",
+                        "button": "L_DELETED_DELETE"
+                    }
+                }
+            }
+        }
+    }
+}

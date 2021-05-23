@@ -1,0 +1,14 @@
+
+<?php foreach ((array)$row['body'] as $option) : ?>
+    <?php if (isset($option['options']['template']['option'])) : ?>
+        <?php require $option['options']['template']['option']; ?>
+    <?php else : ?>
+        <div class="radio">
+            <input class="script" type="radio" name="<?= $rowName ?>" id="<?= $id = mt_rand() ?>" value="<?= $option['data']['value'] ?? '' ?>" <?php if (isset($option['options']['checked']) and $option['options']['checked'] === true) : ?>checked<?php endif; ?>>
+            <label for="<?= $id?>">
+                <div></div>
+                <span><?= str_starts_with($option['data']['title'], '$') ? substr($option['data']['title'], 1) : ${$option['data']['title']} ?></span>
+            </label>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

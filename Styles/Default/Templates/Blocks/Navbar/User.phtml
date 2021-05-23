@@ -1,0 +1,5 @@
+<a class="username user--<?= $this->user->get('group_class_name') ?>">
+    <?= $this->build->user->image($this->user->get(), false) ?>
+    <span><?= $this->user->get('user_name') ?></span>
+    <i class="fa fa-caret-down"></i>
+</a>

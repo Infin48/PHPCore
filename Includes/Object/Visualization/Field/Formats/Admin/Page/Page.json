@@ -1,0 +1,40 @@
+{
+    "body": {
+        "page": {
+            "data": {
+                "title": "L_PAGE_EDIT"
+            },
+            "body": {
+                "page_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_PAGE_NAME",
+                        "placeholder": "L_PAGE_NAME_DESCRIPTION"
+                    }
+                },
+                "page_html": {
+                    "options": {
+                        "type": "textarea"
+                    },
+                    "data": {
+                        "desc": "L_PAGE_HTML_DESC",
+                        "title": "L_PAGE_HTML",
+                        "placeholder": "L_PAGE_BODY_HTML_DESCRIPTION"
+                    }
+                },
+                "page_css": {
+                    "options": {
+                        "type": "textarea"
+                    },
+                    "data": {
+                        "desc": "L_PAGE_CSS_DESC",
+                        "title": "L_PAGE_CSS",
+                        "placeholder": "L_PAGE_BODY_CSS_DESCRIPTION"
+                    }
+                }
+            }
+        }
+    }
+}

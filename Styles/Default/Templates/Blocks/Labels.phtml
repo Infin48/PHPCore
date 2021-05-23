@@ -1,0 +1,7 @@
+<?php if (isset($row['data']['labels']) and !empty($row['data']['labels'])) : ?>
+    <label class="label-list">
+        <?php foreach ((array)$row['data']['labels'] as $label) : ?>
+            <label class="label label--<?= $label['label_class_name'] ?>"><i class="fas fa-tag"></i><?= $label['label_name'] ?></label>
+        <?php endforeach; ?>
+    </label>
+<?php endif; ?>

@@ -1,0 +1,158 @@
+<div class="page-content-flex">
+    <form method="post">
+        <div class="field" ajax-selector="field">
+            <div class="field-head">
+                <span><?= $L_INDEX_START ?></span>
+            </div>
+            <div class="field-body">
+                <div class="field-row field-row-icon" ajax-selector="field-row">
+                    <div class="field-text vertical-align">
+                        <span><?= $L_INDEX_THANKS ?></span>                                          
+                    </div>
+                </div>
+            </div>
+            <div class="field-submit">
+                <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                <input type="submit" name="submit" class="button" value="<?= $L_INDEX_START ?>">
+            </div>
+        </div>
+    </form>
+    <div class="field" ajax-selector="field">
+        <div class="field-head">
+            <span><?= $L_INDEX_EXTENSION ?></span>
+            <br>
+            <span class="field-head-description"><?= $L_INDEX_EXTENSION_DESC ?></span>      
+        </div>
+        <div class="field-body">
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span><?= $L_PHP_VERSION ?>:</span>                                          
+                </div>
+                <div class="field-option">
+                    <?php if (version_compare(PHP_VERSION, '8.0.0') >= 0) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <span class="red">8.0.0</span><i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span>mbstring:</span>                                          
+                </div>
+                <div class="field-option">
+                    <?php if (extension_loaded('mbstring')) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span>PDO:</span>                                          
+                </div>
+                <div class="field-option">
+                <?php if (extension_loaded('PDO')) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span>PDO_mysql:</span>                                          
+                </div>
+                <div class="field-option">
+                <?php if (extension_loaded('PDO_mysql')) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span>SPL:</span>                                          
+                </div>
+                <div class="field-option">
+                <?php if (extension_loaded('SPL')) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-row field-row-icon" ajax-selector="field-row">
+                <div class="field-text vertical-align">
+                    <span>zip:</span>                                          
+                </div>
+                <div class="field-option">
+                    <?php if (extension_loaded('zip')) : ?>
+                        <i class="fas fa-green fa-check-circle"></i>
+                    <?php else : ?>
+                        <i class="fas fa-red fa-times-circle"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="field" ajax-selector="field">
+    <div class="field-head">
+        <span><?= $L_INDEX_WRITABLE ?></span>
+        <br>
+        <span class="field-head-description"><?= $L_INDEX_WRITABLE_DESC ?></span>      
+    </div>
+    <div class="field-body">
+        <div class="field-row field-row-icon" ajax-selector="field-row">
+            <div class="field-text vertical-align">
+                <span>/Install/Includes/Settings.json</span>                                          
+            </div>
+            <div class="field-option">
+                <?php if (is_writable(ROOT . '/Install/Includes/Settings.json')) : ?>
+                    <i class="fas fa-green fa-check-circle"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times-circle"></i>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="field-row field-row-icon" ajax-selector="field-row">
+            <div class="field-text vertical-align">
+                <span>/Includes/Settings/.htdata.json</span>                                          
+            </div>
+            <div class="field-option">
+                <?php if (is_writable(ROOT . '/Includes/Settings/.htdata.json')) : ?>
+                    <i class="fas fa-green fa-check-circle"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times-circle"></i>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="field-row field-row-icon" ajax-selector="field-row">
+            <div class="field-text vertical-align">
+                <span>/Includes/Settings/Settings.json</span>                                          
+            </div>
+            <div class="field-option">
+                <?php if (is_writable(ROOT . '/Includes/Settings/Settings.json')) : ?>
+                    <i class="fas fa-green fa-check-circle"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times-circle"></i>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="field-row field-row-icon" ajax-selector="field-row">
+            <div class="field-text vertical-align">
+                <span>/Includes/Settings/Statistics.json</span>                                          
+            </div>
+            <div class="field-option">
+                <?php if (is_writable(ROOT . '/Includes/Settings/Statistics.json')) : ?>
+                    <i class="fas fa-green fa-check-circle"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times-circle"></i>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

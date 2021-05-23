@@ -1,0 +1,36 @@
+{
+    "body": {
+        "type": {
+            "data": {
+                "icon": "fas fa-font",
+                "title": "L_CONTENT_TYPE",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "id": {
+            "data": {
+                "icon": "fas fa-fingerprint",
+                "title": "L_RECORD_ID",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "deleted": {
+            "data": {
+                "icon": "fas fa-clock",
+                "title": "L_DELETED",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "deleted_by": {
+            "data": {
+                "icon": "fas fa-user",
+                "title": "L_DELETED_BY",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

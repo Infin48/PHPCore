@@ -1,0 +1,14 @@
+<div>
+    <input type="file" name="<?= $rowName ?>">
+    <?php if (isset($row['options']['deleteCheckBox'])) : ?>
+        <?php if ((isset($row['data']['value']) and !empty($row['data']['value'])) or !empty($this->data->field['_data'][$row['data']['value'] ?? $rowName])) : ?>
+            <div class="checkbox">
+                <input id="delete_<?= $rowName ?>" type="checkbox" name="delete_<?= $rowName ?>" value="1">
+                <label for="delete_<?= $rowName ?>">
+                    <span class="checkbox-icon"><i class="fas fa-check"></i></span>
+                    <span><?= ${$row['data']['delete']} ?></span>
+                </label>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>

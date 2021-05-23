@@ -1,0 +1,101 @@
+{
+    "body": {
+        "other": {
+            "data": {
+                "title": "L_STATUS_OTHER"
+            },
+            "body": {
+                "localeWeb": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "color": "red",
+                        "title": "L_STATUS_LOCALISATION_WEBSITE",
+                        "titleRed": ""
+                    }
+                }
+            }
+        },
+        "extension": {
+            "data": {
+                "desc": "L_STATUS_EXTENSION_DESC",
+                "title": "L_STATUS_EXTENSION"
+            },
+            "body": {
+                "mbstring": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$mbstring"
+                    }
+                },
+                "PDO": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$PDO"
+                    }
+                },
+                "PDO_mysql": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$PDO_mysql"
+                    }
+                },
+                "SPL": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$SPL"
+                    }
+                },
+                "zip": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$zip"
+                    }
+                }
+            }
+        },
+        "writable": {
+            "data": {
+                "desc": "L_STATUS_WRITABLE_DESC",
+                "title": "L_STATUS_WRITABLE"
+            },
+            "body": {
+                "/Includes/Settings/.htdata.json": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$/Includes/Settings/.htdata.json"
+                    }
+                },
+                "/Includes/Settings/Settings.json": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$/Includes/Settings/Settings.json"
+                    }
+                },
+                "/Includes/Settings/Statistics.json": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$/Includes/Settings/Statistics.json"
+                    }
+                }
+            }
+        }
+    }
+}

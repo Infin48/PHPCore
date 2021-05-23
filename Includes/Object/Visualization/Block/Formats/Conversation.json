@@ -1,0 +1,55 @@
+{
+    "body": {
+        "conversation": {
+            "options": {
+                "hide": true
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "Conversation"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "conversation_id",
+                            "text": "conversation_text",
+                            "name": "conversation_name",
+                            "created": "conversation_created",
+                            "edited_time": "conversation_edited"
+                        }
+                    }
+                }
+            }
+        },
+        "conversationmessage": {
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "ConversationMessage"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "conversation_message_id",
+                            "text": "conversation_message_text",
+                            "name": "conversation_name",
+                            "created": "conversation_message_created",
+                            "edited_time": "conversation_message_edited"
+                        },
+                        "button": {
+                            "quote": {},
+                            "edit": {}
+                        }
+                    }
+                },
+                "bottom": {
+                    "options": {
+                        "hide": true,
+                        "template": {
+                            "body": "$/ConversationMessageNew.phtml"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

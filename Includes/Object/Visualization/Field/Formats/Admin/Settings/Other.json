@@ -1,0 +1,171 @@
+{
+    "body": {
+        "background": {
+            "data": {
+                "title": "L_SETTINGS_HEADER"
+            },
+            "body": {
+                "site.background_image": {
+                    "options": {
+                        "type": "file",
+                        "deleteCheckBox": true
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_HEADER",
+                        "delete": "L_SETTINGS_HEADER_IMAGE_DELETE"
+                    }
+                },
+                "site.favicon": {
+                    "options": {
+                        "type": "file",
+                        "deleteCheckBox": true
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_ICON_DESC",
+                        "title": "L_SETTINGS_ICON",
+                        "delete": "L_SETTINGS_ICON_DELETE"
+                    }
+                },
+                "site.background_image_position": {
+                    "options": {
+                        "type": "radio"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_HEADER_POSITION",
+                        "placeholder": "L_SIZE"
+                    },
+                    "body": {
+                        "up": {
+                            "data": {
+                                "title": "L_SETTINGS_HEADER_IMAGE_UP",
+                                "value": "top"
+                            }
+                        },
+                        "center": {
+                            "data": {
+                                "title": "L_SETTINGS_HEADER_IMAGE_CENTER",
+                                "value": "center"
+                            }
+                        },
+                        "down": {
+                            "data": {
+                                "title": "L_SETTINGS_HEADER_IMAGE_DOWN",
+                                "value": "bottom"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "language": {
+            "data": {
+                "title": "L_SETTINGS_LANGUAGE"
+            },
+            "body": {
+                "site.locale": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_LOCALISATION_DESC",
+                        "title": "L_SETTINGS_LOCALISTION"
+                    },
+                    "body": {
+                        "cs": {
+                            "data": {
+                                "value": "cs_CZ",
+                                "title": "$Česko"
+                            }
+                        },
+                        "en": {
+                            "data": {
+                                "value": "en_US",
+                                "title": "$Amerika"
+                            }
+                        },
+                        "sk": {
+                            "data": {
+                                "value": "sk_SK",
+                                "title": "$Slovensko"
+                            }
+                        }
+                    }
+                },
+                "site.timezone": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_TIMEZONE"
+                    },
+                    "body": {
+                        "Europe/Berlin": {
+                            "data": {
+                                "value": "Europe/Berlin",
+                                "title": "$Europe/Berlin"
+                            }
+                        },
+                        "Europe/Bratislava": {
+                            "data": {
+                                "value": "Europe/Bratislava",
+                                "title": "$Europe/Bratislava"
+                            }
+                        },
+                        "Europe/Prague": {
+                            "data": {
+                                "value": "Europe/Prague",
+                                "title": "$Europe/Prague"
+                            }
+                        },
+                        "Europe/Vienna": {
+                            "data": {
+                                "value": "Europe/Vienna",
+                                "title": "$Europe/Vienna"
+                            }
+                        },
+                        "Europe/Warsaw": {
+                            "data": {
+                                "value": "Europe/Warsaw",
+                                "title": "$Europe/Warsaw"
+                            }
+                        }
+                    }
+                },
+                "site.language": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_LANGUAGE_WEBSITE"
+                    },
+                    "body": {
+                        "default": {
+                            "data": {
+                                "convert": {
+                                    "title": "title"
+                                }
+                            }
+                        }
+                    }
+                },
+                "site.language_editor": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_LANGUAGE_EDITOR"
+                    },
+                    "body": {
+                        "default": {
+                            "data": {
+                                "convert": {
+                                    "title": "title"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

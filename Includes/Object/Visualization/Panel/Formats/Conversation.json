@@ -1,0 +1,46 @@
+{
+    "body": {
+        "tools": {
+            "options": {
+                "type": "dropdown"
+            },
+            "data": {
+                "icon": "fas fa-cogs",
+                "title": "L_USER_CONVERSATION_OPTIONS"
+            },
+            "body":{
+                "edit": {
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_EDIT",
+                        "href": "/edit/"
+                    }
+                },
+                "leave":{
+                    "data": {
+                        "title": "L_USER_CONVERSATION_LEAVE",
+                        "href": "/leave/"
+                    }
+                },
+                "mark":{
+                    "data": {
+                        "title": "L_USER_CONVERSATION_MARK_AS_UNREAD",
+                        "href": "/mark/"
+                    }
+                }
+            }
+        },
+        "send":{
+            "options": {
+                "type": "button"
+            },
+            "data": {
+                "href": "#new",
+                "icon": "fas fa-reply",
+                "title": "L_USER_CONVERSATION_MESSAGE_SEND"
+            }
+        }
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "body": {
+        "topic": {
+            "body": {
+                "topic_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_TOPIC_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "topic_text": {
+                    "options": {
+                        "type": "textarea"
+                    },
+                    "data": {
+                        "class": "editor",
+                        "placeholder": "L_TEXT"
+                    }
+                },
+                "topic_labels": {
+                    "options": {
+                        "type": "checkbox",
+                        "empty": "L_TOPIC_LABEL_NO",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_LABELS_DESC",
+                        "title": "L_LABEL_LIST"
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "option": "$/Topic/Label.phtml"
+                                }
+                            },
+                            "data": {}
+                        }
+                    }
+                },
+                "topic_image": {
+                    "options": {
+                        "type": "file",
+                        "hide": true,
+                        "deleteCheckBox": true
+                    },
+                    "data": {
+                        "title": "L_TOPIC_IMAGE",
+                        "delete": "L_TOPIC_IMAGE_DELETE"
+                    }
+                }
+            }
+        }
+    }
+}

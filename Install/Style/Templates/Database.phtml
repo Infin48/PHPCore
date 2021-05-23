@@ -1,0 +1,54 @@
+<form method="post" enctype="multipart/form-data">
+    <div class="field">
+        <div class="field-head">
+            <span><?= $L_NAVBAR['L_DATABASE'] ?></span>
+        </div>
+        <div class="field-body">
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_DATABASE_HOST ?>:</span>
+                </div>
+                <div class="field-option">
+                    <input type="text" name="host" placeholder="<?= $L_HOST ?>" value="<?= $form->get('host') ?>">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_DATABASE_USERNAME ?>:</span>
+                </div>
+                <div class="field-option">
+                    <input type="text" name="user_name" placeholder="<?= $L_DATABASE_USERNAME ?>" value="<?= $form->get('user_name') ?>">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_DATABASE_PASSWORD ?>:</span>
+                </div>
+                <div class="field-option">
+                    <input type="password" name="user_password" placeholder="<?= $L_PASSWORD ?>" value="<?= $form->get('user_password') ?>">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_DATABASE_NAME ?>:</span>
+                </div>
+                <div class="field-option">
+                    <input type="text" name="database" placeholder="<?= $L_NAME ?>" value="<?= $form->get('database') ?>">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-text">
+                    <span class="title"><?= $L_PORT ?>:</span><?= $L_DATABASE_PORT_DESC ?>
+                </div>
+                <div class="field-option">
+                    <input type="text" name="port" placeholder="<?= $L_PORT ?>" value="<?= $form->get('port') ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field-submit">
+        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+        <input type="submit" name="submit" class="button" value="<?= $L_NEXT ?>">
+    </div>
+</form>

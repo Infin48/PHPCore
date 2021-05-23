@@ -1,0 +1,13 @@
+<?php if (isset($row['body']) and !empty($row['body'])) : ?>
+    <select name="<?= $rowName ?>"<?php if (isset($row['data']['multiple'])) : ?> multiple<?php endif; ?>>
+        <?php foreach ($row['body'] ?? [] as $option) : ?>
+            <option value="<?= $option['data']['value'] ?>"<?php if (isset($option['options']['checked']) and $option['options']['checked'] === true) : ?> selected<?php endif; ?>>
+                <?= str_starts_with($option['data']['title'], '$') ? substr($option['data']['title'], 1) : ${$option['data']['title']} ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+<?php else : ?>
+    <?php if ($row['options']['empty'] ?? false) : ?>
+        <?= ${$row['options']['empty']} ?>
+    <?php endif; ?>
+<?php endif;?>

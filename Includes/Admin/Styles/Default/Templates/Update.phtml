@@ -1,0 +1,64 @@
+<div class="loading">
+    <span class="loading-title"><?= $L_UPDATE_INSTALLATION ?></span>
+    <br>
+    <span class="loading-description"><?= $L_UPDATE_THANKS ?></span>
+    <div class="loading-bottom">
+        <div class="loading-circle">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+<script>
+        
+    $.get('/admin/ajax/update/', function (data) {
+
+        try {
+            var data = $.parseJSON(data);
+
+            switch (data.status) {
+
+                case 'installed':
+                    $('.loading-circle').addClass('loading-circle-finished');
+                    $('.loading-title').html(data.text);
+                break;
+
+                case 'current':
+                    $('.loading-circle').addClass('loading-circle-finished');
+                    $('.loading-title').html(data.text);
+                break;
+
+                default:
+                    $('.loading-circle').addClass('loading-circle-error');
+                    $('.loading-title').addClass('loading-title-red');
+                    $('.loading-description').text(data.error);
+                    $('.loading-title').html(data.text);
+                    $('a').addClass('a-red');
+                break;
+            }
+
+            $('.loading-bottom').after('<br><a href="'+data.url+'"><i class="fas fa-chevron-left"></i> '+data.back+'</a>');
+
+        } catch (error) {
+
+            $.get('/admin/ajax/update/?error', function (data) {
+
+                var data = $.parseJSON(data);
+
+                $('.loading-circle').addClass('loading-circle-error');
+                $('.loading-title').addClass('loading-title-red');
+                $('.loading-description').text(data.error);
+                $('.loading-bottom').after('<br><a href="'+data.url+'"><i class="fas fa-chevron-left"></i> '+data.back+'</a>');
+                $('a').addClass('a-red');
+                $('.loading-title').html(data.text);
+
+            });
+
+        }
+
+    });
+
+
+</script>

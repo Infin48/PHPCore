@@ -1,0 +1,20 @@
+{
+    "body": {
+        "page": {
+            "data": {
+                "title": "L_PAGE_NEW"
+            },
+            "body": {
+                "page_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_PAGE_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+RewriteEngine On
+
+#
+# Nastavení subdomén
+#
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(css|js|icon|zip|rar|png|jpg|gif|pdf|svg)$ index.php [L]
+
+AddType application/x-httpd-php .php .phtml
+
+<FilesMatch "\.(json|phtml|sql|txt)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+<filesMatch ".(css|js|jpg|jpeg|png|gif|ico|svg|ttf|eot|woff|woff2)$">
+Header set Cache-Control "max-age=31536000, public"
+</filesMatch>
+
+# X-Frame-Options settings
+Header set X-Frame-Options SAMEORIGIN
+
+# X-Content-Type-Options
+Header set X-Content-Type-Options "nosniff"
+
+# Feature-Policy settings
+Header always set Feature-Policy "vibrate 'self'; sync-xhr 'self';"
+
+# Referrer-Policy settings
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# X-XSS-Protection settings
+Header set X-XSS-Protection "1; mode=block"
+
+# Strict Transport Security
+Header set Strict-Transport-Security "max-age=31536000"
+
+# Content-Security-Policy
+Header set Content-Security-Policy "font-src 'self';"

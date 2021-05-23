@@ -1,0 +1,22 @@
+{
+    "body": {
+        "log": {
+            "options": {
+                "empty": "L_LOG_LIST_NO"
+            },
+            "data": {
+                "title": "L_LOG_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Log.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

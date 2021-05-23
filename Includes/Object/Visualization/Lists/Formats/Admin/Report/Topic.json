@@ -1,0 +1,34 @@
+{
+    "body": {
+        "topic": {
+            "options": {
+                "empty": "L_REPORT_TOPIC_NO"
+            },
+            "data": {
+                "title": "L_REPORT_TOPIC"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Report/Report.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "report_id",
+                            "title": "topic_name"
+                        },
+                        "button": {
+                            "info": {
+                                "data": {
+                                    "href": "~/admin/report/show/{id}/"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

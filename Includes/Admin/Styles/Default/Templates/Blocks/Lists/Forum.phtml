@@ -1,0 +1,15 @@
+<div class="vertical-align">
+    <?php if ($row['data']['forum_icon']) : ?>
+        <i class="list-icon <?= $row['data']['forum_icon_style'] ?> fa-<?= $row['data']['forum_icon'] ?>"></i>
+    <?php endif; ?>
+    <div class="inner">
+        <span class="list-title"><?= $row['data']['forum_name'] ?></span>
+        <?php if ((bool)$row['data']['is_main'] === true) : ?>
+            <span ajax="title" data-title="<?= $L_FORUM_MAIN_LABEL ?>">
+                <i class="fas fa-star"></i>
+            </span>
+        <?php endif; ?>
+        <br>
+        <span class="title-sub"><?= $row['data']['forum_description'] ?></span>
+    </div>
+</div>

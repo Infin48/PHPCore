@@ -1,0 +1,36 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "icon": "fas fa-user",
+                "title": "L_STATISTICS_USER",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "users": {
+            "data": {
+                "icon": "fas fa-users",
+                "title": "L_STATISTICS_USER_REGISTERED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fas fa-comments",
+                "title": "L_STATISTICS_TOPIC",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "post": {
+            "data": {
+                "icon": "fas fa-comment",
+                "title": "L_STATISTICS_POST",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

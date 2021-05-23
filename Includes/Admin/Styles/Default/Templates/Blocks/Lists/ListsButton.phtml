@@ -1,0 +1,10 @@
+<?php foreach ((array)($row ?? $list)['data']['button'] as $btnName => $btn) : ?>
+    <?php if (isset($btn['options']['template'])) : ?>
+        <?php require $btn['options']['template']; ?>
+    <?php else : ?>
+        <a class="button button-<?= $btnName ?>" <?php if (isset($btn['data']['href'])) : ?>href="<?= $btn['data']['href'] ?>"<?php else : ?> ajax="<?= $btn['data']['ajax'] ?? $btnName ?>"<?php endif; ?><?php if (isset($btn['options']['target'])) : ?> target="<?= $btn['options']['target'] ?>"<?php endif; ?>>
+            <?php if (isset($btn['data']['icon'])) : ?><i class="<?= $btn['data']['icon'] ?>"></i><?php endif; ?>
+            <?php if (isset($btn['data']['title'])) : ?><?= ${$btn['data']['title']} ?></i><?php endif; ?>
+        </a>
+    <?php endif; ?>
+<?php endforeach; ?>

@@ -1,0 +1,30 @@
+{
+    "body": {
+        "default": {
+            "data": {
+                "convert": {
+                    "title": "category_name",
+                    "desc": "category_description"
+                },
+                "small": {
+                    "title": "L_STATISTICS"
+                },
+                "medium": {
+                    "title": "L_POST_NEW"
+                }
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Forum/Big.phtml",
+                            "small": "/Forum/Small.phtml",
+                            "medium": "/Forum/Medium.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

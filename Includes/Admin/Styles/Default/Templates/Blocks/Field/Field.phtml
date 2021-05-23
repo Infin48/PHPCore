@@ -1,0 +1,67 @@
+<?php if (!empty($this->data->field['body'])) : ?>
+    <form method="post" enctype="multipart/form-data">
+        <?php foreach ($this->data->field['body'] as $fieldName => $field) : ?>
+
+            <?php if (isset($field['options']['template']['body'])) : ?>
+                <?php require $field['options']['template']['body']; ?>
+            <?php else : ?>
+                <div class="field" ajax-selector="field" <?php if (isset($field['options']['id'])) : ?>data-id="<?= $this->data->field['_data'][$field['options']['id']] ?>"<?php endif; ?> <?php if (isset($field['options']['type'])) : ?>data-type="<?= $field['options']['type'] ?>"<?php endif; ?>>
+                    <?php if (isset($field['data']['title'])) : ?>
+                        <div class="field-head">
+                            <span><?= ${$field['data']['title']} ?></span>
+                            <?php if (isset($field['data']['desc'])) : ?>
+                                <br>
+                                <span class="field-head-description"><?= str_starts_with($field['data']['desc'], '$') ? substr($field['data']['desc'], 1) : ${$field['data']['desc']} ?></span>
+                            <?php endif; ?>  
+                        </div>
+                    <?php endif; ?>  
+                    <div class="field-body">
+                        <?php if ($field['body']) : ?>
+                            <?php foreach ($field['body'] as $rowName => $row) : ?>
+                                <div class="field-row<?php if (isset($row['options']['type']) and $row['options']['type'] === 'textarea') : ?> field-row-grid<?php endif; ?><?php if (isset($row['options']['type']) and $row['options']['type'] === 'icon') : ?> field-row-icon<?php endif; ?>" ajax-selector="field-row"
+                                    <?php if (isset($row['options']['on'])) : ?>
+                                        <?php foreach ((array)$row['options']['on'] as $on => $_rowName) : ?>
+                                            <?= $on . '-on="' . $_rowName . '"' ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                >
+                                    <?php if (isset($row['data']['title']) or isset($row['options']['template']['text'])) : ?>
+                                        <div class="field-text<?= !isset($row['data']['desc']) ? ' vertical-align' : '' ?>">
+                                            <?php if (isset($row['options']['template']['text'])) : ?>
+                                                <?php require $row['options']['template']['text']; ?>
+                                            <?php else : ?>    
+                                                <span><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'], 1) : ${$row['data']['title']} ?>:</span><?php if (isset($row['data']['desc'])) : ?><br><?= ${$row['data']['desc']} ?><?php endif; ?>
+                                            <?php endif; ?>  
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="field-option">
+                                        <?php if (isset($row['options']['template']['option'])) : ?>
+                                            <?php require $row['options']['template']['option']; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <?php if (isset($field['data']['empty'])) : ?>
+                                <div class="field-row">
+                                    <div class="field-text">
+                                        <span class="field-title"><?= ${$field['data']['empty']} ?></span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php if (isset($this->data->field['button']) and !empty($this->data->field['button'])) : ?>
+            <div class="field-submit" ajax-selector="field-submit">
+                <?php foreach ((array)$this->data->field['button'] as $btnName => $btn) : ?>
+                    <input class="button" type="<?= $btn['data']['type'] ?? '' ?>" name="<?= $btnName ?>" <?php if ($btn['data']['ajax'] ?? false) : ?>ajax="<?= $btn['data']['ajax'] ?>"<?php endif; ?>value="<?= isset($btn['data']['value']) ? ${$btn['data']['value']} : '' ?>">
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+    </form>
+<?php endif; ?>

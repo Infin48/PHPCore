@@ -1,0 +1,3 @@
+<span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
+<br>
+<?= ${'L_NOTIFICATION_TYPE_' . strtoupper(NOTIFICATION[$row['data']['notification_type']])} ?>

@@ -1,0 +1,31 @@
+<form method="post" enctype="multipart/form-data">
+    <?php foreach ($this->data->field['body'] as $fieldName => $field) : ?>
+        <div class="field field-name-<?= $fieldName ?>" ajax-selector="field">
+            <?php foreach ($field['body'] as $rowName => $row) :?>
+                <div class="field-row<?php if (isset($row['options']['type']) and $row['options']['type'] === 'textarea') : ?> field-row-grid<?php endif; ?>" ajax-selector="field-row">
+                    <?php if (isset($row['data']['title'])) : ?>
+                        <div class="field-text<?= !isset($row['data']['desc']) ? ' vertical-align' : '' ?>">
+                            <?php if (isset($row['options']['template']['text'])) : ?>
+                                <?php require $row['options']['template']['text']; ?>
+                            <?php else : ?>
+                                <span><?= ${$row['data']['title']} ?>:</span><?php if (isset($row['data']['desc'])) : ?><br><?= ${$row['data']['desc']} ?><?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="field-option">
+                        <?php if (isset($row['options']['template']['option'])) : ?>
+                            <?php require $row['options']['template']['option']; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+
+    <div class="field-submit">
+        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+        <?php foreach ($this->data->field['button'] as $btn) : ?>
+            <input class="button" type="<?= $btn['data']['type'] ?>" name="<?= $btn['data']['name'] ?>" value="<?= isset($btn['data']['value']) ? ${$btn['data']['value']} : '' ?>">
+        <?php endforeach; ?>
+    </div>
+</form>

@@ -1,0 +1,56 @@
+{
+    "body": {
+        "login": {
+            "options": {
+                "template": {
+                    "link": "/Links/Login.phtml"
+                }
+            },
+            "data": {
+                "icon": "fas fa-question",
+                "title": "L_LOGIN"
+            },
+            "body": {
+                "user_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "icon": "fas fa-user",
+                        "placeholder": "L_USERNAME"
+                    }
+                },
+                "user_password": {
+                    "options": {
+                        "type": "password"
+                    },
+                    "data": {
+                        "icon": "fas fa-lock",
+                        "placeholder": "L_PASSWORD"
+                    }
+                },
+                "remember": {
+                    "options": {
+                        "type": "checkbox"
+                    },
+                    "body": {
+                        "remember": {
+                            "data": {
+                                "value": 1,
+                                "title": "L_LOGIN_REMEMBER"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "button": {
+        "submit": {
+            "data": {
+                "type": "submit",
+                "value": "L_LOGIN_BUTTON"
+            }
+        }
+    }
+}

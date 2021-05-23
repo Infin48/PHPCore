@@ -1,0 +1,8 @@
+<div class="vertical-align">
+    <?= $this->build->user->image($row['data']) ?>
+    <div class="inner">
+        <?= $this->build->user->link($row['data'], true) ?>
+        <br>
+        <?= $row['data']['group_name'] ?>
+    </div>
+</div>

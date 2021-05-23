@@ -1,0 +1,13 @@
+<div class="block block-clear" ajax-selector="block block-form">
+    <form method="post">
+        <div class="block-body">
+            <a data-submit="html" class="button d-none" ajax="create" data-id="<?= $cache['data']['profile_post_id'] ?>" data-type="ProfilePostComment" ajax-selector="button">
+                <i class="fas fa-check"></i>
+            </a>
+            <?= $this->build->user->image($this->user->get()) ?>
+            <textarea id="<?= $cache['data']['id'] ?>" ajax="textarea" name="profile_post_comment_text" placeholder="<?= $L_PROFILE_ANSWER ?>"></textarea>
+            <input type="hidden" value="<?= $cache['data']['profile_post_id'] ?>" name="profile_post_id">
+            <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+        </div>
+    </form>
+</div>

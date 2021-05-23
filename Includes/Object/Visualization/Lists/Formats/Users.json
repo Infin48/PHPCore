@@ -1,0 +1,20 @@
+{
+    "body": {
+        "users": {
+            "data": {
+                "title": "L_USERNAME"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Users/Big.phtml",
+                            "medium": "/Users/Medium.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

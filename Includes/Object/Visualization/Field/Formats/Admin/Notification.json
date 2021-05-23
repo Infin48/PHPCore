@@ -1,0 +1,76 @@
+{
+    "body": {
+        "notification": {
+            "data": {
+                "title": ""
+            },
+            "body": {
+                "notification_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_NOTIFICATION_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "notification_text": {
+                    "options": {
+                        "type": "textarea"
+                    },
+                    "data": {
+                        "title": "L_NOTIFICATION_BODY",
+                        "placeholder": "L_TEXT"
+                    }
+                },
+                "notification_type": {
+                    "options": {
+                        "type": "radio"
+                    },
+                    "data": {
+                        "title": "L_NOTIFICATION_TYPE"
+                    },
+                    "body": {
+                        "info": {
+                            "options": {
+                                "checked": true
+                            },
+                            "data": {
+                                "title": "L_NOTIFICATION_TYPE_INFO",
+                                "value": 1
+                            }
+                        },
+                        "notification": {
+                            "data": {
+                                "title": "L_NOTIFICATION_TYPE_NOTIFICATION",
+                                "value": 2
+                            }
+                        },
+                        "wafning": {
+                            "data": {
+                                "title": "L_NOTIFICATION_TYPE_WARNING",
+                                "value": 3
+                            }
+                        }
+                    }
+                },
+                "is_hidden": {
+                    "options": {
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "desc": "L_NOTIFICATION_HIDE_DESC",
+                        "title": "L_NOTIFICATION_HIDE"
+                    },
+                    "body": {
+                        "is_hidden": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

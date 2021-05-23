@@ -1,0 +1,28 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "title": "L_USER_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/User.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "user_id",
+                            "title": "user_name",
+                            "desc": "group_class_name"
+                        },
+                        "button": {
+                            "edit": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

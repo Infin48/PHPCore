@@ -1,0 +1,39 @@
+<div class="field">
+    <div class="field-head">
+        <span class="field-title">
+            <?= $L_GROUP_PERMISSION_LIST ?>
+        </span>
+        <br>
+        <span class="field-head-description"><?= $L_GROUP_PERMISSION_LIST_DESC ?></span>
+    </div>
+
+    <div class="tab">
+        <?php $i = 1; foreach ($this->user->perm->getList() as $group => $permissions) : ?>
+            <a class="tab-button<?php if ($i === 1) : ?> default active<?php endif; ?>" id="<?= $group ?>"><?= ${'L_TAB_' . strtoupper($group)} ?></a>
+            <?php $i++; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <?php foreach ($this->user->perm->getList() as $catName => $cat) : ?>
+        <div class="field-body <?= $catName ?> tabcontent">
+            <?php foreach ($cat as $perm) : ?>
+                <div class="field-row">
+                    <div class="field-text">
+                        <span><?= $L_PERMISSION[$perm] ?></span><?php if (isset($L_PERMISSION['L_DESC'][$perm])) : ?><br><?= $L_PERMISSION['L_DESC'][$perm] ?><?php endif; ?>
+                    </div>
+                    <div class="field-option field-option-center">
+                        <div class="checkbox">
+                            <input id="<?= $perm ?>" type="checkbox" name="group_permission[]" value="<?= $perm ?>" <?php if (in_array($perm, explode(',', $this->data->data['group_permission'] ?? ''))) : ?>checked<?php endif; ?>>
+                            <label for="<?= $perm ?>">
+                                <span class="checkbox-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+

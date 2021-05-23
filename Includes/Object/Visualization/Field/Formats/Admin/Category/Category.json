@@ -1,0 +1,30 @@
+{
+    "body": {
+        "category": {
+            "data": {
+                "title": ""
+            },
+            "body": {
+                "category_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_CATEGORY_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "category_description": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_CATEOGRY_DESCRIPTION",
+                        "desc": "L_CATEOGRY_DESCRIPTION_DESC",
+                        "placeholder": "L_DESCRIPTION"
+                    }
+                }
+            }
+        }
+    }
+}

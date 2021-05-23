@@ -1,0 +1,46 @@
+{
+    "body": {
+        "group": {
+            "data": {
+                "title": "L_GROUP_EDIT"
+            },
+            "body": {
+                "group_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_GROUP_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "group_color": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_GROUP_COLOR",
+                        "placeholder": "L_COLOR"
+                    }
+                },
+                "is_default": {
+                    "options": {
+                        "type": "checkbox",
+                        "hide": true
+                    },
+                    "data": {
+                        "desc": "L_GROUP_DEFAULT_DESC",
+                        "title": "L_GROUP_DEFAULT"
+                    },
+                    "body": {
+                        "is_default": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "body": {
+        "post": {
+            "data": {
+                "icon": "fas fa-bug",
+                "title": "L_STATISTICS_POST_REPORTED",
+                "value": "",
+                "color": "red"
+            }
+        }
+    }
+}

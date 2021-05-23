@@ -1,0 +1,47 @@
+{
+    "body": {
+        "info": {
+            "data": {
+                "title": "L_FRONT_INFO"
+            },
+            "body": {
+                "version": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_FRONT_INFO_VERSION_PHPCORE",
+                        "value": ""
+                    }
+                },
+                "php": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_FRONT_INFO_VERSION_PHP",
+                        "value": ""
+                    }
+                },
+                "database": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_FRONT_INFO_VERSION_SQL",
+                        "value": ""
+                    }
+                },
+                "started": {
+                    "options": {
+                        "type": "date"
+                    },
+                    "data": {
+                        "title": "L_FRONT_INFO_STARTED",
+                        "value": ""
+                    }
+                }
+            }
+        }
+    }
+}

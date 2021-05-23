@@ -1,0 +1,105 @@
+{
+    "body": {
+        "available": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "title": "L_UPDATE_AVAILABLE",
+                "desc": "L_UPDATE_AVAILABLE_DESC",
+                "empty": "L_UPDATE_NO"
+            },
+            "body": {
+                "tag_name": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_UPDATE_VERSION"
+                    }
+                },
+                "name": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "title": "L_UPDATE_NAME"
+                    }
+                },
+                "pre-release": {
+                    "options": {
+                        "type": "field"
+                    },
+                    "data": {
+                        "value": "",
+                        "title": "L_UPDATE_TYPE"
+                    }
+                },
+                "published_at": {
+                    "options": {
+                        "type": "date"
+                    },
+                    "data": {
+                        "title": "L_UPDATE_PUBLISHED"
+                    }
+                },
+                "details": {
+                    "options": {
+                        "type": "button",
+                        "target": "_blank"
+                    },
+                    "data": {
+                        "icon": "fas fa-info-circle",
+                        "desc": "L_UPDATE_DETAILS_DESC",
+                        "title": "L_UPDATE_DETAILS",
+                        "button": "L_DETAILS"
+                    }
+                },
+                "install": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "href": "~/admin/update/install/",
+                        "icon": "fas fa-download",
+                        "desc": "L_UPDATE_INSTALL_DESC",
+                        "title": "L_UPDATE_INSTALL",
+                        "button": "L_UPDATE_INSTALL_BUTTON"
+                    }
+                }
+            }
+        },
+        "latest": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "title": "L_UPDATE_LATEST",
+                "empty": "L_UPDATE_NO"
+            },
+            "body": {
+                "submit": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-search",
+                        "ajax": "update-search",
+                        "title": "L_UPDATE_SEARCH",
+                        "button": "L_UPDATE_SEARCH"
+                    }
+                }
+            }
+        },
+        "empty": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "title": "L_UPDATE_SEARCH_NO",
+                "empty": "L_UPDATE_NO"
+            },
+            "body": {}
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+    <head>
+        <title><?= $L_INTERNAL_ERROR ?> - <?= $system ?? '' ? $system->settings->get('site.name') : 'PHPCore' ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="<?= $L_INTERNAL_ERROR ?>" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/Uploads/Site/PHPCore_icon_red.svg?<?= mt_rand() ?>"/>
+
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Light.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Light.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Regular.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Regular.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Medium.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Medium.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Bold.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Object/Exception/Template/Fonts/Quicksand-Bold.woff" crossorigin>
+
+        <link rel="stylesheet" type="text/css" href="/Includes/Object/Exception/Template/Stylesheet.min.css?1258">
+        <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+    </head>
+    <body id="body" class="error">
+        <div class="page">
+            <div class="page-column">
+                <div class="page-column-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <div class="page-column-title"><?= $L_INTERNAL_ERROR ?></div>
+                <div class="page-column-description"><?= $error ?></div>
+            </div>
+        </div>
+    </body>
+</html>

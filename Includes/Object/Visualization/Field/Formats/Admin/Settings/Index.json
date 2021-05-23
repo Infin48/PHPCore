@@ -1,0 +1,73 @@
+{
+    "body": {
+        "settings": {
+            "data": {
+                "title": "L_SETTINGS_SETTINGS"
+            },
+            "body": {
+                "site.name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_NAME",
+                        "placeholder": "L_NAME"
+                    }
+                },
+                "site.description": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_DESCRIPTION_DESC",
+                        "title": "L_SETTINGS_DESCRIPTION",
+                        "placeholder": "L_DESCRIPTION"
+                    }
+                },
+                "image.max_size": {
+                    "options": {
+                        "type": "number"
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_IMAGE_SIZE_DESC",
+                        "title": "L_SETTINGS_IMAGE_SIZE"
+                    }
+                }
+            }
+        },
+        "cookie": {
+            "data": {
+                "title": "L_SETTINGS_COOKIE"
+            },
+            "body": {
+                "cookie.enabled": {
+                    "options": {
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_COOKIE_ENABLE"
+                    },
+                    "body": {
+                        "cookie_enabled": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                },
+                "cookie.text": {
+                    "options": {
+                        "type": "textarea",
+                        "on": {
+                            "show": "cookie.enabled"
+                        }
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_COOKIE_TEXT",
+                        "placeholder": "L_TEXT"
+                    }
+                }
+            }
+        }
+    }
+}

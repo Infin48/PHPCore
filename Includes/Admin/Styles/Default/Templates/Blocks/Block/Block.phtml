@@ -1,0 +1,16 @@
+<?php if (!empty($this->data->block['body'])) : ?>
+    <div class="block-list">
+        <?php foreach ($this->data->block['body'] as $block) : ?>
+            <div class="block block-<?= $block['data']['color'] ?>">
+                <div class="block-content">
+                    <span class="block-number"><?= $block['data']['value'] ?></span>
+                    <br>
+                    <span class="block-title"><?= ${$block['data']['title']} ?></span>
+                </div>
+                <div class="block-icon">
+                    <i class="<?= $block['data']['icon'] ?>"></i>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,87 @@
+{
+    "body": {
+        "settings": {
+            "body": {
+                "user_text": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "desc": "L_USER_TEXT_DESC",
+                        "title": "L_USER_TEXT",
+                        "placeholder": "L_TEXT"
+                    }
+                },
+                "user_location": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "desc": "L_USER_PROFILE_ON",
+                        "title": "L_USER_LOCATION",
+                        "placeholder": "L_USER_LOCATION"
+                    }
+                },
+                "user_age": {
+                    "options": {
+                        "type": "number"
+                    },
+                    "data": {
+                        "desc": "L_USER_PROFILE_ON",
+                        "title": "L_USER_AGE",
+                        "placeholder": "L_USER_AGE"
+                    }
+                },
+                "user_gender": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title":"L_USER_GENDER",
+                        "desc":"L_USER_PROFILE_ON"
+                    },
+                    "body": {
+                        "man": {
+                            "data": {
+                                "title":"L_USER_GENDER_MAN",
+                                "value":"man"
+                            }
+                        },
+                        "woman": {
+                            "data": {
+                                "title":"L_USER_GENDER_WOMAN",
+                                "value":"woman"
+                            }
+                        },
+                        "undefined": {
+                            "data": {
+                                "title":"L_USER_GENDER_UNDEFINED",
+                                "value":"undefined"
+                            }
+                        }
+                    }
+                },
+                "user_profile_image": {
+                    "options": {
+                        "template": {
+                            "option": "$/User/ProfileImage.phtml"
+                        }
+                    },
+                    "data": {
+                        "title": "L_USER_PROFILE_IMAGE"
+                    }
+                },
+                "user_header_image": {
+                    "options": {
+                        "type": "file",
+                        "deleteCheckBox": true
+                    },
+                    "data": {
+                        "title": "L_USER_HEADER_IMAGE",
+                        "delete": "L_USER_HEADER_IMAGE_DELETE"
+                    }
+                }
+            }
+        }
+    }
+}

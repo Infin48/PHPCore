@@ -1,0 +1,56 @@
+<div class="navbar navbar-side navbar-default" ajax-selector="navbar navbar-side">
+    
+    <img src="/Uploads/Site/PHPCore.svg">
+
+    <?php foreach ($this->data->navbar['body'] as $navbar) : ?>
+
+        <?php if (isset($navbar['options']['permission'])) : ?>
+            <?php if ($this->user->perm->has($navbar['options']['permission']) === false) : ?>
+                <?php continue; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <div class="navbar-content">
+            <div class="navbar-button navbar-category">
+                <span><?= $L_NAVBAR[$navbar['data']['title']] ?></span>
+            </div>
+            <?php foreach ($navbar['body'] as $rowName => $row) : ?>
+
+                <?php if (isset($row['options']['permission'])) : ?>
+                    <?php if ($this->user->perm->has($row['options']['permission']) === false) : ?>
+                        <?php continue; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <div class="navbar-button<?php if (isset($row['body']) and !empty($row['body'])) : ?> navbar-dropdown navbar-dropdown-name-<?= $rowName ?><?php endif; ?><?php if (isset($row['options']['active'])) : ?> <?= (isset($row['body']) and !empty($row['body'])) ? 'navbar-dropdown-opened' : 'navbar-button-active' ?><?php endif; ?>" ajax-selector="dropdown">
+                    <div class="navbar-button-content">
+                        <a <?php if (isset($row['data']['href'])) : ?>href="<?= $this->system->url->build($row['data']['href']) ?>"<?php endif; ?>>
+                            <i class="<?= $row['data']['icon'] ?>"></i>
+                            <span <?php if (isset($row['data']['notifiCount'])) : ?>data-count="<?= $row['data']['notifiCount'] ?>"<?php endif; ?><?php if (isset($row['data']['notifiIcon'])) : ?> data-icon="&#x<?= $row['data']['notifiIcon'] ?>"<?php endif; ?>><?= $L_NAVBAR[$row['data']['title']] ?></span>
+                        </a>
+                        <?php if (isset($row['body']) and !empty($row['body'])) : ?>
+                            <a class="navbar-button-arrow" ajax-selector="open-dropdown">
+                                <i class="arrow<?= isset($row['options']['active']) ? ' d-none' : '' ?> fas fa-angle-left" ajax-selector="arrow-left"></i>
+                                <i class="arrow<?= !isset($row['options']['active']) ? ' d-none' : '' ?> fas fa-angle-down" ajax-selector="arrow-down"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (isset($row['body']) and !empty($row['body'])) : ?>
+                        <div class="dropdown-menu" ajax-selector="dropdown-menu">
+                            <div class="dropdown-content">
+                                <div class="dropdown-body" ajax-selector="dropdown-body">
+                                    <?php foreach ($row['body'] as $_rowname => $_row) : ?>
+                                        <div class="dropdown-row dropdown-row-name-<?= $_rowname ?><?php if (isset($_row['options']['active'])) : ?> dropdown-row-active<?php endif; ?>" ajax-selector="dropdown-row">
+                                            <a href="<?= $this->system->url->build($_row['data']['href']) ?>">
+                                                <span <?php if (isset($_row['data']['notifiCount'])) : ?>data-count="<?= $_row['data']['notifiCount'] ?>"<?php endif; ?>><?= $L_NAVBAR[$_row['data']['title']] ?></span>
+                                            </a>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+</div>

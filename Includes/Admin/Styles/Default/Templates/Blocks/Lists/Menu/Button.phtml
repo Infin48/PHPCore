@@ -1,0 +1,16 @@
+<div class="vertical-align">
+    <?php if ($row['data']['button_icon'] ?? false) : ?>
+        <i class="list-icon <?= $row['data']['button_icon_style'] ?> fa-<?= $row['data']['button_icon'] ?>"></i>
+    <?php endif; ?>
+    <div class="inner">
+        <span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
+        <br>
+        <span>
+            <?php if (isset($row['data']['is_dropdown']) and $row['data']['is_dropdown'] == 1) : ?>
+                <strong><?= $L_MENU_DROPDOWN ?></strong>
+            <?php else : ?>
+                <?= $L_MENU_BUTTON_REFERS_TO ?> <strong> <?= $row['data']['page_name'] ?? $row['data']['link'] ?></strong>
+            <?php endif; ?>
+        </span>
+    </div>
+</div>

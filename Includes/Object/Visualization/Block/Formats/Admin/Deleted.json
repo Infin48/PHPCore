@@ -1,0 +1,32 @@
+{
+    "body": {
+        "post": {
+            "data": {
+                "icon": "fas fa-trash",
+                "title": "L_STATISTICS_TOPIC_DELETED",
+                "value": ""
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fas fa-trash",
+                "title": "L_STATISTICS_POST_DELETED",
+                "value": ""
+            }
+        },
+        "profile_post": {
+            "data": {
+                "icon": "fas fa-trash",
+                "title": "L_STATISTICS_PROFILE_POST_DELTED",
+                "value": ""
+            }
+        },
+        "profile_post_comment": {
+            "data": {
+                "icon": "fas fa-trash",
+                "title": "L_STATISTICS_PROFILE_POST_COMMENT_DELETED",
+                "value": ""
+            }
+        }
+    }
+}

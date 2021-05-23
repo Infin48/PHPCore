@@ -1,0 +1,85 @@
+<html lang="cs-cz">
+    <head>    
+        <meta charset="UTF-8">
+        <title><?= $this->data->head['title'] ?> | <?= $this->system->settings->get('site.name') ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="<?= $this->data->head['description'] ?>" />
+        <link rel="icon" href="<?= $this->favicon ?>?<?= $this->system->settings->get('session') ?>" type="image/svg+xml">
+
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Bold.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Bold.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Medium.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Medium.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Regular.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Regular.woff" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Light.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff" href="/Includes/Admin/Styles/Default/Themes/Fonts/Quicksand-Light.woff" crossorigin>
+
+        <link async rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="/Includes/Admin/Styles/Default/Themes/Quicksand.min.css?852">
+        <link rel="stylesheet" type="text/css" href="/Includes/Update/css.css?25">
+        <script>window.FontAwesomeConfig={searchPseudoElements:true}</script>
+    </head>
+    <body>
+        <div class="loading">
+            <span class="loading-title"><?= $L_UPDATE_INSTALLATION ?></span>
+            <br>
+            <span class="loading-description"><?= $L_UPDATE_THANKS ?></span>
+            <div class="loading-bottom">
+                <div class="loading-circle">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>                
+        <script src="/Assets/jQuery/jQuery.min.js?33"></script>
+        <script>
+        
+            $.get('/admin/ajax/update/', function (data) {
+
+                var data = $.parseJSON(data);
+
+                switch (data.status) {
+
+                    case 'installed':
+                        $('.loading-circle').addClass('loading-circle-finished');
+                        $('.loading-title').html(data.text);
+                    break;
+
+                    case 'current':
+                        $('.loading-circle').addClass('loading-circle-finished');
+                        $('.loading-title').html(data.text);
+                    break;
+
+                    case 'error':
+
+                        $.get('/admin/ajax/update/?error', function (data) {
+
+                            data = $.parseJSON(data);
+
+                            $('.loading').addClass('loading-red');
+
+                            $('.loading-description').text(data.error);
+                            $('.loading-title').html(data.text);
+                            $('.loading-bottom').after('<br><a href="'+data.url+'"><i class="fas fa-chevron-left"></i> '+data.back+'</a>');
+                        });
+                    break;
+
+                    case 'ok':
+                        $('.loading-circle').addClass('loading-circle-error');
+                        $('.loading-title').addClass('loading-title-red');
+                        $('.loading-description').text(data.error);
+                        $('.loading-title').html(data.text);
+                        $('a').addClass('a-red');
+                    break;
+                }
+
+                if (data.status == 'installed' || data.status == 'current' || data.status == 'ok') {
+                    $('.loading-bottom').after('<br><a href="'+data.url+'"><i class="fas fa-chevron-left"></i> '+data.back+'</a>');
+                }
+            });
+        </script>
+    </body>
+</html>

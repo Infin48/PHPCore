@@ -1,0 +1,33 @@
+{
+    "body": {
+        "profilepostcomment": {
+            "options": {
+                "empty": "L_REPORT_PROFILE_POST_COMMENT_NO"
+            },
+            "data": {
+                "title": "L_REPORT_PROFILE_POST_COMMENT"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "/Report/Report.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "report_id"
+                        },
+                        "button": {
+                            "info": {
+                                "data": {
+                                    "href": "~/admin/report/show/{id}/"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

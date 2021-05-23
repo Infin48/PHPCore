@@ -1,0 +1,34 @@
+{
+    "body": {
+        "profilepostcomment": {
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "ProfilePostComment"
+                    },
+                    "data": {
+                        "type": "profile_post_comment",
+                        "convert": {
+                            "id": "profile_post_comment_id",
+                            "text": "profile_post_comment_text",
+                            "created": "profile_post_comment_created"
+                        },
+                        "notice": {
+                            "reported": {
+                                "hide": true
+                            },
+                            "deleted": {
+                                "hide": true
+                            }
+                        },
+                        "button": {
+                            "report": {},
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

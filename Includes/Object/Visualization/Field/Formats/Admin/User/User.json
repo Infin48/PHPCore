@@ -1,0 +1,159 @@
+{
+    "body": {
+        "user": {
+            "options": {
+                "id": "user_id",
+                "url": "/admin/user/",
+                "type": "User"
+            },
+            "data": {
+                "title": "L_USER_EDIT"
+            },
+            "body": {
+                "user_name": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_USERNAME",
+                        "desc": "L_USER_NAME_DESC",
+                        "placeholder": "L_USERNAME"
+                    }
+                },
+                "user_text": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "title": "L_USER_TEXT",
+                        "placeholder": "L_TEXT"
+                    }
+                },
+                "user_email": {
+                    "options": {
+                        "type": "email"
+                    },
+                    "data": {
+                        "title": "L_EMAIL",
+                        "placeholder": "L_EMAIL"
+                    }
+                },
+                "user_password": {
+                    "options": {
+                        "type": "password"
+                    },
+                    "data": {
+                        "title": "L_PASSWORD_NEW",
+                        "desc": "L_PASSWORD_DESC",
+                        "placeholder": "L_PASSWORD"
+                    }
+                },
+                "group_id": {
+                    "options": {
+                        "type": "select"
+                    },
+                    "data": {
+                        "title": "L_USER_GROUP",
+                        "desc": "L_USER_GROUP_DESC"
+                    },
+                    "body": {
+                        "default": {
+                            "data": {
+                                "convert": {
+                                    "value": "group_id",
+                                    "title": "group_name"
+                                }
+                            }
+                        }
+                    }
+                },
+                "delete_signature": {
+                    "options": {
+                        "hide": true,
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "title": "L_USER_DELETE_SIGNATURE"
+                    },
+                    "body": {
+                        "delete": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                },
+                "delete_profile_image": {
+                    "options": {
+                        "hide": true,
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "title": "L_USER_DELETE_PROFILE_IMAGE"
+                    },
+                    "body": {
+                        "delete": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                },
+                "delete_header_image": {
+                    "options": {
+                        "hide": true,
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "title": "L_USER_DELETE_HEADER_IMAGE"
+                    },
+                    "body": {
+                        "delete": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                },
+                "promote": {
+                    "options": {
+                        "hide": true,
+                        "type": "button"
+                    },
+                    "data": {
+                        "ajax": "promote",
+                        "desc": "L_USER_PROMOTE_DESC",
+                        "icon": "fas fa-user-cog",
+                        "title": "L_USER_PROMOTE",
+                        "button": "L_USER_PROMOTE_BUTTON"
+                    }
+                },
+                "delete": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "ajax": "delete",
+                        "desc": "L_USER_DELETE_DESC",
+                        "icon": "fas fa-trash",
+                        "title": "L_USER_DELETE",
+                        "button": "L_REMOVE"
+                    }
+                },
+                "activate": {
+                    "options": {
+                        "hide": true,
+                        "type": "button"
+                    },
+                    "data": {
+                        "ajax": "activate",
+                        "href": "/activate/",
+                        "icon": "fas fa-star",
+                        "title": "L_USER_ACTIVATE",
+                        "button": "L_USER_ACTIVATE"
+                    }
+                }
+            }
+        }
+    }
+}

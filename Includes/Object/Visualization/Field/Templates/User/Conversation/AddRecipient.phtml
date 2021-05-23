@@ -1,0 +1,12 @@
+<div class="vertical-align space-between wh-full">
+    <div class="inner">
+        <span><?= $L_USER_CONVERSATION_RECIPIENT_ADD ?>:</span>
+        <br><?= $L_USER_CONVERSATION_RECIPIENT_ADD_DESC ?>
+    </div>
+    <a class="link f-right" ajax="user"><?= $L_ADD ?></a>
+    <select class="d-none" multiple name="to[]" ajax-selector="select">
+        <?php if (isset($this->data->data['recipient'])) : ?>
+            <option value="<?= $this->data->data['recipient']['user_id'] ?>" selected><?= $this->data->data['recipient']['user_id'] ?></option>
+        <?php endif; ?>
+    </select>
+</div>

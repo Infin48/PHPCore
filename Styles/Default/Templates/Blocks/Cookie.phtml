@@ -1,0 +1,9 @@
+<?php if ($this->system->settings->get('cookie.enabled') == 1) : ?>
+    <div class="cookie" ajax-selector="cookie">
+        <div class="cookie-body">
+            <span><?= $this->system->settings->get('cookie.text') ?></span>
+            <br>
+            <a ajax-selector="cookie-button"><?= $L_COOKIE_BUTTON ?></a>
+        </div>
+    </div>
+<?php endif; ?>

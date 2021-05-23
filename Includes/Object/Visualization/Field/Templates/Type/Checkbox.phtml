@@ -1,0 +1,23 @@
+<?php if (isset($row['body']) and !empty($row['body'])) : ?>
+    <?php foreach ((array)$row['body'] as $option) : ?>
+        <?php if (isset($option['options']['template']['option'])) : ?>
+            <?php require $option['options']['template']['option']; ?>
+        <?php else : ?>
+            <div class="checkbox">
+                <input class="script" id="<?= $id = mt_rand() ?>" type="checkbox" name="<?= $rowName ?>" value="<?= $option['data']['value'] ?>" <?php if (isset($option['options']['checked']) and $option['options']['checked'] === true) : ?>checked<?php endif; ?>>
+                <label for="<?= $id ?>">
+                    <span class="checkbox-icon">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <?php if (isset($option['data']['title'])) : ?>
+                        <span><?= ${$option['data']['title']} ?></span>
+                    <?php endif; ?>
+                </label>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php else : ?>
+    <?php if (isset($row['options']['empty'])) : ?>
+        <?= ${$row['options']['empty']} ?>
+    <?php endif; ?>
+<?php endif; ?>

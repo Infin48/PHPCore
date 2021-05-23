@@ -1,0 +1,16 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_ADMIN"
+            }
+        },
+        "deleted": {
+            "data": {
+                "href": "/admin/deleted/",
+                "title": "L_DELETED"
+            }
+        }
+    }
+}
