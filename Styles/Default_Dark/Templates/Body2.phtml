@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html id="html" lang="cs-cz" class="html-full html-hidden <?= $this->data->data['pageName'] ?>">
+
+    <head>
+        <?php require $this->template->template('/Blocks/Head.phtml'); ?>
+    </head>
+
+    <body>
+
+        <div class="page">
+
+            <?php $this->show(); ?>
+        </div>
+        <?php require $this->template->template('/Blocks/Cookie.phtml'); ?>
+        <?php require ROOT . '/Includes/Template/Footer.phtml' ?>
+        <script defer src="<?= $this->template->theme('/Addons.min.js') ?>?<?= RAND ?>"></script>
+
+        <?php if ($this->data->data['pageName'] == 'register') : ?>
+            <script src="https://www.google.com/recaptcha/api.js?render=<?= $this->system->settings->get('registration.key_site') ?>"></script>
+            <script src="/Assets/reCAPTCHA/reCAPTCHA.js?<?= RAND ?>"></script>
+        <?php endif; ?>
+    </body>
+    
+</html>

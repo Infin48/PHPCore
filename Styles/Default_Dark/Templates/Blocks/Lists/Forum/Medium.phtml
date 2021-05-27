@@ -1,0 +1,19 @@
+<?php if (!$row['data']['forum_link']) : ?>
+    <?php if (!empty($row['data']['topic_id'])) : ?>
+        <div class="inner">
+            <?= $this->build->user->image($row['data']) ?>
+        </div>
+        <div class="inner">
+            <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
+            <a class="fw-700" href="<?= $this->build->url->topic($row['data']) ?>"><?= truncate($row['data']['topic_name'], 20) ?></a>
+            <br>
+            <span class="grey"><?= $L_BY ?> </span>
+            <?= $this->build->user->link($row['data']) ?>
+            <br>
+            <?= $this->build->date->long($row['data']['created'], true) ?>
+            </span>
+        </div>
+    <?php else : ?>
+        <span class="fw-600"><?= $L_POST_NO ?></span>
+    <?php endif; ?>
+<?php endif; ?>

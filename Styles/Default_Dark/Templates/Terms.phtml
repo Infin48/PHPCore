@@ -1,0 +1,10 @@
+<div class="page-column page-column-big">
+    <div class="page-column-icon"><i class="fas fa-list"></i></div>
+    <div class="page-column-title"><?= $L_REGISTER_TERMS_TITLE ?></div>
+    <div class="page-column-description">
+        <span><?= $this->system->settings->get('registration.terms') ?></span>
+    </div>
+    <a href="<?= $this->system->url->build('register') ?>"><?= $L_REGISTER_NOT ?></a>
+    <hr>
+    <a href="<?= $this->system->url->build('login') ?>"><?= $L_REGISTER_ALREADY ?></a>
+</div>

@@ -1,0 +1,57 @@
+<?php foreach ($this->data->block['body'] ?? [] as $objectName => $object) : ?>
+    <?php foreach ((array)$object['body'] as $row) : ?>
+        <?php if (isset($row['options']['template']['body'])) : ?>
+            <?php require $row['options']['template']['body']; ?>
+        <?php else : ?>
+            <div id="<?= $row['data']['id'] ?>" class="block<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?>" ajax-selector="block" data-id="<?= $row['data']['id'] ?>" data-type="<?= $row['options']['type'] ?? '' ?>" >
+                <div class="block-head">
+                    <?= $this->build->user->image($row['data'], true) ?>
+                    <div class="inner">
+                        <div class="block-title">
+                            <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
+                            <span ajax-selector="name"><?= $row['data']['name'] ?></span>
+                        </div>
+                        <?= $this->build->user->link($row['data'], true) ?>
+                        <span class="block-description">
+                            <span ajax="title" data-title="<?= $L_CREATED ?>">
+                                <i class="fas fa-clock"></i> 
+                                <?= $this->build->date->long($row['data']['created']) ?>
+                            </span>
+                            <?php if ($row['data']['is_edited'] == 1) : ?>
+                                <span ajax="title" data-title="<?= $L_LAST_EDITED ?>">
+                                    <i class="fas fa-edit"></i> 
+                                    <?= $this->build->date->long($row['data']['edited_time']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </div>
+                </div>
+                <?php if (!empty($row['data']['image'])) : ?>
+                    <div class="block-image" style="background-image: url(/Uploads/Topics/<?= $row['data']['id'] ?>.<?= $row['data']['image'] ?>);"></div>
+                <?php endif; ?>
+
+                <?php require $this->template->template('/Blocks/Block/Notices/Load.phtml'); ?>
+
+                <div class="block-body" ajax-selector="block-body">
+                    <div class="block-content" ajax-selector="block-content"><?= $row['data']['text'] ?></div>
+                    <?php if (!empty($row['data']['user_signature'])) : ?>
+                        <div class="block-signature">
+                            <?= $row['data']['user_signature'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($row['data']['likes'])) : ?>
+                        <?php require $this->template->template('/Blocks/Block/Likes.phtml'); ?>
+                    <?php endif; ?>
+                    <div ajax-place="likes"></div>
+                    <?php if (!empty($row['data']['button'])) : ?>
+                        <div class="block-bottom" ajax-selector="block-bottom">
+                            <?php foreach ((array)$row['data']['button'] as $button) : ?>
+                                <?php require $button; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php endforeach; ?>

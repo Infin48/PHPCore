@@ -1,0 +1,22 @@
+<?= $this->build->user->image($row['data']) ?>
+<div class="inner">
+    <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
+    <a class="fw-700" href="<?= $this->build->url->topic($row['data'])  ?>"><?= $row['data']['topic_name'] ?></a>
+    <br>
+    <span class="user">
+        <?= $this->build->user->link($row['data']) ?> · <?= $this->build->date->long($row['data']['topic_created']) ?>
+    </span>
+</div>
+<?php if ((bool)$row['data']['is_sticky'] === true or (bool)$row['data']['is_locked'] === true or $row['data']['topic_image']) : ?>
+    <div class="icons">
+        <?php if ((bool)$row['data']['is_sticky'] === true) : ?>
+            <span class="icon-alt" ajax="title" data-title="<?= $L_TOPIC_STICKY ?>"><i class="fas fa-thumbtack"></i></span>
+        <?php endif; ?>
+        <?php if ((bool)$row['data']['is_locked'] === true) : ?>
+            <span class="icon-alt" ajax="title" data-title="<?= $L_TOPIC_LOCKED ?>"><i class="fas fa-lock"></i></span>
+        <?php endif; ?>
+        <?php if ($row['data']['topic_image']) : ?>
+            <span class="icon-alt" ajax="title" data-title="<?= $L_TOPIC_IMAGE ?>"><i class="fas fa-image"></i></span>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

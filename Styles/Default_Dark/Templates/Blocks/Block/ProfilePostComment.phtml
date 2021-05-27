@@ -1,0 +1,27 @@
+<div id="c<?= $row['data']['profile_post_comment_id'] ?>" class="block block-two-column block-mini<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block" data-id="<?= $row['data']['id'] ?>" data-id="<?= $row['data']['id'] ?>" data-type="<?= $row['options']['type'] ?>">
+    <?= $this->build->user->image($row['data']) ?>
+    <div class="block-* wh-full">
+        <?php require $this->template->template('/Blocks/Block/Notices/Load.phtml'); ?>
+        <div class="block-body" ajax-selector="block-body">
+            <div class="block-head">
+                <?= $this->build->user->link($row['data'], true) ?>
+                <span class="block-description">
+                    <span ajax="title" data-title="<?= $L_CREATED ?>">
+                        <i class="fas fa-clock"></i>
+                        <?= $this->build->date->long($row['data']['created']) ?>
+                    </span>
+                </span>
+            </div>
+            <div class="block-content" ajax-selector="block-content">
+                <?= $row['data']['text'] ?>
+            </div>
+            <?php if (!empty($row['data']['button'])) : ?>
+                <div class="block-bottom" ajax-selector="block-bottom">
+                    <?php foreach ($row['data']['button'] as $btn) : ?>
+                        <?php require $btn; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

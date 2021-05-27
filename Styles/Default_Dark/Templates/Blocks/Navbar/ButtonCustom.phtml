@@ -1,0 +1,11 @@
+<a <?php if (!isset($row['data']['is_dropdown']) or $row['data']['is_dropdown'] == 0) : ?>href="<?= $row['data']['is_external_link'] == 1 ? $row['data']['link'] : $this->system->url->build('/custom/' . $row['data']['page_id'] . '.' . $row['data']['page_url']) ?>"<?php endif; ?>>
+    <?php if ($row['data']['button_icon'] ?? false and $row['data']['button_icon_style'] ?? false) : ?>
+        <i class="<?= $row['data']['button_icon_style'] ?> fa-<?= $row['data']['button_icon'] ?>"></i>
+    <?php endif; ?>
+    <span>
+        <?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'], 1) : ${$row['data']['title']} ?>
+        <?php if (isset($row['data']['is_dropdown']) and $row['data']['is_dropdown'] == 1) : ?>
+            <i class="fa fa-caret-down"></i>
+        <?php endif; ?>
+    </span>
+</a>

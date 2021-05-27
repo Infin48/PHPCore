@@ -1,0 +1,74 @@
+<?php if ($this->user->perm->has('admin.?')) : ?>
+<div class="navbar navbar-admin" ajax-selector="navbar navbar-admin">
+    <div class="navbar-container container" ajax-selector="navbar-body">
+        <div class="navbar-content navbar-content-name-logged" ajax-selector="navbar-content">
+            <div class="navbar-button dropdown dropdown-name-forum" ajax-selector="dropdown">
+                <a href="<?= $this->system->url->build('/admin/') ?>">
+                    <span><?= $L_NAVBAR['L_ADMIN'] ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<div class="navbar navbar-default" ajax-selector="navbar navbar-default">
+    <div class="navbar-container container" ajax-selector="navbar-body">
+        <?php foreach ($this->data->navbar['body'] as $objName => $object) : ?>    
+            <div class="navbar-content navbar-content-name-<?= $objName ?>" ajax-selector="navbar-content">
+                <?php foreach ($object['body'] as $rowName => $row) : ?>
+                    <div class="navbar-button dropdown<?= (isset($row['options']['type']) and $row['options']['type'] === 'menu') ? ' dropdown-type-menu' : '' ?> dropdown-name-<?= $rowName ?>" ajax-selector="dropdown">
+                        <?php if (isset($row['options']['template']['body'])) : ?>
+                            <?php require $row['options']['template']['body'] ?>
+                        <?php else : ?>
+                            <a <?php if (isset($row['data']['href'])) : ?>href="<?= $this->system->url->build($row['data']['href']) ?>"<?php endif; ?><?php if (isset($row['data']['notifiCount'])) : ?> data-count="<?= $row['data']['notifiCount'] ?>"<?php endif; ?>>
+                                <?php if (isset($row['data']['icon'])) : ?><i class="<?= $row['data']['icon'] ?>"></i><?php endif; ?>
+                                <?php if (isset($row['data']['title'])) : ?>
+                                    <span><?= $L_NAVBAR[$row['data']['title']] ?></span>
+                                <?php endif; ?>
+                                <?php if ($row['options']['type'] == 'menu' or $row['options']['type'] === 'dropdown') : ?><i class="fa fa-caret-down"></i><?php endif; ?>
+                            </a>
+                        <?php endif; ?>
+                        <?php if ((isset($row['body']) and !empty($row['body'])) or (isset($row['options']['type']) and $row['options']['type'] === 'menu')) : ?>
+                            <div class="dropdown-menu" ajax-selector="dropdown-menu">
+                                <div class="dropdown-content">
+                                    <?php if (isset($row['data']['menu']['title'])) : ?>
+                                        <div class="dropdown-head"><?= $L_NAVBAR[$row['data']['menu']['title']] ?></div>
+                                    <?php endif; ?>
+                                    <div class="dropdown-body" ajax-selector="dropdown-body">
+                                        <?php if ($row['body']) : ?>
+                                            <?php $cache = $row; foreach ($cache['body'] as $row) : ?>
+                                                <div class="dropdown-row" ajax-selector="dropdown-row">
+                                                    <?php if (isset($row['options']['template']['body']) and !empty($row['options']['template']['body'])) : ?>
+                                                        <?php require $row['options']['template']['body'] ?>
+                                                    <?php else : ?>
+                                                        <a href="<?= $this->system->url->build($row['data']['href']) ?>">
+                                                            <span><?= $L_NAVBAR[$row['data']['title']] ?></span>
+                                                        </a>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; $row = $cache; ?>
+                                        <?php else : ?>
+                                            <?php if ($row['options']['empty']) : ?>
+                                                <div class="dropdown-row" ajax-selector="dropdown-row">
+                                                    <?= $L_NAVBAR[$row['options']['empty']] ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <?php if (isset($row['options']['template']['bottom'])) : ?>
+                                        <?php if ($row['body']) : ?>
+                                            <div class="dropdown-bottom">
+                                                <?php require $row['options']['template']['bottom'] ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<?php foreach ($this->data->field['body'] as $objectName => $object) :?>
+    <div class="page-column page-column-name-<?= $objectName ?>">
+        <div class="page-column-icon"><i class="<?= $object['data']['icon']?>"></i></div>
+        <div class="page-column-title"><?= ${$object['data']['title']} ?></div>
+        <?php if (isset($object['data']['desc'])) : ?>
+            <div class="page-column-description"><?= ${$object['data']['desc']} ?></div>
+        <?php endif; ?>
+        
+        <?php if (!empty($this->data->data['message']['text'])) : ?>
+            <div class="field-alert field-alert-type-<?= $this->data->data['message']['type'] ?>">
+                <?= $this->data->data['message']['text'] ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="post">
+            <div class="page-column-body">
+                <?php foreach ($object['body'] as $rowName => $row) :?>
+                    <div class="page-column-input">
+                        <?php if (isset($row['options']['template']['option'])) : ?>
+                            <?php require $row['options']['template']['option']; ?>
+                        <?php endif; ?>
+                        <?php if (isset($row['data']['icon'])) : ?>
+                            <i class="<?= $row['data']['icon'] ?>"></i>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+
+                <div class="field-submit">
+                    <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                    <?php foreach ($this->data->field['button'] as $btnName => $btn) : ?>
+                        <input class="button" type="<?= $btn['data']['type'] ?>" name="<?= $btnName ?>" value="<?= isset($btn['data']['value']) ? ${$btn['data']['value']} : '' ?>">
+                    <?php endforeach; ?>
+                </div>
+                
+                <?php if (isset($object['options']['template']['link'])) : ?>
+                    <?php require $object['options']['template']['link']; ?>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+<?php endforeach; ?>

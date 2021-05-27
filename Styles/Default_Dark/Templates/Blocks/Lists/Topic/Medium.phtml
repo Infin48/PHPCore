@@ -1,0 +1,10 @@
+<?php if (!empty($row['data']['post_id'])) : ?>
+    <div class="inner">
+        <?= $this->build->user->link($row['data'], 'last_') ?>
+        <br>
+        <?= $this->build->date->long($row['data']['last_post_created'], true) ?>
+    </div>
+    <?= $this->build->user->image($row['data'], false, 'last_') ?>
+<?php else : ?>
+    <span class="fw-600"><?= $L_POST_NO ?></span>
+<?php endif; ?>

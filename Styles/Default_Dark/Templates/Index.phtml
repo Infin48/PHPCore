@@ -1,0 +1,31 @@
+<?php foreach ($this->data->block['body'] as $objectName => $object) : ?>
+    <?php foreach ((array)$object['body'] as $row) : ?>
+        <div class="block block-two-column block-image<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block">
+            <?php if (!empty($row['data']['image'])) : ?>
+                <div class="block-image" style="background-image: url(/Uploads/Topics/<?= $row['data']['id'] ?>.<?= $row['data']['image'] ?>);"></div>
+            <?php endif; ?>
+            <div class="block-body">
+                <div class="block-title">
+                    <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
+                    <a href="<?= $this->build->url->topic($row['data']) ?>"><?= $row['data']['name'] ?></a>
+                </div>
+                <div class="block-content" ajax-selector="content"><?= $row['data']['text'] ?></div>
+                <div class="block-bottom block-bottom-two-column ta-right">
+                    <div class="block-bottom-column">
+                        <span ajax="title" data-title="<?= $L_POSTS  ?>"><i class="fas fa-comment"></i> <?= $row['data']['topic_posts'] ?></span>
+                        <span ajax="title" data-title="<?= $L_VIEWS  ?>"><i class="fas fa-eye"></i> <?= $row['data']['topic_views'] ?></span>
+                    </div>
+                    <div class="block-bottom-column block-bottom-column-flex">
+                        <div>
+                            <?= $this->build->user->link($row['data'], true) ?>
+                            <br>
+                            <?= $this->build->date->long($row['data']['created'], true) ?>
+                        </div>
+                        <?= $this->build->user->image($row['data']) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endforeach; ?>
+<?php require $this->template->template('/Blocks/Pagination.phtml') ?>

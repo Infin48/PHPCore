@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html id="html" lang="cs-cz" class="html-hidden <?= $this->data->data['pageName'] ?>">
+
+    <?php require $this->template->template('/Blocks/Head.phtml'); ?>
+    <body id="body">
+
+        <div class="navbar navbar-mobile" ajax-selector="navbar navbar-mobile"></div>
+        <div class="page" ajax-selector="page">
+    
+            <?php require $this->template->template('/Blocks/Navbar/Navbar.phtml'); ?>
+            
+            <div class="page-header page-header-align-<?= $this->system->settings->get('site.background_image_position') ?> <?php if (isset($this->data->data['bigHeader']) and $this->data->data['bigHeader'] === true) : ?>page-header-type-big<?php endif; ?>" <?php if (!empty($this->system->settings->get('site.background_image'))) : ?> style="background-image: url('/Uploads/Site/Header.<?= $this->system->settings->get('site.background_image') ?>?<?= $this->system->settings->get('session') ?>');"<?php endif; ?>>
+                <div class="page-header-overlay"></div>
+                <div class="page-header-container container">
+                    <?php if (isset($this->data->data['bigHeader']) and $this->data->data['bigHeader'] === true) : ?>
+                        <span class="name"><?= $this->system->settings->get('site.name') ?></span>
+                        <br>
+                        <span class="sub-title"><?= $this->system->settings->get('site.description') ?></span>
+                    <?php else : ?>
+                        <span><?= $this->data->head['title'] ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+            <?php if ($this->data->breadcrumb) : ?>
+                <div class="page-breadcumb">
+                    <div class="page-breadcumb-container container">
+                        <?php foreach ($this->data->breadcrumb['body'] as $breadcrumb) : ?>
+                            <a href="<?= $this->system->url->build($breadcrumb['data']['href']) ?>"><?= str_starts_with($breadcrumb['data']['title'], '$') ? substr($breadcrumb['data']['title'], 1) : ${$breadcrumb['data']['title']} ?></a> > 
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="page-body">
+                <div class="page-container container">
+                    
+                    <?php if (isset($this->data->data['message']['text'])) : ?>
+                        <div class="page-alert page-alert-type-<?= $this->data->data['message']['type'] ?>" ajax-selector="alert">
+                            <div class="page-alert-body page-alert-body-flex">
+                                <div class="page-alert-content">
+                                    <span><?= $this->data->data['message']['text'] ?></span>
+                                </div>
+                                <span class="page-alert-close" ajax="close">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($this->data->data['globalNotification'])) : ?>
+                        <?php foreach ($this->data->data['globalNotification'] as $globalNotification) : ?>
+                            <div class="page-alert page-alert-type-<?= NOTIFICATION[$globalNotification['notification_type']] ?>">
+                                <div class="page-alert-body page-alert-body-flex">
+                                    <div class="page-alert-content">
+                                        <span><?= $globalNotification['notification_name'] ?></span>
+                                        <br>
+                                        <span class="page-alert-description"><?= $globalNotification['notification_text'] ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+
+                    <div class="page-content">
+                        <?php if (isset($this->data->data['body'])) : ?>
+                            <div class="page-content-middle">
+                                <?= $this->data->data['body'] ?>
+                            </div>
+                        <?php else : ?>
+                            <?php if (isset($this->data->sidebar['side']) and $this->data->sidebar['side'] == 'left') : ?>
+                                <div class="page-content-side page-content-side-align-left page-content-side-type-<?= $this->data->sidebar['type'] ?>">
+                                    <?php require $this->template->template('/Blocks/Sidebar/Sidebar.phtml'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="page-content-middle">
+                                <?php $this->show(); ?>
+                            </div>
+                            <?php if (isset($this->data->sidebar['side']) and $this->data->sidebar['side'] == 'right') : ?>
+                                <div class="page-content-side page-content-side-align-right page-content-side-type-<?= $this->data->sidebar['type'] ?>">
+                                    <?php require $this->template->template('/Blocks/Sidebar/Sidebar.phtml'); ?>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footer-container container">
+                    <span>© Copyright 2021 <?= $_SERVER['SERVER_NAME'] ?> All Rights Reserved.</span><br><span>Powered by PHPCore</span>
+                </div>
+            </div>
+        </div>
+        <div class="title" ajax-selector="title"><span class="text" ajax-selector="text"></span><div class="arrow"></div></div>
+        <div class="window" ajax-selector="window">
+            <div class="window-content">
+                <div class="window-head" ajax-selector="window-head">
+                    <span ajax-selector="window-title"></span>
+                </div>
+                <div class="window-body" ajax-selector="window-body"></div>
+                <div class="window-bottom" ajax-selector="window-bottom">
+                    <a class="button button-confirm" ajax="confirm" ajax-selector="window-submit"></a>
+                    <a class="button" ajax="window-close" ajax-selector="window-cancel"></a>
+                </div>
+            </div>
+        </div>
+        <div class="window-opacity"></div>
+        <div class="window window-alert" ajax-selector="window-alert">
+            <div class="window-content">
+                <div class="window-body" ajax-selector="window-alert-body"></div>
+            </div>
+        </div>
+        <div class="loading" ajax-selector="loading" style="display: none;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <?php require $this->template->template('/Blocks/Cookie.phtml'); ?>
+        <?php require ROOT . '/Includes/Template/Footer.phtml' ?>
+    </body>
+</html>

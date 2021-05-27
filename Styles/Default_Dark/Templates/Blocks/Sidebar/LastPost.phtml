@@ -1,0 +1,12 @@
+<?= $this->build->user->image($row['data']) ?>
+<div class="inner">
+    <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
+    <a class="fw-700" href="<?= $this->build->url->topic($row['data']) ?>"><?= truncate($row['data']['topic_name'], 30) ?></a>
+    <br>
+    <span class="grey">
+        <span class="grey"><?= $L_BY ?> </span>
+        <?= $this->build->user->link($row['data']) ?>
+        <br>
+        <?= $this->build->date->long($row['data']['created'], true) ?>
+    </span>
+</div>
