@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html id="html" lang="cs-cz" class="html-full html-hidden">
+
+    <head>
+        <?php require $this->template->template('/Blocks/Head.phtml'); ?>
+    </head>
+
+    <body>
+
+        <div class="page">
+            <div class="page-column page-column-big">
+                <div class="page-column-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <div class="page-column-title"><?= $L_ERROR ?></div>
+                <div class="page-column-description"><?= $L_ERROR_DESC ?><br><br>
+                    <a href="/"><i class="fas fa-chevron-left"></i> <?= $L_BACK ?></a>
+                </div>
+            </div>
+        </div>
+        <?php require $this->template->template('/Blocks/Cookie.phtml'); ?>
+        <?php require ROOT . '/Includes/Template/Footer.phtml' ?>
+    </body>
+    
+</html>

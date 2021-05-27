@@ -1,0 +1,60 @@
+<?php foreach ($this->data->list['body'] ?? [] as $listName => $list) : ?>
+    <div class="list list-name-<?= $listName ?>">
+        <?php if (isset($list['data'])) : ?>
+            <div class="list-head">
+                <div class="list-row-big">
+                    <span>
+                        <?= str_starts_with($list['data']['title'], '$') ? substr($list['data']['title'], 1) : ${$list['data']['title']} ?>
+                    </span>
+                    <?php if (isset($list['data']['desc'])) : ?>
+                        <br>
+                        <span>
+                            <?= str_starts_with($list['data']['desc'], '$') ? substr($list['data']['desc'], 1) : ${$list['data']['desc']} ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <?php if ( isset($list['data']['small']['title'])) : ?>
+                    <div class="list-row-small">
+                        <?= ${$list['data']['small']['title']} ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ( isset($list['data']['medium']['title'])) : ?>
+                    <div class="list-row-medium">
+                        <?= ${$list['data']['medium']['title']} ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($list['body'])) : ?>
+            <div class="list-body">
+                <?php foreach ($list['body'] as $row) : ?>
+                    <div class="list-row<?php if ($row['options']['disabled'] ?? false) : ?> list-row-disabled<?php endif; ?><?php if ($row['options']['selected'] ?? false) : ?> list-row-selected<?php endif; ?>">
+                        <?php if (isset($row['options']['template']['big'])) : ?>
+                            <div class="list-row-big">
+                                <?php require $row['options']['template']['big']; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (isset($row['options']['template']['small'])) : ?>
+                            <div class="list-row-small">
+                                <?php require $row['options']['template']['small']; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (isset($row['options']['template']['medium'])) : ?>
+                            <div class="list-row-medium">
+                                <?php require $row['options']['template']['medium']; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else : ?>
+            <?php if (isset($list['options']['empty'])) : ?>
+                <div class="list-body">
+                    <div class="list-row fw-600">
+                        <?= ${$list['options']['empty']} ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+<?php endforeach; ?>

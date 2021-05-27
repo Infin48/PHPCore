@@ -1,0 +1,64 @@
+<?php if ($this->data->panel['body'] ?? [] or $this->data->pagination['enabled'] === true) : ?>
+    <div class="panel panel-top">
+        <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
+        <?php if ($this->data->panel['body'] ?? []) : ?>
+            <div class="panel-right" ajax-selector="panel">
+                <?php foreach ((array)$this->data->panel['body'] as $objName => $object) : ?>
+                    <?php if ($object['options']['type'] === 'form' or $object['options']['type'] === 'dropdown') : ?>
+                        <div class="dropdown dropdown-type-<?= $object['options']['type'] ?? 'default' ?> dropdown-name-<?= $objName ?>" ajax-selector="dropdown">
+                            <?php if (isset($object['options']['template']['body'])) : ?>
+                                <?php require $object['options']['template']['body']; ?>
+                            <?php else : ?>
+                                <a>
+                                    <div class="text">
+                                        <i class="<?= $object['data']['icon'] ?>"></i>
+                                        <?php if (isset($object['data']['title'])) : ?>
+                                            <span><?= ${$object['data']['title']} ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="arrow">
+                                        <i class="fas fa-caret-down"></i>
+                                    </div>
+                                </a>
+                            <?php endif; ?>
+                            <div class="dropdown-menu" ajax-selector="dropdown-menu">
+                                <div class="dropdown-content">
+                                    <?php if ($object['options']['type'] === 'form') : ?>
+                                        <form method="post">
+                                        <div class="dropdown-head"><?= ${$object['data']['form']['title']} ?></div>
+                                    <?php endif; ?>
+                                    <div class="dropdown-body">
+                                        <?php foreach ((array)$object['body'] as $row) : ?>
+                                            <div class="dropdown-row">
+                                                <?php if (isset($row['options']['template']['body'])) : ?>
+                                                    <?php require $row['options']['template']['body']; ?>
+                                                <?php else : ?>
+                                                    <a href="<?= $row['data']['href'] ?>">
+                                                        <?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'], 1) : ${$row['data']['title']} ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php if ($object['options']['type'] === 'form') : ?>
+                                        <div class="dropdown-bottom">
+                                            <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                                            <input type="submit" name="<?= $object['data']['form']['button']['name'] ?>" class="button" value="<?= ${$object['data']['form']['button']['value']} ?>">
+                                        </div>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <?php if (isset($object['options']['template']['body'])) : ?>
+                            <?php require $object['options']['template']['body']; ?>
+                        <?php else : ?>
+                            <a class="button" href="<?= $this->system->url->build($object['data']['href']) ?>"><i class="<?= $object['data']['icon'] ?>"></i><span><?= ${$object['data']['title']} ?></span></a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,25 @@
+<?php if (isset($this->data->pagination['enabled']) and $this->data->pagination['enabled'] == true) : ?>
+    <div class="pagination">
+        <?php if ($this->data->pagination['previous'] === true) : ?>
+        <div class="pagination-page pagination-arrow">
+            <a class="vertical-align" href="<?= $this->system->url->build($this->data->pagination['url'] . '/page-' . PAGE - 1) ?>">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </div>
+        <?php endif; ?>
+
+        <?php foreach ($this->data->pagination['data'] as $page) : ?>
+        <div class="pagination-page<?php if (PAGE == $page['page']) : ?> pagination-page-active<?php endif; ?>">
+            <a href="<?= $this->system->url->build($page['url']) ?>"><?= $page['page'] ?></a>
+        </div>
+        <?php endforeach; ?>
+
+        <?php if ($this->data->pagination['next'] === true) : ?>
+        <div class="pagination-page pagination-arrow">
+            <a class="vertical-align" href="<?= $this->system->url->build($this->data->pagination['url'] . '/page-' . PAGE + 1) ?>">
+                <i class="fas fa-angle-right"></i>
+            </a>
+        </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

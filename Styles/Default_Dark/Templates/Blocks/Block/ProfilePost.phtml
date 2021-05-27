@@ -1,0 +1,43 @@
+<?php foreach ($this->data->block['body'] as $objectName => $object) : ?>
+    <?php foreach ((array)$object['body'] as $row) : ?>
+        <div id="<?= $row['data']['id'] ?>" class="block block-small<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block" data-id="<?= $row['data']['id'] ?>" data-type="<?= $row['options']['type'] ?? '' ?>">
+            <div class="block-head">
+                <?= $this->build->user->image($row['data']) ?>
+                <div class="inner">
+                    <?php if (!empty($row['data']['name'])) : ?>
+                        <div class="block-title"><span ajax-selector="name"><?= $row['data']['name'] ?></span></div>
+                    <?php endif; ?>
+                    <?= $this->build->user->link($row['data'], true) ?>
+                    <span class="block-description">
+                        <span ajax="title" data-title="<?= $L_CREATED?>">
+                            <i class="fas fa-clock"></i>
+                            <?= $this->build->date->long($row['data']['created']) ?>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <?php require $this->template->template('/Blocks/Block/Notices/Load.phtml'); ?>
+            <div class="block-body" ajax-selector="block-body">
+                <div class="block-content" ajax-selector="block-content"><?= $row['data']['text'] ?></div>
+                <?php if (!empty($row['data']['button'])) : ?>
+                    <div class="block-bottom" ajax-selector="block-bottom">
+                        <?php foreach ((array)$row['data']['button'] as $btn) : ?>
+                            <?php require $btn; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($row['body'])) : ?>
+                    <div class="body-sub" ajax-selector="block-body-sub">
+                        <?php $cache = $row; foreach ($cache['body'] as $row) : ?>
+                            <?php if (isset($row['options']['template']['body'])) : ?>
+                                <?php require $row['options']['template']['body']; ?>
+                            <?php else : ?>
+                                <?php require $this->template->template('/Blocks/Block/ProfilePostComment.phtml'); ?>
+                            <?php endif; ?>
+                        <?php endforeach; $row = $cache;?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endforeach; ?>

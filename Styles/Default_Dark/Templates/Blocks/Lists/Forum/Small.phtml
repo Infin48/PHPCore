@@ -1,0 +1,9 @@
+<?php if (!$row['data']['forum_link']) : ?>
+    <div class="inner">
+        <strong><?= $L_TOPICS ?>:</strong>
+        <span><?= $row['data']['forum_topics'] ?></span>
+        <br>
+        <strong><?= $L_POSTS ?>:</strong>
+        <span><?= $row['data']['forum_posts'] ?></span>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,10 @@
+<?php if (!empty($row['data']['conversation_message_id'])) : ?>
+    <?= $this->build->user->image($row['data'], false, 'message_') ?>
+    <div class="inner">
+        <?= $this->build->user->link($row['data'], false, 'message_') ?>
+        <br>
+        <?= $this->build->date->long($row['data']['conversation_message_created'], true) ?>
+    </div>
+<?php else : ?>
+    <span class="fw-600"><?= $L_USER_CONVERSATION_MESSAGE_NO ?></span>
+<?php endif; ?>
