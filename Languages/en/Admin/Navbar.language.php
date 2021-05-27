@@ -19,7 +19,7 @@ $language['L_NAVBAR'] = [
     'L_SECTION_FORUM' => 'Forum',
     'L_SECTION_OTHER' => 'Other',
 
-    'L_INDEX' => 'Title page',
+    'L_INDEX' => 'Dashboard',
 
     'L_SETTINGS' => 'Settings',
     'L_SETTINGS_SITE' => 'Global settings',
