@@ -69,6 +69,8 @@ $language['L_NOTICE'] = [
         'settings_url_start_with_slash' => 'URL adresa i její překlad musejí začínat a končit lomítkem.',
 
         'image_max_size' => 'Zadejte maximální velikost nahrávání obrázků.',
+        'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
+        'image_svg_size' => 'Nahraný vektorový obrázek musí mít velikost {width}x{height}.',
 
         'button_link' => 'Zadejte platný odkaz.',
         'button_sub_link' => 'Zadejte platný odkaz.',

@@ -48,11 +48,24 @@ class Image extends \Model\File\Form
      */
     function resize( int $width, int $height )
     {
-        if ($this->uploadedFile['type'] === 'image/gif') {
-            $info = getimagesize($this->uploadedFile['tmp_name']);
+        if ($this->uploadedFile['type'] === 'image/gif' or $this->uploadedFile['type'] === 'image/svg+xml') {
+
+            $type = 'image_gif_size';
+            if ($this->uploadedFile['type'] === 'image/svg+xml') {
+                $type = 'image_svg_size';
+
+                $xml = simplexml_load_file($this->uploadedFile['tmp_name']);
+                $attr = $xml->attributes();
+                $info = [
+                    0 => $attr->width,
+                    1 => $attr->height
+                ];
+            } else {
+                $info = getimagesize($this->uploadedFile['tmp_name']);
+            }
 
             if ($info[0] != $width or $info[1] != $height) {
-                throw new \Exception\Notice('image_gif_size', [
+                throw new \Exception\Notice($type, [
                     'width' => $width,
                     'height' => $height
                 ]);

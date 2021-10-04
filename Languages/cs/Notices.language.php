@@ -75,6 +75,7 @@ $language['L_NOTICE'] = [
         'file_size' => 'Nahraný soubor je příliš velký.',
         'file_format' => 'Formát nahraného souboru není podporován.',
         'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
+        'image_svg_size' => 'Nahraný vektorový obrázek musí mít velikost {width}x{height}.',
 
         'recaptcha' => 'Autorizace byla neúspěšná.',
 
