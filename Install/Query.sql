@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_buttons` (
 
 INSERT INTO `phpcore_buttons` (`button_name`, `button_link`, `button_icon`, `button_icon_style`, `position_index`) VALUES 
     ('Domů', '/', 'home', 'fas', 1),
-    ('Fórum', '/forum/', 'comments', 'fas', 1);
+    ('Fórum', '/forum/', 'comments', 'fas', 2);
 
 -- --------------------------------------------------------
 
