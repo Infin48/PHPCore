@@ -1,0 +1,41 @@
+
+<div class="page-column page-column-big">
+    <div class="page-column-icon"><i class="fas fa-pen"></i></div>
+    <div class="page-column-title"><?= $L_PERMISSION_WRITE ?></div>
+    <form method="post">
+        <div class="page-column-body">
+            <div class="page-column-input">
+                <?php if (is_writable(ROOT . '/Includes/.htdata.json')) : ?>
+                    <i class="fas fa-check"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/.htdata.json" value="/Includes/.htdata.json">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_writable(ROOT . '/Install/Includes/Settings.json')) : ?>
+                    <i class="fas fa-check"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Install/Includes/Settings.json" value="/Install/Includes/Settings.json">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_writable(ROOT . '/Includes/Template/css/Group.min.css')) : ?>
+                    <i class="fas fa-check"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/Template/css/Group.min.css" value="/Includes/Template/css/Group.min.css">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_writable(ROOT . '/Includes/Template/css/Label.min.css')) : ?>
+                    <i class="fas fa-check"></i>
+                <?php else : ?>
+                    <i class="fas fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/Template/css/Label.min.css" value="/Includes/Template/css/Label.min.css">
+            </div>
+        </div>
+    </form>
+</div>

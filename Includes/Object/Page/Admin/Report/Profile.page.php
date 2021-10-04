@@ -16,8 +16,8 @@ use Block\Report;
 
 use Model\Pagination;
 
-use Visualization\Lists\Lists;
-use Visualization\Block\Block;
+use Visualization\Admin\Lists\Lists;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -29,7 +29,7 @@ class Profile extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.forum'
     ];
     
@@ -47,7 +47,7 @@ class Profile extends \Page\Page
         $report = new Report();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Report/Index');
+        $breadcrumb = new Breadcrumb('/Admin/Report/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // REPORT STATS
@@ -57,16 +57,25 @@ class Profile extends \Page\Page
         $pagination = new Pagination();
         $pagination->max(MAX_REPORTED_PROFILE_POSTS);
         $pagination->total($stats['profile_post']);
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $report->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Admin/Report/ProfilePost');
-        $list->object('profilepost')->fill($report->getAllProfilePost());
+        $list = new Lists('/Report/ProfilePost');
+        $list->object('profilepost')->fill(data: $report->getAllProfilePost(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
+
+            if ($list->obj->get->data('report_status') == 0) {
+                
+                $list->addLabel(
+                    color: 'red',
+                    icon: 'fas fa-exclamation'
+                );
+            }
+        });
         $this->data->list = $list->getData();
 
         // BLOCK
-        $block = new Block('Admin/Report/ProfilePost');
+        $block = new Block('/Report/ProfilePost');
         $block->object('profile_post')->value($stats['profile_post']);
         $this->data->block = $block->getData();
     }

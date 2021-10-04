@@ -18,25 +18,15 @@ $language = array_merge($language, [
     'L_TEXT' => 'Text',
     'L_EMAIL' => 'E-mail',
     'L_USERNAME' => 'Uživatelské jméno',
-    'L_USERNAME_DESC' => 'Uživatelské jméno musí obsahovat minimálně 5 znaků',
+    'L_USERNAME_DESC' => 'Uživatelské jméno musí obsahovat minimálně 5 znaků.',
     'L_DESCRIPTION' => 'Popis',
 
     'L_PASSWORD' => 'Heslo',
-    'L_PASSWORD_DESC' => 'Heslo musí obsahovat minimálně 6 znaků',
+    'L_PASSWORD_DESC' => 'Heslo musí obsahovat minimálně 6 znaků.',
     'L_PASSWORD_CONFIRM' => 'Potvrďte heslo',
     'L_PASSWORD_CURRENT' => 'Stávající heslo',
 
     'L_PASSWORD_NEW' => 'Nové heslo',
     'L_PASSWORD_NEW_CONFIRM' => 'Potvrďte nové heslo',
-    'L_PASSWORD_NEW_CONFIRM_DESC' => 'Pro změnu hesla potvrďte své nové heslo',
-
-    'L_SUBMIT' => 'Odeslat',
-    'L_ADD' => 'Přidat',
-
-    'L_DELETE' => 'Odstranit',
-    'L_DELETE2' => 'Smazat',
-    'L_EDIT' => 'Upravit',
-    'L_SAVE' => 'Uložit',
-
-    'L_CONFIRM' => 'Potvrdit'
+    'L_PASSWORD_NEW_CONFIRM_DESC' => 'Pro změnu hesla potvrďte své nové heslo.',    
 ]);

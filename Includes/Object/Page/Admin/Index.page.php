@@ -18,8 +18,8 @@ use Block\Chart;
 use Block\Other;
 use Block\Admin\Forum;
 
-use Visualization\Lists\Lists;
-use Visualization\Block\Block;
+use Visualization\Admin\Lists\Lists;
+use Visualization\Admin\Block\Block;
 use Visualization\Field\Field;
 use Visualization\Breadcrumb\Breadcrumb;
 
@@ -32,7 +32,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Index',
+        'template' => '/Index',
         'permission' => 'admin.?'
     ];
     
@@ -53,14 +53,14 @@ class Index extends \Page\Page
         $other = new Other();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // FORUM STATS
         $stats = $forum->getStats();
 
         // BLOCK
-        $block = new Block('Admin/Index');
+        $block = new Block('/Index');
         $block->object('user')->value($stats['user'])
             ->object('users')->value($user->getRecentCount())
             ->object('topic')->value($stats['topic'])
@@ -68,32 +68,26 @@ class Index extends \Page\Page
         $this->data->block = $block->getData();
 
         // LIST
-        $list = new Lists('Admin/Index');
-        $list->object('log')->fill($log->getLast());
+        $list = new Lists('/Index');
+        $list->object('log')->fill(data: $log->getLast());
+        $list->object('users')->fill(data: $user->getRecent(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
 
-        foreach ($user->getRecent() as $user) {
-
-            $list->object('users')->appTo($user)->jumpTo();
-
-            if ($this->user->perm->has('admin.user') === false or $this->user->perm->compare(index: $user['group_index'], admin: $user['is_admin']) === false) {
+            if ($this->user->perm->has('admin.user') === false or $this->user->perm->compare(index: $list->obj->get->data('group_index'), admin: $list->obj->get->data('user_admin')) === false) {
 
                 $list->delButton('edit');
             }
-        }
-
-        $news = json_decode(file_get_contents('http://api.phpcore.cz/novinky/'), true);
-        $list->object('news')->fill($news);
-
+        });
+        $list->object('news')->fill(data: json_decode(@file_get_contents('http://api.phpcore.cz/novinky/') ?: '', true) ?: []);
         $this->data->list = $list->getData();
 
         // FIELD
-        $field = new Field('Admin/Index');
+        $field = new Field('/Admin/Index');
         $field->disButtons();
         $field->object('info')
-            ->row('version')->setValue($this->system->settings->get('site.version'))
+            ->row('version')->setValue($this->system->get('site.version'))
             ->row('php')->setValue(phpversion())
             ->row('database')->setValue($other->version())
-            ->row('started')->setValue($this->system->settings->get('site.started'));
+            ->row('started')->setValue($this->system->get('site.started'));
         $this->data->field = $field->getData();
 
         // CHART BLOCK

@@ -58,5 +58,8 @@ class Delete extends \Process\ProcessExtend
     
         // ADD RECORD TO LOG
         $this->log($this->data->get('notification_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

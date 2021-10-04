@@ -1,6 +1,0 @@
-<span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
-<?php if ($this->system->settings->get('default_group') == $row['data']['group_id']) : ?>
-    <span ajax="title" data-title="<?= $L_GROUP_DEFAULT_LABEL ?>">
-        <i class="fas fa-star"></i>
-    </span>
-<?php endif; ?>

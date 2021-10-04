@@ -12,7 +12,6 @@
 
 namespace Page\Admin\Menu\Show;
 
-use Block\Page as BlockPage;
 use Block\Button as BlockButton;
 
 use Visualization\Field\Field;
@@ -28,7 +27,7 @@ class Button extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/menu/',
         'permission' => 'admin.menu'
     ];
@@ -44,29 +43,30 @@ class Button extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Menu');
+        $breadcrumb = new Breadcrumb('/Admin/Menu');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
-        $page = new Blockpage();
         $button = new BlockButton();
 
-        // PAGES
-        $pages = $page->getAll();
-
         // BUTTON
-        $button = $button->get($this->getID()) or $this->error();
+        $button = $button->get($this->url->getID()) or $this->error();
+
+        // BUTTON LINK TYPE
+        $linkType = match ($button['button_link_type']) {
+            1 => 'local',
+            2 => 'external'
+        };
 
         // FIELD
-        $field = new Field('Admin/Menu/Button');
+        $field = new Field('/Admin/Menu/Button');
         $field->data($button);
-        $field->object('button')
-            ->title('L_MENU_BUTTON_EDIT')
-            ->row('page_id')->fill($pages);
+        $field->object('button')->title('L_MENU_BUTTON_EDIT')
+            ->row('button_link_type')->option($linkType)->check();
         $this->data->field = $field->getData();
 
         // EDIT BUTTON
-        $this->process->form(type: 'Admin/Menu/Button/Edit', data: [
+        $this->process->form(type: '/Admin/Menu/Button/Edit', data: [
             'button_id' => $button['button_id']
         ]);
 

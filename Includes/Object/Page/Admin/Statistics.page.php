@@ -15,9 +15,10 @@ namespace Page\Admin;
 use Block\User;
 use Block\Chart;
 use Block\Report;
+use Block\Statistics as StatisticsBlock;
 use Block\Admin\Forum;
 
-use Visualization\Block\Block;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -29,7 +30,7 @@ class Statistics extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Statistics',
+        'template' => '/Statistics',
         'permission' => 'admin.?'
     ];
     
@@ -45,11 +46,12 @@ class Statistics extends \Page\Page
 
         // BLOCK
         $user = new User();
-        $report = new Report();
+        $stats = new StatisticsBlock();
         $forum = new Forum();
+        $report = new Report();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FORUM STATS
@@ -58,17 +60,20 @@ class Statistics extends \Page\Page
         // REPORT STATS
         $statsReport = $report->getStats();
 
+        // STATISTICS DATA
+        $statistics = $stats->getAll();
+
         // BLOCK
-        $block = new Block('Admin/Statistics');
+        $block = new Block('/Statistics');
         $block->object('user')->value($statsForum['user'])
             ->object('users')->value($user->getRecentCount())
-            ->object('user_deleted')->value($this->system->stats->get('user_deleted'))
+            ->object('user_deleted')->value($statistics['user_deleted'])
             ->object('topic')->value($statsForum['topic'])
             ->object('topic_reported')->value($statsReport['topic'])
-            ->object('topic_deleted')->value($this->system->stats->get('topic_deleted'))
+            ->object('topic_deleted')->value($statistics['topic_deleted'])
             ->object('post')->value($statsForum['post'])
             ->object('post_reported')->value($statsReport['post'])
-            ->object('post_deleted')->value($this->system->stats->get('post_deleted'));
+            ->object('post_deleted')->value($statistics['post_deleted']);
         $this->data->block = $block->getData();
 
         // CHART BLOCK
@@ -80,6 +85,7 @@ class Statistics extends \Page\Page
         // GENERATE ARRAY OF LAST 30 DAYS
         $dayDate = $dayDateTranslated = [];
         for ($i = 30; $i >= 0; $i--) {
+
             array_push($dayDate, date('Y-m-d', strtotime('-' . $i . ' days')));
             array_push($dayDateTranslated, mb_convert_case(strftime('%B %e, %Y', strtotime('-' . $i . ' days')), MB_CASE_TITLE));
         }
@@ -87,6 +93,7 @@ class Statistics extends \Page\Page
         // GENERATE ARRAY OF LAST 12 MONTH
         $monthDate = $monthDateTranslated = [];
         for ($i = 12; $i >= 0; $i--) {
+
             array_push($monthDate, date('Y-m', strtotime('-' . $i . ' month')));
             array_push($monthDateTranslated, mb_convert_case(strftime('%B %Y', strtotime('-' . $i . ' month')), MB_CASE_TITLE));
         }

@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -21,6 +21,20 @@ class Data
      * @var array $data Page data
      */
     public array $data = [];
+
+    /**
+     * @var array $head Head of page
+     */
+    public array $head = [
+        'title' => '',
+        'description' => '',
+        'keyWords' => ''
+    ];
+
+    /**
+     * @var array $breadcrumb Breadcrumb
+     */
+    public array $breadcrumb = [];
 
     /**
      * Adds data to page

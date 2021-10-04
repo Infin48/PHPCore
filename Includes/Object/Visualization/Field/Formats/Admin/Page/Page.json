@@ -7,7 +7,8 @@
             "body": {
                 "page_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_PAGE_NAME",
@@ -19,9 +20,8 @@
                         "type": "textarea"
                     },
                     "data": {
-                        "desc": "L_PAGE_HTML_DESC",
                         "title": "L_PAGE_HTML",
-                        "placeholder": "L_PAGE_BODY_HTML_DESCRIPTION"
+                        "placeholder": "L_PAGE_HTML_DESC"
                     }
                 },
                 "page_css": {
@@ -29,9 +29,8 @@
                         "type": "textarea"
                     },
                     "data": {
-                        "desc": "L_PAGE_CSS_DESC",
                         "title": "L_PAGE_CSS",
-                        "placeholder": "L_PAGE_BODY_CSS_DESCRIPTION"
+                        "placeholder": "L_PAGE_CSS_DESC"
                     }
                 }
             }

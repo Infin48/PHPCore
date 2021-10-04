@@ -7,7 +7,8 @@
             "body": {
                 "site.name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_SETTINGS_NAME",
@@ -16,7 +17,8 @@
                 },
                 "site.description": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "desc": "L_SETTINGS_DESCRIPTION_DESC",
@@ -24,9 +26,21 @@
                         "placeholder": "L_DESCRIPTION"
                     }
                 },
+                "site.keywords": {
+                    "options": {
+                        "type": "text",
+                        "required": true
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_KEYWORDS_DESC",
+                        "title": "L_SETTINGS_KEYWORDS",
+                        "placeholder": "L_KEYWORDS"
+                    }
+                },
                 "image.max_size": {
                     "options": {
-                        "type": "number"
+                        "type": "number",
+                        "required": true
                     },
                     "data": {
                         "desc": "L_SETTINGS_IMAGE_SIZE_DESC",
@@ -59,7 +73,7 @@
                     "options": {
                         "type": "textarea",
                         "on": {
-                            "show": "cookie.enabled"
+                            "show": "cookie.enabled:1"
                         }
                     },
                     "data": {

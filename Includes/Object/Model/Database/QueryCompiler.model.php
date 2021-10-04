@@ -20,7 +20,7 @@ class QueryCompiler
     /**
      * @var array $tableKeys List of table keys
      */
-    private array $tableKeys = [
+    private static array $tableKeys = [
         TABLE_BUTTONS => 'button_id',
         TABLE_BUTTONS_SUB => 'button_sub_id',
         TABLE_CATEGORIES => 'category_id',
@@ -37,6 +37,7 @@ class QueryCompiler
         TABLE_CONVERSATIONS => 'conversation_id',
         TABLE_CONVERSATIONS_MESSAGES => 'conversation_message_id',
         TABLE_PAGES => 'page_id',
+        TABLE_PLUGINS => 'plugin_id',
         TABLE_POSTS => 'post_id',
         TABLE_POSTS_LIKES => 'post_id',
         TABLE_PROFILE_POSTS => 'profile_post_id',
@@ -120,12 +121,25 @@ class QueryCompiler
                 }
 
                 if ($id) {
-                    $this->where = 'WHERE ' . $this->tableKeys[$table] . ' = ' . $id; 
+                    $this->where = 'WHERE ' . self::$tableKeys[$table] . ' = ' . $id; 
                 }
             
             break;
 
         }
+    }
+
+    /**
+     * Adds key
+     *
+     * @param string $table Table name
+     * @param string $table primary key
+     * 
+     * @return string
+     */
+    public static function addKey( string $table, string $key )
+    {
+        self::$tableKeys[$table] = $key;
     }
     
     /**

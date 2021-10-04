@@ -49,61 +49,50 @@ $('body').on('click', '[ajax="hide"]', function() {
     $(this).hide();
 });
 
-$.cAjax('create', {
-    ajax: {
-        url: '/ajax/process/',
-        method: 'post',
-        context: {}
-    },
-    onload: function (settings) {
-        settings.ajax.context.text = parseNewLines($(this).closest('[ajax-selector="block block-form"]').find('.trumbowyg-editor').html());
-    },
-    success: function(settings) {
-
-        var $block = $(this).closest('[ajax-selector="block block-form"]');
-
-        if (settings.type == 'ProfilePost' || settings.type == 'ProfilePostComment') {
-            $block.removeClass('block-opened');
-
-            $block.find('.trumbowyg-box textarea').clone().insertBefore($block.find('.trumbowyg-box'));
-            $block.find('.trumbowyg-editor').empty();
-            $block.find('.trumbowyg-box').remove();
-            $block.find('textarea').first().val('');
-            $block.find('textarea').first().attr('class', '');
-        }
-        
-        if (settings.type == 'ProfilePost') {
-            $('[ajax-selector="block-list"]').prepend(settings.data.content);
-        } else {
-            $block.before(settings.data.content);
-        }
-        $('[ajax-selector="block block-empty"]').remove();
-        $block.find('.trumbowyg-editor').first().html('');
-    }
-});
-
-// SHOW REST OF PROFILE POST COMMENTS
-$.cAjax('next-comments', {
-    ajax: {
-        url: '/ajax/comments/',
-        method: 'get',
-        context: {}
-    },
-    success: function(settings) {
-        $(this).closest('[ajax-selector="block"]').after(settings.data.content);
-        $(this).closest('[ajax-selector="block"]').first().remove();
-    }
-});
-
-// SHOW ALL USERS WHO LIKES GIVEN POST OF TOPIC
-$.cAjax('all-likes', {
+$.cAjax('likes', {
     window: {
         url: '/ajax/likes/',
         context: {}
     }
 });
 
-// REPORT CONTENT
+
+$.cAjax('get', {
+    ajax: {
+        url: '/ajax/get/',
+        method: 'get',
+        context: {}
+    },
+    onload: {
+        '/User': function (settings) {
+            settings.ajax.context.user = $(this).closest('[ajax-selector="field-row"]').find('input[type="text"]').first().val();
+        }
+    },
+    success: {
+        '/ProfilePostComment/Previous': function(settings) {
+            $(this).closest('[ajax-selector="block"]').after(settings.data.content);
+            $(this).closest('[ajax-selector="block"]').first().remove();
+        },
+
+        '/User': function(settings) {
+
+            $row = $(this).closest('[ajax-selector="field-row"]');
+            $field = $(this).closest('[ajax-selector="field"]');
+            $select = $row.find('[ajax-selector="select"]');
+            $list = $field.find('[ajax-selector="recipient-list"]');
+
+            if ($select.find('[value="'+settings.data.user_id+'"]').length == 0 && $select.children().length < 9 ) {
+                $list.find('[ajax-selector="no-recipients"]').hide();
+                $list.prepend('<div class="recipient" ajax-selector="recipient" data-id="'+settings.data.user_id+'">'+settings.data.user+'<a ajax="remove-recipient"><i class="fas fa-times"></i></a></div>');
+                $select.prepend('<option selected value="'+settings.data.user_id+'">'+settings.data.user_id+'</option>');
+                $list.removeClass('d-none-i');
+            }
+
+            $row.find('input[type="text"]').val('');
+        }
+    }
+});
+
 $.cAjax('report', {
 
     ajax: {
@@ -119,67 +108,69 @@ $.cAjax('report', {
             settings.ajax.context.report_reason_text = $(this).find('textarea').val();
         }
     },
-    success: function(settings, $element) {
-
-        if (settings.data.notice && $element.attr('data-type') != 'Topic') {
-            $notice = $(settings.data.notice);
-            $notice.find('[ajax-selector="details"]').attr('href', settings.data.url);
-            $element.find('> [ajax-place="notice-reported"], > * > [ajax-place="notice-reported"]').first().replaceWith($notice);
-            $element.addClass('block-disabled');
+    success: {
+        default: function(settings, $element) {
+            if (settings.data.notice) {
+                $notice = $(settings.data.notice);
+                $notice.find('[ajax-selector="details"]').attr('href', settings.data.url);
+                $element.find('> [ajax-place="notice-reported"], > * > [ajax-place="notice-reported"]').first().replaceWith($notice);
+                $element.addClass('block-disabled');
+            }
         }
     }
 });
 
-// LIKE POST OR TOPIC
 $.cAjax('like', {
     ajax: {
         url: '/ajax/process/',
         method: 'get',
         context: {}
     },
-    success: function (settings, $element) {
+    success: {
+        default: function (settings, $element) {
 
-        $(this).after(settings.data.button);
+            $(this).after(settings.data.button);
 
-        var $inner = $element.find('[ajax-selector="likes"]');
-        if ($inner.length) {
-            $inner.find('[ajax-selector="list"]').prepend('<span>'+settings.data.you+'</span>');
-            $inner.find('[ajax-selector="count"]').html(parseInt($inner.find('[ajax-selector="count"]').text()) + 1);
-        } else {
-            var $likes = $(settings.data.block);
-            $likes.find('[ajax-selector="count"]').text('1');
-            $likes.find('[ajax-selector="list"]').html('<span>' + settings.data.you + '</span>');
-            $element.find('[ajax-place="likes"]').after($likes);
+            var $inner = $element.find('[ajax-selector="likes"]');
+            if ($inner.length) {
+                $inner.find('[ajax-selector="list"]').prepend('<span>'+settings.data.you+'</span>');
+                $inner.find('[ajax-selector="count"]').html(parseInt($inner.find('[ajax-selector="count"]').text()) + 1);
+            } else {
+                var $likes = $(settings.data.block);
+                $likes.find('[ajax-selector="count"]').text('1');
+                $likes.find('[ajax-selector="list"]').html('<span>' + settings.data.you + '</span>');
+                $element.find('[ajax-place="likes"]').after($likes);
+            }
+
+            $(this).remove();
         }
-
-        $(this).remove();
     }
 });
 
-// UNLIKE POST OR TOPIC
 $.cAjax('unlike', {
     ajax: {
         url: '/ajax/process/',
         method: 'get',
         context: {}
     },
-    success: function (settings, $element) {
+    success: {
+        default: function (settings, $element) {
 
-        $(this).after(settings.data.button);
+            $(this).after(settings.data.button);
 
-        var $inner = $element.find('[ajax-selector="likes"]');
-        if ($inner.find('[ajax-selector="list"]').children().length <= 1) {
-            $inner.remove(); 
-        } else {
-            $inner.find('[ajax-selector="list"]').children().first().remove();
-            $inner.find('[ajax-selector="count"]').html(parseInt($inner.find('[ajax-selector="count"]').text()) - 1);
+            var $inner = $element.find('[ajax-selector="likes"]');
+            if ($inner.find('[ajax-selector="list"]').children().length <= 1) {
+                $inner.remove(); 
+            } else {
+                $inner.find('[ajax-selector="list"]').children().first().remove();
+                $inner.find('[ajax-selector="count"]').html(parseInt($inner.find('[ajax-selector="count"]').text()) - 1);
+            }
+            
+            $(this).remove();
         }
-        
-        $(this).remove();
     }
 });
 
-// DELETE CONTENT
 $.cAjax('delete', {
     ajax: {
         url: '/ajax/process/',
@@ -190,71 +181,80 @@ $.cAjax('delete', {
         url: '/ajax/language/',
         context: {}
     },
+    success: {
+        default: function (settings, $element) {
 
-    success: function (settings, $element) {
+            $trumbowyg = $element.find('[ajax-selector="trumbowyg-box"]').first();
+            
+            if ($trumbowyg.length) {
 
-        if ($element.find('.trumbowyg-box').length) {
-            $trumbowyg = $element.find('.trumbowyg-box');
-            $trumbowyg.before('<div class="block-content" ajax-selector="block-content">'+parseNewLines($trumbowyg.find('.trumbowyg-editor').html())+'</div>');
-            $trumbowyg.remove();
-        }
+                $content = $trumbowyg.find('[ajax-selector="block-content"]').removeClass('trumbowyg-editor');
 
-        if (settings.data.notice) {
-            var $notice = $(settings.data.notice);
-            $notice.find('[ajax-selector="details"]').attr('href', settings.data.url);
-            $element.find('[ajax-place="notice-deleted"]').first().replaceWith($notice);
+                if (settings.process == '/ProfilePostComment/Delete') {
 
-            $element.addClass('block-closed');
-            $element.find('[ajax-selector="block-bottom"]').remove();
-            $element.find('[ajax-selector="block block-form"]').remove();
-            $element.find('[ajax="delete"]').first().remove();
-            $element.addClass('block-disabled');
-        } else {
-            $element.remove();
+                    $trumbowyg.replaceWith('<div class="' + $content.attr('class') + '" ajax-selector="block-content">'+parseNewLines($content.html())+'</div>');
+
+                } else {
+
+                    if (settings.process == '/ProfilePost/Delete') {
+
+                        $($element.find('[ajax-selector="block"]')).each(function () {
+
+                            $_content = $(this).find('[ajax-selector="block-content"]').removeClass('trumbowyg-editor');
+
+                            $(this).find('[ajax-selector="trumbowyg-box"]').replaceWith('<div class="' + $_content.attr('class') + '" ajax-selector="block-content">'+parseNewLines($_content.html())+'</div>');
+                        });
+                    }
+
+                    $element.find('[ajax-place="block-content"]').first().replaceWith('<div class="' + $content.attr('class') + '" ajax-selector="block-content">'+parseNewLines($content.html())+'</div>');
+                    $trumbowyg.remove();
+                }
+            }
+
+            if (settings.data.notice) {
+                var $notice = $(settings.data.notice);
+                $notice.find('[ajax-selector="details"]').attr('href', settings.data.url);
+                $element.find('[ajax-place="notice-deleted"]').first().replaceWith($notice);
+
+                $element.addClass('block-closed');
+                $element.find('[ajax-selector="block-bottom"]').remove();
+                $element.find('[ajax-selector="block block-form"]').remove();
+                $element.find('[ajax="delete"]').first().remove();
+                $element.addClass('block-disabled');
+            } else {
+                $element.remove();
+            }
         }
     }
 });
 
-// SHOW EDITOR
 $.cAjax('editor', {
     ajax: {
         url: '/ajax/language/',
         context: {}
     },
-    success: function(settings, $element) {
+    success: {
+        
+        default: function(settings, $element) {
 
-        $(this).after(settings.data.button);
-        $(this).remove();
+            $(this).after(settings.data.button).remove();
 
-        $element.find('[ajax-selector="block-content"]').first().trumbowyg(config);
+            $content = $element.find('[ajax-selector="block-content"]').first();
+            $content.before('<div ajax-place="block-content"></div>');
+            $content.insertBefore($element.find('[ajax-selector="block-body"]').first());
+            $content.trumbowyg(config);
+        },
+
+        '/ProfilePostComment/Editor': function(settings, $element) {
+
+            $(this).after(settings.data.button).remove();
+
+            $content = $element.find('[ajax-selector="block-content"]').first().trumbowyg(config);
+        }
     }
 });
 
-// EDIT
-$.cAjax('edit', {
 
-    ajax: {
-        url: '/ajax/process/',
-        method: 'post',
-        context: {}
-    },
-
-    onload: function(settings, $element) {
-        settings.ajax.context.text = parseNewLines($element.find('.trumbowyg-editor').html());
-    },
-
-    success: function(settings, $element) {
-
-        $(this).after(settings.data.button);
-        $(this).remove();
-
-        $trumbowyg = $element.find('.trumbowyg-box');
-        $trumbowyg.before('<div class="block-content" ajax-selector="block-content">'+parseNewLines($trumbowyg.find('.trumbowyg-editor').html())+'</div>');
-        $trumbowyg.remove();
-    }
-});
-
-// REMOVE RECIPIENT
 $('body').on('click', '[ajax="remove-recipient"]', function() {
 
     var $recipient = $(this).closest('[ajax-selector="recipient"]');
@@ -268,48 +268,143 @@ $('body').on('click', '[ajax="remove-recipient"]', function() {
     }
 });
 
-// ADD NEW RECIPIENT
-$.cAjax('user', {
+
+$.cAjax('create', {
     ajax: {
-        url: '/ajax/user/',
-        method: 'get',
+        url: '/ajax/process/',
+        method: 'post',
         context: {}
     },
-    onload: function (settings) {
-        settings.ajax.context.user = $(this).closest('[ajax-selector="field-row"]').find('input[type="text"]').first().val();
-    },
-    success: function(settings) {
-
-        $row = $(this).closest('[ajax-selector="field-row"]');
-        $field = $(this).closest('[ajax-selector="field"]');
-        $select = $row.find('[ajax-selector="select"]');
-        $list = $field.find('[ajax-selector="recipient-list"]');
-
-        if ($select.find('[value="'+settings.data.user_id+'"]').length == 0 && $select.children().length < 10 ) {
-            $list.find('[ajax-selector="no-recipients"]').hide();
-            $list.prepend('<div class="recipient" ajax-selector="recipient" data-id="'+settings.data.user_id+'">'+settings.data.user+'<a ajax="remove-recipient"><i class="fas fa-times"></i></a></div>');
-            $select.prepend('<option selected value="'+settings.data.user_id+'">'+settings.data.user_id+'</option>');
-            $list.removeClass('d-none-i');
+    onload: {
+        default: function (settings) {
+            settings.ajax.context.text = parseNewLines($(this).closest('[ajax-selector="block block-form"]').find('.trumbowyg-editor').html());
         }
+    },
+    success: {
 
-        $row.find('input[type="text"]').val('');
+        default: function (settings) {
+
+            $block = $(this).closest('[ajax-selector="block block-form"]');
+            $block.before(settings.data.content);
+            $block.find('.trumbowyg-editor').first().html('');
+
+            $('[ajax-selector="block block-empty"]').remove();
+        },
+
+        '/ProfilePost/Create': function (settings) {
+
+
+            $block = $(this).closest('[ajax-selector="block block-form"]');
+
+            $block.removeClass('block-opened');
+
+            $block.find('.trumbowyg-box textarea').clone().insertBefore($block.find('.trumbowyg-box'));
+            $block.find('.trumbowyg-editor').empty();
+            $block.find('.trumbowyg-box').remove();
+            $block.find('textarea').first().val('');
+            $block.find('textarea').first().attr('class', '');
+        
+
+            $('[ajax-selector="block-list"]').prepend(settings.data.content);
+
+            $('[ajax-selector="block block-empty"]').remove();
+            $block.find('.trumbowyg-editor').first().html('');
+        },
+
+        '/ProfilePostComment/Create': function (settings) {
+
+            var $block = $(this).closest('[ajax-selector="block block-form"]');
+
+            $block.removeClass('block-opened');
+
+            $block.find('.trumbowyg-box textarea').clone().insertBefore($block.find('.trumbowyg-box'));
+            $block.find('.trumbowyg-editor').empty();
+            $block.find('.trumbowyg-box').remove();
+            $block.find('textarea').first().val('');
+            $block.find('textarea').first().attr('class', '');
+            $block.before(settings.data.content);
+
+            $('[ajax-selector="block block-empty"]').remove();
+            $block.find('.trumbowyg-editor').first().html('');
+        }
     }
 });
 
-// MARK USER NOTIFICATIONS
-$.cAjax('mark', {
+
+$.cAjax('edit', {
     ajax: {
-        url: '/ajax/mark/',
+        url: '/ajax/process/',
+        method: 'post',
+        context: {}
+    },
+
+    onload: {
+        default: function(settings, $element) {
+            console.log($element.find('[ajax-selector="block-content"]').html());
+            settings.ajax.context.text = parseNewLines($element.find('[ajax-selector="block-content"]').html());
+        }
+    },
+
+    success: {
+    
+        default: function(settings, $element) {
+
+            $(this).after(settings.data.button).remove();
+
+            $trumbowyg = $element.find('[ajax-selector="trumbowyg-box"]').first();
+            $content = $trumbowyg.find('[ajax-selector="block-content"]').removeClass('trumbowyg-editor');
+
+            $element.find('[ajax-place="block-content"]').replaceWith('<div class="' + $content.attr('class') + '" ajax-selector="block-content">'+parseNewLines($content.html())+'</div>');
+            
+            $trumbowyg.remove();
+        },
+
+        '/ProfilePostComment/Edit': function(settings, $element) {
+
+            $(this).after(settings.data.button).remove();
+
+            $trumbowyg = $element.find('[ajax-selector="trumbowyg-box"]').first();
+            $content = $trumbowyg.find('[ajax-selector="block-content"]').removeClass('trumbowyg-editor');
+
+            $trumbowyg.replaceWith('<div class="' + $content.attr('class') + '" ajax-selector="block-content">'+parseNewLines($content.html())+'</div>');
+        }
+    }
+});
+
+
+$.cAjax('execute', {
+    ajax: {
+        url: '/ajax/execute/',
         method: 'get',
         context: {}
     },
-    success: function(settings) {
+    success: {
+        '/User/Logout': function () {
 
-        var $dropdownBody = $(this).closest('[ajax-selector="dropdown-menu"]').find('[ajax-selector="dropdown-body"]');
-        var $dropdownRow = $dropdownBody.find('[ajax-selector="dropdown-row"]');
+            var url = window.location.pathname.split('/').filter(item => item);
+            if (url[0] == 'user') {
+                window.location.href = '/';
+                return true;
+            }
 
-        $dropdownBody.children().remove();
-        $dropdownBody.prepend('<'+$dropdownRow.prop('tagName')+' class="'+$dropdownRow.attr('class')+'">'+settings.data.empty+'</'+$dropdownRow.prop('tagName')+'>');
-        $(this).closest('[ajax-selector="dropdown"]').find('a[data-count]').removeAttr('data-count');
+            location.reload();
+        },
+        '/User/Mark': function (settings) {
+
+            var $dropdownBody = $(this).closest('[ajax-selector="dropdown-menu"]').find('[ajax-selector="dropdown-body"]');
+            var $dropdownRow = $dropdownBody.find('[ajax-selector="dropdown-row"]');
+
+            $dropdownBody.children().remove();
+            $dropdownBody.prepend('<'+$dropdownRow.prop('tagName')+' class="'+$dropdownRow.attr('class')+'">'+settings.data.empty+'</'+$dropdownRow.prop('tagName')+'>');
+            $(this).closest('[ajax-selector="dropdown"]').find('a[data-count]').removeAttr('data-count');
+        }
+    }
+});
+
+$.cAjax('process', {
+    ajax: {
+        url: '/ajax/process/',
+        method: 'get',
+        context: {}
     }
 });

@@ -18,6 +18,16 @@ namespace Model\Build;
 class Build extends \Model\Model
 {  
     /**
+     * @var \Model\System $system System
+     */
+    public \Model\System $system;
+
+    /**
+     * @var \Model\Language $language Language
+     */
+    public \Model\Language $language;
+
+    /**
      * @var \Model\Build\BuildUrl $url BuildUrl
      */
     public \Model\Build\BuildUrl $url;
@@ -43,5 +53,7 @@ class Build extends \Model\Model
         $this->date = new BuildDate();
         $this->user = new BuildUser();
         $this->user->url = $this->url;
+
+        return $this;
     }
 }

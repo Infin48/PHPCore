@@ -13,7 +13,20 @@
 namespace Page\Admin;
 
 use Block\Report;
+use Block\Plugin;
 use Block\Deleted;
+
+use Model\Url;
+use Model\User;
+use Model\Data;
+use Model\Template;
+use Model\Language;
+use Model\Build\Build;
+use Model\System;
+
+use Process\Process;
+
+use Style\Style;
 
 use Visualization\Navbar\Navbar;
 
@@ -21,35 +34,88 @@ use Visualization\Navbar\Navbar;
  * Router
  */
 class Router extends \Page\Page
-{
-    /**
-     * @var array $settings Page settings
-     */
-    protected array $settings = [
-        'template' => 'Header',
-        'loggedIn' => true,
-        'permission' => 'admin.?'
-    ];
-    
+{    
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body()
     {
-        // LOAD LANGUAGE
-        $this->language->load('/Languages/' . $this->system->settings->get('site.language') . '/Admin');
+        $this->style                = new Style();
+        $this->style->setTemplate('/Body');
+        
+        $this->data                 = new Data();
+
+        $this->loadPlugins();
+
+        $this->system               = new System();
+
+        $plugins = new Plugin();
+        $this->language             = new Language(
+            language: $this->system->get('site.language'),
+            admin: true,
+            plugins: array_column($plugins->getAll(), 'plugin_name_folder')
+        );
+        
+        $this->build                = (new Build())->load();
+        $this->build->system        = $this->system;
+        $this->build->language      = $this->language;
+        
+        $this->user                 = new User();
+
+        $this->url                  = new Url();
+        
+        $this->process              = new Process();
+        $this->process->system      = $this->system;
+        $this->process->perm        = $this->user->perm;
+
+        $this->template             = new Template(
+            template: 'Default',
+            templateInitial: $this->system->get('site.template'),
+            path: '/Includes/Admin/Styles'
+        );
+
+        // DEFAULT PAGE TITLE
+        $this->data->head['title']          = $this->system->get('site.name');
+
+        // DEFAULT PAGE DESCRIPTION
+        $this->data->head['description']    = $this->system->get('site.description');
+
+        // SET PAGE FAVICON
+        $favicon = '/Uploads/Site/PHPCore_icon.svg';
+        if ($this->system->get('site.favicon')) {
+            $favicon = '/Uploads/Site/Favicon.' . $this->system->get('site.favicon');
+        }
+        $this->data->head['favicon'] =  $favicon;
+
+        if ($this->user->isLogged() === false) {
+            $this->error();
+        }
+
+        if ((bool)$this->user->perm->has('admin.?') == false) {
+            $this->error();
+        }
+
+        setlocale(LC_ALL, $this->system->get('site.locale').'.UTF-8');
+        date_default_timezone_set($this->system->get('site.timezone'));
+
+        if ($this->user->isLogged()) {
+
+            define('LOGGED_USER_ID', $this->user->get('user_id'));
+            define('LOGGED_USER_GROUP_INDEX', $this->user->get('group_index'));
+            define('LOGGED_USER_GROUP_ID', $this->user->get('group_id'));
+        } else {
+            define('LOGGED_USER_ID', 0);
+            define('LOGGED_USER_GROUP_INDEX', 0);
+            define('LOGGED_USER_GROUP_ID', 0);
+        }
 
         $controllerName = $this->build();
 
-        if (str_contains($controllerName, 'Page\Admin\Ajax')) {
-            define('AJAX', true);
-        } else define('AJAX', false);
-
         $this->page = new $controllerName;
         
-        $this->navbar = new Navbar('Admin');
+        $this->navbar = new Navbar('/Admin');
         $this->navbar->perm = $this->user->perm;
 
         $report = new Report();
@@ -78,15 +144,12 @@ class Router extends \Page\Page
         $this->page->language = $this->language;
         $this->page->template = $this->template;
 
-        $this->page->initialise();
+        $this->page->ini();
         $this->page->body();
 
-        if (AJAX) {
-            echo json_encode($this->data->data);
-            exit();
-        }
-
         $this->data->navbar = $this->page->navbar->getData();
+
+        $this->iniStyle();
    }
 
 }

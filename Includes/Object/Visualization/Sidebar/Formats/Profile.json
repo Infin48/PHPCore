@@ -1,0 +1,98 @@
+{
+    "body":{
+        "user":{
+            "body":{
+                "image": {
+                    "options": {
+                        "template": "/Profile/Image.phtml"
+                    }
+                },
+                "info": {
+                    "options": {
+                        "type": "table",
+                        "template": {
+                            "body": "/Profile/User.phtml"
+                        }
+                    }
+                },
+                "online": {
+                    "options": {
+                        "type": "table"
+                    },
+                    "data": {
+                        "title": "L_USER_LAST_LOGGED_IN"
+                    }
+                },
+                "registered": {
+                    "options": {
+                        "type": "table"
+                    },
+                    "data": {
+                        "title": "L_REGISTERED"
+                    }
+                },
+                "topics": {
+                    "options": {
+                        "type": "table"
+                    },
+                    "data": {
+                        "title": "L_TOPICS"
+                    }
+                },
+                "posts": {
+                    "options": {
+                        "type": "table"
+                    },
+                    "data": {
+                        "title": "L_POSTS"
+                    }
+                },
+                "buttons": {
+                    "options": {
+                        "type": "table",
+                        "template": {
+                            "body": "/Profile/Buttons.phtml"
+                        }
+                    }
+                }
+            }
+       },
+       "info":{
+           "options": {
+                "hide": true
+           },
+            "data":{
+                "title": "L_INFORMATIONS"
+            },
+            "body":{
+                "gender":{
+                    "options": {
+                        "type": "table",
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_USER_GENDER"
+                    }
+                },
+                "location":{
+                    "options": {
+                        "type": "table",
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_USER_LOCATION"
+                    }
+                },
+                "age":{
+                    "options": {
+                        "type": "table",
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_USER_AGE"
+                    }
+                }
+            }
+       }
+    }
+ }

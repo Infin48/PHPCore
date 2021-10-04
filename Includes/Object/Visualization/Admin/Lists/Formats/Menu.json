@@ -1,0 +1,80 @@
+{
+    "body": {
+        "button": {
+            "options": {
+                "empty": "L_MENU_LIST_NO"
+            },
+            "data": {
+                "title": "L_MENU_LIST",
+                "button": {
+                    "add": {
+                        "data": {
+                            "href": "/add/dropdown/",
+                            "title": "L_NEW_DROPDOWN"
+                        }
+                    },
+                    "_add": {
+                        "data": {
+                            "href": "/add/button/",
+                            "title": "L_NEW_BUTTON"
+                        }
+                    }
+                }
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "/Admin/Menu/Button",
+                        "template": {
+                            "big": "/Menu/Button.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "button_id",
+                            "link": "button_link",
+                            "title": "button_name"
+                        },
+                        "button": {
+                            "up": {},
+                            "down": {},
+                            "custom": {
+                                "options": {
+                                    "template": "/Menu/Edit.phtml"
+                                }
+                            },
+                            "delete": {}
+                        }
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "type": "/Admin/Menu/ButtonSub",
+                                "template": {
+                                    "big": "/Menu/Button.phtml"
+                                }
+                            },
+                            "data": {
+                                "convert": {
+                                    "id": "button_sub_id",
+                                    "link": "button_sub_link",
+                                    "title": "button_sub_name"
+                                },
+                                "button": {
+                                    "up": {},
+                                    "down": {},
+                                    "edit": {
+                                        "data": {
+                                            "href": "/show/buttonsub/{id}"
+                                        }
+                                    },
+                                    "delete": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

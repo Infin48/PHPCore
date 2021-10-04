@@ -1,0 +1,28 @@
+{
+    "body": {
+        "name": {
+            "data": {
+                "icon": "fas fa-font",
+                "title": "L_NAME",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "version": {
+            "data": {
+                "icon": "fas fa-code-branch",
+                "title": "L_VERSION",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "author": {
+            "data": {
+                "icon": "fas fa-user",
+                "title": "L_AUTHOR",
+                "value": "",
+                "color": "blue"
+            }
+        }
+    }
+}

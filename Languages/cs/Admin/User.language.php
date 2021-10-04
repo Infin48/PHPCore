@@ -14,7 +14,7 @@ $language = array_merge($language, [
 
     'L_USER_SERACH' => 'Vyhledat uživatele',
     'L_USER_SEARCH_DESC' => 'Rozlišujte malá a velká písmena',
-    'L_USER_NAME_DESC' => 'Uživatelské jméno musí obsahovat minimálně 5 znaků',
+    'L_USER_NAME_DESC' => 'Uživatelské jméno musí obsahovat minimálně 5 znaků.',
 
     'L_USER_LIST' => 'Seznam uživatelů',
 
@@ -32,7 +32,7 @@ $language = array_merge($language, [
     'L_USER_DELETE_HEADER_IMAGE' => 'Smazat záhlaví profilu',
 
     'L_USER_GROUP' => 'Skupina uživatele',
-    'L_USER_GROUP_DESC' => 'Uživatel zdědí nastavení a oprávnění skupiny',
+    'L_USER_GROUP_DESC' => 'Uživatel zdědí nastavení a oprávnění skupiny.',
 
     'L_USER_DELETE' => 'Smazat uživatele',
     'L_USER_DELETE_DESC' => 'Obsah vytvořený tímto uživatelem bude i nadále viditelný',

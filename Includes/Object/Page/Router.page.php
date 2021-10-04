@@ -19,10 +19,11 @@ use Block\UserNotification;
 use Model\Url;
 use Model\User;
 use Model\Data;
+use Model\System;
+use Model\Session;
 use Model\Template;
 use Model\Language;
 use Model\Build\Build;
-use Model\System\System;
 use Model\Database\Query;
 
 use Process\Process;
@@ -35,28 +36,7 @@ use Visualization\Navbar\Navbar;
  * Router
  */
 class Router extends Page
-{
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->system = new System();
-        $this->language = new Language();
-        $this->language->load('/Languages/' . $this->system->settings->get('site.language'));
-        $this->data = new Data();
-        $this->user = new User();
-        $this->template = new Template();
-        $this->build = new Build();
-        $this->build->load();
-        $this->process = new Process($this->system, $this->user->perm);
-        $this->style = new Style($this->system);
-        $this->parseURL();
-        $this->url = new Url(self::$parsedURL);
-    }
-    
+{    
     /**
      * Body of this page
      *
@@ -64,126 +44,142 @@ class Router extends Page
      */
     public function body()
     {
-        $this->style->setTemplate('Body');
+        $this->style                = new Style();
+        $this->style->setTemplate('/Body');
+        
+        $this->data                 = new Data();
 
-        setlocale(LC_ALL, $this->system->settings->get('site.locale').'.UTF-8');
+        $this->loadPlugins();
 
-        date_default_timezone_set($this->system->settings->get('site.timezone'));
+        $this->system               = new System();
+        
+        $this->user                 = new User();
 
-        $this->data->data([
-            'favicon' => $this->system->settings->get('site.favicon') ? '/Uploads/Site/Favicon.' . $this->system->settings->get('site.favicon') : '/Uploads/Site/PHPCore_icon.svg'
-        ]);
+        $this->url                  = new Url();
 
-        define('TEMPLATE_PATH_DEFAULT', '/Styles');
+        $this->process              = new Process();
+        $this->process->system      = $this->system;
+        $this->process->perm        = $this->user->perm;
 
-        define('TEMPLATE_DEFAULT', $this->system->settings->get('site.template'));
+        // DEFAULT TEMPLATE
+        $this->template             = new Template(
+            template: $this->system->get('site.template'),
+            path: '/Styles'
+        );
 
-        $controllerName = $this->build();
+        // DEFAULT LANGUAGE
+        $this->language             = new Language(
+            language: $this->system->get('site.language'),
+            plugins: $this->data->data['plugins']
+        );
 
-        $this->data->head['title'] = $this->system->settings->get('site.description');
-        $this->data->head['description'] = $this->system->settings->get('site.description');
+        // BUILDERS
+        $this->build                = (new Build())->load();
+        $this->build->system        = $this->system;
+        $this->build->language      = $this->language;
 
-        if ($this->user->isLogged()) {
 
-            define('LOGGED_USER_ID', $this->user->get('user_id'));
-            define('LOGGED_USER_GROUP_INDEX', $this->user->get('group_index'));
-            define('LOGGED_USER_GROUP_PERMISSION', $this->user->get('groupPermission'));
-            define('LOGGED_USER_GROUP_ID', $this->user->get('group_id'));
 
-            if ($controllerName === 'Page\Admin\Router') {
+        if (Session::exists('preview')) {
 
-                define('TEMPLATE_PATH', '/Includes/Admin/Styles');
-                define('TEMPLATE', 'Default');
+            if (file_exists(ROOT . '/Styles/' . Session::get('preview'))) {
 
-                $this->page = new $controllerName;
+                // SET PREVIEW TEMPLATE
+                $this->template   = new Template(
+                    template: Session::get('preview'),
+                    path: '/Styles'
+                );
 
-                $this->page->url = $this->url;
-                $this->page->data = $this->data;
-                $this->page->style = $this->style;
-                $this->page->build = $this->build;
-                $this->page->system = $this->system;
-                $this->page->process = $this->process;
-                $this->page->language = $this->language;
-                $this->page->template = $this->template;
-
-                $this->page->user = $this->user;
-                $this->page->initialise();
-                $this->page->body();
-
-                $this->style->load($this->data, $this->build, $this->user);
-                $this->style->show();
-                exit();
+                $this->data->data['preview'] = Session::get('preview');
             }
         }
 
-        if (!defined('LOGGED_USER_GROUP_ID')) {
-            define('LOGGED_USER_GROUP_ID', 0);
+        // SET PAGE FAVICON
+        $favicon = '/Uploads/Site/PHPCore_icon.svg';
+        if ($this->system->get('site.favicon')) {
+            $favicon = '/Uploads/Site/Favicon.' . $this->system->get('site.favicon');
         }
+        $this->data->head['favicon'] =  $favicon;
+        
+        // DEFAULT PAGE TITLE
+        $this->data->head['title']          = $this->system->get('site.name');
 
-        if (!defined('LOGGED_USER_GROUP_ID')) {
-            define('LOGGED_USER_GROUP_ID', 0);
-        }
+        // DEFAULT PAGE DESCRIPTION
+        $this->data->head['description']    = $this->system->get('site.description');
 
-        if (!defined('LOGGED_USER_ID')) {
-            define('LOGGED_USER_ID', 0);
-        }
+        setlocale(LC_ALL, $this->system->get('site.locale').'.UTF-8');
+        date_default_timezone_set($this->system->get('site.timezone'));
 
-        define('TEMPLATE_PATH', '/Styles');
-        define('TEMPLATE', $this->system->settings->get('site.template'));
-
+        
         $button = new Button();
         $buttonSub = new ButtonSub();
-
-        $this->navbar = new Navbar('Basic');
         
-        foreach ($button->getAll() as $dropdown) {
-
-            $this->navbar->object('menu')->appTo($dropdown)->jumpTo();
-
-            if ((bool)$dropdown['is_dropdown'] === true) {
-        
-                $this->navbar->fill($buttonSub->getParent($dropdown['button_id']));
+        // NAVBAR
+        $this->navbar = new Navbar('/Basic');
+        $this->navbar->object('menu')->fill(data: $button->getAll(), function: function ( \Visualization\Navbar\Navbar $navbar ) use ($buttonSub) { 
+            
+            // IF IS LOCAL BUTTON
+            if ($navbar->obj->get->data('button_link_type') == 1) {
+                
+                // BUILD LINK
+                $navbar->obj->set->data('button_link', $this->url->build($navbar->obj->get->data('button_link')));
             }
-        }
+            
+            if ($navbar->obj->get->data('button_dropdown') == 1) {
+                
+                $navbar->fill(data: $buttonSub->getParent($navbar->obj->get->data('button_id')), function: function ( \Visualization\Navbar\Navbar $navbar ) { 
+                    
+                    // IF IS LOCAL BUTTON
+                    if ($navbar->obj->get->data('button_sub_link_type') == 1) {
+                        
+                        // BUILD LINK
+                        $navbar->obj->set->data('button_sub_link', $this->url->build($navbar->obj->get->data('button_sub_link')));
+                    }
+                });
+            }
+        });
         
         if ($this->user->isLogged()) {
-
-            $userNotification = new UserNotification();
-
+            
+            // USER CONSTANTS
+            define('LOGGED_USER_ID', $this->user->get('user_id'));
+            define('LOGGED_USER_GROUP_INDEX', $this->user->get('group_index'));
+            define('LOGGED_USER_GROUP_ID', $this->user->get('group_id'));
+            
             if ($this->url->is('mark')) {
                 $query = new Query();
                 $query->query('
-                    DELETE un FROM ' . TABLE_USERS_NOTIFICATIONS . '
-                    WHERE user_notification_id = ? AND to_user_id = ?
+                DELETE un FROM ' . TABLE_USERS_NOTIFICATIONS . '
+                WHERE user_notification_id = ? AND to_user_id = ?
                 ', [$this->url->get('mark'), LOGGED_USER_ID]);
             }
-
             
-            $this->navbar->object('logged')->show();
-            $this->navbar->object('logged')->row('user')->option('profile')->setData('href', $this->build->url->profile($this->user->get()));
-
-            $this->navbar->object('logged')->row('notification')->fill($notifi = $userNotification->getParent(LOGGED_USER_ID));
-            $this->navbar->object('logged')->row('notification')->notifiCount(count($notifi));
+            $userNotification = new UserNotification();
+            
+            $this->navbar->object('logged')->show()
+            ->row('user')->option('profile')->setData('href', '$' . $this->build->url->profile($this->user->get()))
+            ->row('notification')->fill(data: $notifi = $userNotification->getParent(LOGGED_USER_ID))
+            ->row('notification')->notifiCount(count($notifi));
             
         } else {
-
-            $this->navbar->object('not-logged')->show();
-
-            if ($this->system->settings->get('registration.enabled') == 1) {
-                $this->navbar->object('not-logged')->row('register')->show();
-            }
             
+            // USER CONSTANTS
+            define('LOGGED_USER_ID', 0);
+            define('LOGGED_USER_GROUP_ID', 0);
+            define('LOGGED_USER_GROUP_INDEX', 0);
+            
+            $this->navbar->object('not-logged')->show();
+            
+            if ($this->system->get('registration.enabled') == 1) {
+                $this->navbar->object('not-logged')->row('register')->show();
+            } 
         }
         
-        if (str_contains($controllerName, 'Page\Ajax')) {
-            define('AJAX', true);
-        } else define('AJAX', false);
-
+        $controllerName = $this->build();   
+        
         $ex = explode('\\', $controllerName);
         array_shift($ex);
-        $this->data->data([
-            'pageName' => strtolower($ex[0]) . ( isset($ex[1]) ? ((!is_null($ex[1]) and strtolower($ex[1]) != 'router') ? ' ' . strtolower(implode('-', $ex)) : '') : '')
-        ]);
+        $this->data->data('pageName', strtolower($ex[0]) . ( isset($ex[1]) ? ((!is_null($ex[1]) and strtolower($ex[1]) != 'router') ? ' ' . strtolower(implode('-', $ex)) : '') : ''));
         
         $this->page = new $controllerName;
         $this->page->url = $this->url;
@@ -195,53 +191,33 @@ class Router extends Page
         $this->page->process = $this->process;
         $this->page->language = $this->language;
         $this->page->template = $this->template;
-
-        $this->page->initialise();
+        
+        $this->page->ini();
         $this->page->body();
+        
+        foreach ($this->data->data['plugins'] as $item) {
+            if (file_exists(ROOT . '/Plugins/' . $item . '/Object/' . str_replace('\\', '/', $controllerName) . '.page.php')) {
+                
+                $page = 'Page\Plugin\\' . $item . '\\' . str_replace('Page\\', '', $controllerName);
+                $this->page = new $page;
+                $this->page->url = $this->url;
+                $this->page->data = $this->data;
+                $this->page->style = $this->style;
+                $this->page->user = $this->user;
+                $this->page->build = $this->build;
+                $this->page->system = $this->system;
+                $this->page->process = $this->process;
+                $this->page->language = $this->language;
+                $this->page->template = $this->template;
 
-        if (AJAX) {
-            echo json_encode($this->data->data);
-            exit();
+                $this->page->body();
+            }
         }
 
         if ($this->user->isLogged()) {
             $this->navbar->object('logged')->row('conversation')->notifiCount(count($this->user->get('unread')));
         }
-
         $this->data->navbar = $this->navbar->getData();
-        $this->style->load($this->data, $this->build, $this->user);
-        $this->style->show();
-        exit();
+        $this->iniStyle();
     }
-
-    /**
-     * Prases url
-     *
-     * @param string $url
-     * 
-     * @return array
-     */
-    protected function parseURL()
-    {
-        $i = 1;
-        $url = urldecode($_SERVER['REQUEST_URI']);
-        $parsedURL = explode('/', $url);
-        unset($parsedURL[0]);
-
-        foreach ($parsedURL as $parameter) {
-            $_ex = explode('-', $parameter);
-            if (count($_ex) > 1) {
-                if ($_ex[0] === $this->system->url->getPage()) {
-                    $page = trim(strip_tags($_ex[1]));
-                    unset($parsedURL[$i]);
-                }
-            }
-
-            $i++;
-        }
-
-        define('PAGE', $page ?? 1);
-        self::$parsedURL = array_values(array_filter(explode('/', $this->system->url->translate(implode('/', $parsedURL)))));
-    }
-
 }

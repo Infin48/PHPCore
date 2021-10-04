@@ -10,6 +10,13 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
+// DEFAULT INDEX PAGE
+define('INDEX', '/');
+
+// PHPCORE VERSION
+define('PHPCORE_VERSION', '1.1.0');
+
+// TABLES
 define('TABLE_BUTTONS', 'phpcore_buttons b');
 define('TABLE_BUTTONS_SUB', 'phpcore_buttons_sub bs');
 define('TABLE_CATEGORIES', 'phpcore_categories c');
@@ -29,6 +36,7 @@ define('TABLE_PAGES', 'phpcore_pages pg');
 define('TABLE_PERMISSIONS', 'phpcore_permissions pi');
 define('TABLE_POSTS', 'phpcore_posts p');
 define('TABLE_POSTS_LIKES', 'phpcore_posts_likes pl');
+define('TABLE_PLUGINS', 'phpcore_plugins plg');
 define('TABLE_CONVERSATIONS', 'phpcore_conversations c');
 define('TABLE_CONVERSATIONS_MESSAGES', 'phpcore_conversations_messages cm');
 define('TABLE_CONVERSATIONS_RECIPIENTS', 'phpcore_conversations_recipients cr');
@@ -38,6 +46,8 @@ define('TABLE_PROFILE_POSTS_COMMENTS', 'phpcore_profile_posts_comments ppc');
 define('TABLE_REPORTS', 'phpcore_reports r');
 define('TABLE_REPORTS_REASONS', 'phpcore_reports_reasons rr');
 define('TABLE_SETTINGS', 'phpcore_settings s');
+define('TABLE_SETTINGS_URL', 'phpcore_settings_url su');
+define('TABLE_STATISTICS', 'phpcore_statistics s');
 define('TABLE_TOPICS', 'phpcore_topics t');
 define('TABLE_TOPICS_DELETED', 'phpcore_topics_deleted td');
 define('TABLE_TOPICS_LIKES', 'phpcore_topics_likes tl');
@@ -90,10 +100,13 @@ define('REQUIRE_LOGOUT', 3489);
 define('OPTIONAL_LOGIN', 5927);
 
 define('EDITOR_BIG', 'Big');
-define('EDITOR_SMALL', 'Small');
 define('EDITOR_MEDIUM', 'Medium');
+define('EDITOR_SMALL', 'Small');
 
 define('CONTEXT', stream_context_create(['http' => ['method' => 'GET','header' => ['User-Agent: PHP']]]));
 
 define('SUCCESS_SESSION', 'SUCCESS_SESSION');
 define('SUCCESS_RETURN', 'SUCCESS_RETURN');
+
+define('FILE_TYPE_IMAGE', 'image');
+define('FILE_TYPE_ZIP', 'zip');

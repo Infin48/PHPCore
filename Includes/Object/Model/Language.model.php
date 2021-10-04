@@ -18,21 +18,50 @@ namespace Model;
 class Language
 {
     /**
+     * @var string $name Language name
+     */
+    private string $name = '';
+
+    /**
      * @var array $language Language
      */
     private static array $language = [];
 
     /**
-     * Loads language
-     *
-     * @param  string $path Path to language
+     * Constructor
      * 
-     * @return void
+     * @param string $language Language name
      */
-    public function load( string $path )
+    public function __construct( string $language = null, bool $admin = false, array $plugins = [] )
     {
-        require ROOT . $path . '/Load.language.php';
-        static::$language = $language;
+        if ($language) {
+
+            $this->name = $language;
+
+            $path = '/Languages/' . $language;
+            if ($admin) {
+                $path .= '/Admin';
+            }
+
+            require ROOT . $path . '/Load.language.php';
+            self::$language = $language;
+
+            foreach ($plugins as $item) {
+
+                $url = ROOT . '/Plugins/' . $item . '/Languages/' . $this->name;
+
+                if ($admin === true) {
+                    $url .= '/Admin';
+                }
+
+                if (file_exists($url . '/Load.language.php')) {
+                    
+                    require $url . '/Load.language.php';
+
+                    self::$language = array_merge_recursive(self::$language, $language);
+                }
+            } 
+        }
     }
 
     /**

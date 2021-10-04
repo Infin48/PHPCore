@@ -9,11 +9,12 @@ Jednoduchý a chytrý forum software.
 - MySQL
 - PHP 8
 - **Rozšíření:**
-  - SPL
+  - GD
   - mbstring
-  - zip
   - PDO
   - PDO_mysql
+  - SPL
+  - zip
 
 ### Instrukce
 1. Stáhněte si nejnovější verzi [zde](https://github.com/Infin48/PHPCore/releases).
@@ -30,7 +31,7 @@ Pokud potřebujete s něčím pomoct, můžete využít tyto možnosti:
 - [Trumbowyg](https://github.com/Alex-D/Trumbowyg)
 - [FontAwesome](https://fontawesome.com/)
 - [HTMLPurifier](http://htmlpurifier.org/)
-- [ApexCharts](http://htmlpurifier.org/)
+- [ApexCharts](https://apexcharts.com//)
 - [jQuery](https://jquery.com/)
 - [reCAPTCHA](https://www.google.com/recaptcha/)
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer)

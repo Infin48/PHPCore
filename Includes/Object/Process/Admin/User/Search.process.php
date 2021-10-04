@@ -50,6 +50,6 @@ class Search extends \Process\ProcessExtend
      */
     public function process()
     {
-        $this->redirectTo('/admin/user/show/' . $this->data->get('user_id'));
+        $this->redirect('/admin/user/show/' . $this->data->get('user_id'));
     }
 }

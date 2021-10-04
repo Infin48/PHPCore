@@ -1,9 +1,9 @@
 <?php if ($this->user->isLogged()) : ?>
     <?php if ($this->user->perm->has('profilepost.create')) : ?>
-        <div id="p0" class="block block-clear block-margin" ajax-selector="block block-form">
+        <div id="p0" class="block block-clear block-margin" ajax-selector="block block-form" ajax-process-id="<?= $this->url->getID() ?>" ajax-process-type="/ProfilePost">
             <form method="post" id="form">
                 <div class="block-body ">
-                    <a class="button d-none" ajax="create" data-id="<?= $this->getID() ?>" data-type="ProfilePost" ajax-selector="button">
+                    <a class="button d-none" ajax="create" ajax-process="/Create" ajax-selector="button">
                         <i class="fas fa-check"></i>
                     </a>
                     <?= $this->build->user->image($this->user->get()) ?>

@@ -4,7 +4,7 @@
             "options": {
                 "id": "user_id",
                 "url": "/admin/user/",
-                "type": "User"
+                "type": "/Admin/User"
             },
             "data": {
                 "title": "L_USER_EDIT"
@@ -12,7 +12,8 @@
             "body": {
                 "user_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_USERNAME",
@@ -31,7 +32,8 @@
                 },
                 "user_email": {
                     "options": {
-                        "type": "email"
+                        "type": "email",
+                        "required": true
                     },
                     "data": {
                         "title": "L_EMAIL",
@@ -121,11 +123,11 @@
                         "type": "button"
                     },
                     "data": {
-                        "ajax": "promote",
+                        "ajax": "process-window",
                         "desc": "L_USER_PROMOTE_DESC",
                         "icon": "fas fa-user-cog",
                         "title": "L_USER_PROMOTE",
-                        "button": "L_USER_PROMOTE_BUTTON"
+                        "button": "L_TRANSFER_OWNERSHIP"
                     }
                 },
                 "delete": {
@@ -133,11 +135,11 @@
                         "type": "button"
                     },
                     "data": {
-                        "ajax": "delete",
+                        "ajax": "process-window",
                         "desc": "L_USER_DELETE_DESC",
                         "icon": "fas fa-trash",
                         "title": "L_USER_DELETE",
-                        "button": "L_REMOVE"
+                        "button": "L_DELETE"
                     }
                 },
                 "activate": {
@@ -150,7 +152,7 @@
                         "href": "/activate/",
                         "icon": "fas fa-star",
                         "title": "L_USER_ACTIVATE",
-                        "button": "L_USER_ACTIVATE"
+                        "button": "L_ACTIVATE"
                     }
                 }
             }

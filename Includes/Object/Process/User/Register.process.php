@@ -78,6 +78,9 @@ class Register extends \Process\ProcessExtend
             // IF REGISTER IS VALID
             if ($register->register() === true) {
 
+                // DELETE EMAIL VERIFICATION TO REGISTERED EMAIL
+                $this->db->query('DELETE FROM ' . explode(' ', TABLE_VERIFY_EMAIL)[0] . ' WHERE user_email = ?', [$this->data->get('user_email')]);
+
                 // SEND AN EMAIL TO VERIFY ACCOUNT
                 $mail = new MailRegister();
                 $mail->mail->addAddress($this->data->get('user_email'), $this->data->get('user_name'));

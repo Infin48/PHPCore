@@ -69,7 +69,8 @@ class Like extends \Process\ProcessExtend
         // SEND USER NOTIFICATION
         $this->notifi(
             id: $this->data->get('post_id'),
-            to: $this->data->get('user_id')
+            to: $this->data->get('user_id'),
+            replace: true
         );
     }
 }

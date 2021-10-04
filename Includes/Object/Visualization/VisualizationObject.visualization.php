@@ -18,6 +18,11 @@ namespace Visualization;
 class VisualizationObject
 {
     /**
+     * @var array $object Object
+     */
+    public array $object;
+
+    /**
      * @var \Visualization\VisualizationObjectIs $is VisualiaztionObjectIs
      */
     public VisualizationObjectIs $is;
@@ -33,15 +38,23 @@ class VisualizationObject
     public VisualizationObjectSet $set;
 
     /**
+     * @var \Visualization\VisualizationObjectDelete $delete VisualizationObjectDelete
+     */
+    public VisualizationObjectDelete $delete;
+
+    /**
      * Sets object
      * 
      * @param array $object
      */
     public function __construct( array $object )
     {
-        $this->is = new VisualizationObjectIs($object);
-        $this->get = new VisualizationObjectGet($object);
-        $this->set = new VisualizationObjectSet($object);
+        $this->object = $object;
+
+        $this->is = new VisualizationObjectIs($this);
+        $this->get = new VisualizationObjectGet($this);
+        $this->set = new VisualizationObjectSet($this);
+        $this->delete = new VisualizationObjectDelete($this);
     }
 
     /**
@@ -51,6 +64,6 @@ class VisualizationObject
      */
     public function getObject()
     {
-        return $this->set->delete->object;
+        return $this->object;
     }
 }

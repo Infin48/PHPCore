@@ -20,9 +20,9 @@ $language = array_merge($language, [
 
     'L_PAGE_NAME' => 'Název stránky',
 
-    'L_PAGE_HTML' => 'Tělo stránky',
+    'L_PAGE_HTML' => 'HTML',
     'L_PAGE_HTML_DESC' => 'Zadejte HTML',
 
-    'L_PAGE_CSS' => 'Styl stránky',
+    'L_PAGE_CSS' => 'CSS',
     'L_PAGE_CSS_DESC' => 'Zadejte dodatečné CSS',
 ]);

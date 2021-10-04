@@ -52,19 +52,19 @@ class Index extends \Page\Page
         }
 
         // GET FORUM
-        $forum = $forum->get($this->getID()) or $this->error();
+        $forum = $forum->get($this->url->getID()) or $this->error();
 
         if ($forum['topic_permission'] == 0) {
             $this->user->perm->disable('topic.create');
         }
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Forum/Show');
+        $breadcrumb = new Breadcrumb('/Forum/Show');
         $breadcrumb->object('category')->title('$' . $forum['category_name']);
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PANEL
-        $panel = new Panel('Forum');
+        $panel = new Panel('/Forum');
 
         // IF USER HAS PERMISSION TO CREATE TOPIC
         if ($this->user->perm->has('topic.create')) {
@@ -78,32 +78,27 @@ class Index extends \Page\Page
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_TOPICS);
-        $pagination->url($this->getURL());
-        $pagination->total($topic->getParentCount($this->getID()));
+        $pagination->url($this->url->getURL());
+        $pagination->total($topic->getParentCount($this->url->getID()));
         $topic->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Topic');
-        
-        foreach ($topic->getParent($this->getID()) as $item) {
-            
-            if ((bool)$item['is_label'] === true) {
+        $list = new Lists('/Topic');
+        $list->object('topic')->fill(data: $topic->getParent($this->url->getID()), function: function ( \Visualization\Lists\Lists $list ) use ($topic) { 
 
-                $item['labels'] = $topic->getLabels($item['topic_id']);
+            if ($list->obj->get->data('is_label') == true) {
+
+                $list->obj->set->data('labels', $topic->getLabels($list->obj->get->data('topic_id')));
             }
 
-            $list->object('topic')->appTo($item)->jumpTo();
-
-            if ($item['deleted_id']) {
+            if ($list->obj->get->data('deleted_id')) {
                 $list->disable();
             }
-        }
+        });
         $this->data->list = $list->getData();
 
         // HEAD
-        $this->data->head = [
-            'title'         => $forum['forum_name'],
-            'description'   => $forum['forum_description'],
-        ];
+        $this->data->head['title'] = $forum['forum_name'];
+        $this->data->head['description'] = $forum['forum_description'];
     }
 }

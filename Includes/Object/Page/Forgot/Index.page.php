@@ -35,10 +35,10 @@ class Index extends \Page\Page
     protected function body()
     {
         // FIELD
-        $field = new Field('User/Forgot/Send');
+        $field = new Field('/User/Forgot/Send');
         $this->data->field = $field->getData();
 
         // SEND FORGOT PASSWORD MAIL
-        $this->process->form(type: 'Forgot/Send', url: '/'); 
+        $this->process->form(type: '/Forgot/Send', url: '/'); 
     }
 }

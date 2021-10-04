@@ -47,13 +47,6 @@ class Delete extends \Process\ProcessExtend
      */
     public function process()
     {
-        $this->db->query('
-            UPDATE ' . TABLE_FORUMS . '
-            LEFT JOIN ' . TABLE_FORUMS . '2 ON f2.position_index > f.position_index AND f2.category_id = f.category_id
-            SET f2.position_index = f2.position_index - 1
-            WHERE f.forum_id = ?
-        ', [$this->data->get('forum_id')]);
-
         $stats = $this->db->query('
             SELECT (
                 SELECT COUNT(*)
@@ -65,6 +58,13 @@ class Delete extends \Process\ProcessExtend
                 WHERE t.forum_id = ?
             ) as topics
         ', [$this->data->get('forum_id'), $this->data->get('forum_id')]);
+        
+        $this->db->query('
+            UPDATE ' . TABLE_FORUMS . '
+            LEFT JOIN ' . TABLE_FORUMS . '2 ON f2.position_index > f.position_index AND f2.category_id = f.category_id
+            SET f2.position_index = f2.position_index - 1
+            WHERE f.forum_id = ?
+        ', [$this->data->get('forum_id')]);
 
         $this->db->query('
             DELETE f, fpp, fps, fpt, t, tl, tlb, r, rr, dc, p, pl, r2, rr2, dc2
@@ -86,10 +86,16 @@ class Delete extends \Process\ProcessExtend
             WHERE f.forum_id = ' . $this->data->get('forum_id') . '
         ');
 
-        $this->system->stats->set('post_deleted', +((int)$stats['posts'] ?? 0));
-        $this->system->stats->set('topic_deleted', +((int)$stats['topics'] ?? 0));
+        // UPDATE STATISTICS
+        $this->db->stats([
+            'post_deleted' => + (int)$stats['posts'] ?? 0,
+            'topic_deleted' => + (int)$stats['topics'] ?? 0
+        ]);
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('forum_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

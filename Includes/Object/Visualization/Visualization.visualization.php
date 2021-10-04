@@ -12,8 +12,9 @@
 
 namespace Visualization;
 
+use Model\Url;
 use Model\Template;
-use \Model\System\System;
+use Model\System;
 
 /**
  * Visualization
@@ -36,9 +37,9 @@ class Visualization
     protected bool $hideEmpty = false;
     
     /**
-     * @var \Model\System\System $system System
+     * @var \Model\System $system System
      */
-    protected \Model\System\System $system;
+    protected \Model\System $system;
     
     /**
      * @var \Model\Template $template Template
@@ -48,14 +49,29 @@ class Visualization
     /**
      * @var \Visualization\VisualizationObject $obj VisualizationObject
      */
-    protected \Visualization\VisualizationObject $obj;
+    public \Visualization\VisualizationObject $obj;
+
+    /**
+     * @var string $default Default object
+     */
+    private string $default = 'default';
+    
+    /**
+     * @var array $nest Nesting array
+     */
+    private array $nest = [];
+    
+    /**
+     * @var int $i Loop counting
+     */
+    protected int $i = 0;
 
     /**
      * Constructor
      *
-     * @param  string $format Path to format
+     * @param  string|array $format Path to format
      */
-    public function __construct( string $format )
+    public function __construct( string|array $format )
     {
         $this->system = new System();
         $this->template = new Template();
@@ -64,9 +80,41 @@ class Visualization
         $this->visualization = $t[count($t) - 1];
 
         $this->templatePath = '/Includes/Object/Visualization/' . $this->visualization . '/Templates';
-        $this->object = json_decode(file_get_contents(ROOT . '/Includes/Object/Visualization/' . $this->visualization . '/Formats/' . $format . '.json'), true);
+        if (is_array($format)) {
+            $this->object = $format;
+        } else {
+            
+            $this->object = $this->getFormat($format);
+        }
 
         $this->obj = new VisualizationObject($this->object);
+    }
+
+    /**
+     * Returns format
+     *
+     * @param string $format Path to format
+     * 
+     * @return void
+     */
+    private function getFormat( string $format )
+    {
+        $_t = explode('\\', get_class($this));
+        array_shift($_t);
+        array_pop($_t);
+
+        $path = ROOT . '/Includes/Object/Visualization/' . implode('/', $_t) . '/Formats' . $format . '.json';
+        if (str_starts_with($format, '$')) {
+                
+            $ex = array_filter(explode('/', mb_substr($format, 1)));
+            $path = ROOT . '/Plugins/' . array_shift($ex) . '/Object/Visualization/' . implode('/', $_t) . '/' . implode('/', $ex) .  '.json';
+        }
+
+        if (file_exists($path) === false) {
+            throw new \Exception\System('Hledaný formát \'' . $path . '\' nebyl nalezen!');
+        }
+        
+        return json_decode(file_get_contents($path), true);
     }
     
     /**
@@ -88,6 +136,34 @@ class Visualization
     public function disable()
     {   
         $this->obj->set->options('disabled', true);
+
+        return $this;
+    }
+
+    /**
+     * Sets ID
+     *
+     * @param int $ID The ID
+     * 
+     * @return $this
+     */
+    public function id( int $ID )
+    {   
+        $this->obj->set->options('id', $ID);
+
+        return $this;
+    }
+
+    /**
+     * Sets type
+     *
+     * @param string $type The type
+     * 
+     * @return $this
+     */
+    public function type( string $type )
+    {   
+        $this->obj->set->options('type', $type);
 
         return $this;
     }
@@ -238,7 +314,7 @@ class Visualization
      */
     public function delete( string $object )
     {
-        $this->obj->set->delete->body($object);
+        $this->obj->delete->body($object);
         return $this;
     }
 
@@ -257,47 +333,107 @@ class Visualization
             }
             return $this;
         }
-
+        
         if (is_null($button)) {
-            $this->obj->set->delete->button();
+            $this->obj->delete->button();
             return $this;
         }
+    
+        $this->obj->delete->button($button);
 
-        $this->obj->set->delete->button($button);
         return $this;
+    }
+    
+    /**
+     * Deletes default object in current object
+     *
+     * @return $this
+     */
+    public function deleteDefaultObject()
+    {
+        $this->obj->delete->body($this->default);
+
+        return $this;
+    }
+
+    /**
+     * Converts data
+     * 
+     * @param array $convert Convert data
+     * 
+     * @return $this
+     */
+    public function convert( array $convert = null )
+    {
+        if (is_null($convert)) {
+
+            $this->up()->down($this->default);
+            $convert = $this->obj->get->data('convert') ?: [];
+            $this->up()->down($this->lastInsertName());
+        }
+
+        foreach ($convert as $to => $from) {
+            
+            if (is_array($from)) {
+                continue;
+            }
+            
+            if (in_array($to, ['title', 'desc'])) {
+                $this->obj->set->data($to, '$' . $this->obj->get->data($from));
+                continue;
+            }
+            $this->obj->set->data($to, $this->obj->get->data($from));
+        }
+
+        $this->obj->delete->data('convert');
     }
 
     /**
      * Appends another object to current object
      *
      * @param  array $data Object data
+     * @param  callable $function The function
+     * @param  int $i Number of object
+     * @param  int $count Number of objects
      * 
      * @return $this
      */
-    public function appTo( array $data )
+    public function appTo( array $data, string $default = 'default', callable $function = null, int $i = 1, int $count = 1 )
     {
+        $this->default = $default;
+
         if (count($this->list) === 3) {
             $this->row($this->list[1]);
         }
 
-        foreach ($this->obj->get->convert() as $to => $from) {
-            
-            if (in_array($to, ['title', 'desc'])) {
-                $data[$to] = '$' . $data[$from];
-                continue;
-            }
-            
-            $data[$to] = $data[$from] ?? '';
+        $this->previousFillName = $this->nest[array_key_last($this->nest)] ?? $default;
+
+        $this->lastInsertName = mt_rand();
+        $this->obj->set->body->after($this->previousFillName, [$this->lastInsertName => $this->obj->get->body($default)]);
+        
+        $this->down($this->lastInsertName);
+        
+        $this->obj->set->data(array_merge($this->obj->get->data(), $data));
+        $this->convert($this->obj->get->data('convert'));
+        
+
+        if (($data['checked'] ?? false) === true) {
+            $this->obj->set->options('checked', true);
+        }
+
+        if (empty($this->nest) === false) {
+            $this->nest[array_key_last($this->nest)] = $this->lastInsertName;
         }
         
-        $_obj = $this->obj->get->body('default');
-        if (isset($_obj['data']['convert'])) {
-            unset($_obj['data']['convert']);
+        $_i = $this->i;
+        if ($function) {
+            $function($this, $this->i, $count);
         }
         
-        $_obj['data'] = array_merge($_obj['data'] ?? [], $data);
-        
-        $this->obj->set->body($this->lastInsertName = mt_rand(), $_obj);
+        $this->i = $_i;
+        $this->i++;
+
+        $this->up();
 
         $this->clb('appTo');
 
@@ -308,14 +444,23 @@ class Visualization
      * Adds to current object body another objects 
      *
      * @param  array $data Objects data
+     * @param string $default Name of object
+     * @param  callable $function The Function
      * 
      * @return $this
      */
-    public function fill( array $data )
+    public function fill( array $data, string $default = 'default', callable $function = null )
     {
+        $this->i = 1;
+
+        array_push($this->nest, $default);
         foreach ($data as $row) {
-            $this->appTo($row);
+            $this->appTo(data: $row, default: $default, function: $function, i: $this->i, count: count($data));
         }
+        array_pop($this->nest);
+
+        $this->obj->delete->body($default);
+
         return $this;
     }
     
@@ -343,48 +488,89 @@ class Visualization
      */
     public function each_ini( \Visualization\Visualization $visual, string $name )
     {
-        // DELETE DEFAULT OBJECTS
-        if ($name === 'default') {
-            $this->obj->set->delete->delete();
+        // DELETE HIDDEN OBJECTS
+        if ($visual->obj->get->options('hide') === true) {
+            $visual->obj->delete->delete();
             return false;
         }
 
-        // DELETE HIDDEN OBJECTS
-        if ($visual->obj->get->options('hide') === true) {
-            $visual->obj->set->delete->delete();
+        if ($name === 'default') {
+            $visual->obj->delete->delete();
             return false;
         }
-        
+
         // MOVE BOTTOM ROWS FROM BODY TO BOTTOM
-        if ($visual->obj->get->body('bottom')) {
+        if ($visual->obj->is->body('bottom')) {
             $cache = $visual->obj->get->body('bottom');
-            $visual->obj->set->delete->body('bottom');
+            $visual->obj->delete->body('bottom');
             $visual->obj->set->body('bottom', $cache);
         }
 
+        if ($string = $visual->obj->get->data('href')) {
+            foreach ($visual->obj->get->data() as $key => $value) {
+                if (!is_array($value)) {
+                    $string = strtr($string, ['{' . $key . '}' => $value]);
+                }
+            }
+
+            switch (substr($string, 0, 1)) {
+            
+                case '$':
+                    $string = substr($string, 1);
+                break;
+
+                case '~':
+                    $string = Url::build(substr($string, 1));
+                break;
+
+                default:
+                    $string = Url::build(Url::getURL() . $string);
+                break;
+            }
+
+
+            $visual->obj->set->data('href', $string);
+        }
+        
         foreach (array_filter((array)$visual->obj->get->options('template')) as $name => $template) {
-                
+
             switch (substr($template, 0, 1)) {
-                
+
                 // LOAD TEMPLATE FROM ROOT
                 case '~':
-                    $visual->obj->set->template($name, $path = ROOT . substr($template, 1));
+                    $path = ROOT . substr($template, 1);
                 break;
 
                 // LOAD TEMPLATE FROM VISUALIZATION TEMPLATE
-                case '$':
-                    $visual->obj->set->template($name, $path = ROOT . $visual->templatePath . substr($template, 1));
+                case '%':
+                    $path = ROOT . $visual->templatePath . substr($template, 1);
                 break;
 
-                // LOAD TEMPLATE FROM DEFAULT STYLE TEMPLATE
+                // LOAD TEMPLATE FROM PLUGIN
+                case '$':
+                    $path = $visual->template->template($template);
+                break;
+
+                // LOAD TEMPLATE FROM DEFAULT STYLE
                 default:
-                    $visual->obj->set->template($name, $path = $visual->template->template('/Blocks/' . $visual->visualization . $template));                    
+                    if (str_contains($template, ROOT)) {
+                        $path = $template;
+                        break;
+                    }
+
+                    $path = $visual->template->template('/Blocks/Visualization/' . $visual->visualization . $template);
                 break;
             }
-            
+
             if (file_exists($path) === false) {
                 throw new \Exception\System($visual->visualization . ' vyžaduje šablonu ' . $path);
             }       
+
+            if (is_string($name)) {
+                $visual->obj->set->template($name, $path);
+            } else {
+                $visual->obj->set->options('template', $path);
+            }
         }
     }
     
@@ -399,8 +585,83 @@ class Visualization
     {
         // DELETE OBJECT IF BODY IS EMPTY
         if (!$visual->obj->get->body() and $visual->obj->is->body()) {
-            $visual->obj->set->delete->delete();
+            $visual->obj->delete->delete();
         }
+    }
+
+    /**
+     * Creates object in current relay
+     *
+     * @param  string $objectName Name of new Object
+     * @param string|int $previousObject Name  of previous object
+     * @param string $pathToFormat
+     * 
+     * @return void
+     */
+    public function createObject( string $objectName, string|int $previousObject = null )
+    {
+        if (is_null($previousObject)) {
+         
+            $this->obj->set->body($objectName, [
+                'options' => [],
+                'data' => []
+            ]);
+        } else if ($previousObject === 1) {
+
+            $this->obj->set->body([
+                $objectName => [
+                    'options' => [],
+                    'data' => []
+                ]
+            ] + $this->obj->get->body());
+
+        } else {
+            
+            $this->obj->set->body->before($previousObject, [
+                $objectName => [
+                    'options' => [],
+                    'data' => []
+                    ]
+                ]
+            );
+        }
+    }
+
+    /**
+     * Imports format before given object
+     *
+     * @param string $pathToFormat Path to format file
+     * @param string $previousObject Name of previous object
+     * 
+     * @return void
+     */
+    public function import( string $pathToFormat, string $previousObject = null )
+    {
+        $object = $this->getFormat($pathToFormat)['body'];
+        if (is_null($previousObject)) {
+            
+            $this->obj->set->body($this->obj->get->body() + $object);
+            
+        } else if ($previousObject == 1) {
+            
+            $this->obj->set->body($object + $this->obj->get->body());
+            
+        } else {
+            
+            $this->obj->set->body->before($previousObject, $object);
+        }
+    }
+
+    /**
+     * Returns position of searched object in current relay
+     *
+     * @param  string $objectName Name of searched Object
+     * 
+     * @return int
+     */
+    public function getPosition( string $objectName )
+    {
+        return $this->obj->get->position($objectName);
     }
 
     /**
@@ -418,10 +679,9 @@ class Visualization
         // SYNC OBJECT
         $this->sync();
 
-        // IF IS ENABLED DELETEING OBJECTS WITH EMPTY BODY
         if ($this->hideEmpty === true) {
 
-            // SET FUNCTION
+            // REMOVE OBJECT WITH EMPTY BODY
             $this->each('empty');
         }
 
@@ -436,7 +696,6 @@ class Visualization
         // SYNC OBJECT
         $this->sync();
 
-        // RETURN OBJECT
         return $this->object;
     }
     
@@ -496,16 +755,21 @@ class Visualization
      * Sets current object
      *
      * @param  string $objName Object name
+     * @param callable $function The Function 
      * 
      * @return $this
      */
-    public function object( string $objName )
+    public function object( string $objName, callable $function = null )
     {
         $this->update();
         
         $this->list = [0 => $objName];
 
         $this->obj = new VisualizationObject($this->object['body'][$objName] ?? []);
+
+        if ($function) {
+            $function($this);
+        }
 
         return $this;
     }
@@ -514,10 +778,11 @@ class Visualization
      * Sets current row
      *
      * @param  string $rowName Row name
+     * @param callable $function The Function 
      * 
      * @return $this
      */
-    public function row( string $rowName )
+    public function row( string $rowName, callable $function = null )
     {
         $this->update();
         $this->list = [
@@ -526,6 +791,10 @@ class Visualization
         ];        
         $this->obj = new VisualizationObject($this->object['body'][$this->list[0]]['body'][$rowName] ?? []);
 
+        if ($function) {
+            $function($this);
+        }
+
         return $this;
     }
 
@@ -533,10 +802,11 @@ class Visualization
      * Sets current option
      *
      * @param  string $optionName Option name
+     * @param callable $function The Function 
      * 
      * @return $this
      */
-    public function option( string $optionName )
+    public function option( string $optionName, callable $function = null )
     {
         $this->update();
         $this->list = [
@@ -548,6 +818,10 @@ class Visualization
         $this->obj = new VisualizationObject(
             $this->object['body'][$this->list[0]]['body'][$this->list[1]]['body'][$optionName] ?? []
         );
+
+        if ($function) {
+            $function($this);
+        }
 
         return $this;
     }
@@ -600,12 +874,28 @@ class Visualization
      */
     public function up()
     {
-        $key = $this->list[count($this->list) - 2];
+        if (count($this->list) >= 2) {
+            $key = $this->list[count($this->list) - 2];
+        }
         return match (count($this->list)) {
             0 => $this->sync(),
             1 => $this->sync(),
             2 => $this->object($key),
             3 => $this->row($key)
+        };
+    }
+
+    /**
+     * Moves one object down
+     *
+     * @return $this
+     */
+    public function down( string $object )
+    {
+        return match (count($this->list)) {
+            0 => $this->object($object),
+            1 => $this->row($object),
+            2 => $this->option($object)
         };
     }
 }

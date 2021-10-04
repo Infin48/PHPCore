@@ -12,6 +12,8 @@
 
 namespace Process;
 
+use Model\JSON;
+
 /**
  * Admin
  */
@@ -37,6 +39,7 @@ class Admin extends \Process\ProcessExtend
         ]
     ];
 
+
     /**
      * Body of process
      *
@@ -44,7 +47,9 @@ class Admin extends \Process\ProcessExtend
      */
     public function process()
     {
-        $this->db->query('INSERT INTO `phpcore_users` (`user_name`, `user_email`, `user_password`, `user_profile_image`, `group_id`, `is_admin`, `user_topics`) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+        $this->db->query('TRUNCATE `phpcore_users`');
+        $this->db->query('INSERT INTO `phpcore_users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_profile_image`, `group_id`, `user_admin`, `user_topics`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
+            '1',
             $this->data->get('user_name'),
             $this->data->get('user_email'),
             password_hash($this->data->get('user_password'), PASSWORD_DEFAULT),
@@ -54,9 +59,10 @@ class Admin extends \Process\ProcessExtend
             '1'
         ]);
 
-        $this->system->install([
-            'db' => true,
-            'page' => 5,
-        ]);
+        $JSON = new JSON('/Install/Includes/Settings.json');
+        $JSON->set('db', true);
+        $JSON->set('page', 'install-site');
+        $JSON->set('back', false);
+        $JSON->save();
     }
 }

@@ -21,11 +21,14 @@ $language['L_NAVBAR'] = [
     'L_SETTINGS' => 'Nastavení',
     'L_SETTINGS_SITE' => 'Globální nastavení',
     'L_SETTINGS_REGISTRATION' => 'Registrace',
+    'L_SETTINGS_URL' => 'Nastavení URL',
     'L_SETTINGS_EMAIL' => 'Nastavení e-mailů',
     'L_SETTINGS_OTHER' => 'Ostatní',
+    'L_SETTINGS_LANGUAGE' => 'Jazyk',
 
     'L_UPDATE' => 'Aktualizace',
     'L_TEMPLATE' => 'Vzhled',
+    'L_PLUGIN' => 'Pluginy',
     'L_USER' => 'Uživatelé',
 
     'L_NOTIFICATION' => 'Oznámení',

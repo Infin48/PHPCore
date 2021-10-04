@@ -30,7 +30,7 @@ class Edit extends \Process\ProcessExtend
                 'type' => 'text',
                 'required' => true
             ],
-            'is_main' => [
+            'forum_main' => [
                 'type' => 'checkbox'
             ],
             'category_id_new' => [
@@ -91,13 +91,18 @@ class Edit extends \Process\ProcessExtend
 
         }
         
-        if ($this->data->is('is_main')) {
-            $this->db->update(TABLE_FORUMS, ['is_main' => '0']);
+        $isMain = $this->data->get('forum_main');
+        if ($this->data->is('enable_link')) {
+            $isMain = 0;
         } 
 
+        if ($this->data->is('forum_main')) {
+            $this->db->update(TABLE_FORUMS, ['forum_main' => '0']);
+        }
+        
         // UPDATE FORUM
         $this->db->update(TABLE_FORUMS, [
-            'is_main'           => $this->data->get('is_main'),
+            'forum_main'        => $isMain,
             'forum_link'        => $this->data->is('enable_link') ? $this->data->get('forum_link') : '',
             'forum_url'         => parse($this->data->get('forum_name')),
             'forum_name'        => $this->data->get('forum_name'),
@@ -105,7 +110,7 @@ class Edit extends \Process\ProcessExtend
             'forum_icon_style'  => $this->data->get('forum_icon_style'),
             'forum_description' => $this->data->get('forum_description')
         ], $this->data->get('forum_id'));
-
+        
         // ADD RECORD TO LOG
         $this->log($this->data->get('forum_name'));
     }

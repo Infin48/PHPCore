@@ -18,18 +18,24 @@ namespace Visualization;
 class VisualizationObjectSet
 {
     /**
-     * @var object $delete VisualiaztionObjectDelete
+     * @var \Visualization\VisualizationObject $object Object
      */
-    public VisualizationObjectDelete $delete;
+    private \Visualization\VisualizationObject $object;
+
+    /**
+     * @var \Visualization\VisualizationObjectSetBody $object Object
+     */
+    public \Visualization\VisualizationObjectSetBody $body;
 
     /**
      * Constructor
      *
-     * @param  array $object
+     * @param  \Visualization\VisualizationObject $object
      */
-    public function __construct( array $object )
+    public function __construct( \Visualization\VisualizationObject $object )
     {
-        $this->delete = new VisualizationObjectDelete($object);
+        $this->body = new VisualizationObjectSetBody($object);
+        $this->object = $object;
     }
 
     /**
@@ -42,20 +48,25 @@ class VisualizationObjectSet
      */
     public function set( string $key, mixed $value )
     {
-        $this->delete->object[$key] = $value;
+        $this->object->object[$key] = $value;
     }
     
     /**
      * Sets value to data
      *
-     * @param  string $key
+     * @param  string|array $key
      * @param  mixed $value
      * 
      * @return void
      */
-    public function data( string $key, mixed $value )
+    public function data( string|array $key, mixed $value = null )
     {
-        $this->delete->object['data'][$key] = $value;
+        if (is_null($value)) {
+            $this->object->object['data'] = $key;
+            return;
+        }
+
+        $this->object->object['data'][$key] = $value;
     }
 
     /**
@@ -68,7 +79,7 @@ class VisualizationObjectSet
      */
     public function options( string $key, mixed $value )
     {
-        $this->delete->object['options'][$key] = $value;
+        $this->object->object['options'][$key] = $value;
     }
 
     /**
@@ -79,9 +90,14 @@ class VisualizationObjectSet
      * 
      * @return void
      */
-    public function template( string $key, mixed $value )
+    public function template( string $key, mixed $value = null )
     {
-        $this->delete->object['options']['template'][$key] = $value;
+        if (is_null($value)) {
+            $this->object->object['options']['template'] = $key;
+            return;
+        }
+
+        $this->object->object['options']['template'][$key] = $value;
     }
 
     /**
@@ -94,20 +110,25 @@ class VisualizationObjectSet
      */
     public function button( string $key, mixed $value )
     {
-        $this->delete->object['data']['button'][$key] = $value;
+        $this->object->object['data']['button'][$key] = $value;
     }
 
     /**
-     * Adds row to body
+     * Adds object to body
      *
-     * @param  string $key
+     * @param  string|array $key
      * @param  array $value
      * 
      * @return void
      */
-    public function body( string $key, array $value )
+    public function body( string|array $key, array $value = null )
     {
-        $this->delete->object['body'][$key] = $value;
+        if (is_null($value)) {
+            $this->object->object['body'] = $key;
+            return;
+        }
+
+        $this->object->object['body'][$key] = $value;
     }
 
     /**
@@ -120,6 +141,6 @@ class VisualizationObjectSet
      */
     public function notice( string $key, mixed $value )
     {
-        $this->delete->object['data']['notice'][$key] = $value;
+        $this->object->object['data']['notice'][$key] = $value;
     }
 }

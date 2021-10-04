@@ -18,16 +18,16 @@ namespace Visualization;
 class VisualizationObjectIs
 {
     /**
-     * @var array $object Object
+     * @var \Visualization\VisualizationObject $object Object
      */
-    protected array $object = [];
+    public \Visualization\VisualizationObject $object;
 
     /**
      * Constructor
      *
-     * @param  array $object
+     * @param  \Visualization\VisualizationObject $object
      */
-    public function __construct( array $object )
+    public function __construct( \Visualization\VisualizationObject $object )
     {
         $this->object = $object;
     }
@@ -41,7 +41,7 @@ class VisualizationObjectIs
      */
     public function data( string $key )
     {
-        return isset($this->object['data'][$key]);
+        return isset($this->object->object['data'][$key]);
     }
 
     /**
@@ -53,7 +53,7 @@ class VisualizationObjectIs
      */
     public function options( string $key )
     {
-        return isset($this->object['options'][$key]);
+        return isset($this->object->object['options'][$key]);
     }
 
     /**
@@ -65,7 +65,7 @@ class VisualizationObjectIs
      */
     public function template( string $key )
     {
-        return isset($this->object['options']['template'][$key]);
+        return isset($this->object->object['options']['template'][$key]);
     }
 
     /**
@@ -75,7 +75,7 @@ class VisualizationObjectIs
      */
     public function convert()
     {
-        return isset($this->object['body']['default']['data']['convert']);
+        return isset($this->object->object['body']['default']['data']['convert']);
     }
 
     /**
@@ -88,9 +88,9 @@ class VisualizationObjectIs
     public function body( string $key = null )
     {
         if (is_null($key)) {
-            return isset($this->object['body']);
+            return isset($this->object->object['body']);
         }
 
-        return isset($this->object['body'][$key]);
+        return isset($this->object->object['body'][$key]);
     }
 }

@@ -12,7 +12,6 @@
 
 namespace Page\Admin\Menu\Show;
 
-use Block\Page as BlockPage;
 use Block\ButtonSub as _ButtonSub;
 
 use Visualization\Field\Field;
@@ -28,7 +27,7 @@ class Buttonsub extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/menu/',
         'permission' => 'admin.menu'
     ];
@@ -44,28 +43,30 @@ class Buttonsub extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Menu');
+        $breadcrumb = new Breadcrumb('/Admin/Menu');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // BLOCK
-        $page = new BlockPage();
         $dropdown = new _ButtonSub();
 
-        // PAGES
-        $pages = $page->getAll();
-
         // DROPDOWN
-        $buttonSub = $dropdown->get($this->getID()) or $this->error();
+        $buttonSub = $dropdown->get($this->url->getID()) or $this->error();
+
+        // BUTTON LINK TYPE
+        $linkType = match ($buttonSub['button_sub_link_type']) {
+            1 => 'local',
+            2 => 'external'
+        };
 
         // FIELD
-        $field = new Field('Admin/Menu/Sub');
+        $field = new Field('/Admin/Menu/Sub');
         $field->data($buttonSub);
         $field->object('sub')->title('L_MENU_BUTTON_EDIT')
-            ->row('page_id')->fill($pages);
+            ->row('button_sub_link_type')->option($linkType)->check();
         $this->data->field = $field->getData();
 
         // EDIT SUB BUTTON
-        $this->process->form(type: 'Admin/Menu/ButtonSub/Edit', data: [
+        $this->process->form(type: '/Admin/Menu/ButtonSub/Edit', data: [
             'button_sub_id' => $buttonSub['button_sub_id']
         ]);
 

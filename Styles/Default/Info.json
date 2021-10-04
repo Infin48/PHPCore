@@ -1,11 +1,20 @@
 {
-    "name": "Výchozí vzhled PHPCore",
+    "name": "PHPCore",
+    "desc": "PHPCore - Default template",
+    "version": {
+        "current": "1.1.0",
+        "system":["1.1.0"]
+    },
+    "author": {
+        "name": "Infin48",
+        "link": "https://github.com/Infin48"
+    },
     "body": {
-        "Terms": "Body2",
-        "Login": "Body2",
-        "Register": "Body2",
-        "Forgot/Change": "Body2",
-        "Forgot/Send": "Body2",
-        "Error": "Body2"
+        "/Terms": "/Body2",
+        "/Login": "/Body2",
+        "/Register": "/Body2",
+        "/Forgot/Change": "/Body2",
+        "/Forgot/Send": "/Body2",
+        "/Error": "/Body2"
     }
 }

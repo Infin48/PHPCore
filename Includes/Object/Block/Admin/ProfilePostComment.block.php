@@ -27,7 +27,7 @@ class ProfilePostComment extends \Block\ProfilePostComment
     public function get( int $profilePostCommentID )
     {
         return $this->db->query('
-            SELECT ppc.user_id, profile_post_comment_id, pp.profile_id, u.user_name, u.user_id AS profile_user_id, u.user_name AS profile_user_name,
+            SELECT ppc.user_id, profile_post_comment_id, pp.profile_id, u.user_name, u.user_id AS profile_user_id, u.user_name AS profile_user_name, ppc.profile_post_id,
                 (SELECT COUNT(*) FROM ' . TABLE_PROFILE_POSTS . '2 WHERE pp2.profile_post_id >= ppc.profile_post_id AND pp2.profile_id = pp.profile_id) AS position
             FROM ' . TABLE_PROFILE_POSTS_COMMENTS . '
             LEFT JOIN ' . TABLE_PROFILE_POSTS . ' ON pp.profile_post_id = ppc.profile_post_id
@@ -69,11 +69,12 @@ class ProfilePostComment extends \Block\ProfilePostComment
     public function getAfterNext( int $profilePostID, int $number = 5 )
     {
         return array_reverse($this->db->query('
-            SELECT ppc.*, r.report_status, ' . $this->select->user() . ', user_last_activity
+            SELECT ppc.*, r.report_status, ' . $this->select->user() . ', user_last_activity, pp.deleted_id as profile_post_deleted_id
             FROM ' . TABLE_PROFILE_POSTS_COMMENTS . '
             ' . $this->join->user('ppc.user_id'). '
             LEFT JOIN ' . TABLE_REPORTS . ' ON r.report_id = ppc.report_id
-            WHERE profile_post_id = ?
+            LEFT JOIN ' . TABLE_PROFILE_POSTS . ' ON pp.profile_post_id = ppc.profile_post_id
+            WHERE ppc.profile_post_id = ?
             GROUP BY ppc.profile_post_comment_id
             ORDER BY profile_post_comment_created DESC
             LIMIT ?, 18446744073709551615

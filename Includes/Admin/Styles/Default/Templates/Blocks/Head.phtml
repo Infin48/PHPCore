@@ -1,10 +1,10 @@
 <head>    
     <meta charset="UTF-8" />
-    <title><?= $this->data->head['title'] ?> | <?= $this->system->settings->get('site.name') ?></title>
+    <title><?= $this->data->head['title'] ?> | <?= $this->system->get('site.name') ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="<?= $this->data->head['description'] ?>" />
 
-    <link rel="icon" href="<?= $this->data->data['favicon'] ?>?<?= $this->system->settings->get('session') ?>" type="image/svg+xml">
+    <link rel="icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" type="image/svg+xml">
 
     <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff2') ?>" crossorigin>
     <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff') ?>" crossorigin>
@@ -15,13 +15,13 @@
     <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff2') ?>" crossorigin>
     <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff') ?>" crossorigin>
 
-    <link rel="preload" as="style" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?180">
+    <link rel="preload" as="style" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?<?= $this->system->get('session.styles') ?>">
     <link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css">
 
-    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->settings->get('session') ?>">
-    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->settings->get('session') ?>">
+    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->get('session.groups') ?>">
+    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->get('session.labels') ?>">
 
-    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?65165">
-    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Quicksand.min.css') ?>?15">
+    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?<?= $this->system->get('session.styles') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Quicksand.min.css') ?>?<?= $this->system->get('session.styles') ?>">
     <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
 </head>

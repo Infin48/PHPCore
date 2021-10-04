@@ -7,15 +7,16 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "Conversation"
+                        "type": "/Conversation"
                     },
                     "data": {
                         "convert": {
                             "id": "conversation_id",
                             "text": "conversation_text",
                             "name": "conversation_name",
-                            "created": "conversation_created",
-                            "edited_time": "conversation_edited"
+                            "edited": "conversation_edited",
+                            "edited_at": "conversation_edited_at",
+                            "created": "conversation_created"
                         }
                     }
                 }
@@ -25,15 +26,16 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "ConversationMessage"
+                        "type": "/ConversationMessage"
                     },
                     "data": {
                         "convert": {
                             "id": "conversation_message_id",
                             "text": "conversation_message_text",
                             "name": "conversation_name",
-                            "created": "conversation_message_created",
-                            "edited_time": "conversation_message_edited"
+                            "edited": "conversation_message_edited",
+                            "edited_at": "conversation_message_edited_at",
+                            "created": "conversation_message_created"
                         },
                         "button": {
                             "quote": {},
@@ -45,7 +47,7 @@
                     "options": {
                         "hide": true,
                         "template": {
-                            "body": "$/ConversationMessageNew.phtml"
+                            "body": "%/ConversationMessageNew.phtml"
                         }
                     }
                 }

@@ -2,17 +2,17 @@
     $cache = $this->data->field;
     $this->data->field['body'] = ['other' => $cache['body']['other']];
 ?>
-<?php require $this->template->template('/Blocks/Field/Field.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
 
 <?php
     $this->data->field['body'] = ['writable' => $cache['body']['writable']];
 ?>
 <div class="lists">
     <div class="lists-middle">
-        <?php require $this->template->template('/Blocks/Field/Field.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
         <?php
             $this->data->field['body'] = ['extension' => $cache['body']['extension']];;
         ?>
-        <?php require $this->template->template('/Blocks/Field/Field.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
     </div>
 </div>

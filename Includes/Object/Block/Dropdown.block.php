@@ -26,6 +26,6 @@ class Dropdown extends Block
      */
     public function get( int $dropdownID )
     {
-        return $this->db->query('SELECT * FROM ' . TABLE_BUTTONS . ' WHERE is_dropdown = 1 AND button_id = ?', [$dropdownID]);
+        return $this->db->query('SELECT * FROM ' . TABLE_BUTTONS . ' WHERE button_dropdown = 1 AND button_id = ?', [$dropdownID]);
     }
 }

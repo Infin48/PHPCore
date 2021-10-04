@@ -12,6 +12,8 @@
 
 namespace Process;
 
+use Model\JSON;
+
 /**
  * Site
  */
@@ -40,16 +42,19 @@ class Site extends \Process\ProcessExtend
      */
     public function process()
     {
-        $settings = [];
-        $settings['site.started'] = DATE_DATABASE;
-        $settings['site.name'] = $this->data->get('name');
-        $settings['site.updated'] = DATE_DATABASE;
-        $settings['site.description'] = $this->data->get('description');
-        $this->system->set($settings);
-
-        $this->system->install([
-            'db' => true,
-            'page' => 6
+        $JSON = new JSON('/Install/Includes/Settings.json');
+        
+        $this->db->table(TABLE_SETTINGS, [
+            'site.language' => $JSON->get('language'),
+            'site.started' => DATE_DATABASE,
+            'site.name' => $this->data->get('name'),
+            'site.updated' => DATE_DATABASE,
+            'site.description' => $this->data->get('description')
         ]);
+
+        $JSON->set('db', true);
+        $JSON->set('page', 'end');
+        $JSON->set('back', false);
+        $JSON->save();
     }
 }

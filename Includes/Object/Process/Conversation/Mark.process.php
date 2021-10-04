@@ -42,6 +42,6 @@ class Mark extends \Process\ProcessExtend
             'conversation_id' => $this->data->get('conversation_id'),
             'user_id' => LOGGED_USER_ID
         ]);
-        $this->redirectTo('/user/conversation/');
+        $this->redirect('/user/conversation/');
     }
 }

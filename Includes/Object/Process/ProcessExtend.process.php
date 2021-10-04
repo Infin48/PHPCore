@@ -25,6 +25,11 @@ class ProcessExtend {
     public string $redirectURL = '';
 
     /**
+     * @var bool $refresh Refresh value
+     */
+    public bool $refresh = false;
+
+    /**
      * @var string $process Name of process
      */
     private string $process;
@@ -32,12 +37,12 @@ class ProcessExtend {
     /**
      * @var int $id ID
      */
-    protected int $id;
+    protected static int $id;
     
     /**
      * @var \Model\Database\Query $db Database
      */
-    public \Model\Database\Query $db;
+    protected \Model\Database\Query $db;
     
     /**
      * @var \Model\Permission $perm Permission 
@@ -50,9 +55,9 @@ class ProcessExtend {
     protected \Process\ProcessData $data;
 
     /**
-     * @var \Model\System\System $system System
+     * @var \Model\System $system System
      */
-    protected \Model\System\System $system;
+    protected \Model\System $system;
 
     /**
      * @var \Process\ProcessCheck $check ProcessCheck
@@ -63,10 +68,10 @@ class ProcessExtend {
      * Constructor
      *
      * @param  string $process Name of process
-     * @param  \Model\System\System $system System
+     * @param  \Model\System $system System
      * @param  \Model\Permission $perm Permission
      */
-    public function __construct( string $process, \Model\System\System $system, \Model\Permission $perm )
+    public function __construct( string $process, \Model\System $system, \Model\Permission $perm )
     {
         $this->db = new Query();
         $this->perm = $perm;
@@ -82,7 +87,7 @@ class ProcessExtend {
      */
     public function getID()
     {
-        return $this->id ?? $this->db->lastInsertId();
+        return self::$id ?? $this->db->lastInsertId();
     }
     
     /**
@@ -104,9 +109,19 @@ class ProcessExtend {
      * 
      * @return void
      */
-    protected function redirectTo( string $path )
+    protected function redirect( string $path )
     {
         $this->redirectURL = $path;
+    }
+
+    /**
+     * Refresh page after process
+     * 
+     * @return void
+     */
+    protected function refresh()
+    {
+        $this->refresh = true;
     }
 
     /**
@@ -168,8 +183,24 @@ class ProcessExtend {
      */
     protected function updateSession()
     {
-        $settings = json_decode(file_get_contents(ROOT . '/Includes/Settings/Settings.json'), true);
-        $settings['session'] = RAND;
-        file_put_contents(ROOT . '/Includes/Settings/Settings.json', json_encode($settings),  JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $this->db->table(TABLE_SETTINGS, [
+            'session' => RAND
+        ]);
+    }
+
+    /**
+     * Executes process
+     *
+     * @return void
+     */
+    protected function require( string $process, array $data = [] )
+    {
+        $process = 'Process\\' . implode('\\', explode('/', $process));
+        $process = new $process($process, $this->system, $this->perm);
+        $process->data($data);
+        $process->process();
+
+        $this->refresh = $process->refresh;
+        $this->redirectURL = $process->redirectURL;
     }
 }

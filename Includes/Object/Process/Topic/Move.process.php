@@ -21,27 +21,25 @@ class Move extends \Process\ProcessExtend
      * @var array $require Required data
      */
     public array $require = [
-        'data' => [
-            'topic_id',
-            'user_id', // TOPIC USER ID
-            'forum_id', // NEW FORUM ID
-            'topic_name',
+        'form' => [
+            'new_forum_id' => [
+                'type' => 'int',
+                'required' => true,
+                'block' => '\Block\Forum.getAllToMoveID'
+            ]
         ],
-        'block' => [
-            'topic_permission' // TOPIC PERMISSION FROM NEW FORUM
+        'data' => [
+            'user_id', // TOPIC USER ID
+            'topic_id',
+            'topic_name',
+            'current_forum_id' // NEW FORUM ID
         ]
     ];
 
     /**
      * @var array $options Process options
      */
-    public array $options = [
-        'verify' => [
-            'block' => '\Block\Forum',
-            'method' => 'get',
-            'selector' => 'forum_id'
-        ]
-    ];
+    public array $options = [];
 
     /**
      * Body of process
@@ -50,8 +48,8 @@ class Move extends \Process\ProcessExtend
      */
     public function process()
     {
-        if ($this->data->get('topic_permission') == 0) {
-            return false;
+        if ($this->data->get('current_forum_id') == $this->data->get('new_forum_id')) {
+            return true;
         }
 
         // UPDATE STATISTICS IN OLD FORUM
@@ -71,7 +69,14 @@ class Move extends \Process\ProcessExtend
                 f.forum_posts = f.forum_posts + t.topic_posts,
                 t.forum_id = ?
             WHERE t.topic_id = ?
-        ', [$this->data->get('forum_id'), $this->data->get('forum_id'), $this->data->get('topic_id')]);
+        ', [$this->data->get('new_forum_id'), $this->data->get('new_forum_id'), $this->data->get('topic_id')]);
+
+        // SET NEW FORUM ID TO POSTS
+        $this->db->query('
+            UPDATE ' . TABLE_POSTS . '
+            SET p.forum_id = ?
+            WHERE p.topic_id = ?
+        ', [$this->data->get('new_forum_id'), $this->data->get('topic_id')]);
 
         // SEND NOTIFICATION
         $this->notifi(

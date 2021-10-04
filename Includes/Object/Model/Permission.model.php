@@ -20,7 +20,7 @@ class Permission
     /**
      * @var array $list List of permissions
      */
-    private array $list = [
+    private static array $list = [
         'topic' => [
             'topic.edit',
             'topic.lock',
@@ -97,7 +97,7 @@ class Permission
      */
     public function getList()
     {
-        $list = $this->list;
+        $list = self::$list;
         array_push($list['admin'], '*');
 
         return $list;
@@ -111,7 +111,7 @@ class Permission
     public function getPermissions()
     {
         $_permissions = [];
-        foreach ($this->list as $permissions) {
+        foreach (self::$list as $permissions) {
             $_permissions = array_merge($_permissions, $permissions);
         }
 
@@ -149,7 +149,6 @@ class Permission
             }
             return false;
         }
-
 
         if (in_array($permission, $this->userPermission)) {
             return true;
@@ -191,12 +190,10 @@ class Permission
     public function set( array $permissions )
     {
         if (in_array('*', $permissions) or $this->admin === true) {
-
-            foreach ($this->list as $_permissions) {
+            foreach (self::$list as $_permissions) {
                 $this->userPermission = array_merge($this->userPermission, $_permissions);
             }
             return;
-
         }
         $this->userPermission = $permissions;
     }
@@ -242,5 +239,21 @@ class Permission
         }
         
         return false;
+    }
+
+    /**
+     * Adds permission
+     *
+     * @param  string $category Permisison category 
+     * @param  string $permission Permission
+     * 
+     * @return void
+     */
+    public static function add( string $category, string $permission )
+    {
+        if (!isset(self::$list[$category])) {
+            self::$list[$category] = [];
+        }
+        array_push(self::$list[$category], $category . '.' . $permission);
     }
 }

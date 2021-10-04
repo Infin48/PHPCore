@@ -10,6 +10,12 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // DEFINE ROOT
 $ex = explode('/', rtrim($_SERVER['DOCUMENT_ROOT'] . dirname($_SERVER['PHP_SELF']), '/'));
 array_pop($ex);
@@ -41,12 +47,13 @@ ini_set('opcache.enable_cli', 0);
 @ini_set('session.cookie_domain ', $_SERVER['SERVER_NAME']);
 
 spl_autoload_register(function ($class) {
-
+    
     $path = ROOT . '/Install/Includes/' . implode('/', $_path = explode('\\', $class)) . '.';
 
     $path .= match ($_path[0]) {
         'Page' => 'page.php',
         'Model' => 'model.php',
+        'Style' => 'style.php',
         'Process' => 'process.php',
         'Exception' => 'exception.php'
     };
@@ -56,6 +63,7 @@ spl_autoload_register(function ($class) {
         match ($_path[0]) {
             'Page' => throw new \Exception\System('Hledaná stránka \'' . $path . '\' neexistuje!'),
             'Model' => throw new \Exception\System('Hledaný model \'' . $path . '\' neexistuje!'),
+            'Style' => throw new \Exception\System('Hledaná styl \'' . $path . '\' neexistuje!'),
             'Process' => throw new \Exception\System('Hledaný proces \'' . $path . '\' neexistuje!'),
             'Exception' => throw new \Exception\System('Hledaná vyjímka \'' . $path . '\' neexistuje!')
         };
@@ -63,6 +71,11 @@ spl_autoload_register(function ($class) {
     }
     require_once($path);
 });
+
+function refresh()
+{
+    header('Location:/Install/');
+}
 
 // IF WILL BE CAUGHT ANY EXCEPTION SHOW IT
 set_exception_handler(function ($exception) {
@@ -74,5 +87,5 @@ require ROOT . '/Includes/Constants.php';
 
 $router = new Page\Router();
 $router->body();
-$router->showPage();
+\Model\Database::destroy();
 exit();

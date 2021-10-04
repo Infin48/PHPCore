@@ -62,12 +62,12 @@ class User
                 $this->data['unread'] = $user->getUnread($this->data['user_id']);
                 $this->data['user_last_activity'] = date(DATE);
                 $this->data['groupPermission'] = array_filter(explode(',', $this->data['group_permission']));
-                $this->data['group_index'] = $this->data['is_admin'] == 1 ? 9999999999 + 1 : (int)$this->data['group_index'];
+                $this->data['group_index'] = $this->data['user_admin'] == 1 ? 9999999999 + 1 : (int)$this->data['group_index'];
 
                 $this->index = $this->data['group_index'];
-                $this->admin = (bool)$this->data['is_admin'];
+                $this->admin = (bool)$this->data['user_admin'];
 
-                if ($this->data['is_admin'] == 1) {
+                if ($this->data['user_admin'] == 1) {
                     $this->perm->admin();
                 }
                 $this->perm->setIndex($this->data['group_index']);

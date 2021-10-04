@@ -54,11 +54,11 @@ class Delete extends \Process\ProcessExtend
             'deleted_type_user_id' => $this->data->get('user_id')
         ]);
 
-        $this->id = $this->db->lastInsertID();
+        self::$id = $this->db->lastInsertID();
 
         $this->db->query('
             UPDATE ' . TABLE_PROFILE_POSTS_COMMENTS . ' SET deleted_id = ? WHERE profile_post_comment_id = ?
-        ', [$this->id, $this->data->get('profile_post_comment_id')]);
+        ', [self::$id, $this->data->get('profile_post_comment_id')]);
 
         // SEND USER NOTIFICATION
         $this->notifi(

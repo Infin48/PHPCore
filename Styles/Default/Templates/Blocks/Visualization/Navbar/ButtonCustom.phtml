@@ -1,0 +1,11 @@
+<a <?php if (!isset($row['data']['button_dropdown']) or $row['data']['button_dropdown'] == 0) : ?>href="<?= $row['data']['button_link'] ?? $row['data']['button_sub_link'] ?>"<?php endif; ?>>
+    <?php if ($row['data']['button_icon'] ?? false and $row['data']['button_icon_style'] ?? false) : ?>
+        <i class="<?= $row['data']['button_icon_style'] ?> fa-<?= $row['data']['button_icon'] ?>"></i>
+    <?php endif; ?>
+    <span>
+        <?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'], 1) : ${$row['data']['title']} ?>
+        <?php if (isset($row['data']['button_dropdown']) and $row['data']['button_dropdown'] == 1) : ?>
+            <i class="fa fa-caret-down"></i>
+        <?php endif; ?>
+    </span>
+</a>

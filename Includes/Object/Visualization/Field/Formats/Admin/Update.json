@@ -5,9 +5,7 @@
                 "hide": true
             },
             "data": {
-                "title": "L_UPDATE_AVAILABLE",
-                "desc": "L_UPDATE_AVAILABLE_DESC",
-                "empty": "L_UPDATE_NO"
+                "title": "L_UPDATE_AVAILABLE"
             },
             "body": {
                 "tag_name": {
@@ -55,49 +53,38 @@
                         "button": "L_DETAILS"
                     }
                 },
-                "install": {
+                "download": {
                     "options": {
-                        "type": "button"
+                        "type": "button",
+                        "target": "_blank"
                     },
                     "data": {
-                        "href": "~/admin/update/install/",
                         "icon": "fas fa-download",
-                        "desc": "L_UPDATE_INSTALL_DESC",
-                        "title": "L_UPDATE_INSTALL",
-                        "button": "L_UPDATE_INSTALL_BUTTON"
+                        "title": "L_UPDATE_DOWNLOAD",
+                        "button": "L_DOWNLOAD"
                     }
-                }
-            }
-        },
-        "latest": {
-            "options": {
-                "hide": true
-            },
-            "data": {
-                "title": "L_UPDATE_LATEST",
-                "empty": "L_UPDATE_NO"
-            },
-            "body": {
-                "submit": {
+                },
+                "instructions": {
                     "options": {
-                        "type": "button"
+                        "type": "button",
+                        "target": "_blank"
                     },
                     "data": {
-                        "icon": "fas fa-search",
-                        "ajax": "update-search",
-                        "title": "L_UPDATE_SEARCH",
-                        "button": "L_UPDATE_SEARCH"
+                        "icon": "fas fa-book",
+                        "href": "$http://doc.phpcore.cz/general/update/",
+                        "title": "L_UPDATE_INSTRUCTIONS",
+                        "button": "L_DOCUMENTATION"
                     }
                 }
             }
         },
         "empty": {
             "options": {
-                "hide": true
+                "hide": true,
+                "empty": "L_UPDATE_SEARCH_NO"
             },
             "data": {
-                "title": "L_UPDATE_SEARCH_NO",
-                "empty": "L_UPDATE_NO"
+                "title": "L_UPDATE_LATEST"
             },
             "body": {}
         }

@@ -7,7 +7,7 @@
             "data": {
                 "href":"/add/",
                 "icon":"fas fa-envelope",
-                "title":"L_USER_CONVERSATION_NEW"
+                "title":"L_NEW_CONVERSATION"
             }
         }
     }

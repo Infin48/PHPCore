@@ -36,7 +36,7 @@ class Create extends \Process\ProcessExtend
             'forum_link'            => [
                 'type' => 'text'
             ],
-            'is_main'               => [
+            'forum_main'               => [
                 'type' => 'checkbox'
             ],
             'forum_icon'            => [
@@ -76,12 +76,17 @@ class Create extends \Process\ProcessExtend
             WHERE category_id = ?
         ', [$this->data->get('category_id')]);
 
-        if ($this->data->is('is_main')) {
-            $this->db->query('UPDATE ' . TABLE_FORUMS . ' SET is_main = 0');
+        $isMain = $this->data->get('forum_main');
+        if ($this->data->is('enable_link')) {
+            $isMain = 0;
+        } 
+
+        if ($this->data->is('forum_main')) {
+            $this->db->query('UPDATE ' . TABLE_FORUMS . ' SET forum_main = 0');
         }
 
         $this->db->insert(TABLE_FORUMS, [
-            'is_main'           => (int)$this->data->get('is_main'),
+            'forum_main'           => $isMain,
             'forum_url'         => parse($this->data->get('forum_name')),
             'forum_link'        => $this->data->get('forum_link'),
             'forum_name'        => $this->data->get('forum_name'),

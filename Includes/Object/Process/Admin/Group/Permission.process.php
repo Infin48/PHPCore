@@ -23,14 +23,12 @@ class Permission extends \Process\ProcessExtend
     public array $require = [
         'form' => [
             'group_permission'  => [
-                'type' => 'array'
+                'type' => 'array',
+                'block' => '\Model\Permission.getPermissions'
             ]
         ],
         'data' => [
             'group_id',
-            'group_name'
-        ],
-        'block' => [
             'group_name'
         ]
     ];

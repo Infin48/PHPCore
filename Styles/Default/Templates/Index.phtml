@@ -1,4 +1,4 @@
-<?php foreach ($this->data->block['body'] as $objectName => $object) : ?>
+<?php foreach ($this->data->block['body'] ?? [] as $objectName => $object) : ?>
     <?php foreach ((array)$object['body'] as $row) : ?>
         <div class="block block-two-column block-image<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block">
             <?php if (!empty($row['data']['image_url'])) : ?>
@@ -9,7 +9,7 @@
                     <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
                     <a href="<?= $this->build->url->topic($row['data']) ?>"><?= $row['data']['name'] ?></a>
                 </div>
-                <div class="block-content" ajax-selector="content"><?= $row['data']['text'] ?></div>
+                <div class="block-content" ajax-selector="block-content"><?= $row['data']['text'] ?></div>
                 <div class="block-bottom block-bottom-two-column ta-right">
                     <div class="block-bottom-column">
                         <span ajax="title" data-title="<?= $L_POSTS  ?>"><i class="fas fa-comment"></i> <?= $row['data']['topic_posts'] ?></span>

@@ -12,7 +12,7 @@
 
 namespace Process\Admin\Template;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Delete
@@ -49,5 +49,8 @@ class Delete extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('template_name_folder'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

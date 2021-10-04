@@ -1,0 +1,54 @@
+{
+    "body": {
+        "defaults": {
+            "options": {
+                "empty": "L_SETTINGS_URL_DEFAULT_NO"
+            },
+            "data": {
+                "title": "L_SETTINGS_URL_DEFAULT_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "/Admin/Settings/URL"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "settings_url_id",
+                            "title": "settings_url_to",
+                            "desc": "settings_url_from"
+                        },
+                        "button": {
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        },
+        "hidden": {
+            "options": {
+                "empty": "L_SETTINGS_URL_HIDDEN_NO"
+            },
+            "data": {
+                "title": "L_SETTINGS_URL_HIDDEN_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "/Admin/Settings/URL"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "settings_url_id",
+                            "title": "settings_url_to",
+                            "desc": "settings_url_from"
+                        },
+                        "button": {
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

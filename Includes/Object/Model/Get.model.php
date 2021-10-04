@@ -26,7 +26,7 @@ class Get
      */
     public function get( string $key )
     {
-        return preg_replace("/[^A-Za-z0-9_\/]/", '', $_GET[$key] ?? '');
+        return preg_replace("/[^A-Za-z0-9_\/$]/", '', $_GET[$key] ?? '');
     }
     
     /**

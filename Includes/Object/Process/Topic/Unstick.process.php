@@ -50,7 +50,7 @@ class Unstick extends \Process\ProcessExtend
     {
         // UNSTICK TOPIC
         $this->db->update(TABLE_TOPICS, [
-            'is_sticky' => '0'
+            'topic_sticked' => '0'
         ], $this->data->get('topic_id'));
 
         // SEND NOTIFICATION
@@ -62,5 +62,8 @@ class Unstick extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('topic_name'));
+        
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

@@ -36,7 +36,7 @@ class EmailSend extends \Process\ProcessExtend
      */
     public function process()
     {
-        $email = $this->db->query('SELECT user_email FROM ' . TABLE_USERS . ' WHERE is_admin = 1');
+        $email = $this->db->query('SELECT user_email FROM ' . TABLE_USERS . ' WHERE user_admin = 1');
 
         $mail = new MailTest();
         $mail->mail->addAddress($email['user_email']);

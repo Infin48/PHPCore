@@ -1,7 +1,7 @@
 <div class="navbar navbar-top" ajax-selector="navbar navbar-top">
     <div class="navbar-content">
         <div class="navbar-button">
-            <a href="/">
+            <a href="<?= INDEX ?>">
                 <i class="fas fa-angle-left"></i>
                 <span><?= $L_NAVBAR['L_BACK'] ?></span>
             </a>
@@ -20,7 +20,7 @@
     </div>
     <div class="breadcrumb">
         <?php foreach ($this->data->breadcrumb['body'] as $breadcrumb) : ?>
-            <a href="<?= $this->system->url->build($breadcrumb['data']['href']) ?>"><?= $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
+            <a href="<?= $this->url->build($breadcrumb['data']['href']) ?>"><?= $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
         <?php endforeach; ?>
     </div>
 </div>

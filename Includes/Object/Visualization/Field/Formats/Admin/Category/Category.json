@@ -7,7 +7,8 @@
             "body": {
                 "category_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_CATEGORY_NAME",
@@ -16,7 +17,8 @@
                 },
                 "category_description": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_CATEOGRY_DESCRIPTION",

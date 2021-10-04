@@ -17,6 +17,7 @@ $language['L_BREADCRUMB'] = [
     'L_PAGE' => 'Stránky',
     'L_LABEL' => 'Štítky',
     'L_MENU' => 'Menu',
+    'L_PLUGIN' => 'Pluginy',
     'L_NOTIFICATION' => 'Oznámení',
     'L_DELETED' => 'Smazaný obsah',
     'L_DELETED_POST' => 'Smazané příspěvky',

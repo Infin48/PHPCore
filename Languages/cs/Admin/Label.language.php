@@ -12,7 +12,7 @@
 
 $language = array_merge($language, [
     'L_COLOR' => 'Barva',
-    'L_COLOR_INFO'  => 'Název barvy, HEX, RGB nebo RGBA',
+    'L_COLOR_INFO'  => 'Název barvy, HEX, RGB nebo RGBA.',
 
     'L_LABEL' => 'Štítek',
     'L_LABEL_LIST_NO' => 'Žádné štítky',

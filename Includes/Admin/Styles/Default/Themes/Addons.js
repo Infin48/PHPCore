@@ -16,11 +16,10 @@ $('body').on('click', function(event) {
     }
 });
 
-window.onload = function() {
+$(document).ready(function() {
     $('html').removeClass('html-hidden');
-}
+});
 
-// ALLOW FONT AWESOME IN PSEUDO ELEMENTS
 window.FontAwesomeConfig = {
     searchPseudoElements: true
 }
@@ -43,27 +42,29 @@ $('[ajax="collapse"]').on('click', function() {
     $navbarMobile.toggleClass('navbar-opened', !$navbarMobile.hasClass('navbar-opened'));
 });
 
-function scripts($element) {
-    if ($element.is(':checked') && $element.attr('value') == 1) {
-        $('[disable-on="'+$element.attr('name')+'"]').addClass('field-row-disabled');
-        $('[enable-on="'+$element.attr('name')+'"]').removeClass('field-row-disabled');
-        $('[show-on="'+$element.attr('name')+'"]').show();
-        $('[hide-on="'+$element.attr('name')+'"]').hide();
-    } else {
-        $('[disable-on="'+$element.attr('name')+'"]').removeClass('field-row-disabled');
-        $('[enable-on="'+$element.attr('name')+'"]').addClass('field-row-disabled');
-        $('[show-on="'+$element.attr('name')+'"]').hide();
-        $('[hide-on="'+$element.attr('name')+'"]').show();
-    } 
-}
-
 $('input.script[type="radio"], input.script[type="checkbox"]').on('click', function() {
-    scripts($(this));
+    var value = $(this).attr('value');
+
+    if ($(this).attr('type') == 'checkbox') {
+        if ($(this).is(':checked')) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+    }
+
+    $('[show-on^="' + $(this).attr('name') + '"]').hide();
+    $('[show-on="' + $(this).attr('name') + ':' + value + '"]').show();
+    
+    $('[hide-on^="' + $(this).attr('name') + '"]').show();
+    $('[hide-on="' + $(this).attr('name') + ':' + value + '"]').hide();
 });
 
-$('input.script').each(function() {
-    if ($(this).is(':checked') || $(this).attr('type') == 'checkbox') {
-        scripts($(this));
+$('input[type="radio"], input[type="checkbox"]').each(function() {
+    if ($(this).is(':checked')) {
+        $('[show-on="' + $(this).attr('name') + ':' + $(this).attr('value') + '"]').show();
+    } else {
+        $('[show-on="' + $(this).attr('name') + ':' + $(this).attr('value') + '"]').hide();
     }
 });
 
@@ -123,27 +124,29 @@ $.cAjax('up', {
         method: 'get',
         context: {}
     },
-    success: function (settings, $element) {
+    success: {
+        default: function (settings, $element) {
 
-        $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-medium"]');
-        $listPrevMedium = $element.prev('[ajax-selector="list-row"]').children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-medium"]');
+            $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
+            $listPrevMedium = $element.prev('[ajax-selector="list-row"]').children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
 
-        if (!$element.prev().prev().length) {
-            $listMedium.find('[ajax="up"]').remove();
-            $listPrevMedium.find('[ajax="down"]').before('<a class="button button-up" ajax="up"><i class="fas fa-caret-up"></i></a>');
-        }
-
-        if (!$element.next().length) {
-            if ($listMedium.find('[ajax="up"]').length) {
-                $listMedium.find('[ajax="up"]').after('<a class="button button-down" ajax="down"><i class="fas fa-caret-down"></i></a>');
-            } else {
-                $listMedium.prepend('<a class="button button-down" ajax="down"><i class="fas fa-caret-down"></i></a>');
+            if (!$element.prev().prev(':not(.list-row-disabled)').length) {
+                $listMedium.find('[ajax="up"]').remove();
+                $listPrevMedium.find('[ajax="down"]').before('<a class="button button-icon button-up" ajax="up" ajax-process="/Up"><i class="fas fa-caret-up"></i></a>');
             }
 
-            $listPrevMedium.find('[ajax="down"]').remove();
-        }
+            if (!$element.next().length) {
+                if ($listMedium.find('[ajax="up"]').length) {
+                    $listMedium.find('[ajax="up"]').after('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+                } else {
+                    $listMedium.prepend('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+                }
 
-        $element.prev().insertAfter($element);
+                $listPrevMedium.find('[ajax="down"]').remove();
+            }
+
+            $element.prev().insertAfter($element);
+        }
     }
 });
 
@@ -153,35 +156,27 @@ $.cAjax('down', {
         method: 'get',
         context: {}
     },
-    success: function (settings, $element) {
+    success: {
+        default: function (settings, $element) {
 
-        $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-medium"]');
-        $listNextMedium = $element.next().children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-medium"]');
+            $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
+            $listNextMedium = $element.next().children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
 
-        if (!$element.next().next().length) {
-            $listMedium.find('[ajax="down"]').remove();
-            $listNextMedium.find('[ajax="up"]').after('<a class="button button-down" ajax="down"><i class="fas fa-caret-down"></i></a>');
+            if (!$element.next().next().length) {
+                $listMedium.find('[ajax="down"]').remove();
+                $listNextMedium.find('[ajax="up"]').after('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+            }
+            
+            if (!$element.prev(':not(.list-row-disabled)').length) {
+                $listMedium.prepend('<a class="button button-icon button-up" ajax="up" ajax-process="/Up"><i class="fas fa-caret-up"></i></a>');
+                $listNextMedium.find('[ajax="up"]').remove();
+            }
+
+            $element.next().insertBefore($element);
         }
-        
-        if (!$element.prev().length) {
-            $listMedium.prepend('<a class="button button-up" ajax="up"><i class="fas fa-caret-up"></i></a>');
-            $listNextMedium.find('[ajax="up"]').remove();
-        }
-
-        $element.next().insertBefore($element);
     }
 });
-
-$.cAjax('back', {
-    ajax: {
-        url: '/admin/ajax/process/',
-        method: 'get',
-        context: {}
-    },
-    success: function() {}
-});
-$.cAjax('delete', {
-    refresh: true,
+$.cAjax('process-window', {
     ajax: {
         url: '/admin/ajax/process/',
         method: 'get',
@@ -190,29 +185,19 @@ $.cAjax('delete', {
     window: {
         url: '/admin/ajax/language/',
         context: {}
-    },
-    success: function() {}
+    }
 });
-$.cAjax('promote', {
+$.cAjax('process', {
     ajax: {
         url: '/admin/ajax/process/',
         method: 'get',
         context: {}
-    },
-    window: {
-        url: '/admin/ajax/language/',
-        context: {}
-    },
-    success: function() {}
+    }
 });
-$.cAjax('update-search', {
+$.cAjax('execute', {
     ajax: {
-        url: "/admin/ajax/search/",
-        method: "get",
+        url: '/admin/ajax/execute/',
+        method: 'get',
         context: {}
-    },
-    success: function(settings) {
-        $('.field').first().replaceWith(settings.data.content);
-        $('.field-submit').remove();
     }
 });

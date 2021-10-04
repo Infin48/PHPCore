@@ -1,0 +1,40 @@
+{
+    "body": {
+        "page": {
+            "options": {
+                "empty": "L_PAGE_LIST_NO"
+            },
+            "data": {
+                "title": "L_PAGE_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "type": "/Admin/Page"
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "page_id",
+                            "url": "page_url",
+                            "title": "page_name"
+                        },
+                        "button": {
+                            "show": {
+                                "options": {
+                                    "target": "_blank"
+                                },
+                                "data": {
+                                    "href": "~/custom/{id}.{url}/",
+                                    "icon": "fa fa-eye",
+                                    "title": "L_SHOW"
+                                }
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

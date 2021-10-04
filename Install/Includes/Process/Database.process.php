@@ -12,6 +12,9 @@
 
 namespace Process;
 
+use Model\JSON;
+use Model\Database as DatabaseModel;
+
 /**
  * Database
  */
@@ -54,23 +57,37 @@ class Database extends \Process\ProcessExtend
 
         try {
             // TEST CONNECTION
-            $db = new \PDO('mysql:host=' . $this->data->get('host') . ';port=' . $port . ';dbname=' . $this->data->get('database'), $this->data->get('user_name'), $this->data->get('user_password'));
+            new \PDO('mysql:host=' . $this->data->get('host') . ';port=' . $port . ';dbname=' . $this->data->get('database'), $this->data->get('user_name'), $this->data->get('user_password'));
 
-            file_put_contents(ROOT . '/Includes/Settings/.htdata.json', json_encode([
-                'host' => $this->data->get('host'),
-                'user' => $this->data->get('user_name'),
-                'pass' => $this->data->get('user_password'),
-                'name' => $this->data->get('database'),
-                'port' => $port
-            ]));
+            $JSON = new JSON('/Includes/.htdata.json');
+            $JSON->set('host', $this->data->get('host'));
+            $JSON->set('user', $this->data->get('user_name'));
+            $JSON->set('pass', $this->data->get('user_password'));
+            $JSON->set('name', $this->data->get('database'));
+            $JSON->set('port', $port);
+            $JSON->save();
         
         } catch (\PDOException $e) {
             throw new \Exception\Notice($e->getMessage());
         }
 
-        $this->system->install([
-            'db' => true,
-            'page' => 3,
-        ]);
+        $JSON = new JSON('/Install/Includes/Settings.json');
+
+
+        if ($JSON->get('operation') === 'install') {
+
+            $db = new DatabaseModel(true);
+            $db->file('/Install/Query.sql');
+        }
+
+        $JSON->set('db', true);
+
+        if ($JSON->get('operation') === 'install') {
+            $JSON->set('page', 'install-admin');
+        } else {
+            $JSON->set('page', 'update');
+        }
+        $JSON->set('back', false);
+        $JSON->save();
     }
 }

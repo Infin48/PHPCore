@@ -2,13 +2,13 @@
     "body": {
         "index": {
             "data": {
-                "href": "/",
+                "href": "$/",
                 "title": "L_TITLE_PAGE"
             }
         },
         "users": {
             "data": {
-                "href": "/users/",
+                "href": "$/users/",
                 "title": "L_USERS"
             }
         }

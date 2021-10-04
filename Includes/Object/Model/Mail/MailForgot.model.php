@@ -24,7 +24,7 @@ class MailForgot extends Mail
     {
         parent::__construct();
 
-        $this->mail->Subject = $this->system->settings->get('site.name') . ' - ' . $this->language->get('L_MAIL_FORGOT_SUBJECT');
+        $this->mail->Subject = $this->system->get('site.name') . ' - ' . $this->language->get('L_MAIL_FORGOT_SUBJECT');
         $this->mail->Body    = strtr($this->language->get('L_MAIL_FORGOT_BODY'), [
             '{url}' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/forgot/reset/{code}/'
         ]);

@@ -1,23 +1,32 @@
 {
+    "options": {
+        "type": "/Topic"
+    },
     "body": {
         "move": {
             "options": {
                 "hide": true,
-                "type": "dropdown"
+                "type": "form"
             },
             "data": {
+                "title": "L_MOVE",
                 "icon": "fas fa-arrows-alt",
-                "title": "L_TOPIC_MOVE"
+                "form": {
+                    "title": "L_FORUM_LIST",
+                    "button": {
+                        "name": "confirm-forum",
+                        "value": "L_CONFIRM"
+                    }
+                }
             },
             "body":{
                 "default": {
-                    "data": {
-                        "href": "/move-{id}",
-                        "convert": {
-                            "id": "forum_id",
-                            "title": "forum_name"
+                    "options": {
+                        "template": {
+                            "body": "%/Topic/Forum.phtml"
                         }
-                    }
+                    },
+                    "data": {}
                 }
             }
         },
@@ -31,7 +40,7 @@
                 "form": {
                     "title": "L_LABEL_LIST",
                     "button": {
-                        "name": "confirm",
+                        "name": "confirm-label",
                         "value": "L_CONFIRM"
                     }
                 }
@@ -40,8 +49,7 @@
                 "default": {
                     "options": {
                         "template": {
-                            "body": "$/Labels/Body.phtml",
-                            "bottom": "$/Labels/Bottom.phtml"
+                            "body": "%/Topic/Label.phtml"
                         }
                     },
                     "data": {}
@@ -54,7 +62,7 @@
             },
             "data": {
                 "icon": "fas fa-wrench",
-                "title": "L_TOPIC_TOOLS"
+                "title": "L_TOOLS"
             },
             "body":{
                 "edit":{
@@ -72,7 +80,7 @@
                     },
                     "data": {
                         "title": "L_DELETE",
-                        "href": "/delete/"
+                        "ajax": "process-window"
                     }
                 },
                 "lock":{
@@ -80,8 +88,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_TOPIC_LOCK",
-                        "href": "/lock/"
+                        "title": "L_LOCK",
+                        "ajax": "process"
                     }
                 },
                 "unlock":{
@@ -89,8 +97,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_TOPIC_UNLOCK",
-                        "href": "/unlock/"
+                        "title": "L_UNLOCK",
+                        "ajax": "process"
                     }
                 },
                 "stick":{
@@ -98,8 +106,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_TOPIC_STICK",
-                        "href": "/stick/"
+                        "title": "L_STICK",
+                        "ajax": "process"
                     }
                 },
                 "unstick":{
@@ -107,8 +115,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_TOPIC_UNSTICK",
-                        "href": "/unstick/"
+                        "title": "L_UNSTICK",
+                        "ajax": "process"
                     }
                 }
             }
@@ -119,9 +127,9 @@
                 "hide": true
             },
             "data": {
-                "href": "#new",
+                "href": "$#new",
                 "icon": "fas fa-reply",
-                "title": "L_POST_CREATE"
+                "title": "L_POST"
             }
         }
     }

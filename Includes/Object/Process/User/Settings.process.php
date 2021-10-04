@@ -12,7 +12,7 @@
 
 namespace Process\User;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Settings
@@ -63,36 +63,44 @@ class Settings extends \Process\ProcessExtend
         // FILE MODEL
         $file = new File();
 
-        // LOAD PROFILE IMAGES
-        $file->load('user_profile_image');
-        if ($file->check()) { 
+        // LOAD PROFILE IMAGE
+        $image = $file->form('user_profile_image', FILE_TYPE_IMAGE);
 
-            $file->createFolder('/User/' . LOGGED_USER_ID);
+        if ($image->check()) { 
 
-            // UPLOAD IMAGE
-            $file->upload('/User/' . LOGGED_USER_ID . '/Profile');
+            $file->mkdir('/Uploads/User/' . LOGGED_USER_ID);
 
             // RESIZE
-            $file->resize('/User/' . LOGGED_USER_ID . '/Profile.' . $file->getFormat(), 200, 200);
+            $image->resize(200, 200);
+
+            // DELETE OLD PROFILE IMAGE
+            $file->deleteImage('/User/' . LOGGED_USER_ID . '/Profile');
+
+            // UPLOAD IMAGE
+            $image->upload('/Uploads/User/' . LOGGED_USER_ID . '/Profile');
 
             // SET IMAGE
             $this->db->update(TABLE_USERS, [
-                'user_profile_image' => $file->getFormat() . '?' . RAND
+                'user_profile_image' => $image->getFormat() . '?' . RAND
             ], LOGGED_USER_ID);
         }
 
         // LOAD HEADER IMAGE
-        $file->load('user_header_image');
-        if ($file->check()) {
+        $image = $file->form('user_header_image', FILE_TYPE_IMAGE);
 
-            $file->createFolder('/User/' . LOGGED_USER_ID);
+        if ($image->check()) {
+
+            $file->mkdir('/Uploads/User/' . LOGGED_USER_ID);
+
+            // DELETE OLD HEADER IMAGE
+            $file->deleteImage('/User/' . LOGGED_USER_ID . '/Header');
 
             // UPLOAD IMAGE
-            $file->upload('/User/' . LOGGED_USER_ID . '/Header');
+            $image->upload('/Uploads/User/' . LOGGED_USER_ID . '/Header');
 
             // SET IMAGE
             $this->db->update(TABLE_USERS, [
-                'user_header_image' => $file->getFormat() . '?' . RAND
+                'user_header_image' => $image->getFormat() . '?' . RAND
             ], LOGGED_USER_ID);
         }
         

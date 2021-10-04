@@ -23,7 +23,7 @@ class Login extends Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Login',
+        'template' => '/Login',
         'loggedOut' => true
     ];
 
@@ -35,10 +35,10 @@ class Login extends Page
     protected function body()
     {
         // FIELD
-        $field = new Field('User/Login');
+        $field = new Field('/User/Login');
         $this->data->field = $field->getData();
 
         // LOGIN USER
-        $this->process->form(type: 'User/Login', url: '/');
+        $this->process->form(type: '/User/Login', url: '/');
     }
 }

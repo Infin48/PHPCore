@@ -41,7 +41,7 @@ $language = array_merge($language, [
     // TOPICS
 
     'L_LABEL_LIST' => 'Seznam štítků',
-    'L_LABELS_DESC' => 'Budou zobrazeny před názvem tématu',
+    'L_LABELS_DESC' => 'Štítky budou zobrazeny před názvem tématu.',
 
     'L_TOPICS' => 'Témat',
 
@@ -61,10 +61,10 @@ $language = array_merge($language, [
     'L_TOPIC_IMAGE' => 'Titulní obrázek',
     'L_TOPIC_IMAGE_DELETE' => 'Smazat titulní obrázek tématu',
 
-    'L_TOPIC_DELETED' => 'Téma je v koši, více informací v admin panelu',
-    'L_TOPIC_REPORTED' => 'Téma má nevyřešené hlášení, více informací v admin panelu',
+    'L_TOPIC_DELETED' => 'Téma je v koši, více informací v admin panelu!',
+    'L_TOPIC_REPORTED' => 'Téma má nevyřešené hlášení, více informací v admin panelu!',
     
-    'L_TOPIC_STICKY' => 'Přilepeno',
+    'L_topic_sticked' => 'Přilepeno',
     'L_TOPIC_STICK' => 'Přilepit',
     'L_TOPIC_UNSTICK' => 'Odlepit',
     'L_TOPIC_LOCKED_ALERT'  => 'Toto téma je zamčené!',
@@ -83,6 +83,8 @@ $language = array_merge($language, [
 
 
     // OTHER
+
+    'L_FORUM_LIST' => 'Seznam fór',
 
     'L_LIKE' => 'To se mi líbí',
     'L_LIKE_LIST' => 'Uživatelé, kteří zareagovali na tento obsah',

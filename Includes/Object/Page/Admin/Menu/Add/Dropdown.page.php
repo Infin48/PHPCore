@@ -24,7 +24,7 @@ class Dropdown extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/menu/',
         'permission' => 'admin.menu'
     ];
@@ -40,15 +40,15 @@ class Dropdown extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Menu');
+        $breadcrumb = new Breadcrumb('/Admin/Menu');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // FIELD
-        $field = new Field('Admin/Menu/Dropdown');
+        $field = new Field('/Admin/Menu/Dropdown');
         $field->object('dropdown')->title('L_MENU_DROPDOWN_NEW');
         $this->data->field = $field->getData();
 
         // CREATE NEW DROPDOWN
-        $this->process->form('Admin/Menu/Dropdown/Create');
+        $this->process->form(type :'/Admin/Menu/Dropdown/Create');
     }
 }

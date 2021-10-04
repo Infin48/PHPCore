@@ -44,7 +44,7 @@ class Conversation extends Block
     public function getAll()
     {
         return $this->db->query('
-            SELECT c.*, cm.conversation_message_created, cm.conversation_message_id, ' . $this->select->user() . ',  u2.user_id AS message_user_id, u2.user_name AS message_user_name, u2.user_profile_image AS message_user_profile_image, g2.group_class_name AS message_group_class_name, u2.is_deleted AS message_is_deleted, ( SELECT COUNT(*) FROM ' . TABLE_CONVERSATIONS_RECIPIENTS . '2 WHERE cr2.conversation_id = c.conversation_id ) AS recipients
+            SELECT c.*, cm.conversation_message_created, cm.conversation_message_id, ' . $this->select->user() . ',  u2.user_id AS message_user_id, u2.user_name AS message_user_name, u2.user_profile_image AS message_user_profile_image, g2.group_class_name AS message_group_class_name, u2.user_deleted AS message_user_deleted, ( SELECT COUNT(*) FROM ' . TABLE_CONVERSATIONS_RECIPIENTS . '2 WHERE cr2.conversation_id = c.conversation_id ) AS recipients
             FROM ' . TABLE_CONVERSATIONS . '
             ' . $this->join->user('c.user_id'). '
             LEFT JOIN ' . TABLE_CONVERSATIONS_RECIPIENTS . ' ON cr.conversation_id = c.conversation_id AND cr.user_id = ?

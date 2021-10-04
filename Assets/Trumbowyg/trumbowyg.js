@@ -534,7 +534,8 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 html = '';
 
             t.$box = $('<div/>', {
-                class: prefix + 'box ' + prefix + 'editor-visible ' + prefix + t.o.lang + ' trumbowyg'
+                class: prefix + 'box ' + prefix + 'editor-visible ' + prefix + t.o.lang + ' trumbowyg',
+                'ajax-selector': 'trumbowyg-box'
             });
 
             // $ta = Textarea

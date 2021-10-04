@@ -62,7 +62,15 @@ class Delete extends \Process\ProcessExtend
             [$this->data->get('label_id')]
         );
 
+        // UPDATE LABELS SESSION
+        $this->db->table(TABLE_SETTINGS, [
+            'session.labels' => RAND
+        ]);
+
         // ADD RECORD TO LOG
         $this->log($this->data->get('label_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

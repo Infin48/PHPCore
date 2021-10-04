@@ -18,16 +18,16 @@ namespace Visualization;
 class VisualizationObjectGet
 {
     /**
-     * @var array $object Object
+     * @var \Visualization\VisualizationObject $object Object
      */
-    protected array $object = [];
+    public \Visualization\VisualizationObject $object;
 
     /**
      * Constructor
      *
-     * @param  array $object
+     * @param  \Visualization\VisualizationObject $object
      */
-    public function __construct( array $object )
+    public function __construct( \Visualization\VisualizationObject $object )
     {
         $this->object = $object;
     }
@@ -42,22 +42,30 @@ class VisualizationObjectGet
     public function data( string $key = null )
     {
         if (is_null($key)) {
-            return $this->object['data'] ?? [];
+            return $this->object->object['data'] ?? [];
         }
 
-        return $this->object['data'][$key] ?? '';
+        if ($key === 'convert') {
+            return $this->object->object['data']['convert'] ?? [];
+        }
+
+        return $this->object->object['data'][$key] ?? '';
     }
 
     /**
      * Returns value from options
      *
-     * @param  string $key
+     * @param  string $key If null - returns whole object options
      * 
      * @return mixed
      */
-    public function options( string $key )
+    public function options( string $key = null )
     {
-        return $this->object['options'][$key] ?? '';
+        if (is_null($key)) {
+            return $this->object->object['options'] ?? [];
+        }
+
+        return $this->object->object['options'][$key] ?? '';
     }
 
     /**
@@ -69,7 +77,7 @@ class VisualizationObjectGet
      */
     public function template( string $key )
     {
-        return $this->object['options']['template'][$key] ?? '';
+        return $this->object->object['options']['template'][$key] ?? '';
     }
 
     /**
@@ -79,7 +87,7 @@ class VisualizationObjectGet
      */
     public function convert()
     {
-        return $this->object['body']['default']['data']['convert'] ?? [];
+        return $this->object->object['body']['default']['data']['convert'] ?? [];
     }
 
     /**
@@ -92,10 +100,10 @@ class VisualizationObjectGet
     public function button( string $key = null )
     {
         if (is_null($key)) {
-            return $this->object['data']['button'] ?? [];
+            return $this->object->object['data']['button'] ?? [];
         }
 
-        return $this->object['data']['button'][$key] ?? '';
+        return $this->object->object['data']['button'][$key] ?? '';
     }
 
     /**
@@ -108,9 +116,30 @@ class VisualizationObjectGet
     public function body( string $key = null )
     {
         if (is_null($key)) {
-            return $this->object['body'] ?? [];
+            return $this->object->object['body'] ?? [];
         }
 
-        return $this->object['body'][$key] ?? [];
+        return $this->object->object['body'][$key] ?? [
+            'options' => [],
+            'data' => []
+        ];
+    }
+
+    /**
+     * Returns position of searched object
+     * 
+     * @param string $objectName Name of searched objecty
+     * 
+     * @return int
+     */
+    public function position( string $objectName )
+    {
+        $key = array_search($objectName, array_keys($this->body()));
+
+        if ($key === false) {
+            throw new \Exception\System('Hledaný objekt s názvem \'' . $objectName . '\' nebyl nalezen!');
+        }
+
+        return $key;
     }
 }

@@ -4,11 +4,10 @@
             "body": {
                 "user_signature": {
                     "options": {
-                        "type": "textarea"
+                        "type": "html"
                     },
                     "data": {
                         "desc": "L_USER_SIGNATURE_DESC",
-                        "class": "editor",
                         "title": "L_USER_SIGNATURE",
                         "placeholder": "L_USER_SIGNATURE"
                     }

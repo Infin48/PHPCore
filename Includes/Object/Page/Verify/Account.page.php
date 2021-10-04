@@ -33,8 +33,8 @@ class Account extends \Page\Page
     protected function body()
     {
         // VERIFY USER
-        $this->process->call(type: 'User/Verify/Account', mode: 'silent', url: '/', data: [
-            'account_code' => $this->getID()
+        $this->process->call(type: '/User/Verify/Account', mode: 'silent', url: '/', data: [
+            'account_code' => $this->url->getID()
         ]);
     }
 }

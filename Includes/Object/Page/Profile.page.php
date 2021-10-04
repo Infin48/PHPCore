@@ -21,6 +21,7 @@ use Block\Admin\ProfilePostComment as AdminProfilePostComment;
 use Model\Pagination;
 
 use Visualization\Block\Block;
+use Visualization\Sidebar\Sidebar;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -34,7 +35,7 @@ class Profile extends Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_SMALL,
-        'template' => 'Profile'
+        'template' => '/Profile'
     ];
 
     /**
@@ -56,31 +57,66 @@ class Profile extends Page
         }
 
         // USER DATA
-        $profile =  $user->get($this->getID()) or $this->error();
+        $profile =  $user->get($this->url->getID()) or $this->error();
 
         $this->data->data($profile);
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Profile');
+        $breadcrumb = new Breadcrumb('/Profile');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_PROFILE_POSTS);
-        $pagination->url($this->getURL());
-        $pagination->total($profilePost->getParentCount($this->getID()));
+        $pagination->url($this->url->getURL());
+        $pagination->total($profilePost->getParentCount($this->url->getID()));
         $profilePost->pagination = $this->data->pagination = $pagination->getData();
 
+        if (time() - strtotime($this->data->data['user_last_activity']) > 60) {
+            $online = $this->build->date->short($this->data->data['user_last_activity']);
+        } else {
+            $online = '<span class="online">' . strtoupper($this->language->get('L_USER_ONLINE')) . '</span>';
+        }
+
+        // SIDEBAR
+        $sidebar = new Sidebar('/Profile');
+        $sidebar->left();
+        $sidebar->object('user')
+            ->row('online')->value($online)
+            ->row('registered')->value($this->build->date->short($profile['user_registered']))
+            ->row('topics')->value($profile['user_topics'])
+            ->row('posts')->value($profile['user_posts'])
+        ->object('info')
+            ->row('gender')->value($this->language->get('L_USER_GENDER_' . strtoupper($profile['user_gender'])))
+            ->row('location')->value($profile['user_location'])
+            ->row('age')->value($profile['user_age']);
+
+        if (!$this->user->isLogged() or ($this->data->data['group_index'] >= LOGGED_USER_GROUP_INDEX and $this->data->data['user_id'] == LOGGED_USER_ID)) {
+            $sidebar->object('user')->row('buttons')->hide();
+        }
+
+
+        if ($this->data->data['user_gender'] != 'undefined') {
+            $sidebar->object('info')->show()->row('gender')->show();
+        }
+
+        if ($this->data->data['user_location']) {
+            $sidebar->object('info')->show()->row('location')->show();
+        }
+
+        if ($this->data->data['user_age']) {
+            $sidebar->object('info')->show()->row('age')->show();
+        }
+
+        $this->data->sidebar = $sidebar->getData();
+
         // BLOCK
-        $block = new Block('ProfilePost');
-        
-        foreach ($profilePost->getParent($this->getID()) as $item) {
-            
-            $block->object('profilepost')->appTo($item)->jumpTo();
-            
+        $block = new Block('/ProfilePost');
+        $block->object('profilepost')->fill(data: $profilePost->getParent($this->url->getID()), function: function ( \Visualization\Block\Block $block ) use ($profilePostComment) {
+
             if ($this->url->is('select')) {
 
-                if ($item['profile_post_id'] == $this->url->get('select')) {
+                if ($block->obj->get->data('profile_post_id') == $this->url->get('select')) {
 
                     $block->select();
                 }
@@ -90,13 +126,13 @@ class Profile extends Page
                 $block->delButton();
             }
 
-            if ($item['report_id'] and $item['report_status'] == 0 and $this->user->perm->has('admin.forum')) {
+            if ($block->obj->get->data('report_id') and $block->obj->get->data('report_status') == 0 and $this->user->perm->has('admin.forum')) {
                 $block->notice('reported');
                 $block->disable();
             }
 
             // IF PROFILE POST IS DELETED
-            if ($item['deleted_id']) {
+            if ($block->obj->get->data('deleted_id')) {
 
                 $block->notice('deleted');
                 $block->disable();
@@ -104,7 +140,7 @@ class Profile extends Page
                 $block->close();
             } else {
 
-                if ($this->user->perm->has('profilepost.edit') === false) {
+                if ($this->user->perm->has('profilepost.edit') === false or LOGGED_USER_ID != $block->obj->get->data('user_id')) {
                     $block->delButton('edit');
                 }
 
@@ -115,29 +151,43 @@ class Profile extends Page
                 if ($this->user->isLogged()) {
 
                     if ($this->user->perm->has('profilepost.create')) {
-                        $block->option('bottom')->show();
+                        $block->option('bottom')->show()->up();
                     }
                 }
             }
             
-            if ($item['next'] == 1 ) {
-                $block->option('top')->show();
+            if ($block->obj->get->data('next') == 1) {
+                $block->option('top')->show()->up();
             }
 
-            foreach ($profilePostComment->getParent($item['profile_post_id']) as $_item) {
+            $comments = $profilePostComment->getParent($block->obj->get->data('profile_post_id'));
 
-                $block->appTo($_item)->jumpTo();
+            
+            if ($this->url->is('select')) {
+
+                if ($block->obj->get->data('profile_post_id') == ($this->url->get('select')['p'] ?? '') and !($this->url->get('select')['c'] ?? false)) {
+                    $block->select();
+                }
+
+                if ($block->obj->get->data('profile_post_id') == ($this->url->get('select')['p'] ?? '') and isset($this->url->get('select')['c']) and !in_array($this->url->get('select')['c'], array_column($comments, 'profile_post_comment_id'))) {
+                    $comments = array_merge($profilePostComment->getAfterNext($block->obj->get->data('profile_post_id')), $comments);
+                    $block->option('top')->hide();
+                }
+            }
+            
+            $post = $block->obj->get->data();
+            $block->fill(data: $comments, function: function ( \Visualization\Block\Block $block ) use ($post) {
 
                 if ($this->user->isLogged() === false) {
                     $block->delButton();
                 }
 
                 // IF PROFILE POST OR PROFILE COMMENT IS DELETED
-                if ($item['deleted_id'] or $_item['deleted_id']) {
+                if ($post['deleted_id'] ?? '' or $block->obj->get->data('deleted_id')) {
 
                     $block->delButton();
 
-                    if ($_item['deleted_id']) {
+                    if ($block->obj->get->data('deleted_id')) {
 
                         $block->close();
                         $block->disable();
@@ -145,7 +195,7 @@ class Profile extends Page
                     }
                 } else {
 
-                    if ($this->user->perm->has('profilepost.edit') === false) {
+                    if ($this->user->perm->has('profilepost.edit') === false or LOGGED_USER_ID != $block->obj->get->data('user_id')) {
                         $block->delButton('edit');
                     }
 
@@ -154,21 +204,22 @@ class Profile extends Page
                     }
                 }
 
-                if ($_item['report_id'] and $_item['report_status'] == 0 and $this->user->perm->has('admin.forum')) {
+                if ($block->obj->get->data('report_id') and $block->obj->get->data('report_status') == 0 and $this->user->perm->has('admin.forum')) {
                     $block->notice('reported');
                     $block->disable();
                 }
 
+                
                 if ($this->url->is('select')) {
-
-                    if ('c' . $_item['profile_post_comment_id'] == $this->url->get('select')) {
+                    if ($block->obj->get->data('profile_post_comment_id') == ($this->url->get('select')['c'] ?? '')) {
 
                         $block->select();
-                        $block->up()->open();
+                        $block->up()->open()->down($block->lastInsertName());
                     }
                 }
-            }
-        }
+                
+            });
+        });
         $this->data->block = $block->getData();
 
         // SET HEAD OF THIS PAGE

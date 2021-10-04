@@ -9,7 +9,7 @@
                 "top": {
                     "options": {
                         "template": {
-                            "option": "/Forum/Forum/Permission/Head.phtml"
+                            "option": "/Forum/Permission/Head.phtml"
                         }
                     },
                     "data": {
@@ -19,8 +19,8 @@
                 "default": {
                     "options": {
                         "template": {
-                            "text": "/Forum/Forum/Permission/Text.phtml",
-                            "option": "/Forum/Forum/Permission/Option.phtml"
+                            "text": "/Forum/Permission/Text.phtml",
+                            "option": "/Forum/Permission/Option.phtml"
                         },
                         "checked": {
                             "in": "topic"

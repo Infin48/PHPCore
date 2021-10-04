@@ -12,7 +12,7 @@
 
 namespace Process\Admin\User;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Edit
@@ -104,6 +104,9 @@ class Edit extends \Process\ProcessExtend
             $file->deleteImage('/User/' . $this->data->get('user_id') . '/Header');
             $this->db->query('UPDATE ' . TABLE_USERS . ' SET user_header_image = "" WHERE user_id = ?', [$this->data->get('user_id')]);
         }
+
+        // DELETE EMAIL VERIFICATION TO THIS EMAIL
+        $this->db->query('DELETE FROM ' . explode(' ', TABLE_VERIFY_EMAIL)[0] . ' WHERE user_email = ?', [$this->data->get('user_email')]);
 
         $this->db->update(TABLE_USERS, [
             'group_id'          => $this->data->get('group_id'),

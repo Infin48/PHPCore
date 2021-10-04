@@ -16,8 +16,8 @@ use Block\Report;
 
 use Model\Pagination;
 
-use Visualization\Lists\Lists;
-use Visualization\Block\Block;
+use Visualization\Admin\Lists\Lists;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -29,7 +29,7 @@ class Topic extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.forum'
     ];
     
@@ -47,7 +47,7 @@ class Topic extends \Page\Page
         $report = new Report();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Report/Index');
+        $breadcrumb = new Breadcrumb('/Admin/Report/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // REPORT STATS
@@ -57,16 +57,25 @@ class Topic extends \Page\Page
         $pagination = new Pagination();
         $pagination->max(MAX_REPORTED_TOPIC);
         $pagination->total($stats['topic']);
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $report->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Admin/Report/Topic');
-        $list->object('topic')->fill($report->getAllTopic());
+        $list = new Lists('/Report/Topic');
+        $list->object('topic')->fill(data: $report->getAllTopic(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
+
+            if ($list->obj->get->data('report_status') == 0) {
+                
+                $list->addLabel(
+                    color: 'red',
+                    icon: 'fas fa-exclamation'
+                );
+            }
+        });
         $this->data->list = $list->getData();
 
         // BLOCK
-        $block = new Block('Admin/Report/Topic');
+        $block = new Block('/Report/Topic');
         $block->object('topic')->value($stats['topic']);
         $this->data->block = $block->getData();
     }

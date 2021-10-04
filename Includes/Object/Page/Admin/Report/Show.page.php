@@ -20,9 +20,9 @@ use Block\Admin\ProfilePostComment;
 
 use Model\Pagination;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Field\Field;
-use Visualization\Block\Block;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -35,7 +35,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.forum'
     ];
     
@@ -50,17 +50,17 @@ class Show extends \Page\Page
         $report = new Report();
 
         // REPORT DATA
-        $data = $report->get($this->getID()) or $this->error();
+        $data = $report->get($this->url->getID()) or $this->error();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_REPORTED_TOPIC);
-        $pagination->total($report->getAllReasonsCount($this->getID()));
-        $pagination->url($this->getURL());
+        $pagination->total($report->getAllReasonsCount($this->url->getID()));
+        $pagination->url($this->url->getURL());
         $report->pagination = $this->data->pagination = $pagination->getData();
 
         // FIELD
-        $field = new Field('Admin/Report');
+        $field = new Field('/Admin/Report');
 
         // ASSIGN DATA BASED ON TYPE
         switch ($data['report_type']) {
@@ -96,7 +96,10 @@ class Show extends \Page\Page
         $data = array_merge($content, $data);
         
         // URL TO REPORTED CONTENT
-        $field->object('show')->row('show')->setData('href', '$' . $this->build->url->{lcfirst($data['report_type'])}($data));
+        $field->object('show')->row('show')->setData('href', '$' . $this->build->url->{lcfirst($data['report_type'])}(array_merge($data, [
+            'user_id' => $data['profile_user_id'] ?? '',
+            'user_name' => $data['profile_user_name'] ?? ''
+        ])));
 
         $field->data($data);
 
@@ -108,29 +111,37 @@ class Show extends \Page\Page
         $this->data->field = $field->getData();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Report/' . $data['report_type']);
+        $breadcrumb = new Breadcrumb('/Admin/Report/' . $data['report_type']);
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
-        $block = new Block('Admin/Report/Show');
+        $block = new Block('/Report/Show');
         $block
             ->object('type')->value($this->language->get('L_CONTENT_LIST')[$data['report_type']])
-            ->object('reasons')->value($report->getReasonsCount($this->getID()))
+            ->object('reasons')->value($report->getReasonsCount($this->url->getID()))
             ->object('first_report')->value($this->build->date->long($data['report_created']))
             ->object('status')->value($data['report_status'] == 1 ? $this->language->get('L_REPORT_STATUS_CLOSED') : $this->language->get('L_REPORT_STATUS_PENDING'));
         $this->data->block = $block->getData();
 
         // LIST
-        $list = new Lists('Admin/Report/Show');
-        $list->object('reasons')->fill($report->getAllReasons($this->getID()));
+        $list = new Lists('/Report/Show');
+        $list->object('reasons')->fill(data: $report->getAllReasons($this->url->getID()));
         $this->data->list = $list->getData();
+
+
+        $url = '/admin/report/' . match ($data['report_type']) {
+            'Post' => 'post',
+            'Topic' => 'topic',
+            'ProfilePost' => 'profile',
+            'ProfilePostComment' => 'comment'
+        } . '/';
 
         // IF REPORT IS NOT CLOSED
         if ($data['report_status'] == 0) {
             
             // CLOSE REPORT
-            $this->process->form(type: 'Admin/Report/Close', data: [
-                'report_id' => $this->getID(),
+            $this->process->form(type: '/Admin/Report/Close', url: $url, data: [
+                'report_id' => $this->url->getID(),
                 'report_type' => $data['report_type'],
                 'report_type_id' => $data['report_type_id']
             ]);

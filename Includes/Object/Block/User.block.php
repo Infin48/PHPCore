@@ -33,7 +33,7 @@ class User extends Block
             LEFT JOIN ' . TABLE_FORGOT . ' ON fp.user_id = u.user_id
             LEFT JOIN ' . TABLE_VERIFY_ACCOUNT . ' ON va.user_id = u.user_id
             LEFT JOIN ' . TABLE_VERIFY_EMAIL . ' ON ve.user_id = u.user_id
-            WHERE u.user_id = ? AND is_deleted = 0
+            WHERE u.user_id = ? AND user_deleted = 0
         ', [$userID]);
     }
 
@@ -117,11 +117,11 @@ class User extends Block
     public function getAll()
     {
         return $this->db->query('
-            SELECT ' . $this->select->user() . ', is_admin, group_name, group_index, user_reputation, user_registered
+            SELECT ' . $this->select->user() . ', user_admin, group_name, group_index, user_reputation, user_registered
             FROM ' . TABLE_USERS . '
             LEFT JOIN ' . TABLE_GROUPS . ' ON g.group_id = u.group_id
-            WHERE is_deleted = 0
-            ORDER BY is_admin DESC, group_index DESC, user_registered ASC
+            WHERE user_deleted = 0
+            ORDER BY user_admin DESC, group_index DESC, user_registered ASC
             LIMIT ?, ?
         ', [$this->pagination['offset'], $this->pagination['max']], ROWS);
     }
@@ -133,7 +133,7 @@ class User extends Block
      */
     public function getAllCount()
     {
-        return (int)$this->db->query('SELECT COUNT(*) as count FROM ' . TABLE_USERS . ' WHERE is_deleted = 0')['count'];
+        return (int)$this->db->query('SELECT COUNT(*) as count FROM ' . TABLE_USERS . ' WHERE user_deleted = 0')['count'];
     }
 
     /**
@@ -147,7 +147,7 @@ class User extends Block
             SELECT ' . $this->select->user() . '
             FROM ' . TABLE_USERS. '
             LEFT JOIN ' . TABLE_GROUPS . ' ON g.group_id = u.group_id 
-            WHERE user_last_activity > DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND is_deleted = 0
+            WHERE user_last_activity > DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND user_deleted = 0
         ', [], ROWS);
     }
 
@@ -161,7 +161,7 @@ class User extends Block
         return $this->db->query('
             SELECT COUNT(*) AS count
             FROM ' . TABLE_USERS . '
-            WHERE user_registered > DATE_SUB(CURDATE(), INTERVAL 1 HOUR) AND is_deleted = 0
+            WHERE user_registered > DATE_SUB(CURDATE(), INTERVAL 1 HOUR) AND user_deleted = 0
         ')['count'];
     }
 
@@ -175,10 +175,10 @@ class User extends Block
     public function getRecent( int $number = 5 )
     {
         return $this->db->query('
-            SELECT ' . $this->select->user() . ', u.is_admin, u.user_registered, g.group_name, g.group_index
+            SELECT ' . $this->select->user() . ', u.user_admin, u.user_registered, g.group_name, g.group_index
             FROM ' . TABLE_USERS . '
             LEFT JOIN ' . TABLE_GROUPS . ' ON g.group_id = u.group_id
-            WHERE is_deleted = 0
+            WHERE user_deleted = 0
             ORDER BY user_registered DESC
             LIMIT ?
         ', [$number], ROWS);
@@ -239,6 +239,6 @@ class User extends Block
      */
     public function getAllID()
     {
-        return array_column($this->db->query('SELECT user_id FROM ' . TABLE_USERS . ' WHERE is_deleted = 0', [], ROWS), 'user_id');
+        return array_column($this->db->query('SELECT user_id FROM ' . TABLE_USERS . ' WHERE user_deleted = 0', [], ROWS), 'user_id');
     }
 }

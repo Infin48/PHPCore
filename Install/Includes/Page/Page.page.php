@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -12,28 +12,11 @@
 
 namespace Page;
 
-use Model\Form;
-
 /**
  * Page
  */
 abstract class Page
 {
-    /**
-     * @var array $head Head of page
-     */
-    protected array $head = ['title', 'description', 'keyWords'];
-    
-    /**
-     * @var string $templateName Name of default template
-     */
-    protected string $templateName;
-    
-    /**
-     * @var string $favicon Favicon
-     */
-    protected string $favicon = '/Uploads/Site/PHPCore_icon.svg';
-    
     /**
      * @var object $page Page class
      */
@@ -45,14 +28,14 @@ abstract class Page
     protected \Model\Data $data;
 
     /**
+     * @var \Style\Style $style Style
+     */
+    protected \Style\Style $style;
+
+    /**
      * @var \Model\Language $language Language
      */
     public \Model\Language $language;
-
-    /**
-     * @var \Model\System $system System
-     */
-    protected \Model\System $system;
 
     /**
      * @var \Process\Process $page Process
@@ -60,27 +43,20 @@ abstract class Page
     protected \Process\Process $process;
 
     /**
-     * Displays page
+     * Initialise page
      *
-     * @param string $notice Notice
-     * 
      * @return void
      */
-    public function showPage( string $notice = null )
+    public function ini()
     {
-        if (!is_null($notice)) {
-            $this->data->data([
-                'notice' => $notice
-            ]);
+        if (isset($this->settings['template'])) {
+
+            $this->style->setTemplate($this->settings['template']);
         }
 
-        extract($this->language->get());
-
-        $form = new Form();
-
-        require ROOT . '/Install/Style/Templates/' . $this->templateName . '.phtml';
+        $this->data->head['title'] = $this->language->get('L_TITLE')[get_class($this)] ?? $this->data->head['title'];
     }
-    
+
     /**
      * Shows notice to page
      *
@@ -91,7 +67,12 @@ abstract class Page
     public function notice( string $notice )
     {
         $message = $this->language->get('L_NOTICE')[$notice] ?? $notice;
-        $this->showPage($message);
+
+        $this->style->data = $this->data;
+        $this->style->language = $this->language;
+
+        $this->style->notice($message);
+        $this->style->show();
     }
 
     /**

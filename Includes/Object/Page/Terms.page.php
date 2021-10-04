@@ -21,7 +21,7 @@ class Terms extends Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Terms',
+        'template' => '/Terms',
     ];
 
     /**

@@ -40,18 +40,18 @@ class Reset extends \Page\Page
         // BLOCK
         $user = new user();
 
-        $data = $user->getByForgotCode((string)$this->getID());
+        $data = $user->getByForgotCode((string)$this->url->getID());
 
         if (!$data) {
             redirect('/');
         }
 
         // FIELD
-        $field = new Field('User/Forgot/Change');
+        $field = new Field('/User/Forgot/Change');
         $this->data->field = $field->getData();
 
         // RESET PROCESS
-        $this->process->form(type: 'Forgot/Reset', data: [
+        $this->process->form(type: '/Forgot/Reset', data: [
             'user_id'   => $data['user_id'],
             'options'   => [
                 'url'   => '/'

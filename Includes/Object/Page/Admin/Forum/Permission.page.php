@@ -28,7 +28,7 @@ class Permission extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/forum/',
         'permission' => 'admin.forum'
     ];
@@ -48,25 +48,25 @@ class Permission extends \Page\Page
         $forum = new Forum();
 
         // GET FORUM DATA
-        $_forum = $forum->get($this->getID()) or $this->error();
+        $_forum = $forum->get($this->url->getID()) or $this->error();
 
         // SEE PERMISSION
-        $_forum['see'] = $forum->getSee($this->getID());
+        $_forum['see'] = $forum->getSee($this->url->getID());
 
         // POST PERMISSION
-        $_forum['post'] = $forum->getPost($this->getID());
+        $_forum['post'] = $forum->getPost($this->url->getID());
 
         // TOPIC PERMISSION
-        $_forum['topic'] = $forum->getTopic($this->getID());
+        $_forum['topic'] = $forum->getTopic($this->url->getID());
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Forum');
+        $breadcrumb = new Breadcrumb('/Admin/Forum');
         $this->data->breadcrumb = $breadcrumb->getData(); 
 
         // FIELD
-        $field = new Field('Admin/Forum/Permission');
+        $field = new Field('/Admin/Forum/Permission');
         $field->data($_forum);
-        $field->object('groups')->fill(array_merge($group->getAll(), [0 => [
+        $field->object('groups')->fill(data: array_merge($group->getAll(), [0 => [
             'group_id' => 0,
             'group_name' => $this->language->get('L_GROUP_VISITOR'),
             'group_color' => '#4e4e4e',
@@ -75,8 +75,8 @@ class Permission extends \Page\Page
         $this->data->field = $field->getData();
 
         // EDIT FORUM PERMISSION
-        $this->process->form(type: 'Admin/Forum/Permission', data: [
-            'forum_id' => $this->getID()
+        $this->process->form(type: '/Admin/Forum/Permission', data: [
+            'forum_id' => $this->url->getID()
         ]);
 
         // PAGE TITLE

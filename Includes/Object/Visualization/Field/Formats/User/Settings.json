@@ -64,7 +64,7 @@
                 "user_profile_image": {
                     "options": {
                         "template": {
-                            "option": "$/User/ProfileImage.phtml"
+                            "option": "%/User/ProfileImage.phtml"
                         }
                     },
                     "data": {

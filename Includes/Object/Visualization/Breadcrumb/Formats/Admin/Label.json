@@ -2,13 +2,13 @@
     "body": {
         "index": {
             "data": {
-                "href": "/admin/",
+                "href": "$/admin/",
                 "title": "L_ADMIN"
             }
         },
         "label": {
             "data": {
-                "href": "/admin/label/",
+                "href": "$/admin/label/",
                 "title": "L_LABEL"
             }
         }

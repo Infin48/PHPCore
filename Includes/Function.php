@@ -36,6 +36,8 @@ function truncate( $text, $length = 100, $options = [] ) {
     $options = array_merge($default, $options);
     extract($options);
 
+    $text = preg_replace('#<p[^>]*><img[^>]*>(.*?)</p>#is', '', $text);
+
     if ($html) {
         if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
             return $text;
@@ -114,8 +116,6 @@ function truncate( $text, $length = 100, $options = [] ) {
             $truncate .= '</'.$tag.'>';
         }
     }
-
-    $truncate = preg_replace('#<img(.*?)>#is', '', $truncate);
 
     return $truncate;
 }

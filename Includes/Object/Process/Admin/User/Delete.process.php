@@ -12,7 +12,7 @@
 
 namespace Process\Admin\User;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Delete
@@ -51,7 +51,7 @@ class Delete extends \Process\ProcessExtend
     {
         $this->db->query('
             UPDATE ' . TABLE_USERS . '
-            SET is_deleted = 1,
+            SET user_deleted = 1,
                 user_profile_image = "",
                 user_header_image = "",
                 user_reputation = 0,
@@ -68,7 +68,7 @@ class Delete extends \Process\ProcessExtend
                 group_id = ?,
                 user_age = 0
             WHERE user_id = ?
-        ', [$this->system->settings->get('default_group'), $this->data->get('user_id')]);
+        ', [$this->system->get('default_group'), $this->data->get('user_id')]);
 
         $this->db->query('
             DELETE pl, tl, unr, un, pp, dc, r, ppc, dc2, r2, fp, va, ve, cr
@@ -94,11 +94,16 @@ class Delete extends \Process\ProcessExtend
         $file->deleteImage('/User/' . $this->data->get('user_id') . '/Profile');
         $file->deleteImage('/User/' . $this->data->get('user_id') . '/Header');
 
-        $this->system->stats->set('user_deleted', +1);
+        $this->db->stats([
+            'user_deleted' =>  + 1
+        ]);
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('user_name'));
 
-        $this->redirectTo('/admin/user/');
+        $this->redirect('/admin/user/');
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

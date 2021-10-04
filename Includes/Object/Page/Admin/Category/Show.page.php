@@ -27,7 +27,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/forum/',
         'permission' => 'admin.forum'
     ];
@@ -46,20 +46,20 @@ class Show extends \Page\Page
         $category = new Category();
 
         // CATEGORY
-        $category = $category->get($this->getID()) or $this->error();
+        $category = $category->get($this->url->getID()) or $this->error();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Forum');
+        $breadcrumb = new Breadcrumb('/Admin/Forum');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // FIELD
-        $field = new Field('Admin/Category/Category');
+        $field = new Field('/Admin/Category/Category');
         $field->data($category);
         $field->object('category')->title('L_CATEGORY_EDIT');
         $this->data->field = $field->getData();
 
         // EDIT CATEGORY
-        $this->process->form(type: 'Admin/Category/Edit', data: [
+        $this->process->form(type: '/Admin/Category/Edit', data: [
             'category_id'   => $category['category_id']
         ]);
 

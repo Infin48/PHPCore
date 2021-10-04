@@ -21,7 +21,7 @@ $language = array_merge($language, [
     'L_STATISTICS_TOPIC_DELETED' => 'Smazaných témat',
     'L_STATISTICS_TOPIC_REPORTED' => 'Nahlášených témat',
 
-    'L_STATISTICS_POST' => 'Celekm příspěvků',
+    'L_STATISTICS_POST' => 'Celkem příspěvků',
     'L_STATISTICS_POST_YEAR' => 'Měsíční přírustek nových příspěvků za poslední rok',
     'L_STATISTICS_POST_MONTH' => 'Denní přírustek nových příspěvků za posledních 30 dní',
     'L_STATISTICS_POST_DELETED' => 'Smazaných příspěvků',

@@ -12,7 +12,7 @@
 
 namespace Process\Topic;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Edit
@@ -70,15 +70,20 @@ class Edit extends \Process\ProcessExtend
             } else {
 
                 // UPLOAD TOPIC IMAGE
-                $file->load('topic_image');
-                if ($file->check()) {
+                $image = $file->form('topic_image', FILE_TYPE_IMAGE);
+
+                if ($image->check()) {
+
+                    // DELETE OLD IMAGE
+                    $file->deleteImage('/Topic/' . $this->data->get('topic_id'));
 
                     // UPLOAD IMAGE
-                    $file->upload('/Topic/' . $this->data->get('topic_id'));
+                    $image->upload('/Uploads/Topic/' . $this->data->get('topic_id'));
+
 
                     // SET TOPIC IMAGE
                     $this->db->update(TABLE_TOPICS, [
-                        'topic_image' => $file->getFormat() . '?' . RAND
+                        'topic_image' => $image->getFormat() . '?' . RAND
                     ], $this->data->get('topic_id'));
                 }
             }
@@ -86,11 +91,11 @@ class Edit extends \Process\ProcessExtend
 
         // UPDATE TOPIC
         $this->db->update(TABLE_TOPICS, [
-            'topic_url'     => parse($this->data->get('topic_name')),
-            'is_edited'     => '1',
-            'topic_text'    => $this->data->get('topic_text'),
-            'topic_name'    => $this->data->get('topic_name'),
-            'topic_edited'  => DATE_DATABASE
+            'topic_url'         => parse($this->data->get('topic_name')),
+            'topic_text'        => $this->data->get('topic_text'),
+            'topic_name'        => $this->data->get('topic_name'),
+            'topic_edited'      => '1',
+            'topic_edited_at'   => DATE_DATABASE
         ], $this->data->get('topic_id'));
     }
 }

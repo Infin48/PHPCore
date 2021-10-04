@@ -12,7 +12,7 @@
 
 namespace Page\Admin;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -24,7 +24,7 @@ class Template extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.template'
     ];
 
@@ -39,55 +39,67 @@ class Template extends \Page\Page
         $this->navbar->object('settings')->row('template')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
+        
+        // LIST
+        $list = new Lists('/Template');
 
-        $templates = [];
-
+        // SEARCH FOR TEMPLATES
         foreach (glob(ROOT . '/Styles/*', GLOB_ONLYDIR) as $path) {
 
             if (file_exists($path . '/Info.json')) {
 
+                // TEMPLATE DATA
                 $json = json_decode(file_get_contents($path . '/Info.json'), true);
+                $json['id'] = basename($path);
+                $json['template_name_folder'] = basename($path);
 
-                if (basename($path) != $this->system->settings->get('site.template')) {
-                    $templates[] = [
-                        'template_name' => $json['name'],
-                        'template_name_folder' => basename($path)
-                    ];
+                if (!isset($json['name']) or !isset($json['desc']) or !isset($json['version']['current']) or !isset($json['version']['system'])) {
+                    continue;
                 }
-            }
-        }
-        
-        // LIST
-        $list = new Lists('Admin/Template');
-        $list->object('current')->appTo(['template_name' => $this->system->template->get('name')]);
 
-        foreach ($templates as $item) {
-            $list->object('loaded')->appTo($item)->jumpTo();
+                $list->object('templates')->appTo(data: $json, function: function ( \Visualization\Admin\Lists\Lists $list ) use ($path) { 
 
-            if ($item['template_name_folder'] === 'Default') {
-                $list->delButton('delete');
+                    // IF TEMPLATE IS DEFAULT
+                    if (basename($path) === 'Default') {
+                        $list->delButton('delete');
+                    }
+
+                    // IF TEMPLATE HAS HEADER IMAGE
+                    if ($list->obj->get->data('image')) {
+
+                        if (file_exists(ROOT . '/Styles/' . basename($path) . $list->obj->get->data('image'))) {
+
+                            $list->obj->set->data('image', '/Styles/' . basename($path) . $list->obj->get->data('image'));
+                            
+                        } else $list->obj->set->data('image', '');
+                    } else $list->obj->set->data('image', '');
+
+                    // IF TEMPLATE IS SET AS DEFAULT
+                    if ($this->system->get('site.template') === basename($path)) {
+
+                        $list->delButton([
+                            'delete', 'activate', 'preview'
+                        ]);
+                        $list->addLabel(
+                            color: 'green',
+                            text: 'L_TEMPLATE_DEFAULT'
+                        );
+                    }
+
+                    // IF TEMPLATE IS INCOMPATIBLE
+                    if (!in_array($this->system->get('site.version'), $list->obj->get->data('version')['system'])) {
+
+                        $list->addLabel(
+                            color: 'red',
+                            text: 'L_TEMPLATE_INCOMPATIBLE'
+                        );
+                    }
+                });
             }
         }
 
         $this->data->list = $list->getData();
-
-        // REFRESH TEMPLATE
-        $this->process->call(type: 'Admin/Template/Refresh', on: $this->url->is('refresh'), data: [
-            'template_name' => $this->system->template->get('name')
-        ]);
-
-        // TEMPLATES FOLDER NAMES
-        $templatesNamesFolder = array_column($templates, 'template_name_folder');
-
-        // SET TEMPLATE AS DEFAULT
-        if (in_array($this->url->get('set'), $templatesNamesFolder)) {
-
-            $this->process->call(type: 'Admin/Template/Set', on: $this->url->is('set'), data: [
-                'template_name' => $templates[array_search($this->url->get('set'), $templatesNamesFolder)]['template_name'],
-                'template_name_folder' => $this->url->get('set')
-            ]);
-        }
     }
 }

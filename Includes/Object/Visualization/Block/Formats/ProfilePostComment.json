@@ -4,7 +4,7 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "ProfilePostComment"
+                        "type": "/ProfilePostComment"
                     },
                     "data": {
                         "type": "profile_post_comment",

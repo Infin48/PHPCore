@@ -47,7 +47,7 @@ class Delete extends \Process\ProcessExtend
      */
     public function process()
     {
-        if ($this->system->settings->get('default_group') == $this->data->get('group_id')) {
+        if ($this->system->get('default_group') == $this->data->get('group_id')) {
             return false;
         }
 
@@ -58,7 +58,7 @@ class Delete extends \Process\ProcessExtend
             SET g2.group_index = g2.group_index - 1,
                 u.group_id = ?
             WHERE g.group_id = ?
-        ', [$this->system->settings->get('default_group'), $this->data->get('group_id')]);
+        ', [$this->system->get('default_group'), $this->data->get('group_id')]);
 
         $this->db->query('
             DELETE g, cps, fps, fpp, fpt
@@ -70,7 +70,15 @@ class Delete extends \Process\ProcessExtend
             WHERE g.group_id = ?
         ', [$this->data->get('group_id')]);
 
+        // UPDATE GROUPS SESSION
+        $this->db->table(TABLE_SETTINGS, [
+            'session.groups' => RAND
+        ]);
+        
         // ADD RECORD TO LOG
         $this->log($this->data->get('group_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

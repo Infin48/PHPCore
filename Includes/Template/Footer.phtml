@@ -1,36 +1,36 @@
-<script src="/Assets/jQuery/jQuery.min.js?14"></script>
-<script defer src="/Assets/cAjax/cAjax.min.js?9988"></script>
+<script src="/Assets/jQuery/jQuery.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<script defer src="/Assets/cAjax/cAjax.min.js?<?= $this->system->get('session.scripts') ?>"></script>
 <?php if ($this->user->isLogged()) : ?>
     <?php if (isset($this->data->data['editor'])) : ?>
-        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $this->system->settings->get('session') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $this->system->settings->get('session') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js"></script>
-        <script src="/Assets/Trumbowyg/langs/<?= $this->system->settings->get('site.language_editor') ?>.min.js?<?= $this->system->settings->get('session') ?>"></script>
-        <script defer src="/Includes/Template/js/Editor/<?= $this->data->data['editor'] ?>.min.js?14"></script>
+        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <?php if ($this->system->get('site.language_editor') != 'en') : ?>
+            <script src="/Assets/Trumbowyg/langs/<?= $this->system->get('site.language_editor') ?>.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <?php endif; ?>
+        <script defer src="/Includes/Template/js/Editor/<?= $this->data->data['editor'] ?>.min.js?<?= $this->system->get('session.scripts') ?>"></script>
     <?php endif; ?>
 <?php endif; ?>
-<script defer src="/Includes/Template/js/Others.min.js?12"></script>
-<script defer src="/Includes/Template/js/Ajax.min.js?465"></script>
-<?php if ($this->system->settings->get('cookie.enabled') == 1) : ?>
-    <script src="/Assets/Cookie/Cookie.min.js?13"></script>
+<script defer src="/Includes/Template/js/Others.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<script defer src="/Includes/Template/js/Ajax.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<?php if ($this->system->get('cookie.enabled') == 1) : ?>
+    <script src="/Assets/Cookie/Cookie.min.js?<?= $this->system->get('session.scripts') ?>"></script>
 <?php endif; ?>
 
 <?php if ($this->data->data['pageName'] == 'register') : ?>
-    <script src="https://www.google.com/recaptcha/api.js?render=<?= $this->system->settings->get('registration.key_site') ?>"></script>
-    <script src="/Assets/reCAPTCHA/reCAPTCHA.js?<?= $this->system->settings->get('session') ?>"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=<?= $this->system->get('registration.key_site') ?>"></script>
+    <script src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $this->system->get('session.scripts') ?>"></script>
 <?php endif; ?>
+
+<?php foreach ($this->data->data['plugins'] ?? [] as $plugin) : ?>
+    <?php if (file_exists($path = (ROOT . '/Plugins/' . $plugin . '/Styles/Themes/Addons.min.js'))) : ?>
+        <script defer src="<?= str_replace(ROOT, '', $path) ?>?<?= $this->system->get('session.scripts') ?>"></script>
+    <?php endif; ?>
+<?php endforeach; ?>
 
 <?php
 
-    $templatePath = TEMPLATE_PATH;
-    $template = TEMPLATE;
-    if (defined('ERROR_PAGE')) {
-        $templatePath =  TEMPLATE_PATH_DEFAULT;
-        $template = TEMPLATE_DEFAULT;
-    }
-
-    if (file_exists($path = ( ROOT . $templatePath . '/' . $template . '/Templates/Blocks/Bottom.phtml'))) {
+    if (file_exists($path = ( ROOT . $this->template->get('path') . '/' . $this->template->get('template') . '/Templates/Blocks/Bottom.phtml'))) {
         require $path;
     }
-
 ?>

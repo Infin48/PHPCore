@@ -16,6 +16,8 @@ $language['L_TITLE'] = [
 
     'Page\Admin\Log' => 'Audit log',
 
+    'Page\Admin\Plugin\Index' => 'Pluginy',
+
     'Page\Admin\Status' => 'Stav',
     'Page\Admin\Statistics' => 'Statistiky',
 

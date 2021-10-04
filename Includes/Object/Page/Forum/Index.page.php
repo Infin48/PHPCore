@@ -45,7 +45,7 @@ class Index extends \Page\Page
     protected function body()
     {
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Forum/Index');
+        $breadcrumb = new Breadcrumb('/Forum/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
@@ -57,57 +57,49 @@ class Index extends \Page\Page
         $profilePost = new ProfilePost();
 
         // LIST
-        $list = new Lists('Forum');
+        $list = new Lists('/Forum');
 
-        foreach ($category->getAll() as $item) {
+        $list->fill(data: $category->getAll(), function: function ( \Visualization\Lists\Lists $list ) use ($forum, $topic) { 
 
-            $list->sync()->appTo($item)->jumpTo();
-
-            foreach ($forum->getParent($item['category_id']) as $_item) {
+            $list->fill(data: $forum->getParent($list->obj->get->data('category_id')), function: function ( \Visualization\Lists\Lists $list ) use ($topic) { 
 
                 // IF IS ANY LAST POST IN FORUM
-                if (!empty($_item['topic_id'])) {
+                if (!empty($list->obj->get->data('topic_id'))) {
                     
                     // GET TOPIC LABELS
-                    $_item['labels'] = $topic->getLabels($_item['topic_id']);
+                    $list->obj->set->data('labels', $topic->getLabels($list->obj->get->data('topic_id')));
 
-                    if (count($_item['labels']) > 2) {
-                        $_item['labels'] = array_slice($_item['labels'], 0, 3);
-                        $_item['labels'][2]['label_name'] = '...';
+                    if (count($list->obj->get->data('labels')) > 2) {
+                        $labels = array_slice($list->obj->get->data('labels'), 0, 3);
+                        $labels[2]['label_name'] = '...';
+                        $list->obj->set->data('labels', $labels);
                     }
                 }
-
-                // SET FORUMS TO CATEGORY
-                $list->appTo($_item);
-            }
-        }
+            });
+        });
         $this->data->list = $list->getData();
 
         // SIDEBAR        
-        $sidebar = new Sidebar('Basic');
-        $sidebar->object('posts');
+        $sidebar = new Sidebar('/Basic');
+        $sidebar->object('posts')->fill(data: $post->getLast(), function: function ( \Visualization\Sidebar\Sidebar $sidebar ) use ($topic) {
 
-        foreach ($post->getLast() as $item) {
+            $sidebar->obj->set->data('labels', $topic->getLabels($sidebar->obj->get->data('topic_id')));
 
-            // GET TOPIC LABELS
-            $item['labels'] = $topic->getLabels($item['topic_id']);
-
-            if (count($item['labels']) > 2) {
-                $item['labels'] = array_slice($item['labels'], 0, 3);
-                $item['labels'][2]['label_name'] = '...';
+            if (count($sidebar->obj->get->data('labels')) > 2) {
+                $labels = array_slice($sidebar->obj->get->data('labels'), 0, 3);
+                $labels[2]['label_name'] = '...';
+                $sidebar->obj->set->data('labels', $labels);
             }
-
-            $sidebar->appTo($item);
-        }
+        });
 
         // FORUM STATS
         $stats = $forum->getStats();
 
-        $this->data->sidebar = $sidebar->object('stats')
-            ->row('topics')->value($stats['topic'])
-            ->row('posts')->value($stats['post'])
-            ->row('users')->value($stats['user'])
-            ->object('users')->fill($user->getOnline())
-            ->object('profile')->fill($profilePost->getLast())->getData();
+        $this->data->sidebar = $sidebar->object('stats')->row('table')
+            ->option('topics')->value($stats['topic'])
+            ->option('posts')->value($stats['post'])
+            ->option('users')->value($stats['user'])
+            ->object('users')->row('users')->fill(data: $user->getOnline())
+            ->object('profile')->fill(data: $profilePost->getLast())->getData();
     }
 }

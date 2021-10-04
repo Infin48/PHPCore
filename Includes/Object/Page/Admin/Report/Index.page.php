@@ -14,8 +14,8 @@ namespace Page\Admin\Report;
 
 use Block\Report;
 
-use Visualization\Lists\Lists;
-use Visualization\Block\Block;
+use Visualization\Admin\Lists\Lists;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -27,7 +27,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Report',
+        'template' => '/Report',
         'permission' => 'admin.forum'
     ];
     
@@ -45,21 +45,21 @@ class Index extends \Page\Page
         $report = new Report();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // LIST
-        $list = new Lists('Admin/Report/Index');
-        $list->object('last')->fill($report->getLastPending())
-            ->object('users')->fill($report->getUsers())
-            ->object('solved')->fill($report->getLastSolved());
+        $list = new Lists('/Report/Index');
+        $list->object('last')->fill(data: $report->getLastPending())
+            ->object('users')->fill(data: $report->getUsers())
+            ->object('solved')->fill(data: $report->getLastSolved());
         $this->data->list = $list->getData();
 
         // REPORT STATS
         $stats = $report->getStats();
 
         // BLOCK
-        $block = new Block('Admin/Report/Index');
+        $block = new Block('/Report/Index');
         $block
             ->object('post')->value($stats['post'])
             ->object('topic')->value($stats['topic'])
@@ -68,6 +68,6 @@ class Index extends \Page\Page
         $this->data->block = $block->getData();
 
         // CHANGE REPORT TYPE
-        $this->process->form(type: 'Admin/Report/Change', on: 'change');
+        $this->process->form(type: '/Admin/Report/Change', on: 'change');
     }
 }

@@ -26,6 +26,13 @@ class BuildDate extends Build
      */
     private function toTime( string $date )
     {
+        if (ctype_digit($date)) {
+            if (strlen($date) === 13) {
+                return $date / 1000;
+            }
+            return $date;
+        }
+
         return strtotime($date);
     }
 

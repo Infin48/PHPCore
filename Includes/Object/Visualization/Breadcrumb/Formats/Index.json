@@ -2,7 +2,7 @@
     "body": {
         "index": {
             "data": {
-                "href": "/",
+                "href": "$/",
                 "title": "L_TITLE_PAGE"
             }
         }

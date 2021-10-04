@@ -18,7 +18,9 @@ $language['L_TITLE'] = [
     'Page\Forgot\Reset' => 'Změna hesla',
     'Page\Register' => 'Registrace',
     'Page\Users' => 'Seznam uživatelů',
+    'Page\Index' => 'Novinky',
 
+    'Page\Forum\Index' => 'Fórum',
     'Page\Forum\Show\Add' => 'Nové téma',
 
     'Page\User\Index' => 'Uživatelské nastavení',

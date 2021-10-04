@@ -23,6 +23,14 @@
                 "title": "L_STATUS_EXTENSION"
             },
             "body": {
+                "GD": {
+                    "options": {
+                        "type": "icon"
+                    },
+                    "data": {
+                        "title": "$GD"
+                    }
+                },
                 "mbstring": {
                     "options": {
                         "type": "icon"
@@ -71,28 +79,28 @@
                 "title": "L_STATUS_WRITABLE"
             },
             "body": {
-                "/Includes/Settings/.htdata.json": {
+                "/Includes/.htdata.json": {
                     "options": {
                         "type": "icon"
                     },
                     "data": {
-                        "title": "$/Includes/Settings/.htdata.json"
+                        "title": "$/Includes/.htdata.json"
                     }
                 },
-                "/Includes/Settings/Settings.json": {
+                "/Includes/Template/css/Group.min.css": {
                     "options": {
                         "type": "icon"
                     },
                     "data": {
-                        "title": "$/Includes/Settings/Settings.json"
+                        "title": "$/Includes/Template/css/Group.min.css"
                     }
                 },
-                "/Includes/Settings/Statistics.json": {
+                "/Includes/Template/css/Label.min.css": {
                     "options": {
                         "type": "icon"
                     },
                     "data": {
-                        "title": "$/Includes/Settings/Statistics.json"
+                        "title": "$/Includes/Template/css/Label.min.css"
                     }
                 }
             }

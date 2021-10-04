@@ -49,15 +49,15 @@ class Promote extends \Process\ProcessExtend
     {
         $this->db->query('
             UPDATE ' . TABLE_USERS . '
-            LEFT JOIN ' . TABLE_USERS . '2 ON u2.is_admin = 1
-            SET u.is_admin = 1,
-                u2.is_admin = 0
+            LEFT JOIN ' . TABLE_USERS . '2 ON u2.user_admin = 1
+            SET u.user_admin = 1,
+                u2.user_admin = 0
             WHERE u.user_id = ?
         ', [$this->data->get('user_id')]);
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('user_name'));
 
-        $this->redirectTo('/admin/user/');
+        $this->redirect('/admin/user/');
     }
 }

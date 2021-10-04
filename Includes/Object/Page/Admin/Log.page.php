@@ -16,7 +16,7 @@ use Block\Log as LogBlock;
 
 use Model\Pagination;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -28,7 +28,7 @@ class Log extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.?'
     ];
     
@@ -46,19 +46,19 @@ class Log extends \Page\Page
         $log = new LogBlock();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(20);
         $pagination->total($log->getAllCount());
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $log->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Admin/Log');
-        $list->object('log')->fill($log->getAll());
+        $list = new Lists('/Log');
+        $list->object('log')->fill(data: $log->getAll());
         $this->data->list = $list->getData();
     }
 }

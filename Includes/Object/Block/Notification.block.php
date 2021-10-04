@@ -36,6 +36,6 @@ class Notification extends Block
      */
     public function getAll()
     {
-        return $this->db->query('SELECT * FROM ' . TABLE_NOTIFICATIONS . ' WHERE is_hidden = 0 ORDER BY position_index DESC', [], ROWS);
+        return $this->db->query('SELECT * FROM ' . TABLE_NOTIFICATIONS . ' WHERE notification_hidden = 0 ORDER BY position_index DESC', [], ROWS);
     }
 }

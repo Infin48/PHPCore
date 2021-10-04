@@ -27,7 +27,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/page/',
         'permission' => 'admin.page'
     ];
@@ -46,21 +46,21 @@ class Show extends \Page\Page
         $page = new BlockPage();
 
         // PAGE
-        $page = $page->get($this->getID()) or $this->error();
+        $page = $page->get($this->url->getID()) or $this->error();
         $page['page_html'] = @file_get_contents(ROOT . '/Pages/' . $page['page_id'] . '/html.html');
         $page['page_css'] = @file_get_contents(ROOT . '/Pages/' . $page['page_id'] . '/css.css');
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Page');
+        $breadcrumb = new Breadcrumb('/Admin/Page');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Page/Page');
+        $field = new Field('/Admin/Page/Page');
         $field->data($page);
         $this->data->field = $field->getData();
 
         // EDIT PAGE
-        $this->process->form(type: 'Admin/Page/Edit', data: [
+        $this->process->form(type: '/Admin/Page/Edit', data: [
             'page_id' => $page['page_id']
         ]);
 

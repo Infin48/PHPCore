@@ -12,10 +12,12 @@
 
 $language['L_NOTICE'] = [
     
+    'L_FAILURE_MESSAGE' => 'Vyskytla se chyba!',
+
     'L_FAILURE' => [
         
         'to' => 'Zadejte platné účastníky konverzace.',
-        'to_length_max' => 'Maximální počet účastníku je 10.',
+        'to_length_max' => 'Maximální počet účastníku včetně odesílatele je 10.',
         
         'report_reason_text' => 'Zadejte důvod nahlášení.',
         'report_reason_text_length_max' => 'Hlášení je příliš dlouhé.',
@@ -70,8 +72,9 @@ $language['L_NOTICE'] = [
 
         'user_signature_length_max' => 'Podpis je příliš dlouhý.',
 
-        'image_size' => 'Nahraný obrázek je příliš velký.',
-        'image_format' => 'Formát nahráneho obrázku není podporován.',
+        'file_size' => 'Nahraný soubor je příliš velký.',
+        'file_format' => 'Formát nahraného souboru není podporován.',
+        'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
 
         'recaptcha' => 'Autorizace byla neúspěšná.',
 
@@ -81,26 +84,29 @@ $language['L_NOTICE'] = [
         'account_not_activated' => 'Tento účet není aktivován.',
         'login_validate' => 'Zadali jste špatné uživatelské jméno nebo heslo.',
 
-        'Conversation/Recipient' => 'Uživatel s tímto jménem neexistuje.',
-        'Forgot/Send' => 'Uživatel s tímto e-mailem neexistuje.'
+        '/Conversation/Recipient' => 'Uživatel s tímto jménem neexistuje.',
+        '/Forgot/Send' => 'Uživatel s tímto e-mailem neexistuje.'
     ],
 
     'L_SUCCESS' => [
-        'Forgot/Reset' => 'Heslo bylo úspěšně změněno.',
-        'Forgot/Send' => 'Odkaz pro změnu hesla jsme vám poslali na váš e-mail.',
+        '/Forgot/Reset' => 'Heslo bylo úspěšně změněno.',
+        '/Forgot/Send' => 'Odkaz pro změnu hesla jsme vám poslali na váš e-mail.',
 
-        'Report/Send' => 'Hlášení bylo úspěšně odesláno.',
+        '/Post/Report' => 'Hlášení bylo úspěšně odesláno.',
+        '/Topic/Report' => 'Hlášení bylo úspěšně odesláno.',
+        '/ProfilePost/Report' => 'Hlášení bylo úspěšně odesláno.',
+        '/ProfilePostComment/Report' => 'Hlášení bylo úspěšně odesláno.',
 
-        'User/Login' => 'Byli jste úspěšně přihlášeni.',
-        'User/Logout' => 'Byli jste úspěšně odhlášeni.',
-        'User/Register' => 'Váš účet byl vytvořen.<br>Pro aktivaci účtu klikněte na odkaz, který jsme vám poslali na e-mail.',
+        '/User/Login' => 'Byli jste úspěšně přihlášeni.',
+        '/User/Logout' => 'Byli jste úspěšně odhlášeni.',
+        '/User/Register' => 'Váš účet byl vytvořen.<br>Pro aktivaci účtu klikněte na odkaz, který jsme vám poslali na e-mail.',
 
-        'User/About' => 'Profilové nastavení bylo úspěšně aktualizováno.',
-        'User/Account' => 'Uživatelské nastavení bylo úspěšně změněno. Pokud jste si změnili e-mail, tak si jej potvrďte. Pokud tak neuděláte e-mail nebude změněn.',
-        'User/Signature' => 'Váš podpis byl změněn.',
-        'User/Settings' => 'Profilové nastavení bylo úspěšně aktualizováno.',
+        '/User/About' => 'Profilové nastavení bylo úspěšně aktualizováno.',
+        '/User/Account' => 'Uživatelské nastavení bylo úspěšně změněno. Pokud jste si změnili e-mail, tak si jej potvrďte. Pokud tak neuděláte e-mail nebude změněn.',
+        '/User/Signature' => 'Váš podpis byl změněn.',
+        '/User/Settings' => 'Profilové nastavení bylo úspěšně aktualizováno.',
 
-        'User/Verify/Email' => 'E-mail by úspěšně ověřen.',
-        'User/Verify/Account' => 'Váš účet byl úspěšně aktivován.'
+        '/User/Verify/Email' => 'E-mail by úspěšně ověřen.',
+        '/User/Verify/Account' => 'Váš účet byl úspěšně aktivován.'
     ]
 ];

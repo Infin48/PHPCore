@@ -2,13 +2,13 @@
     "body": {
         "user": {
             "data": {
-                "href": "/user/",
+                "href": "$/user/",
                 "title": "L_USER_SETTINGS"
             }
         },
         "conversation": {
             "data": {
-                "href": "/user/conversation/",
+                "href": "$/user/conversation/",
                 "title": "L_USER_CONVERSATION"
             }
         }

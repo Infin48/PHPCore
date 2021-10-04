@@ -29,7 +29,7 @@ class Chart extends Block
             FROM (
                 SELECT COUNT(*) users, 0 topics, 0 posts, DATE_FORMAT(user_registered, "%Y-%m-%d") date, DATE_FORMAT(user_registered, "%Y-%m") month
                 FROM ' . TABLE_USERS . ' 
-                WHERE u.is_deleted = 0
+                WHERE u.user_deleted = 0
                 GROUP BY DATE_FORMAT(user_registered, "%Y-%m") 
                 UNION ALL
                 SELECT 0 users, COUNT(*) topics, 0 posts, DATE_FORMAT(topic_created, "%Y-%m-%d") date, DATE_FORMAT(topic_created, "%Y-%m") month
@@ -57,7 +57,7 @@ class Chart extends Block
             FROM (
                 SELECT COUNT(*) users, 0 topics, 0 posts, DATE_FORMAT(user_registered, "%Y-%m-%d") day
                 FROM ' . TABLE_USERS . ' 
-                WHERE u.is_deleted = 0
+                WHERE u.user_deleted = 0
                 GROUP BY DATE_FORMAT(user_registered, "%Y-%m-%d") 
                 UNION ALL
                 SELECT 0 users, COUNT(*) topics, 0 posts, DATE_FORMAT(topic_created, "%Y-%m-%d")  day

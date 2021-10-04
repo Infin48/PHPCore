@@ -1,54 +1,33 @@
-<form method="post" enctype="multipart/form-data">
-    <div class="field">
-        <div class="field-head">
-            <span><?= $L_NAVBAR['L_DATABASE'] ?></span>
-        </div>
-        <div class="field-body">
-            <div class="field-row">
-                <div class="field-text">
-                    <span class="title"><?= $L_DATABASE_HOST ?>:</span>
-                </div>
-                <div class="field-option">
-                    <input type="text" name="host" placeholder="<?= $L_HOST ?>" value="<?= $form->get('host') ?>">
-                </div>
-            </div>
-            <div class="field-row">
-                <div class="field-text">
-                    <span class="title"><?= $L_DATABASE_USERNAME ?>:</span>
-                </div>
-                <div class="field-option">
-                    <input type="text" name="user_name" placeholder="<?= $L_DATABASE_USERNAME ?>" value="<?= $form->get('user_name') ?>">
-                </div>
-            </div>
-            <div class="field-row">
-                <div class="field-text">
-                    <span class="title"><?= $L_DATABASE_PASSWORD ?>:</span>
-                </div>
-                <div class="field-option">
-                    <input type="password" name="user_password" placeholder="<?= $L_PASSWORD ?>" value="<?= $form->get('user_password') ?>">
-                </div>
-            </div>
-            <div class="field-row">
-                <div class="field-text">
-                    <span class="title"><?= $L_DATABASE_NAME ?>:</span>
-                </div>
-                <div class="field-option">
-                    <input type="text" name="database" placeholder="<?= $L_NAME ?>" value="<?= $form->get('database') ?>">
-                </div>
-            </div>
-            <div class="field-row">
-                <div class="field-text">
-                    <span class="title"><?= $L_PORT ?>:</span><?= $L_DATABASE_PORT_DESC ?>
-                </div>
-                <div class="field-option">
-                    <input type="text" name="port" placeholder="<?= $L_PORT ?>" value="<?= $form->get('port') ?>">
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="field-submit">
-        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
-        <input type="submit" name="submit" class="button" value="<?= $L_NEXT ?>">
-    </div>
-</form>
+<div class="page-column">
+    <div class="page-column-icon"><i class="fas fa-database"></i></div>
+    <div class="page-column-title"><?= $L_DATABASE ?></div>
+    <?php if (isset($this->data->data['notice'])) : ?>
+        <div class="page-column-alert">
+            <span><?= $this->data->data['notice'] ?></span>
+        </div>
+    <?php endif; ?>
+    <form method="post">
+        <div class="page-column-body">
+            <div class="page-column-input">
+                <input type="text" name="host" placeholder="<?= $L_HOST ?>" value="<?= $this->form->get('host') ?>"><i class="fas fa-server"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="text" name="user_name" placeholder="<?= $L_DATABASE_USERNAME ?>" value="<?= $this->form->get('user_name') ?>"><i class="fas fa-user"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="password" name="user_password" placeholder="<?= $L_PASSWORD ?>" value="<?= $this->form->get('user_password') ?>"><i class="fas fa-key"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="text" name="database" placeholder="<?= $L_DATABASE_NAME ?>" value="<?= $this->form->get('database') ?>"><i class="fas fa-database"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="text" name="port" placeholder="<?= $L_PORT ?>" value="<?= $this->form->get('port') ?>"><i class="fas fa-sort-numeric-up-alt"></i>
+            </div>
+            <div class="field-submit">
+                <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                <input class="button" type="submit" name="submit" value="<?= $L_NEXT ?>">
+            </div>
+        </div>
+    </form>
+</div>

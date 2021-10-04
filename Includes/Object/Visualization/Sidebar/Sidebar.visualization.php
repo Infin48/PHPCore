@@ -46,6 +46,18 @@ class Sidebar extends \Visualization\Visualization
     {
         $this->type = 'small';
     }
+
+    protected function each_clb( \Visualization\Visualization $visual )
+    {
+        if ($visual->obj->get->options('type') === 'table' and !$visual->obj->get->body()) {
+            $visual->obj->set->body(mt_rand(), [
+                'data' => [
+                    'title' => $visual->obj->get->data('title'),
+                    'value' => $visual->obj->get->data('value'),
+                ]
+            ]);
+        }
+    }
     
     /**
      * This function will be executed before returning sidebar data

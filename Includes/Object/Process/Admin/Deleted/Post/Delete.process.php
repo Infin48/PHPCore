@@ -54,11 +54,14 @@ class Delete extends \Process\ProcessExtend
             WHERE dc.deleted_id = ?
         ', [$this->data->get('deleted_id')]);
 
-        $this->system->stats->set('post_deleted', +1);
+        // UPDATE STATISTICS
+        $this->db->stats([
+            'post_deleted' => + 1
+        ]);
 
         // ADD RECORD TO LOG
         $this->log();
 
-        $this->redirectTo('/admin/deleted/');
+        $this->redirect('/admin/deleted/');
     }
 }

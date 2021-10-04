@@ -36,7 +36,7 @@ class Index extends Page
      */
     protected array $settings = [
         'header' => true,
-        'template' => 'Index',
+        'template' => '/Index',
         'notification' => true
     ];
 
@@ -60,65 +60,58 @@ class Index extends Page
         }
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Index');
+        $breadcrumb = new Breadcrumb('/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_NEWS);
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $pagination->total($news->getAllCount());
         $news->pagination = $this->data->pagination = $pagination->getData();
 
         // BLOCK
-        $block = new Block('Index');
-      
-        foreach ($news->getAll() as $item) {
+        $block = new Block('/Index');
+        $block->object('new')->fill(data: $news->getAll(), function: function ( \Visualization\Block\Block $block ) use ($topic) {
+            
+            $block->obj->set->data('labels', $topic->getLabels($block->obj->get->data('topic_id')));
+            $block->obj->set->data('text', truncate($block->obj->get->data('topic_text'), 400));
 
-            $item['labels'] = $topic->getLabels($item['topic_id']);
-
-            $item['topic_text'] = truncate($item['topic_text'], 400);
-
-            if ($item['topic_image']) {
-                $item['image_url'] = '/Uploads/Topic/' . $item['topic_id'] . '.' . $item['topic_image'];
+            if ($block->obj->get->data('topic_image')) {
+                $block->obj->set->data('image_url', '/Uploads/Topic/' . $block->obj->get->data('topic_id') . '.' . $block->obj->get->data('topic_image'));
             }
 
-            $block->object('new')->appTo($item)->jumpTo();
-
-            if ($item['deleted_id']) {
+            if ($block->obj->get->data('deleted_id')) {
                 $block->disable();
             }
 
-            if ($item['is_sticky']) {
+            if ($block->obj->get->data('topic_sticked')) {
                 $block->select();
             }
-        }
-
+        });
         $this->data->block = $block->getData();
 
         // SIDEBAR
-        $sidebar = new Sidebar('Basic');
+        $sidebar = new Sidebar('/Basic');
+        $sidebar->object('posts')->fill(data: $post->getLast(), function: function ( \Visualization\Sidebar\Sidebar $sidebar ) use ($topic) {
 
-        foreach ($post->getLast() as $item) {
+            $sidebar->obj->set->data('labels', $topic->getLabels($sidebar->obj->get->data('topic_id')));
 
-            $item['labels'] = $topic->getLabels($item['topic_id']);
-
-            if (count($item['labels']) > 2) {
-                $item['labels'] = array_slice($item['labels'], 0, 3);
-                $item['labels'][2]['label_name'] = '...';
+            if (count($sidebar->obj->get->data('labels')) > 2) {
+                $labels = array_slice($sidebar->obj->get->data('labels'), 0, 3);
+                $labels[2]['label_name'] = '...';
+                $sidebar->obj->set->data('labels', $labels);
             }
-
-            $sidebar->object('posts')->appTo($item);
-        }
+        });
 
         // FORUM STATS
         $stats = $forum->getStats();
 
-        $this->data->sidebar = $sidebar->object('stats')
-            ->row('topics')->value($stats['topic'])
-            ->row('posts')->value($stats['post'])
-            ->row('users')->value($stats['user'])
-            ->object('users')->fill($user->getOnline())
-            ->object('profile')->fill($profilePost->getLast())->getData();
+        $this->data->sidebar = $sidebar->object('stats')->row('table')
+            ->option('topics')->value($stats['topic'])
+            ->option('posts')->value($stats['post'])
+            ->option('users')->value($stats['user'])
+            ->object('users')->row('users')->fill(data: $user->getOnline())
+            ->object('profile')->fill(data: $profilePost->getLast())->getData();
     }
 }

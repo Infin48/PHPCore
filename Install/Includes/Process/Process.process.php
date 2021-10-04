@@ -67,15 +67,19 @@ class Process
                 
                 switch ($key) {
 
+
                     case 'length_max':
                         $this->check->maxLength($formData[$input], $input, $value);
                     break;
+
 
                     case 'length_min':
                         $this->check->minLength($formData[$input], $input, $value);
                     break;
 
+
                     case 'type':
+
 
                         if (!isset($formData[$input])) {
                             switch ($value) {
@@ -84,12 +88,14 @@ class Process
                                     $formData[$input] = [];
                                 break;
 
+
                                 case 'text':
                                 case 'email':
                                 case 'username':
                                 case 'password':
                                     $formData[$input] = '';
                                 break;
+
 
                                 case 'radio':
                                 case 'number':
@@ -99,11 +105,13 @@ class Process
                             }
                         }
 
+
                         switch ($value) {
 
                             case 'array':
                                 $formData[$input] = is_array($formData[$input]) ? $formData[$input] : [];
                             break;
+
 
                             case 'text':
                             case 'email':
@@ -112,17 +120,21 @@ class Process
                                 $formData[$input] = is_string($formData[$input]) ? $formData[$input] : '';
                             break;
 
+
                             case 'radio':
                             case 'checkbox':
                                 $formData[$input] = $formData[$input] == 1 ? 1 : 0;
                             break;
+
 
                             case 'number':
                                 $formData[$input] = ctype_digit($formData[$input]) ? $formData[$input] : 0;
                             break;
                         }
 
+
                         switch ($value) {
+
 
                             case 'text':
                             case 'email':
@@ -132,21 +144,24 @@ class Process
                             break;
                         }
 
+
                         if (!empty($formData[$input])) {
                             switch ($value) {
+
 
                                 case 'email':
                                     $this->check->email($formData[$input]);
                                 break;
 
+
                                 case 'username':
                                     $this->check->userName($formData[$input]);
                                 break;
 
+
                                 case 'password':
                                     $this->check->password($formData[$input]);
                                 break;
-
                             }
                         }
 
@@ -154,7 +169,6 @@ class Process
                     break;
                 }
             }
-
         }
 
         return true;
@@ -178,7 +192,8 @@ class Process
         if ($this->form->isSend($on)) {
 
             // EXPLODE PROCESS NAME
-            $ex = explode('/', $type);
+            $ex = array_filter(explode('/', $type));
+
 
             $process = 'Process\\' . implode('\\', $ex);
             $process =  new $process();
@@ -195,6 +210,7 @@ class Process
                 $this->redirect();
                 return false;
             }
+
 
             return false;
         }

@@ -62,9 +62,9 @@ class Edit extends \Process\ProcessExtend
 
         // EDIT MESSAGE
         $this->db->update(TABLE_CONVERSATIONS_MESSAGES, [
-            'is_edited' => '1',
-            'conversation_message_text'	=> $this->data->get('text'),
-            'conversation_message_edited' => DATE_DATABASE
+            'conversation_message_text'	        => $this->data->get('text'),
+            'conversation_message_edited'       => '1',
+            'conversation_message_edited_at'    => DATE_DATABASE
         ], $this->data->get('conversation_message_id'));
 
         return true;

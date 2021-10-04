@@ -13,7 +13,7 @@
 namespace Exception;
 
 use Model\Language;
-use Model\System\System as _System;
+use Model\System as _System;
 
 /**
  * System 
@@ -30,6 +30,15 @@ class System extends \Exception
     {
         $language = new Language();
         $system = new _System();
+
+        if (!$language->get()) {
+            
+            // DEFAULT LANGUAGE
+            $this->language             = new Language(
+                language: 'cs'
+            );
+        }
+
         extract($language->get());
 
         if (isset($assign)) {
@@ -41,11 +50,9 @@ class System extends \Exception
             $error = $language[$error] ? strtr($language->get($error), $assign) : $error;
         }
 
-        if (defined('AJAX') and AJAX === true) {
+        if (defined('AJAX')) {
             echo json_encode([
-                'status' => 'error',
-                'error' => $error,
-                'title' => $language->get('L_INTERNAL_ERROR')
+                'error' => $error
             ]);
             exit();
         }

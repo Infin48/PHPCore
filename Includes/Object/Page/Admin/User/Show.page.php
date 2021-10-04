@@ -28,7 +28,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/user/',
         'permission' => 'admin.user'
     ];
@@ -48,22 +48,22 @@ class Show extends \Page\Page
         $group = new Group();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/User');
+        $breadcrumb = new Breadcrumb('/Admin/User');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // USER
-        $user = $userB->get($this->getID()) or $this->error();
+        $user = $userB->get($this->url->getID()) or $this->error();
 
         // IF LOGGED USER HAS PERMISSION TO EDIT THIS USER
         $this->user->perm->compare(
             index: $user['group_index'],
-            admin: $user['is_admin']
+            admin: $user['user_admin']
         ) or $this->redirect();
 
         // FIELD
-        $field = new Field('Admin/User/User');
+        $field = new Field('/Admin/User/User');
         $field->data($user);
-        $field->object('user')->row('group_id')->fill($group->getLess());
+        $field->object('user')->row('group_id')->fill(data: $group->getLess());
 
         // IF USER DOESN'T HAVE ACTIVATED ACCOUNT
         if ($user['account_code']) {
@@ -101,7 +101,7 @@ class Show extends \Page\Page
         }
 
         // IF USER IS ADMIN
-        if ($user['is_admin'] == 1) {
+        if ($user['user_admin'] == 1) {
             
             $field->row('promote')->hide();
         }
@@ -109,13 +109,14 @@ class Show extends \Page\Page
         $this->data->field = $field->getData();
 
         // EDIT USER
-        $this->process->form(type: 'Admin/User/Edit', data: [
+        $this->process->form(type: '/Admin/User/Edit', data: [
             'user_id' => $user['user_id']
         ]);
 
         if ($user['account_code']) {
+
             // ACTIVATE USER
-            $this->process->call(type: 'Admin/User/Activate', on: $this->url->is('activate'), data: [
+            $this->process->call(type: '/Admin/User/Activate', on: $this->url->is('activate'), data: [
                 'user_id' => $user['user_id']
             ]);
         }

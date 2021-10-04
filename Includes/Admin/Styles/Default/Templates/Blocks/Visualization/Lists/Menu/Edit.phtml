@@ -1,0 +1,6 @@
+<?php if ($row['data']['button_dropdown'] == 1) : ?>
+    <a class="button button-add" href="<?= $this->url->build('/add/buttonsub/' . $row['data']['button_id'], true) ?>"><i class="fas fa-plus"></i><span><?= $L_BUTTON['L_ADD_BUTTON'] ?></span></a>
+    <a class="button button-edit" href="<?= $this->url->build('/show/dropdown/' . $row['data']['button_id'], true) ?>"><i class="fas fa-pencil-alt"></i><span><?= $L_BUTTON['L_EDIT'] ?></span></a>
+<?php else : ?>
+    <a class="button button-edit" href="<?= $this->url->build('/show/button/' . $row['data']['button_id'], true) ?>"><i class="fas fa-pencil-alt"></i><span><?= $L_BUTTON['L_EDIT'] ?></span></a>
+<?php endif; ?>

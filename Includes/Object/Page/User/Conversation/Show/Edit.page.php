@@ -43,22 +43,22 @@ class Edit extends \Page\Page
         $conversation = new Conversation();
 
         // CONVERSATION DATA
-        $conversation = $conversation->get($this->getID()) or $this->error();
+        $conversation = $conversation->get($this->url->getID()) or $this->error();
 
         // IF THIS CONVERSATION IS NOT FOR MINE
         if ($conversation['user_id'] != LOGGED_USER_ID) redirect('/user/conversation/');
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('User/Conversation');
+        $breadcrumb = new Breadcrumb('/User/Conversation');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('User/Conversation');
+        $field = new Field('/User/Conversation');
         $field->data($conversation);
         $this->data->field = $field->getData();
 
         // EDIT CONVERSATION
-        $this->process->form(type: 'Conversation/Edit', data: [
+        $this->process->form(type: '/Conversation/Edit', data: [
             'conversation_id' => $conversation['conversation_id']
         ]);
 

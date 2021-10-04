@@ -7,7 +7,8 @@
             "body": {
                 "forum_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_FORUM_NAME",
@@ -16,7 +17,8 @@
                 },
                 "forum_description": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_FORUM_DESCRIPTION",
@@ -24,29 +26,11 @@
                         "placeholder": "L_DESCRIPTION"
                     }
                 },
-                "is_main": {
-                    "options": {
-                        "type": "checkbox",
-                        "on": {
-                            "disable": "enable_link"
-                        }
-                    },
-                    "data": {
-                        "desc": "L_FORUM_MAIN_DESC",
-                        "title": "L_FORUM_MAIN"
-                    },
-                    "body": {
-                        "is_main": {
-                            "data": {
-                                "value": 1
-                            }
-                        }
-                    }
-                },
                 "category_id_new": {
                     "options": {
                         "type": "select",
-                        "hide": true
+                        "hide": true,
+                        "required": true
                     },
                     "data": {
                         "value": "category_id",
@@ -72,22 +56,12 @@
                     },
                     "body": {
                         "yes": {
-                            "options": {
-                                "checked": {
-                                    "filled": "forum_link"
-                                }
-                            },
                             "data": {
                                 "value": 1,
                                 "title": "L_YES"
                             }
                         },
                         "no": {
-                            "options": {
-                                "checked": {
-                                    "empty": "forum_link"
-                                }
-                            },
                             "data": {
                                 "value": 0,
                                 "title": "L_NO"
@@ -99,13 +73,32 @@
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "enable_link"
+                            "show": "enable_link:1"
                         }
                     },
                     "data": {
                         "title": "L_FORUM_LINK",
                         "desc": "L_FORUM_LINK_DESC",
                         "placeholder": "L_LINK"
+                    }
+                },
+                "forum_main": {
+                    "options": {
+                        "type": "checkbox",
+                        "on": {
+                            "show": "enable_link:0"
+                        }
+                    },
+                    "data": {
+                        "desc": "L_FORUM_MAIN_DESC",
+                        "title": "L_FORUM_MAIN"
+                    },
+                    "body": {
+                        "forum_main": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
                     }
                 }
             }

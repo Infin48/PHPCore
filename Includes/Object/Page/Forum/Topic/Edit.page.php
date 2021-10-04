@@ -43,23 +43,23 @@ class Edit extends \Page\Page
         $topic = new BlockTopic();
 
         // TOPIC
-        $topic = $topic->get($this->getID()) or $this->error();
+        $topic = $topic->get($this->url->getID()) or $this->error();
 
         // TOPIC IS NOT MINE
-        $topic['user_id'] == LOGGED_USER_ID or $this->redirect();
+        $topic['user_id'] == LOGGED_USER_ID or $this->error();
 
         // IF USER DOESN'T HAVE PERMISSION TO CRAETE TOPIC
-        $topic['topic_permission'] == 1 or $this->redirect();
+        $topic['topic_permission'] == 1 or $this->error();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Forum/Topic');
+        $breadcrumb = new Breadcrumb('/Forum/Topic');
         $breadcrumb->object('category')->title('$' . $topic['category_name']);
         $breadcrumb->object('forum')->title('$' . $topic['forum_name']);
         $breadcrumb->object('forum')->href($this->build->url->forum($topic));
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Topic');
+        $field = new Field('/Topic');
         $field->data($topic);
 
         if ($this->user->perm->has('topic.image')) {
@@ -69,15 +69,12 @@ class Edit extends \Page\Page
         $this->data->field = $field->getData();
 
         // EDIT TOPIC
-        $this->process->form(type: 'Topic/Edit', data: [
+        $this->process->form(type: '/Topic/Edit', data: [
             'topic_id'      => $topic['topic_id']
         ]);
 
         // HEAD
-        $this->data->head = [
-            'title'         => $topic['topic_name'],
-            'description'   => $topic['topic_text']
-        ];
-
+        $this->data->head['title'] = $topic['topic_name'];
+        $this->data->head['description'] = $topic['topic_text'];
     }
 }

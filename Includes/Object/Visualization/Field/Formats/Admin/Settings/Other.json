@@ -64,7 +64,8 @@
             "body": {
                 "site.locale": {
                     "options": {
-                        "type": "select"
+                        "type": "select",
+                        "required": true
                     },
                     "data": {
                         "desc": "L_SETTINGS_LOCALISATION_DESC",
@@ -93,7 +94,8 @@
                 },
                 "site.timezone": {
                     "options": {
-                        "type": "select"
+                        "type": "select",
+                        "required": true
                     },
                     "data": {
                         "title": "L_SETTINGS_TIMEZONE"
@@ -131,26 +133,10 @@
                         }
                     }
                 },
-                "site.language": {
-                    "options": {
-                        "type": "select"
-                    },
-                    "data": {
-                        "title": "L_SETTINGS_LANGUAGE_WEBSITE"
-                    },
-                    "body": {
-                        "default": {
-                            "data": {
-                                "convert": {
-                                    "title": "title"
-                                }
-                            }
-                        }
-                    }
-                },
                 "site.language_editor": {
                     "options": {
-                        "type": "select"
+                        "type": "select",
+                        "required": true
                     },
                     "data": {
                         "title": "L_SETTINGS_LANGUAGE_EDITOR"

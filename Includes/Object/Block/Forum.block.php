@@ -27,7 +27,7 @@ class Forum extends Block
     public function get( int $forumID )
     {
         return $this->db->query('
-            SELECT f.forum_id, f.forum_link, forum_name, forum_url, forum_description, forum_posts, forum_topics, is_main, category_name, c.category_id, forum_icon_style, forum_icon,
+            SELECT f.forum_id, f.forum_link, forum_name, forum_url, forum_description, forum_posts, forum_topics, forum_main, category_name, c.category_id, forum_icon_style, forum_icon,
                 CASE WHEN fpt.forum_id IS NOT NULL THEN 1 ELSE 0 END as topic_permission
             FROM ' . TABLE_FORUMS . '
             LEFT JOIN ' . TABLE_CATEGORIES . ' ON c.category_id = f.category_id
@@ -80,7 +80,7 @@ class Forum extends Block
     public function getAll()
     {
         return $this->db->query('
-            SELECT f.forum_id, forum_name, forum_url, forum_description, is_main
+            SELECT f.forum_id, forum_name, forum_url, forum_description, forum_main
             FROM ' . TABLE_FORUMS . '
             LEFT JOIN ' . TABLE_FORUMS_PERMISSION_SEE . ' ON fps.forum_id = f.forum_id AND fps.group_id = ' . LOGGED_USER_GROUP_ID . '
             LEFT JOIN ' . TABLE_CATEGORIES_PERMISSION_SEE . ' ON cps.category_id = f.category_id AND cps.group_id = ' . LOGGED_USER_GROUP_ID . '
@@ -91,22 +91,38 @@ class Forum extends Block
 
     /**
      * Returns all forums where topics can be moved
-     * 
-     * @param int $forumID ID of forum which will be ignored
      *
      * @return array
      */
-    public function getAllToMove( int $forumID )
+    public function getAllToMove()
     {
         return $this->db->query('
-            SELECT f.forum_id, forum_name, forum_url, forum_description, is_main
+            SELECT f.forum_id, forum_name, forum_url, forum_description, forum_main
             FROM ' . TABLE_FORUMS . '
             LEFT JOIN ' . TABLE_FORUMS_PERMISSION_SEE . ' ON fps.forum_id = f.forum_id AND fps.group_id = ' . LOGGED_USER_GROUP_ID . '
             LEFT JOIN ' . TABLE_FORUMS_PERMISSION_TOPIC . ' ON fpt.forum_id = f.forum_id AND fpt.group_id = ' . LOGGED_USER_GROUP_ID . '
             LEFT JOIN ' . TABLE_CATEGORIES_PERMISSION_SEE . ' ON cps.category_id = f.category_id AND cps.group_id = ' . LOGGED_USER_GROUP_ID . '
-            WHERE fps.forum_id IS NOT NULL AND cps.category_id IS NOT NULL AND fpt.forum_id IS NOT NULL AND f.forum_id != ? AND f.forum_link = ""
+            WHERE fps.forum_id IS NOT NULL AND cps.category_id IS NOT NULL AND fpt.forum_id IS NOT NULL AND f.forum_link = ""
             GROUP BY f.forum_id
-        ', [$forumID], ROWS);
+        ', [], ROWS);
+    }
+
+    /**
+     * Returns ID of all forums where topics can be moved
+     *
+     * @return array
+     */
+    public function getAllToMoveID()
+    {
+        return array_column($this->db->query('
+            SELECT f.forum_id
+            FROM ' . TABLE_FORUMS . '
+            LEFT JOIN ' . TABLE_FORUMS_PERMISSION_SEE . ' ON fps.forum_id = f.forum_id AND fps.group_id = ' . LOGGED_USER_GROUP_ID . '
+            LEFT JOIN ' . TABLE_FORUMS_PERMISSION_TOPIC . ' ON fpt.forum_id = f.forum_id AND fpt.group_id = ' . LOGGED_USER_GROUP_ID . '
+            LEFT JOIN ' . TABLE_CATEGORIES_PERMISSION_SEE . ' ON cps.category_id = f.category_id AND cps.group_id = ' . LOGGED_USER_GROUP_ID . '
+            WHERE fps.forum_id IS NOT NULL AND cps.category_id IS NOT NULL AND fpt.forum_id IS NOT NULL AND f.forum_link = ""
+            GROUP BY f.forum_id
+        ', [], ROWS), 'forum_id');
     }
     
     /**
@@ -169,7 +185,7 @@ class Forum extends Block
             ) as topic, (
                 SELECT COUNT(*)
                 FROM ' . TABLE_USERS . '
-                WHERE u.is_deleted = 0
+                WHERE u.user_deleted = 0
             ) as user
         ');
     }

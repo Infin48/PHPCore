@@ -6,7 +6,7 @@
             },
             "data": {
                 "icon": "fas fa-cogs",
-                "title": "L_USER_CONVERSATION_OPTIONS"
+                "title": "L_OPTIONS"
             },
             "body":{
                 "edit": {
@@ -20,13 +20,13 @@
                 },
                 "leave":{
                     "data": {
-                        "title": "L_USER_CONVERSATION_LEAVE",
+                        "title": "L_LEAVE_CONVERSATION",
                         "href": "/leave/"
                     }
                 },
                 "mark":{
                     "data": {
-                        "title": "L_USER_CONVERSATION_MARK_AS_UNREAD",
+                        "title": "L_MARK_AS_UNREAD",
                         "href": "/mark/"
                     }
                 }
@@ -39,7 +39,7 @@
             "data": {
                 "href": "#new",
                 "icon": "fas fa-reply",
-                "title": "L_USER_CONVERSATION_MESSAGE_SEND"
+                "title": "L_SEND_MESSAGE"
             }
         }
     }

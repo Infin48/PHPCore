@@ -51,13 +51,11 @@ class Index extends \Page\Page
         $conversationMessage = new ConversationMessage();
 
         // CONVERSATION DATA
-        $conversation = $_conversation->get($this->getID()) or $this->error();
+        $conversation = $_conversation->get($this->url->getID()) or $this->error();
 
         // HEAD
-        $this->data->head = [
-            'title'         => $conversation['conversation_name'],
-            'description'   => $conversation['conversation_text']
-        ];
+        $this->data->head['title'] = $conversation['conversation_name'];
+        $this->data->head['description'] = $conversation['conversation_text'];
 
         // ASSIGN DATA TO TEMPLATE
         $this->data->data([
@@ -65,11 +63,11 @@ class Index extends \Page\Page
         ]);
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('User/Conversation');
+        $breadcrumb = new Breadcrumb('/User/Conversation');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // CONVERSATION RECIPIENTS
-        $recipients = $_conversation->getRecipients($this->getID());
+        $recipients = $_conversation->getRecipients($this->url->getID());
 
         // IF IS THIS UNREAD CONVERSATION
         if (in_array($conversation['conversation_id'], $unread = $this->user->get('unread')) === true) {
@@ -86,18 +84,25 @@ class Index extends \Page\Page
         $pagination = new Pagination();
         $pagination->max(MAX_MESSAGES);
         $pagination->total($conversation['conversation_messages']);
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $conversationMessage->pagination = $this->data->pagination = $pagination->getData();
 
         // PANEL
-        $panel = new Panel('Conversation');
+        $panel = new Panel('/Conversation');
         if ($conversation['user_id'] == LOGGED_USER_ID) $panel->object('tools')->row('edit')->show();
         $this->data->panel = $panel->getData();
 
         // BLOCK
-        $block = new Block('Conversation');
+        $block = new Block('/Conversation');
         $block->object('conversation')->appTo($conversation);
-        $block->object('conversationmessage')->fill($conversationMessage->getParent($this->getID()));
+        $block->object('conversationmessage')->fill(data: $conversationMessage->getParent($this->url->getID()), function: function ( \Visualization\Block\Block $block ) {
+
+            $block->obj->set->data('name',  $this->language->get('L_RE') . ': ' . $block->obj->get->data('name'));
+
+            if ($block->obj->get->data('user_id') != LOGGED_USER_ID) {
+                $block->delButton('edit');
+            }
+        });
         $block->object('conversationmessage')->row('bottom')->show();
 
         if (PAGE == 1) {
@@ -107,12 +112,12 @@ class Index extends \Page\Page
         $this->data->block = $block->getData();
 
         // SIDEBAR
-        $sidebar = new Sidebar('Conversation');
+        $sidebar = new Sidebar('/Conversation');
         $sidebar->small();
-        $sidebar->object('info')
-            ->row('messages')->value($conversation['conversation_messages'])
-            ->row('recipients')->value(count($recipients))
-            ->object('recipients')->fill($recipients);
+        $sidebar->object('info')->row('table')
+            ->option('messages')->value($conversation['conversation_messages'])
+            ->option('recipients')->value(count($recipients))
+            ->object('recipients')->fill(data: $recipients);
 
         if (count($recipients) >= 10 or $conversation['user_id'] != LOGGED_USER_ID) {
             $sidebar->row('bottom')->hide();
@@ -121,20 +126,20 @@ class Index extends \Page\Page
         $this->data->sidebar = $sidebar->getData();
 
         // LEAVE CONVERSATION
-        $this->process->call(type: 'Conversation/Leave', url: '/user/conversation/', on: $this->url->is('leave'), data: [
+        $this->process->call(type: '/Conversation/Leave', url: '/user/conversation/', on: $this->url->is('leave'), data: [
             'conversation_id' => $conversation['conversation_id'],
             'recipients' => array_column($recipients, 'user_id')
         ]);
 
         // MARK AS UNREAD CONVERSATION
-        $this->process->call(type: 'Conversation/Mark', on: $this->url->is('mark'), data: [
+        $this->process->call(type: '/Conversation/Mark', on: $this->url->is('mark'), data: [
             'conversation_id' => $conversation['conversation_id'],
         ]);
 
         if ($conversation['user_id'] == LOGGED_USER_ID) {
 
             // ADD RECIPIENT
-            $this->process->form(type: 'Conversation/Recipient', data: [
+            $this->process->form(type: '/Conversation/Recipient', data: [
                 'conversation_id' => $conversation['conversation_id'],
             ]);
         }

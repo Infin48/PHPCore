@@ -24,7 +24,7 @@
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "registration.enabled"
+                            "show": "registration.enabled:1"
                         }
                     },
                     "data": {
@@ -37,7 +37,7 @@
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "registration.enabled"
+                            "show": "registration.enabled:1"
                         }
                     },
                     "data": {
@@ -50,7 +50,7 @@
                     "options": {
                         "type": "textarea",
                         "on": {
-                            "show": "registration.enabled"
+                            "show": "registration.enabled:1"
                         }
                     },
                     "data": {

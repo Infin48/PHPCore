@@ -31,21 +31,21 @@ $language['L_NAVBAR'] = [
     'L_NOTIFICATION_MARK_ALL_AS_READ' => 'Označit všechna za přečtená',
 
     'L_NOTIFICATION' => [
-        'Topic/Move' => 'přesunul vaše téma',
-        'Topic/Like' => 'zareagoval na vaše téma',
-        'Topic/Delete' => 'smazal vaše téma',
-        'Topic/Lock' => 'zamknul vaše téma',
-        'Topic/Unlock' => 'odemknul vaše téma',
-        'Topic/Stick' => 'přilepil vaše téma',
-        'Topic/Unstick' => 'odlepil vaše téma',
-        'Topic/Label' => 'upravil štítky u vašeho tématu',
-        'Post/Create' => 'odpověděl pod vaše téma',
-        'Post/Like' => 'zareagoval na váš příspěvek z tématu',
-        'Post/Delete' => 'smazal váš příspěvek z tématu',
-        'ProfilePost/Create' => 'přidal nový příspěvek na vaš profil',
-        'ProfilePostComment/Create' => 'odpověděl pod váš profilový příspěvek',
+        '/Topic/Move' => 'přesunul vaše téma',
+        '/Topic/Like' => 'zareagoval na vaše téma',
+        '/Topic/Delete' => 'smazal vaše téma',
+        '/Topic/Lock' => 'zamknul vaše téma',
+        '/Topic/Unlock' => 'odemknul vaše téma',
+        '/Topic/Stick' => 'přilepil vaše téma',
+        '/Topic/Unstick' => 'odlepil vaše téma',
+        '/Topic/Label' => 'upravil štítky u vašeho tématu',
+        '/Post/Create' => 'odpověděl pod vaše téma',
+        '/Post/Like' => 'zareagoval na váš příspěvek z tématu',
+        '/Post/Delete' => 'smazal váš příspěvek z tématu',
+        '/ProfilePost/Create' => 'přidal nový příspěvek na vaš profil',
+        '/ProfilePostComment/Create' => 'odpověděl pod váš profilový příspěvek',
     
-        'ProfilePost/Delete' => 'smazal váš profilový příspěvěk',
-        'ProfilePostComment/Delete' => 'smazal váš komentář pod profilovým příspěvěkem'
+        '/ProfilePost/Delete' => 'smazal váš profilový příspěvěk',
+        '/ProfilePostComment/Delete' => 'smazal váš komentář pod profilovým příspěvěkem'
     ]
 ];

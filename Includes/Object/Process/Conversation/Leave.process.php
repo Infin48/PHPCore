@@ -45,6 +45,6 @@ class Leave extends \Process\ProcessExtend
         ', [$this->data->get('conversation_id'), LOGGED_USER_ID]);
 
         // REDIRECT USER
-        $this->redirectTo('/user/conversation/');
+        $this->redirect('/user/conversation/');
     }
 }

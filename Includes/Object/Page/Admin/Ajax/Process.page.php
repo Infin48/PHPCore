@@ -12,7 +12,7 @@
 
 namespace Page\Admin\Ajax;
 
-use Model\Get;
+use Model\Ajax;
 
 /**
  * Process
@@ -34,53 +34,27 @@ class Process extends \Page\Page
      */
     protected function body()
     {
-        $get = new Get();
+        $ajax = new Ajax();
+        $ajax->ajax(
 
-        $get->get('id') or exit();
-        $get->get('process') or exit();
+            require: ['id', 'process'],
 
-        $type = explode('/', $get->get('process'));
-        array_pop($type);
-        $type = implode('/', $type);
+            exec: function ( \Model\Ajax $ajax ) {
+                
+                $ajax->process(
 
-        if ($this->user->perm->has(match($type) {
-            'Page' => 'admin.page',
-            'User' => 'admin.user',
-            'Forum', 'Category' => 'admin.forum',
-            'Group' => 'admin.group',
-            'Label' => 'admin.label',
-            'Template' => 'admin.template',
-            'Menu/Button', 'Menu/ButtonSub' => 'admin.menu',
-            'Notification' => 'admin.notification',
-            'Template' => 'admin.template',
-            'Deleted/Post', 'Deleted/Topic', 'Deleted/ProfilePost', 'Deleted/ProfilePostComment' => 'admin.forum',
-        }) === false) {
-            exit();
-        }
-
-        $id = match($type) {
-            'Page' => 'page_id',
-            'User' => 'user_id',
-            'Forum' => 'forum_id',
-            'Group' => 'group_id',
-            'Label' => 'label_id',
-            'Category' => 'category_id',
-            'Template' => 'template_name_folder',
-            'Menu/Button' => 'button_id',
-            'Notification' => 'notification_id',
-            'Menu/ButtonSub' => 'button_sub_id',
-            'Template' => 'template_name_folder',
-            'Deleted/Post', 'Deleted/Topic', 'Deleted/ProfilePost', 'Deleted/ProfilePostComment' => 'deleted_id',
-            default => exit()
-        };
+                    process: $this->process,
+                    permission: $this->user->perm,
         
-        if ($this->process->call(type: 'Admin/' . $get->get('process'), mode: 'direct', data: [
-            $id => $get->get('id')
-        ])) {
-            $this->data->data([
-                'status' => 'ok',
-                'redirect' => $this->process->getURL() ? $this->system->url->build($this->process->getURL()) : ''
-            ]);
-        }
+                    key: $ajax->get('id'),
+                    type: $ajax->get('process'),
+        
+                    success: function ( \Model\Ajax $ajax ) {                        
+                        $ajax->ok();
+                    }
+                );
+            }
+        );
+        $ajax->end();
     }
 }

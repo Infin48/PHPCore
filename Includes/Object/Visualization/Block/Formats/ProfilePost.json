@@ -4,7 +4,7 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "ProfilePost"
+                        "type": "/ProfilePost"
                     },
                     "data": {
                         "type": "profile_post",
@@ -32,13 +32,13 @@
                             "options": {
                                 "hide": true,
                                 "template": {
-                                    "body": "$/ProfilePostCommentPrevious.phtml"
+                                    "body": "%/ProfilePostCommentPrevious.phtml"
                                 }
                             }
                         },
                         "default": {
                             "options": {
-                                "type": "ProfilePostComment"
+                                "type": "/ProfilePostComment"
                             },
                             "data": {
                                 "type": "profile_post_comment",
@@ -66,7 +66,7 @@
                             "options": {
                                 "hide": true,
                                 "template": {
-                                    "body": "$/ProfilePostCommentNew.phtml"
+                                    "body": "%/ProfilePostCommentNew.phtml"
                                 }
                             }
                         }

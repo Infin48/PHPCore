@@ -61,19 +61,20 @@ class Index extends \Page\Page
         }
 
         // GET TOPIC DATA
-        $topic = $_topic->get($this->getID()) or $this->error();
+        $topic = $_topic->get($this->url->getID()) or $this->error();
 
         // GET TOPIC LABELS
-        $topic['labels'] = $_topic->getLabels($this->getID());
+        $topic['labels'] = $_topic->getLabels($this->url->getID());
 
         // GET TOPIC LIKES
-        $topic['likes'] = $_topic->getLikes($this->getID());
+        $topic['likes'] = $_topic->getLikes($this->url->getID());
 
         $this->data->data([
             'labels' => $topic['labels'],
+            'forum_id' => $topic['forum_id'],
             'topic_id' => $topic['topic_id'],
             'report_id' => $topic['report_id'],
-            'is_locked' => $topic['is_locked'],
+            'topic_locked' => $topic['topic_locked'],
             'topic_name' => $topic['topic_name'],
             'deleted_id' => $topic['deleted_id'],
             'topic_image' => $topic['topic_image'],
@@ -85,13 +86,11 @@ class Index extends \Page\Page
         }
 
         // HEAD
-        $this->data->head = [
-            'title'         => $topic['topic_name'],
-            'description'   => $topic['topic_text']
-        ];
+        $this->data->head['title'] = $topic['topic_name'];
+        $this->data->head['description'] = $topic['topic_text'];
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Forum/Topic');
+        $breadcrumb = new Breadcrumb('/Forum/Topic');
         $breadcrumb->object('category')->title('$' . $topic['category_name']);
         $breadcrumb->object('forum')->title('$' . $topic['forum_name']);
         $breadcrumb->object('forum')->href($this->build->url->forum($topic));
@@ -103,7 +102,7 @@ class Index extends \Page\Page
         }
 
         // TOPIC IS LOCKED
-        if ($topic['is_locked'] == 1) {
+        if ($topic['topic_locked'] == 1) {
             $this->user->perm->disable('post.*');
             $this->user->perm->disable('topic.edit');
             $this->user->perm->disable('topic.move');
@@ -127,7 +126,8 @@ class Index extends \Page\Page
         }
 
         // PANEL
-        $panel = new Panel('Topic');
+        $panel = new Panel('/Topic');
+        $panel->id($this->url->getID());
 
         if (LOGGED_USER_ID == $topic['user_id'] and $this->user->perm->has('topic.edit')) {
             $panel->object('tools')->row('edit')->show();
@@ -151,7 +151,7 @@ class Index extends \Page\Page
 
         // TOPIC IS STICKY
         if ($this->user->perm->has('topic.stick')) {
-            if ($topic['is_sticky'] == 1) {
+            if ($topic['topic_sticked'] == 1) {
                 $panel->object('tools')->row('unstick')->show();
             } else {
                 $panel->object('tools')->row('stick')->show();
@@ -160,42 +160,32 @@ class Index extends \Page\Page
 
         // TOPIC IS LOCKED
         if ($this->user->perm->has('topic.lock')) {
-            if ($topic['is_locked'] == 1) {
+            if ($topic['topic_locked'] == 1) {
                 $panel->object('tools')->row('unlock')->show();
             } else {
                 $panel->object('tools')->row('lock')->show();
             }
         }
 
-        $panel->object('move')->fill($forum->getAllToMove($topic['forum_id']));
-        $panel->object('labels')->fill($label->getAll());
+        $panel->object('move')->fill(data: $forum->getAllToMove());
+        $panel->object('labels')->fill(data: $label->getAll());
         $panel->hideEmpty();
         $this->data->panel = $panel->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_POSTS);
-        $pagination->total($post->getParentCount($this->getID()));
-        $pagination->url($this->getURL());
+        $pagination->total($post->getParentCount($this->url->getID()));
+        $pagination->url($this->url->getURL());
         $post->pagination = $this->data->pagination = $pagination->getData();
 
         // BLOCK
-        $block = new Block('Topic');
-        $block->object('topic')->appTo($topic)->jumpTo();
+        $block = new Block('/Topic');
 
-        // IF TOPIC IS FROM LOGGED USER
-        if (LOGGED_USER_ID == $topic['user_id']){
-            $block->delButton(['like', 'unlike']);
-        }
-
-        // DELETE ALL BUTTONS IF TOPIC IS DELETED OR USER IS NOT LOGGED
-        if ($topic['deleted_id'] or $this->user->isLogged() === false) {
-
-            $block->delButton();
-        }
-
+        // IF USER HAS PERMISSION TO CREATE POSTS
         if ($this->user->perm->has('post.create')) {
 
+            // SHOW NEW POST FORM
             $block->object('post')->row('bottom')->show();
         }
 
@@ -206,21 +196,33 @@ class Index extends \Page\Page
             $block->object('topic')->show();
         }
 
-        foreach ($post->getParent($this->getID()) as $item) {
+        $block->object('topic')->appTo(data: $topic, function: function ( \Visualization\Block\Block $block ) {
 
-            // IF POST HAS ANY LIKES
-            if ((bool)$item['is_like'] === true) {
-                $item['likes'] = $post->getLikes($item['post_id']);
+            // IF TOPIC IS FROM LOGGED USER
+            if (LOGGED_USER_ID == $block->obj->get->data('user_id')){
+                $block->delButton(['like', 'unlike']);
             }
-            
-            // APPEND POST TO BLOCK
-            $block->object('post')->appTo($item)->jumpTo();
+
+            // DELETE ALL BUTTONS IF TOPIC IS DELETED OR USER IS NOT LOGGED
+            if ($block->obj->get->data('deleted_id') or $this->user->isLogged() === false) {
+
+                $block->delButton();
+            }
+        });
+
+        $block->object('post')->fill(data: $post->getParent($this->url->getID()), function: function ( \Visualization\Block\Block $block ) use ($post, $topic) {
+
+            $block->obj->set->data('name',  $this->language->get('L_RE') . ': ' . $block->obj->get->data('name'));
+
+            if ($block->obj->get->data('is_like') == true) {
+                $block->obj->set->data('likes', $post->getLikes($block->obj->get->data('post_id')));
+            }
 
             // IF IS SET 'SELECT' PARAMETER IN URL
             if ($this->url->is('select')) {
 
                 // IF THIS POST IS SELECTED
-                if ($item['post_id'] == $this->url->get('select')) {
+                if ($block->obj->get->data('post_id') == $this->url->get('select')) {
                     $block->select();
                 }
             }
@@ -229,113 +231,70 @@ class Index extends \Page\Page
                 $block->delButton();
             }
 
-            if ($item['report_id'] and ($item['report_status'] ?? 0) == 0 and $this->user->perm->has('admin.forum')) {
+            if ($block->obj->get->data('report_id') and ($block->obj->get->data('report_status') ?? 0) == 0 and $this->user->perm->has('admin.forum')) {
                 $block->notice('reported');
                 $block->disable();
             }
 
             // IF TOPIC OR POST IS DELETED
-            if ($topic['deleted_id'] or $item['deleted_id']) {
+            if ($topic['deleted_id'] or $block->obj->get->data('deleted_id')) {
 
                 $block->delButton();
 
-                if ($item['deleted_id']) {
+                if ($block->obj->get->data('deleted_id')) {
 
                     $block->notice('deleted');
                     $block->disable();
                     $block->close();
                 }
 
-                continue;
-            }
+            } else {
 
-            if ($this->user->perm->has('post.create') === false) {
-                $block->delButton('quote');
-            }
+                if ($this->user->perm->has('post.create') === false) {
+                    $block->delButton('quote');
+                }
 
-            // IF THIS POST IS FROM LOGGED USER
-            if ($item['user_id'] == LOGGED_USER_ID) {
+                // IF THIS POST IS FROM LOGGED USER
+                if ($block->obj->get->data('user_id') == LOGGED_USER_ID) {
 
-                $block->delbutton(['like', 'unlike']);
+                    $block->delbutton(['like', 'unlike']);
 
-                if ($this->user->perm->has('post.edit') === false) {
+                    if ($this->user->perm->has('post.edit') === false) {
+                        $block->delButton('edit');
+                    }
+
+                } else {
+                
                     $block->delButton('edit');
                 }
 
-            } else {
-            
-                $block->delButton('edit');
+                if ($this->user->perm->has('post.delete') === false) {
+                    $block->delButton('delete');
+                }
             }
+        });
 
-            if ($this->user->perm->has('post.delete') === false) {
-                $block->delButton('delete');
-            }
-        }
         $this->data->block = $block->getData();
 
         // IF USER HAS PERMISSION TO EDIT TOPIC LABELS
         if ($this->user->perm->has('topic.label')) {
             
             // EDIT LABELS
-            $this->process->form(type: 'Topic/Label', on: 'confirm', data: [
+            $this->process->form(type: '/Topic/Label', on: 'confirm-label', data: [
                 'topic_id' => $topic['topic_id']
             ]);
         }
 
+        // IF USER HAS PERMISSION TO MOVE TOPIC
         if ($this->user->perm->has('topic.move')) {
-
-            if ((int)$this->url->get('move') != $topic['forum_id']) {
-
-                // MOVE TOPIC
-                $this->process->call(type: 'Topic/Move', mode: 'silent', on: $this->url->is('move'), data: [
-                    'user_id'       => $topic['user_id'],
-                    'topic_id'      => $this->getID(),
-                    'forum_id'      => (int)$this->url->get('move'),
-                    'topic_name'    => $topic['topic_name']
-                ]);
-            }
-        }
-
-        if ($this->user->perm->has('topic.delete')) {
-
-            // DELETE TOPIC
-            $this->process->call(type: 'Topic/Delete', mode: 'silent', on: $this->url->is('delete'), data: ['topic_id' => $this->getID()]);
-        }
-
-        if ($topic['is_locked'] == 0) {
-
-            if ($this->user->perm->has('topic.lock')) {
-
-                // LOCK TOPIC
-                $this->process->call(type: 'Topic/Lock', mode: 'silent', on: $this->url->is('lock'), data: ['topic_id' => $this->getID()]); 
-            }
-        }
-
-        if ($topic['is_locked'] == 1) {
-
-            if ($this->user->perm->has('topic.lock')) {
-
-                // UNLOCK TOPIC
-                $this->process->call(type: 'Topic/Unlock', mode: 'silent', on: $this->url->is('unlock'), data: ['topic_id' => $this->getID()]);
-            }
-        }
-
-        if ($topic['is_sticky'] == 0) {
-        
-            if ($this->user->perm->has('topic.stick')) {
-
-                // STICK TOPIC
-                $this->process->call(type: 'Topic/Stick', mode: 'silent', on: $this->url->is('stick'), data: ['topic_id' => $this->getID()]);
-            }
-        }
-
-        if ($topic['is_sticky'] == 1) {
-
-            if ($this->user->perm->has('topic.stick')) {
-
-                // UNSTICK TOPIC
-                $this->process->call(type: 'Topic/Unstick', mode: 'silent', on: $this->url->is('unstick'), data: ['topic_id' => $this->getID()]);
-            }
+            
+            // MOVE TOPIC
+            $this->process->form(type: '/Topic/Move', on: 'confirm-forum', data: [
+                'user_id'               => $topic['user_id'],
+                'topic_id'              => $this->url->getID(),
+                'topic_name'            => $topic['topic_name'],
+                'current_forum_id'      => (int)$this->url->get('move')
+            ]);
         }
 
         // UPDATE TOPIC VIEWS

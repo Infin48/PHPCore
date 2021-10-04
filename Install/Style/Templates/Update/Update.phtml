@@ -1,0 +1,40 @@
+<div class="loading">
+    <span class="loading-title"><?= $L_UPDATE_INSTALLATION ?></span>
+    <br>
+    <span class="loading-description"><?= $L_UPDATE_THANKS ?></span>
+    <div class="loading-bottom">
+        <div class="loading-circle">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>                
+<script src="/Assets/jQuery/jQuery.min.js?33"></script>
+<script>
+
+    $.get('/Install/?go=installUpdate', function (data) {
+
+        var data = $.parseJSON(data);
+
+        switch (data.status ?? '') {
+
+            case 'ok':
+                
+                location.reload();
+
+            break;
+
+            default:
+
+                $('.loading').addClass('loading-red');
+
+                $('.loading-description').text(data.error);
+                $('.loading-title').html('<?= $L_UPDATE_ERROR ?>');
+                $('.loading .loading-bottom').after('<br><a href="/Install/"><i class="fas fa-sync-alt"></i> <?= $L_RETRY ?></a>');
+                $('.loading .loading-bottom').remove();
+            break;
+        }
+    });
+</script>

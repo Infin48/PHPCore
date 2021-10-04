@@ -42,11 +42,11 @@ class Add extends \Page\Page
         $user = new User();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('User/Conversation');
+        $breadcrumb = new Breadcrumb('/User/Conversation');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('User/Conversation');
+        $field = new Field('/User/Conversation');
         $field->object('conversation')
             ->row('add_recipient')->show()
             ->row('recipients')->show();
@@ -60,6 +60,6 @@ class Add extends \Page\Page
         }
 
         // NEW CONVERSATION
-        $this->process->form(type: 'Conversation/Create');
+        $this->process->form(type: '/Conversation/Create');
     }
 }

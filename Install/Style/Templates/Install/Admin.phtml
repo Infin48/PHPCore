@@ -1,0 +1,27 @@
+
+<div class="page-column">
+    <div class="page-column-icon"><i class="fas fa-user"></i></div>
+    <div class="page-column-title"><?= $L_ADMIN ?></div>
+    <?php if (isset($this->data->data['notice'])) : ?>
+        <div class="page-column-alert">
+            <span><?= $this->data->data['notice'] ?></span>
+        </div>
+    <?php endif; ?>
+    <form method="post">
+        <div class="page-column-body">
+            <div class="page-column-input">
+                <input type="text" name="user_name" placeholder="<?= $L_ADMIN_USERNAME ?>" value="<?= $this->form->get('user_name') ?>"><i class="fas fa-user"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="text" name="user_email" placeholder="<?= $L_ADMIN_EMAIL ?>" value="<?= $this->form->get('user_email') ?>"><i class="fas fa-envelope"></i>
+            </div>
+            <div class="page-column-input">
+                <input type="password" name="user_password" placeholder="<?= $L_ADMIN_PASSWORD ?>" value="<?= $this->form->get('user_password') ?>"><i class="fas fa-key"></i>
+            </div>
+            <div class="field-submit">
+                <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                <input class="button" type="submit" name="submit" value="<?= $L_NEXT ?>">
+            </div>
+        </div>
+    </form>
+</div>

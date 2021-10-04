@@ -53,8 +53,8 @@ class Create extends \Process\ProcessExtend
         // ADDS BUTTON
         $this->db->insert(TABLE_BUTTONS, [
             'button_name'       => $this->data->get('button_name'),
-            'is_dropdown'       => '1',
             'button_icon'       => $this->data->get('button_icon'),
+            'button_dropdown'   => '1',
             'button_icon_style' => $this->data->get('button_icon_style')
         ]);
 

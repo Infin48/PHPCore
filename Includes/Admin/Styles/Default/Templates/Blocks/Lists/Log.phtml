@@ -1,6 +1,0 @@
-<div class="vertical-align">
-    <?= $this->build->user->image($row['data']) ?>
-    <div class="inner">
-        <?= $this->build->user->link($row['data'], true) ?> <?= $L_LOG_PROTOCOL[$row['data']['log_action']] ?> <span class="fw-600"><?= $row['data']['log_text'] ?></span><br><?= $this->build->date->long($row['data']['log_created'], true) ?>
-    </div>
-</div>

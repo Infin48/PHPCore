@@ -52,12 +52,15 @@ class Delete extends \Process\ProcessExtend
             LEFT JOIN ' . TABLE_REPORTS_REASONS . ' ON rr.report_id = r.report_id
             WHERE dc.deleted_id = ?
         ', [$this->data->get('deleted_id')]);
-        
-        $this->system->stats->set('profile_post_comment_deleted', +1);
+
+        // UPDATE STATISTICS
+        $this->db->stats([
+            'profile_post_comment_deleted' => + 1
+        ]);
 
         // ADD RECORD TO LOG
         $this->log();
 
-        $this->redirectTo('/admin/deleted/');
+        $this->redirect('/admin/deleted/');
     }
 }

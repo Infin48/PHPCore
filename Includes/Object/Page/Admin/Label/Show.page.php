@@ -27,7 +27,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/label/',
         'permission' => 'admin.label'
     ];
@@ -43,22 +43,23 @@ class Show extends \Page\Page
         $this->navbar->object('forum')->row('label')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Label');
+        $breadcrumb = new Breadcrumb('/Admin/Label');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
         $label = new Label();
 
-        $label = $label->get($this->getID()) or $this->error();
+        $label = $label->get($this->url->getID()) or $this->error();
 
         // FIELD
-        $field = new Field('Admin/Label/Label');
+        $field = new Field('/Admin/Label/Label');
         $field->data($label);
+        $field->object('label')->title('L_LABEL_EDIT');
         $this->data->field = $field->getData();
         
         // EDIT LABEL
-        $this->process->form(type: 'Admin/Label/Edit', data: [
-            'label_id' => $this->getID()
+        $this->process->form(type: '/Admin/Label/Edit', data: [
+            'label_id' => $this->url->getID()
         ]);
 
         // PAGE TITLE

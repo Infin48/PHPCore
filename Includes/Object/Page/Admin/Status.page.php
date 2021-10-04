@@ -24,7 +24,7 @@ class Status extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Status',
+        'template' => '/Status',
         'permission' => 'admin.?'
     ];
     
@@ -39,15 +39,15 @@ class Status extends \Page\Page
         $this->navbar->object('other')->row('status')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Status');
+        $field = new Field('/Admin/Status');
         $field->disButtons();
         $field->object('extension');
 
-        foreach (['mbstring', 'PDO', 'PDO_mysql', 'SPL', 'zip'] as $ext) {
+        foreach (['GD', 'mbstring', 'PDO', 'PDO_mysql', 'SPL', 'zip'] as $ext) {
 
             if (extension_loaded($ext)) {
                 $field->row($ext)->setData('color', 'green');
@@ -55,21 +55,21 @@ class Status extends \Page\Page
 
         }
         $field->object('writable');
-        foreach (['/Includes/Settings/.htdata.json', '/Includes/Settings/Template.json', '/Includes/Settings/Settings.json', '/Includes/Settings/Statistics.json'] as $file) {
+        foreach (['/Includes/.htdata.json', '/Includes/Template/css/Group.min.css', '/Includes/Template/css/Label.min.css'] as $file) {
             
             if (is_writable(ROOT . $file)) {
                 $field->row($file)->setData('color', 'green');
             }  
         }
 
-        $failedLoacaleWeb = strtr($this->language->get('L_STATUS_LOCALISATION_FAILED'), ['{locale}' => $this->system->settings->get('site.locale')]);
+        $failedLoacaleWeb = strtr($this->language->get('L_STATUS_LOCALISATION_FAILED'), ['{locale}' => $this->system->get('site.locale')]);
 
         $field->object('other')->row('localeWeb')->setData('titleIcon', '$' . $failedLoacaleWeb);
 
-        if (setlocale(LC_ALL, $this->system->settings->get('site.locale') . '.UTF-8') !== false) {
+        if (setlocale(LC_ALL, $this->system->get('site.locale') . '.UTF-8') !== false) {
             $field->object('other')->row('localeWeb')
                 ->setData('color', 'green')
-                ->setData('titleIcon', '$' . $this->system->settings->get('site.locale'));
+                ->setData('titleIcon', '$' . $this->system->get('site.locale'));
         }
 
         $this->data->field = $field->getData();

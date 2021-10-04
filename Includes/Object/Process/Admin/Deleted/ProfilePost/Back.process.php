@@ -59,6 +59,6 @@ class Back extends \Process\ProcessExtend
         // ADD RECORD TO LOG
         $this->log();
 
-        $this->redirectTo('/admin/deleted/');
+        $this->redirect('/admin/deleted/');
     }
 }

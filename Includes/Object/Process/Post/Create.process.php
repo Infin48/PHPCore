@@ -36,7 +36,7 @@ class Create extends \Process\ProcessExtend
         'block' => [
             'user_id',
             'forum_id',
-            'is_locked',
+            'topic_locked',
             'post_permission'
         ]
     ];
@@ -65,7 +65,7 @@ class Create extends \Process\ProcessExtend
         }
 
         // IF TOPIC IS LOCKED
-        if ($this->data->get('is_locked') == 1) {
+        if ($this->data->get('topic_locked') == 1) {
             return false;
         }
             
@@ -77,7 +77,7 @@ class Create extends \Process\ProcessExtend
             'forum_id'      => $this->data->get('forum_id')
         ]);
 
-        $this->id = $this->db->lastInsertId();
+        self::$id = $this->db->lastInsertId();
 
         // UPDATES USER NUMBER OF POSTS
         $this->db->query('
@@ -97,7 +97,7 @@ class Create extends \Process\ProcessExtend
 
         // SEND USER NOTIFICATION
         $this->notifi(
-            id: $this->id,
+            id: self::$id,
             to: $this->data->get('user_id')
         );
     }

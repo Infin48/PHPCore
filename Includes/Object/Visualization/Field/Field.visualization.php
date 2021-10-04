@@ -18,6 +18,20 @@ namespace Visualization\Field;
 class Field extends \Visualization\Visualization
 {
     /**
+     * @var array $link List of links
+     */
+    public array $link = [
+        'href'
+    ];
+
+    /**
+     * @var array $dataAssign List of data insert variables
+     */
+    public array $dataAssign = [
+        'href'
+    ];
+
+    /**
      * @var array $type Input types
      */
     private array $type = [
@@ -27,12 +41,14 @@ class Field extends \Visualization\Visualization
         'text' => 'Text',
         'file' => 'File',
         'user' => 'User',
+        'html'  => 'Textarea',
         'field' => 'Field',
         'email' => 'Text',
         'radio' => 'Radio',
         'number' => 'Text',
         'select' => 'Select',
         'button' => 'Button',
+        'username' => 'Text',
         'password' => 'Password',
         'textarea' => 'Textarea',
         'checkbox' => 'Checkbox'
@@ -84,7 +100,7 @@ class Field extends \Visualization\Visualization
     }
 
     /**
-     * Sets value to current row data
+     * Sets value to field data
      *
      * @param  mixed $value Value
      * 
@@ -98,6 +114,16 @@ class Field extends \Visualization\Visualization
     }
 
     /**
+     * Checks current option
+     * 
+     * @return void
+     */
+    public function check()
+    {   
+        $this->obj->set->options('checked', true);
+    }
+
+    /**
      * This function will be executed before returning fields data
      *
      * @return void
@@ -107,31 +133,18 @@ class Field extends \Visualization\Visualization
         foreach ($this->obj->get->body() as $object => $data) { $this->object($object);
 
             foreach ($this->obj->get->body() as $row => $data) { $this->row($row);
-                
-                if ($this->obj->is->data('href')) {
-                    switch (substr($this->obj->get->data('href'), 0, 1)) {
-            
-                        case '$':
-                            $this->obj->set->data('href', substr($this->obj->get->data('href'), 1));
-                        break;
-    
-                        case '~':
-                            $this->obj->set->data('href', $this->system->url->build(substr($this->obj->get->data('href'), 1)));
-                        break;
-        
-                        default:
-                            $this->obj->set->data('href', $this->system->url->build(URL . $this->obj->get->data('href')));
-                        break;
-                    }
-                }
 
                 if (!in_array($this->obj->get->options('type'), array_keys($this->type)) and $this->obj->is->template('option') === false) {
-                    $this->obj->set->delete->delete();
+                    $this->obj->delete->delete();
                     continue;
                 }
 
                 if ($this->obj->is->template('option') === false) {
                     $this->obj->set->template('option', ROOT. $this->templatePath . '/Type/' . $this->type[$this->obj->get->options('type')] . '.phtml');
+                }
+
+                if (!$this->data) {
+                    continue;
                 }
 
                 $value = $this->obj->get->data('value') ?: $row;
@@ -156,52 +169,18 @@ class Field extends \Visualization\Visualization
                         break;
 
                         default:
-                            $this->obj->set->data('value', $this->data[$value] ?? '');
+                            if ($this->obj->is->body() === false) {
+                                $this->obj->set->data('value', $this->data[$value] ?? '');
+                            }
                         break;
                     }    
                 }
 
                 foreach ($this->obj->get->body() as $option => $data) { $this->option($option);
                     
-                    if (is_array($checked = $this->obj->get->options('checked'))) {
-
-                        foreach ($checked as $cond => $value) {
-
-                            switch ($cond) {
-
-                                case 'in': 
-                                    if (in_array($this->obj->get->data('value'), (array)$this->data[$value])) {
-                                        $this->obj->set->options('checked', true);
-                                        continue 3;
-                                    }
-                                break;
-
-                                case 'empty': {
-                                    
-                                    if (empty($this->data[$value])) {
-
-                                        $this->obj->set->options('checked', true);
-                                        continue 3;
-                                    }
-                                break;
-                                }
-
-                                case 'filled':
-                                    if (!empty($this->data[$value])) {
-                                        $this->obj->set->options('checked', true);
-                                        continue 3;
-                                    }
-                                break;
-
-                            }
-                        }
-                        continue;
-                    } else {
-
-                        if (isset($this->data[$value])) {
-                            if ($this->obj->get->data('value') == $this->data[$value]) {
-                                $this->obj->set->options('checked', true);
-                            }
+                    if (isset($this->data[$value])) {
+                        if ($this->obj->get->data('value') == $this->data[$value]) {
+                            $this->obj->set->options('checked', true);
                         }
                     }
                 }
@@ -210,8 +189,8 @@ class Field extends \Visualization\Visualization
 
         $this->object = [
             'body' => $this->object['body'],
-            '_data' => $this->data,
-            'button' => (bool)$this->allowButtons === true ? $this->object['button'] ?? $this->button : []
+            'data' => $this->data,
+            'button' => (bool)$this->allowButtons === true ? array_replace_recursive($this->button, $this->object['button'] ?? []) : []
         ];
     }
 }

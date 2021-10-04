@@ -60,8 +60,11 @@ class Delete extends \Process\ProcessExtend
             ) as topics
         ', [$this->data->get('category_id'), $this->data->get('category_id')]);
 
-        $this->system->stats->set('post_deleted', +((int)$stats['posts'] ?? 0));
-        $this->system->stats->set('topic_deleted', +((int)$stats['topics'] ?? 0));
+        // UPDATE STATISTICS
+        $this->db->stats([
+            'post_deleted' => + (int)$stats['posts'] ?? 0,
+            'topic_deleted' => + (int)$stats['topics'] ?? 0
+        ]);
 
         $this->db->query('
             UPDATE ' . TABLE_CATEGORIES . '
@@ -94,5 +97,8 @@ class Delete extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('category_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

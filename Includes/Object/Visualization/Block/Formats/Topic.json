@@ -7,15 +7,16 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "Topic"
+                        "type": "/Topic"
                     },
                     "data": {
                         "convert": {
                             "id": "topic_id",
                             "text": "topic_text",
                             "name": "topic_name",
-                            "created": "topic_created",
-                            "edited_time": "topic_edited"
+                            "edited": "topic_edited",
+                            "edited_at": "topic_edited_at",
+                            "created": "topic_created"
                         },
                         "type": "topic",
                         "button": {
@@ -31,15 +32,16 @@
             "body": {
                 "default": {
                     "options": {
-                        "type": "Post"
+                        "type": "/Post"
                     },
                     "data": {
                         "convert": {
                             "id": "post_id",
                             "text": "post_text",
                             "name": "topic_name",
-                            "created": "post_created",
-                            "edited_time": "post_edited"
+                            "edited": "post_edited",
+                            "edited_at": "post_edited_at",
+                            "created": "post_created"
                         },
                         "type": "post",
                         "notice": {
@@ -64,7 +66,7 @@
                     "options": {
                         "hide": true,
                         "template": {
-                            "body": "$/PostNew.phtml"
+                            "body": "%/PostNew.phtml"
                         }
                     }
                 }

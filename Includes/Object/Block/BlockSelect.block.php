@@ -24,6 +24,6 @@ class BlockSelect
      */
     public function user()
     {
-        return 'u.user_id, u.user_name, u.user_profile_image, u.is_deleted, u.user_last_activity, g.group_class_name';
+        return 'u.user_id, u.user_name, u.user_profile_image, u.user_deleted, u.user_last_activity, g.group_class_name';
     }
 }

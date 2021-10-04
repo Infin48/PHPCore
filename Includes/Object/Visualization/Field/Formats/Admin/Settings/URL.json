@@ -1,0 +1,47 @@
+{
+    "body": {
+        "label": {
+            "data": {
+                "title": "L_SETTINGS_URL_EDIT"
+            },
+            "body": {
+                "settings_url_from": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_URL_FROM_DESC",
+                        "title": "L_SETTINGS_URL_FROM",
+                        "placeholder": "L_URL"
+                    }
+                },
+                "settings_url_to": {
+                    "options": {
+                        "type": "text"
+                    },
+                    "data": {
+                        "desc": "L_SETTINGS_URL_TO_DESC",
+                        "title": "L_SETTINGS_URL_TO",
+                        "placeholder": "L_URL"
+                    }
+                },
+                "settings_url_hidden": {
+                    "options": {
+                        "type": "checkbox"
+                    },
+                    "data": {
+                        "title": "L_SETTINGS_URL_HIDE",
+                        "desc": "L_SETTINGS_URL_HIDE_DESC"
+                    },
+                    "body": {
+                        "settings_url_hidden": {
+                            "data": {
+                                "value": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

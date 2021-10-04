@@ -26,15 +26,12 @@ class Edit extends \Process\ProcessExtend
                 'type' => 'text',
                 'required' => true
             ],
-            'is_external_link'  => [
-                'type' => 'radio'
+            'button_sub_link_type'  => [
+                'custom' => [1, 2]
             ],
             'button_sub_link'   => [
-                'type' => 'text'
-            ],
-            'page_id'           => [
-                'type' => 'number',
-                'block' => '\Block\Page.getAllID'
+                'type' => 'text',
+                'required' => true
             ]
         ],
         'data' => [
@@ -54,15 +51,10 @@ class Edit extends \Process\ProcessExtend
      */
     public function process()
     {
-        if (empty($this->data->get('page_id')) && empty($this->data->get('button_sub_link'))) {
-            throw new \Exception\Notice('enter_correct_link');
-        }
-
         $this->db->update(TABLE_BUTTONS_SUB, [
-                'page_id'           => $this->data->is('is_external_link') ? null : $this->data->get('page_id'),
-                'button_sub_name'   => $this->data->get('button_sub_name'),
-                'button_sub_link'   => $this->data->is('is_external_link') ? $this->data->get('button_sub_link') : '',
-                'is_external_link'  => $this->data->get('is_external_link')
+                'button_sub_name'       => $this->data->get('button_sub_name'),
+                'button_sub_link'       => $this->data->get('button_sub_link'),
+                'button_sub_link_type'  => $this->data->get('button_sub_link_type')
         ], $this->data->get('button_sub_id'));
 
         // ADD RECORD TO LOG

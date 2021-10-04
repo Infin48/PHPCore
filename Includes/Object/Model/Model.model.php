@@ -13,7 +13,7 @@
 namespace Model;
 
 use \Model\Language;
-use \Model\System\System;
+use \Model\System;
 
 /**
  * Model
@@ -26,9 +26,9 @@ abstract class Model
     protected \Model\Language $language;
 
     /**
-     * @var \Model\System\System $system System
+     * @var \Model\System $system System
      */
-    protected \Model\System\System $system;
+    protected \Model\System $system;
     
     /**
      * Constructor

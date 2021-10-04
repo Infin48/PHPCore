@@ -15,7 +15,7 @@ namespace Page\Admin\Label;
 use Block\Label as Label;
 
 use Visualization\Field\Field;
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -27,7 +27,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.label'
     ];
 
@@ -42,41 +42,31 @@ class Index extends \Page\Page
         $this->navbar->object('forum')->row('label')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
         $label = new Label();
 
         // LIST
-        $list = new Lists('Admin/Label');
-
-        // LABELS
-        $labels = $label->getAll();
-
-        $i = 1;
-        foreach ($labels as $label) {
-
-            $list->object('label')->appTo($label)->jumpTo();
+        $list = new Lists('/Label');
+        $list->object('label')->fill(data: $label->getAll(), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) { 
 
             if ($i === 1) {
                 $list->delButton('up');
             }
 
-            if ($i === count($labels)) {
+            if ($i === $count) {
                 $list->delButton('down');
             }
-
-            $i++;
-        }
-
+        });
         $this->data->list = $list->getData();
 
         // FIELD
-        $field = new Field('Admin/Label/Index');
+        $field = new Field('/Admin/Label/Label');
         $this->data->field = $field->getData();
 
         // NEW LABEL
-        $this->process->form(type: 'Admin/Label/Create');
+        $this->process->form(type: '/Admin/Label/Create');
     }
 }

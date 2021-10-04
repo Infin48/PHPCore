@@ -45,17 +45,17 @@ class Add extends \Page\Page
         $label = new Label();
 
         // FORUM
-        $forum = $forum->get($this->getID()) or $this->error();
+        $forum = $forum->get($this->url->getID()) or $this->error();
 
         $forum['topic_permission'] == 1 or $this->redirect();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Forum/Show');
+        $breadcrumb = new Breadcrumb('/Forum/Show');
         $breadcrumb->object('category')->title('$' . $forum['category_name']);
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Topic');
+        $field = new Field('/Topic');
         $field->object('topic');
 
         if ($this->user->perm->has('topic.image')) {
@@ -66,12 +66,12 @@ class Add extends \Page\Page
             $field->row('topic_labels')->show();
         }
 
-        $field->row('topic_labels')->fill($labels = $label->getAll());
+        $field->row('topic_labels')->fill(data: $label->getAll());
         $this->data->field = $field->getData();
 
         // CREATE TOPIC
-        $this->process->form(type: 'Topic/Create', data: [
-            'forum_id' => $this->getID()
+        $this->process->form(type: '/Topic/Create', data: [
+            'forum_id' => $this->url->getID()
         ]);
 
         // HEAD

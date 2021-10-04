@@ -35,11 +35,10 @@ class Edit extends \Process\ProcessExtend
         ],
         'block' => [
             'user_id',
-            'is_locked',
+            'topic_locked',
             'post_permission'
         ]
     ];
-
     /**
      * @var array $options Process options
      */
@@ -69,15 +68,15 @@ class Edit extends \Process\ProcessExtend
         }
 
         // IF TOPIC IS LOCKED
-        if ($this->data->get('is_locked') == 1) {
+        if ($this->data->get('topic_locked') == 1) {
             return false;
         }
 
         // EDITS POST
         $this->db->update(TABLE_POSTS, [
-            'post_text' => $this->data->get('text'),
-            'post_edited' => DATE_DATABASE,
-            'is_edited' => '1'
+            'post_text'         => $this->data->get('text'),
+            'post_edited'       => '1',
+            'post_edited_at'    => DATE_DATABASE
         ], $this->data->get('post_id'));
     }
 }

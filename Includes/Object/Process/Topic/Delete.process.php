@@ -57,7 +57,7 @@ class Delete extends \Process\ProcessExtend
             'deleted_type_user_id' => $this->data->get('user_id')
         ]);
 
-        $this->id = $this->db->lastInsertID();
+        self::$id = $this->db->lastInsertID();
             
         // SET TOPIC AS DELETED
         $this->db->query('
@@ -67,7 +67,7 @@ class Delete extends \Process\ProcessExtend
             f.forum_topics = f.forum_topics - 1,
             t.deleted_id = ?
             WHERE t.topic_id = ?
-        ', [$this->id, $this->data->get('topic_id')]);
+        ', [self::$id, $this->data->get('topic_id')]);
 
         // SEND NOTIFICATION
         $this->notifi(
@@ -79,6 +79,12 @@ class Delete extends \Process\ProcessExtend
         // ADD RECORD TO LOG
         $this->log($this->data->get('topic_name'));
 
-        $this->redirectTo('/forum/show/' . $this->data->get('forum_id') . '.' . $this->data->get('forum_url') . '/');
+        if ($this->perm->has('admin.forum')) {
+            
+            $this->refresh();
+        } else {
+
+            $this->redirect('/forum/show/' . $this->data->get('forum_id') . '.' . $this->data->get('forum_url') . '/');
+        }
     }
 }

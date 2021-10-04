@@ -12,7 +12,6 @@
 
 namespace Process;
 
-use Model\System;
 use Model\Database;
 
 use Process\ProcessData;
@@ -26,11 +25,6 @@ class ProcessExtend
      * @var \Model\Database $db Database
      */
     public \Model\Database $db;
-
-    /**
-     * @var \Model\System $system System model
-     */
-    protected \Model\System $system;
 
     /**
      * @var \Process\ProcessData $data ProcessData
@@ -49,7 +43,6 @@ class ProcessExtend
     {
         $this->db = new Database();
         $this->check = new ProcessCheck();
-        $this->system = new System();
     }
     
     /**

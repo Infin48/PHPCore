@@ -12,30 +12,22 @@
 
 namespace Page;
 
+use Block\Plugin;
+
+use Model\Language;
+use Model\Template;
+
+use Visualization\Visualization;
+
 /**
  * Page
  */
 abstract class Page
 {
     /**
-     * @var array $listOfOperations List of operations
-     */
-    private array $listOfOperations = ['add', 'move', 'deleteall', 'new', 'edit', 'delete', 'up', 'down', 'activate', 'lock', 'unlock', 'stick', 'unstick', 'send', 'leave', 'mark', 'back', 'like', 'unlike', 'set', 'refresh'];
-
-    /**
      * @var string $definedURL Stored page or folder pre-defined redirect url
      */
     private static string $definedURL = '';
-
-    /**
-     * @var string $templateName Name of default template
-     */
-    protected string $templateName = '';
-    
-    /**
-     * @var string $favicon Favicon
-     */
-    protected string $favicon = '/Uploads/Site/PHPCore_icon.svg';
     
     /**
      * @var object $page Page class
@@ -56,6 +48,11 @@ abstract class Page
      * @var \Model\User $user User
      */
     protected \Model\User $user;
+
+    /**
+     * @var \Plugin\Plugin $plugin Plugin
+     */
+    protected \Plugin\Plugin $plugin;
     
     /**
      * @var \Model\Build\Build $build Build
@@ -78,9 +75,9 @@ abstract class Page
     protected \Model\Template $template;
 
     /**
-     * @var \Model\System\System $system System
+     * @var \Model\System $system System
      */
-    protected \Model\System\System $system;
+    protected \Model\System $system;
 
     /**
      * @var \Visualization\Navbar\Navbar $navbar Navbar
@@ -93,12 +90,40 @@ abstract class Page
     protected static array $parsedURL = [];
 
     /**
+     * @var int $numberOfIDs Number of required URL IDs
+     */
+    protected static int $numberOfIDs = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        if (self::$parsedURL){
-            self::$parsedURL = array_values(array_filter(self::$parsedURL));
+        if (isset($this->url)) {
+            $this->url->shift();
+        }
+    }
+
+    /**
+     * Loads plugins
+     * 
+     * @return void
+     */
+    protected function loadPlugins()
+    {
+        $this->data->data['plugins'] = [];
+
+        $plugin = new Plugin();
+        foreach ($plugin->getAll() as $item) {
+
+            // ADD PLUGIN TO LIST
+            array_push($this->data->data['plugins'], $item['plugin_name_folder']);
+
+            // INITIALISES EVERY PLUGIN
+            $ini = '/Plugins/' . $item['plugin_name_folder'] . '/Ini.plugin.php';
+            if (file_exists(ROOT . $ini)) {
+                require ROOT . $ini;
+            }
         }
     }
     
@@ -107,10 +132,10 @@ abstract class Page
      *
      * @return void
      */
-    protected function initialise()
+    protected function ini()
     {
-        $pageClass = $org = array_values(array_filter(explode('\\', get_class($this))));
-        
+        $pageClass = array_values(array_filter(explode('\\', get_class($this))));
+
         foreach (['Page', 'Index', 'Router'] as $item) {
 
             if (in_array($item, $pageClass)) {
@@ -118,35 +143,55 @@ abstract class Page
             }
         }
         
-        if (in_array(strtolower($pageClass[array_key_last($pageClass)] ?? ''), $this->listOfOperations)) {
+        if (in_array($pageClass[array_key_last($pageClass)] ?? '', ['Edit', 'Add'])) {
             array_pop($pageClass);
         }
 
-        $this->style->URL = $this->system->url->build(mb_strtolower(implode('/', array_filter($pageClass))));
-        
-        if (isset($this->settings['id'])) {
+        $pageClass = array_values($pageClass);
 
-            self::$parsedURL[0] ?? [] or $this->error();
-
-            $this->style->ID = explode('.', self::$parsedURL[0])[0];
+        if (($pageClass[0] ?? '') === 'Plugin' and isset($pageClass[1])) {
             
-            if ($this->settings['id'] == int) {
-                if (!ctype_digit($this->style->ID)) {
+            array_shift($pageClass);
+            array_shift($pageClass);
+
+            if ($pageClass[0] == 'Admin' or $pageClass[0] == 'Plugin') {
+                array_shift($pageClass);
+            }
+        }
+
+        $this->url->setURL(
+            $this->url->build(
+                mb_strtolower(implode('/', array_filter($pageClass))), true
+            )
+        );
+
+        if (isset($this->settings['id'])) {
+            
+            self::$numberOfIDs++;
+
+            if ($this->settings['id'] === string) {
+                $this->url->getFirst() or $this->error();
+                $this->url->addID($this->url->getFirst());
+            }
+
+            $this->url->getID(self::$numberOfIDs - 1) or $this->error();
+
+            if ($this->settings['id'] === int) {
+                if (!ctype_digit($this->url->getID(self::$numberOfIDs - 1))) {
                     $this->error();
                 }
             }
 
-            $this->style->URL .= self::$parsedURL[0] . '/';
+            $this->url->setURL(
+                $this->url->build(
+                    $this->url->getID(self::$numberOfIDs - 1, false), true
+                )
+            );
         }
 
-        if (!in_array('Router', $org)) {
-            define('URL', $this->style->URL);
-        }
-        
         $this->data->head['title'] = $this->language->get('L_TITLE')[get_class($this)] ?? $this->data->head['title'];
         
-        $this->process->url($this->getURL());
-
+        $this->process->url($this->url->getURL());
         if (isset($this->settings)) {
             foreach (array_keys($this->settings) as $option) {
                 switch ($option) {
@@ -180,7 +225,6 @@ abstract class Page
                     break;
 
                     case 'template':
-                        $this->templateName = $this->settings['template'];
                         $this->style->setTemplate($this->settings['template']);
                     break;
 
@@ -192,6 +236,7 @@ abstract class Page
                 }
             }
         }
+
     }
     
     /**
@@ -199,26 +244,28 @@ abstract class Page
      *
      * @return string
      */
-    protected function build()
+    protected function build( string $path = null )
     {
         $_path = [];
 
         // DEFAULT PATH
-        $path = ROOT . '/Includes/Object/Page/';
+        if (!$path) {
+            $path = ROOT . '/Includes/Object/Page/';
 
-        $namespace = explode('\\', get_class($this));
-        $namespace = array_slice($namespace, 1, count($namespace) - 2);
-        if (empty($namespace) === false) {
-            $path .= implode('/', $_path = $namespace) . '/';
+            $namespace = explode('\\', get_class($this));
+            $namespace = array_slice($namespace, 1, count($namespace) - 2);
+            if (empty($namespace) === false) {
+                $path .= implode('/', $_path = $namespace) . '/';
+            }
         }
 
         while (true) {
-            if (!empty(self::$parsedURL)) {
+            if (!empty($this->url->get())) {
 
                 // IF DIR EXISTS
-                if (is_dir($path . ucfirst(self::$parsedURL[0]) . '/')) {
+                if (is_dir($path . ucfirst($this->url->getFirst()) . '/')) {
 
-                    array_push($_path, $shift = ucfirst(array_shift(self::$parsedURL)));
+                    array_push($_path, $shift = ucfirst($this->url->shift()));
                     $path .= $shift . '/';
 
                     if (file_exists($path . '/Router.page.php')) {
@@ -230,53 +277,48 @@ abstract class Page
                 }
 
                 // IF PAGE EXISTS
-                if (file_exists($path . ucfirst(self::$parsedURL[0]) . '.page.php')) {
-
-                    $shifted = array_shift(self::$parsedURL);
-                    array_push($_path, ucfirst($shifted));
+                if (file_exists($path . ucfirst($this->url->getFirst()) . '.page.php')) {
+                    array_push($_path, ucfirst($this->url->shift()));
                     break;
                 }
 
             }
             
-            if ($this->url->is('edit') or $this->url->is('add')) {
-                
-                $param = $this->url->is('edit') ? 'Edit' : 'Add';
-                if (file_exists($path . $param . '.page.php')) {
-                    array_push($_path, $param);
-
-                    break;
-                }
-            }
-            
-            if (empty($shifted)) {
-                array_push($_path, 'Index');
-            }
+            array_push($_path, 'Index');
             break;
 
         }
 
         return 'Page\\' . implode('\\', $_path);
     }
-    
-    /**
-     * Returns url without names of operations
-     *
-     * @return string
-     */
-    protected function getURL()
-    {
-        return $this->style->URL;
-    }
 
     /**
-     * Returns page item ID
+     * Initialise page style
      *
-     * @return string|int
+     * @return void
      */
-    protected function getID()
+    protected function iniStyle( string $notice = '', bool $error = false)
     {
-        return $this->style->ID;
+        $this->style->url = $this->url;
+        $this->style->data = $this->data;
+        $this->style->build = $this->build;
+        $this->style->user = $this->user;
+        $this->style->template = $this->template;
+        $this->style->system = $this->system;
+        $this->style->language = $this->language;
+        $this->style->ID = $this->url->getAllID();
+
+        $this->style->ini();
+
+        if ($notice) {
+            $this->style->notice($notice);
+        }
+
+        if ($error) {
+            $this->style->error();
+        } else {
+            $this->style->show();
+        }
     }
 
     /**
@@ -286,8 +328,18 @@ abstract class Page
      */
     protected function error()
     {
-        $this->style->load($this->data, $this->build, $this->user);
-        $this->style->error();
+        $this->language             = new Language(
+            language: $this->system->get('site.language')
+        );
+
+        $this->template             = new Template(
+            template: $this->system->get('site.template'),
+            path: '/Styles'
+        );
+
+        $this->iniStyle(
+            error: true
+        );
     }
 
     /**
@@ -301,11 +353,14 @@ abstract class Page
             redirect(self::$definedURL);
         }
 
-        redirect($this->getURL());
+        redirect($this->url->getURL());
     }
 
     /**
      * Returns content of file
+     * 
+     * @param  string Path to file
+     * @param  array $options Options
      *
      * @return string
      */
@@ -334,15 +389,15 @@ abstract class Page
      */
     public function notice( string $notice, array $assign = [] )
     {
-        $message = $this->language->get('L_NOTICE')['L_FAILURE'][$notice] ?? $notice;
+        $lang = $this->language->get('L_NOTICE');
 
-        if ($message) {
-            foreach ($assign as $variable => $data) {
-                $message = strtr($message, ['{' . $variable . '}' => $data]);
-            }
+        $message = $lang['L_FAILURE'][$notice] ?? $lang['L_FAILURE_MESSAGE'];
+
+        foreach ($assign as $variable => $data) {
+            $message = strtr($message, ['{' . $variable . '}' => $data]);
         }
         
-        if (AJAX === true) {
+        if (defined('AJAX')) {
             echo json_encode([
                 'status' => 'error',
                 'error' => $message
@@ -351,11 +406,10 @@ abstract class Page
         }
 
         $this->data->navbar = ($this->navbar ?? $this->page->navbar)->getData();
-        $this->style->load($this->data, $this->build, $this->user);
-        if ($message) {
-            $this->style->notice($message);
-        }
-        $this->style->show();
+
+        $this->iniStyle(
+            notice: $message
+        );
     }
 
     /**

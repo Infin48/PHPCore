@@ -40,6 +40,42 @@
                         "title": "L_FRONT_INFO_STARTED",
                         "value": ""
                     }
+                },
+                "optimize": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-sync-alt",
+                        "ajax": "execute",
+                        "ajaxProcess": "/Admin/Optimize",
+                        "title": "L_OPTIMIZE_TABLES",
+                        "button": "L_OPTIMIZE"
+                    }
+                },
+                "sync-scripts": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-sync-alt",
+                        "ajax": "execute",
+                        "ajaxProcess": "/Admin/Synchronize/Scripts",
+                        "title": "L_SYNCHRONISE_SCRIPTS",
+                        "button": "L_SYNCHRONISE"
+                    }
+                },
+                "sync-styles": {
+                    "options": {
+                        "type": "button"
+                    },
+                    "data": {
+                        "icon": "fas fa-sync-alt",
+                        "ajax": "execute",
+                        "ajaxProcess": "/Admin/Synchronize/Styles",
+                        "title": "L_SYNCHRONISE_STYLES",
+                        "button": "L_SYNCHRONISE"
+                    }
                 }
             }
         }

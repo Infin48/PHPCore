@@ -24,8 +24,7 @@ class Email extends \Process\ProcessExtend
         'form' => [
             'email_prefix' => [
                 'type' => 'text',
-                'required' => true,
-                'function' => 'ctype_alpha'
+                'required' => true
             ],
             'email_smtp_enabled' => [
                 'type' => 'radio'
@@ -57,23 +56,26 @@ class Email extends \Process\ProcessExtend
      */
     public function process()
     {
-        $settings = $this->system->settings->get();
-        $settings['email.prefix'] = $this->data->get('email_prefix');
-
-        $settings['email.smtp_enabled'] = (int)$this->data->is('email_smtp_enabled');
+        $this->db->table(TABLE_SETTINGS, [
+            'email.prefix' => $this->data->get('email_prefix'),
+            'email.smtp_enabled' => (int)$this->data->get('email_smtp_enabled')
+        ]);
 
         if ($this->data->is('email_smtp_enabled')) {
-            $settings['email.smtp_host'] = $this->data->get('email_smtp_host');
-            $settings['email.smtp_username'] = $this->data->get('email_smtp_username');
-            $settings['email.smtp_password'] = $this->data->get('email_smtp_password');
-            $settings['email.smtp_port'] = $this->data->get('email_smtp_port');
+
+            $this->db->table(TABLE_SETTINGS, [
+                'email.smtp_host' => $this->data->get('email_smtp_host'),
+                'email.smtp_username' => $this->data->get('email_smtp_username'),
+                'email.smtp_password' => $this->data->get('email_smtp_password'),
+                'email.smtp_port' => (int)$this->data->get('email_smtp_port')
+            ]);
         }
 
-        if (empty($this->data->get('email_smtp_host')) or empty($this->data->get('email_smtp_username'))) {
-            $settings['email.smtp_enabled'] = 0;
+        if (empty($this->data->get('email_smtp_host')) or empty($this->data->get('email_smtp_username')) or empty($this->data->get('email_smtp_port'))) {
+            $this->db->table(TABLE_SETTINGS, [
+                'email.smtp_enabled' => 0
+            ]);
         }
-
-        $this->system->settings->set($settings);
 
         // ADD RECORD TO LOG
         $this->log();

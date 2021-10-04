@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -15,17 +15,19 @@ namespace Page;
 /**
  * Index
  */
-class Index extends Page
+class Index extends \Page\Page
 {
+    /**
+     * @var array $settings Page settings
+     */
+    protected array $settings = [
+        'template' => '/Index'
+    ];
+
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
-    {   
-        $this->templateName = 'Index';
-
-        $this->process->form(type: 'Start');
-    }
+    protected function body() {}
 }

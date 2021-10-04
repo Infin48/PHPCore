@@ -59,7 +59,7 @@ class Forum extends \Block\Forum
     public function getParent( int $categoryID )
     {
         return $this->db->query('
-            SELECT f.forum_id, forum_name, forum_url, forum_description, is_main, forum_icon_style, forum_icon
+            SELECT f.forum_id, forum_name, forum_url, forum_description, forum_main, forum_icon_style, forum_icon
             FROM ' . TABLE_FORUMS . '
             WHERE f.category_id = ?
             GROUP BY f.forum_id
@@ -84,7 +84,7 @@ class Forum extends \Block\Forum
             ) as topic, (
                 SELECT COUNT(*)
                 FROM ' . TABLE_USERS . '
-                WHERE u.is_deleted = 0
+                WHERE u.user_deleted = 0
             ) as user
         ');
     }

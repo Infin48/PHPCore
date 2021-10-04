@@ -7,7 +7,8 @@
             "body": {
                 "notification_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_NOTIFICATION_NAME",
@@ -16,7 +17,8 @@
                 },
                 "notification_text": {
                     "options": {
-                        "type": "textarea"
+                        "type": "textarea",
+                        "required": true
                     },
                     "data": {
                         "title": "L_NOTIFICATION_BODY",
@@ -32,9 +34,6 @@
                     },
                     "body": {
                         "info": {
-                            "options": {
-                                "checked": true
-                            },
                             "data": {
                                 "title": "L_NOTIFICATION_TYPE_INFO",
                                 "value": 1
@@ -54,7 +53,7 @@
                         }
                     }
                 },
-                "is_hidden": {
+                "notificationis_hidden": {
                     "options": {
                         "type": "checkbox"
                     },
@@ -63,7 +62,7 @@
                         "title": "L_NOTIFICATION_HIDE"
                     },
                     "body": {
-                        "is_hidden": {
+                        "notification_hidden": {
                             "data": {
                                 "value": 1
                             }

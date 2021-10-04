@@ -60,7 +60,7 @@ class Delete extends \Process\ProcessExtend
             'deleted_type_user_id' => $this->data->get('user_id')
         ]);
 
-        $this->id = $this->db->lastInsertID();
+        self::$id = $this->db->lastInsertID();
 
         $this->db->query('
             UPDATE ' . TABLE_POSTS . '
@@ -70,7 +70,7 @@ class Delete extends \Process\ProcessExtend
                 forum_posts = forum_posts - 1,
                 p.deleted_id = ?
             WHERE p.post_id = ?
-        ', [$this->id, $this->data->get('post_id')]);
+        ', [self::$id, $this->data->get('post_id')]);
 
         // SEND USER NOTIFICATION
         $this->notifi(

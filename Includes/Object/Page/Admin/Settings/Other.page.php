@@ -12,6 +12,8 @@
 
 namespace Page\Admin\Settings;
 
+use Model\File\File;
+
 use Visualization\Field\Field;
 use Visualization\Breadcrumb\Breadcrumb;
 
@@ -24,7 +26,7 @@ class Other extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.settings'
     ];
 
@@ -39,45 +41,33 @@ class Other extends \Page\Page
         $this->navbar->object('settings')->row('settings')->active()->option('others')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
+        // FILE
+        $file = new File();
+
         // LOADS EDITOR LANGUAGES FROM FOLDER
-        $languageEditor = array_map(function($dir) {
-            return [
-                'title' => basename($dir, '.min.js'),
-                'value' => basename($dir, '.min.js')
-            ];
-        }, glob(ROOT . '/Assets/Trumbowyg/langs/*.min.js'));
-
-        $languageEditor[] = ['title' => 'en', 'value' => 'en'];
-
-        // LOADS WEBSITE LANGUAGES
-        foreach (glob(ROOT . '/Languages/*', GLOB_ONLYDIR) as $dir) {
-            if (!file_exists($dir . '/Info.json')) continue;
-
-            $short = array_pop(array_filter(explode('/', $dir)));
-            $json = json_decode(file_get_contents($dir . '/Info.json'), true);
-            $language[] = [
-                'title' => $json['name'] ?? '',
-                'value' => $short,
+        $languageEditor = $file->getFiles('/Assets/Trumbowyg/langs/*.min.js', File::PATH_REMOVE|File::EXTENSION_REMOVE_FULL|File::FOLDER_SKIP);
+        $list = [['title' => 'en', 'value' => 'en']];
+        foreach ($languageEditor as $lang) {
+            $list[] = [
+                'title' => $lang,
+                'value' => $lang
             ];
         }
 
         // FIELD
-        $field = new Field('Admin/Settings/Other');
-        $field->data($this->system->settings->get());
-        $field->object('language')
-            ->row('site.language')->fill($language)
-            ->row('site.language_editor')->fill($languageEditor);
+        $field = new Field('/Admin/Settings/Other');
+        $field->data($this->system->get());
+        $field->object('language')->row('site.language_editor')->fill(data: $list);
         $this->data->field = $field->getData();
 
         // EDIT SETTINGS
-        $this->process->form(type: 'Admin/Settings/Other', data: [
+        $this->process->form(type: '/Admin/Settings/Other', data: [
             'options' => [
                 'input' => [
-                    'site_language' => array_column($language, 'value'),
-                    'site_language_editor' => array_column($languageEditor, 'value')
+                    'site_language_editor' => array_column($list, 'value')
                 ]
             ]
         ]);

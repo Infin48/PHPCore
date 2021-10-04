@@ -7,79 +7,43 @@
             "body": {
                 "button_sub_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_MENU_BUTTON_NAME",
                         "placeholder": "L_NAME"
                     }
                 },
-                "is_external_link": {
+                "button_sub_link_type": {
                     "options": {
                         "type": "radio"
                     },
                     "data": {
-                        "title": "L_MENU_BUTTON_URL"
+                        "title": "L_MENU_BUTTON_LINK_TYPE"
                     },
                     "body": {
-                        "yes": {
-                            "options": {
-                                "checked": {
-                                    "filled": "button_sub_link"
-                                }
-                            },
+                        "local": {
                             "data": {
-                                "title": "L_YES",
-                                "value": 1
+                                "title": "L_BUTTON_LINK_TYPE_LOCAL",
+                                "value": "1"
                             }
                         },
-                        "no": {
-                            "options": {
-                                "checked": {
-                                    "empty": "button_sub_link"
-                                }
-                            },
+                        "external": {
                             "data": {
-                                "title": "L_NO",
-                                "value": 0
+                                "title": "L_BUTTON_LINK_TYPE_EXTERNAL",
+                                "value": "2"
                             }
                         }
                     }
                 },
                 "button_sub_link": {
                     "options": {
-                        "type": "text",
-                        "on": {
-                            "enable": "is_external_link"
-                        }
+                        "type": "text"
                     },
                     "data": {
-                        "title": "L_EXTERNAL_LINK",
-                        "desc": "L_MENU_BUTTON_URL_DESC",
-                        "placeholder": "L_TEXT"
-                    }
-                },
-                "page_id": {
-                    "options": {
-                        "type": "select",
-                        "empty": "L_MENU_PAGE_NO",
-                        "on": {
-                            "disable": "is_external_link"
-                        }
-                    },
-                    "data": {
-                        "title": "L_MENU_PAGE_LIST",
-                        "desc": "L_MENU_PAGE_LIST_DESC"
-                    },
-                    "body": {
-                        "default": {
-                            "data": {
-                                "convert": {
-                                    "title": "page_name",
-                                    "value": "page_id"
-                                }
-                            }
-                        }
+                        "title": "L_LINK",
+                        "placeholder": "L_LINK"
                     }
                 }
             }

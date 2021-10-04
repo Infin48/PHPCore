@@ -1,20 +1,20 @@
 <meta charset="UTF-8" />
-<title><?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?></title>
+<title><?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="<?= $this->data->head['description'] ?>" />
-<meta name="keywords" content="<?= $this->data->head['keyWords'] ?? '' ?>" />
+<meta name="keywords" content="<?= $this->system->get('site.keywords') ?? '' ?>" />
 
-<link rel="icon" href="<?= $this->data->data['favicon'] ?>?<?= $this->system->settings->get('session') ?>" type="image/svg+xml">
-
+<link rel="icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" type="image/svg+xml">
+<link rel="apple-touch-icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" />
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="<?= $_SERVER['SERVER_NAME'] ?>">
-<meta property="og:url" content="<?= $this->getURL() ?>">
-<meta property="og:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?>">
+<meta property="og:url" content="<?= $this->url->getURL() ?>">
+<meta property="og:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?>">
 <meta property="og:description" content="<?= $this->data->head['description'] ?>">
 
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:site" content="<?= $_SERVER['SERVER_NAME'] ?>">
-<meta property="twitter:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->settings->get('site.name') ?>">
+<meta property="twitter:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?>">
 <meta property="twitter:description" content="<?= $this->data->head['description'] ?>">
 
 <?php if ($this->data->data['topic_image'] ?? false and $this->data->data['topic_id'] ?? false) : ?>
@@ -24,7 +24,7 @@
 
 <?php if ($this->user->isLogged()) : ?>
     <?php if (isset($this->data->data['editor'])) : ?>
-        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?12">
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $this->system->get('session.styles') ?>">
     <?php endif; ?>
 <?php endif; ?>
 
@@ -32,13 +32,19 @@
     <link defer rel="stylesheet" type="text/css" href="/Pages/<?= $this->data->data['page_id'] ?>/css.css?<?= RAND ?>">
 <?php endif; ?>
 
-<?php if($this->system->settings->get('background_image')) : ?>
-    <link rel="preload" as="image" href="/Uploads/Site/header.<?= $this->system->settings->get('background_image') ?>?<?= $this->system->settings->get('session') ?>">
+<?php if($this->system->get('background_image')) : ?>
+    <link rel="preload" as="image" href="/Uploads/Site/header.<?= $this->system->get('background_image') ?>?<?= $this->system->get('session') ?>">
 <?php endif; ?>
 
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->settings->get('session') ?>">
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->settings->get('session') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->get('session.groups') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->get('session.labels') ?>">
 
 <link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css">
 
 <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+
+<?php foreach ($this->data->data['plugins'] ?? [] as $plugin) : ?>
+    <?php if (file_exists($path = (ROOT . '/Plugins/' . $plugin . '/Styles/Themes/Stylesheet.min.css'))) : ?>
+        <link rel="stylesheet" type="text/css" href="<?= str_replace(ROOT, '', $path) ?>?<?= $this->system->get('session.styles') ?>">
+    <?php endif; ?>
+<?php endforeach; ?>

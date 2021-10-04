@@ -28,7 +28,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/forum/',
         'permission' => 'admin.forum'
     ];
@@ -51,23 +51,30 @@ class Show extends \Page\Page
         $categories = $category->getAll();
 
         // FORUM
-        $forum = $forum->get($this->getID()) or $this->error();
+        $forum = $forum->get($this->url->getID()) or $this->error();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Forum');
+        $breadcrumb = new Breadcrumb('/Admin/Forum');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // FIELD
-        $field = new Field('Admin/Forum/Forum');
+        $field = new Field('/Admin/Forum/Forum');
         $field->data($forum);
         $field->object('forum')
             ->title('L_FORUM_EDIT')
             ->row('category_id_new')->show()
-            ->fill($categories);
+            ->fill(data: $categories);
+
+        if ($forum['forum_link']) {
+            $field->row('enable_link')->option('yes')->check();
+        } else {
+            $field->row('enable_link')->option('no')->check();
+        }
+
         $this->data->field = $field->getData();
 
         // EDIT FORUM
-        $this->process->form(type: 'Admin/Forum/Edit', data: [
+        $this->process->form(type: '/Admin/Forum/Edit', data: [
             'forum_id'  => $forum['forum_id']
         ]);
 

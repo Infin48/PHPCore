@@ -1,0 +1,75 @@
+<?php foreach ((array)$this->data->sidebar['body'] as $objectName => $object) : ?>
+    
+    <?php $row = $object; ?>
+    <?php if ($object['options']['template'] ?? false and is_string($object['options']['template'])) : ?>
+        <?php require $object['options']['template']; ?>
+        <?php continue; ?>
+    <?php endif; ?>
+    
+    <div class="list list-small list-name-<?= $objectName ?>">
+        <?php if (isset($object['data']['title'])) : ?>
+            <div class="list-head">
+                <span><?= ${$object['data']['title']} ?></span>
+            </div>
+        <?php endif; ?>
+        <div class="list-body">
+
+            <?php if (!empty($object['body'] )) : ?>
+                <?php foreach ($object['body'] as $rowName => $row) : ?>
+                    
+                    <?php if (isset($row['options']['template']) and is_string($row['options']['template'])) : ?>
+                        <?php require $row['options']['template']; ?>
+                    <?php else : ?>
+                    
+                        <div class="list-row list-row-name-<?= $rowName ?> list-row-type-<?= $row['options']['type'] ?? 'default' ?><?php if (($row['options']['selected'] ?? false) == true) : ?> list-row-selected<?php endif; ?>" ajax-selector="list-row">
+                            <?php if (isset($row['options']['template']['body'])) : ?>
+                                <?php require $row['options']['template']['body']; ?>
+                            <?php else : ?>
+
+                                <?php if ($row['options']['type'] === 'button') : ?>
+                                    <a href="<?= $row['data']['href'] ? $this->url->build($row['data']['href']) : '' ?>"><i class="<?= $row['data']['icon'] ?>"></i> <?= ${$row['data']['title']} ?></a>
+                                <?php endif; ?>
+
+                                <?php if ($row['options']['type'] === 'table') : ?>
+                                    <?php foreach ($row['body'] as $option) : ?>
+                                        <div class="table">
+                                            <div class="table-left"><?= ${$option['data']['title']} ?>:</div>
+                                            <div class="table-right">
+                                                <?php if (isset($option['options']['template']['body'])) : ?>
+                                                    <?php require $option['options']['template']['body']; ?>
+                                                <?php else : ?>
+                                                    <?= $option['data']['value'] ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+
+                                <?php if ($row['options']['type'] === 'list') : ?>
+                                    
+                                    <?php if (!empty($row['body'] )) : ?>
+                                        <?php foreach ($row['body'] as $option) : ?>
+                                            <?php require $option['options']['template']['body']; ?>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <?php if (isset($row['options']['empty'])) : ?>
+                                            <?= ${$row['options']['empty']} ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php $row = $object; ?>
+            <?php else : ?>
+                <?php if (isset($object['options']['empty'])) : ?>
+                    <div class="list-row">
+                        <?= ${$object['options']['empty']} ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>

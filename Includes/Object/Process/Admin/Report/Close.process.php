@@ -22,9 +22,7 @@ class Close extends \Process\ProcessExtend
      */
     public array $require = [
         'data' => [
-            'report_id',
-            'report_type',
-            'report_type_id'
+            'report_id'
         ]
     ];
 
@@ -53,8 +51,9 @@ class Close extends \Process\ProcessExtend
         ]);
 
         // ADD RECORD TO LOG
+        $this->redirect('/admin/report/');
+        
+        // ADD RECORD TO LOG
         $this->log();
-
-        $this->redirectTo('/admin/report/');
     }
 }

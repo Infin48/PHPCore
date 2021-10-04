@@ -12,6 +12,8 @@
 
 namespace Model\Build;
 
+use Model\Url;
+
 /**
  * BuildUser 
  */
@@ -23,33 +25,17 @@ class BuildUser extends Build
     private array $settings = [
         'Topic' => [
             'max' => null,
-            'name' => 'topic_name',
-            'url' => [
-                'delete' => '/forum/show/{forum_id}.{forum_url}/mark-{user_notification_id}/',
-                'default' => '/forum/topic/{topic_id}.{topic_url}/mark-{user_notification_id}/',
-            ]
+            'name' => 'topic_name'
         ],
         'Post' => [
             'max' => MAX_POSTS,
-            'name' => 'topic_name',
-            'url' => [
-                'delete' => '/forum/topic/{topic_id}.{topic_url}/mark-{user_notification_id}/',
-                'default' => '/forum/topic/{topic_id}.{topic_url}/page-{page}/mark-{user_notification_id}/select-{user_notification_type_id}/#{user_notification_type_id}',
-            ]
+            'name' => 'topic_name'
         ],
         'ProfilePost' => [
-            'max' => MAX_PROFILE_POSTS,
-            'url' => [
-                'delete' => '/profile/{user_id}.{user_name}/page-{page}/mark-{user_notification_id}/',
-                'default' => '/profile/{user_id}.{user_name}/page-{page}/mark-{user_notification_id}/select-{profile_post_id}/#{profile_post_id}',
-            ]
+            'max' => MAX_PROFILE_POSTS
         ],
         'ProfilePostComment' => [
-            'max' => MAX_PROFILE_POSTS,
-            'url' => [
-                'delete' => '/profile/{user_id}.{user_name}/page-{page}/mark-{user_notification_id}/select-{profile_post_id}/#{profile_post_id}',
-                'default' => '/profile/{user_id}.{user_name}/page-{page}/mark-{user_notification_id}/select-c{profile_post_comment_id}/#c{profile_post_comment_id}',
-            ]
+            'max' => MAX_PROFILE_POSTS
         ]
     ];
     
@@ -63,7 +49,7 @@ class BuildUser extends Build
      */
     private function assignPrefix( array $data, string $prefix )
     {
-        foreach (['user_id', 'group_class_name', 'user_name', 'is_deleted'] as $input) {
+        foreach (['user_id', 'group_class_name', 'user_name', 'user_deleted', 'user_profile_image'] as $input) {
             $data[$input] = $data[$prefix.$input] ?? '';
         }
         return $data;
@@ -72,7 +58,7 @@ class BuildUser extends Build
     /**
      * Builds user information block
      *
-     * @param  array $data User data [is_deleted, user_id, user_profile_image, user_name, user_reputation, user_posts, ?user_last_activity]
+     * @param  array $data User data [user_deleted, user_id, user_profile_image, user_name, user_reputation, user_posts, ?user_last_activity]
      * @param  array $online If true - returned image will have online indicator
      * @param  array $prefix Prefix for data
      * 
@@ -94,7 +80,7 @@ class BuildUser extends Build
     /**
      * Builds user profile image
      *
-     * @param  array $data User data [is_deleted, user_id, user_profile_image, user_name, ?user_last_activity]
+     * @param  array $data User data [user_deleted, user_id, user_profile_image, user_name, ?user_last_activity]
      * @param  array $online If true - returned image will have online indicator
      * @param  array $prefix Prefix for data
      * 
@@ -103,7 +89,7 @@ class BuildUser extends Build
     public function image( $data, bool $online = false, string $prefix = '' )
     { 
         $data = $this->assignPrefix($data, $prefix);
-        if (isset($data['is_deleted']) and $data['is_deleted'] == 1) {
+        if (isset($data['user_deleted']) and $data['user_deleted'] == 1) {
             $data['user_name'] = $this->language->get('L_DELETED_USER');
             $data['user_profile_image'] = 'grey';
         }
@@ -111,7 +97,7 @@ class BuildUser extends Build
         $img = '<div class="profile" ajax-selecotor="profile">' . (($online === true) ? $this->online((string)$data['user_last_activity']) : '');
         if (in_array($format = explode('?', $data['user_profile_image'])[0], ['jpg', 'jpeg', 'png', 'svg', 'gif'])) {
             if (file_exists(ROOT . '/Uploads/User/' . $data['user_id'] . '/Profile.' . $format)) {
-                return $img .'<img class="profile-image" src="/Uploads/User/' . $data['user_id'] . '/Profile.' . $data['user_profile_image'] . '"></div>';
+                return $img .'<span class="profile-image"><img src="/Uploads/User/' . $data['user_id'] . '/Profile.' . $data['user_profile_image'] . '" alt="' . $this->language->get('L_PROFILE_IMAGE') . '"></span></div>';
             }
         }
         
@@ -163,17 +149,19 @@ class BuildUser extends Build
         }
 
         // URL TO CONTENT
-        $url = $this->settings[$processFile]['url'][$action === 'Delete' ? 'delete' : 'default'];
-
-        $arr = [];
-        foreach (array_merge($data, $queryResult) as $key => $value) {
-            $arr['{' . $key . '}'] = $value;
+        $type = $processFile;
+        if ($action == 'Delete') {
+            $type = match($type) {
+                'ProfilePostComment' => 'ProfilePost',
+                'ProfilePost' => 'Profile',
+                'Post' => 'Topic',
+                'Topic' => 'Forum'
+            };
         }
 
-        $arr['{page}'] = isset($this->settings[$processFile]['max']) ? ceil($queryResult['position'] / $this->settings[$processFile]['max']) : 1;
-        $url = strtr($url, $arr);
+        $url = $this->url->{lcfirst($type)}(array_merge($data, $queryResult));
 
-        $result .= '<a class="show" href="' . $this->system->url->build($url) . '">' . $this->language->get('L_SHOW') . '</a>';
+        $result .= '<a class="show" href="' . Url::build($url) . '">' . $this->language->get('L_BUTTON')['L_SHOW'] . '</a>';
 
 
         return $result;
@@ -182,7 +170,7 @@ class BuildUser extends Build
     /**
      * Builds username with link to profile
      *
-     * @param  array $data User data [is_deleted, user_name, user_id, ?group_class_name]
+     * @param  array $data User data [user_deleted, user_name, user_id, ?group_class_name]
      * @param  bool $groupColor If true - link will have color as group
      * @param  string $prefix Prefix for data
      * 
@@ -192,38 +180,26 @@ class BuildUser extends Build
     {
         $data = $this->assignPrefix($data, $prefix);
         
-        if (isset($data['is_deleted']) and $data['is_deleted'] == 1) {
+        if (isset($data['user_deleted']) and $data['user_deleted'] == 1) {
             $data['user_name'] = $this->language->get('L_DELETED_USER');
         }
 
-        return '<a class="username' . ($groupColor === true ? ' user--' . $data['group_class_name'] : '') . '" ajax-selector="user_name" ' . ((isset($data['is_deleted']) and $data['is_deleted'] == 0) ? 'href="' . $this->url->profile($data) . '"' : '') . '>' . $data['user_name'] . '</a>';
+        return '<a class="username' . ($groupColor === true ? ' user--' . $data['group_class_name'] : '') . '" ajax-selector="user_name" ' . ((isset($data['user_deleted']) and $data['user_deleted'] == 0) ? 'href="' . $this->url->profile($data) . '"' : '') . '>' . $data['user_name'] . '</a>';
     }
 
     /**
-     * Builds username with link to profile and user image
+     * Builds username and profile image with link to profile
      *
-     * @param  array $data User data [is_deleted, user_name, user_id, group_class_name]
+     * @param  array $data User data [user_deleted, user_name, user_id, group_class_name]
      * 
      * @return string
      */
     public function linkImg( array $data )
     {
-        if (isset($data['is_deleted']) and $data['is_deleted'] == 1) {
+        if (isset($data['user_deleted']) and $data['user_deleted'] == 1) {
             $data['user_name'] = $this->language->get('L_DELETED_USER');
         }
 
-        return '<a class="username vertical-align user--' . $data['group_class_name'] . ' fw-700" ' . ((isset($data['is_deleted']) and $data['is_deleted'] == 0) ? 'href="' . $this->url->profile($data) . '"' : '') . '>' . $this->image($data) . '<span>' . $data['user_name'] . '</span></a>';
-    }
-
-    /**
-     * Builds group label
-     *
-     * @param  array $data Group data [group_name]
-     * 
-     * @return string
-     */
-    public function group( array $data )
-    {
-        return '<span class="group">' . $data['group_name'] . '</span>';
+        return '<a class="username vertical-align user--' . $data['group_class_name'] . ' fw-700" ' . ((isset($data['user_deleted']) and $data['user_deleted'] == 0) ? 'href="' . $this->url->profile($data) . '"' : '') . '>' . $this->image($data) . '<span>' . $data['user_name'] . '</span></a>';
     }
 }

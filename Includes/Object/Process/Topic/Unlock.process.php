@@ -50,7 +50,7 @@ class Unlock extends \Process\ProcessExtend
     {
         // UNLOCK TOPIC
         $this->db->update(TABLE_TOPICS, [
-            'is_locked' => '0'
+            'topic_locked' => '0'
         ], $this->data->get('topic_id'));
 
         // SEND NOTIFICATION
@@ -62,5 +62,8 @@ class Unlock extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('topic_name'));
+        
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

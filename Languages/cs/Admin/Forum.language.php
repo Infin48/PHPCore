@@ -17,7 +17,7 @@ $language = array_merge($language, [
     'L_CATEGORY_NAME' => 'Název kategorie',
     'L_CATEGORY_EDIT' => 'Upravit kategorii',
     'L_CATEOGRY_DESCRIPTION' => 'Popis kategorie',
-    'L_CATEOGRY_DESCRIPTION_DESC' => 'Stručný popis kategorie',
+    'L_CATEOGRY_DESCRIPTION_DESC' => 'Stručný popis kategorie.',
     
     'L_FORUM_LIST' => 'Seznam fór',
     'L_FORUM_PERMISSION' => 'Přidělení oprávnění',
@@ -29,10 +29,10 @@ $language = array_merge($language, [
     'L_FORUM_NAME' => 'Název fóra',
     'L_FORUM_EDIT' => 'Upravit fórum',
     'L_FORUM_MAIN' => 'Označit fórum za hlavní',
-    'L_FORUM_MAIN_DESC' => 'Témata z tohoto fóra budou zobrazena na titulní stránce',
+    'L_FORUM_MAIN_DESC' => 'Témata z tohoto fóra budou zobrazena na titulní stránce.',
     'L_FORUM_MAIN_LABEL' => 'Hlavní fórum',
     'L_FORUM_DESCRIPTION' => 'Popis fóra',
-    'L_FORUM_DESCRIPTION_DESC' => 'Stručný popis fóra',
+    'L_FORUM_DESCRIPTION_DESC' => 'Stručný popis fóra.',
     
     'L_FORUM_LINK' => 'Externí odkaz',
     'L_FORUM_LINK_ENABLE' => 'Povolit externí odkaz',

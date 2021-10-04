@@ -105,7 +105,7 @@ class ProfilePost extends Block
                 g2.group_class_name AS two_group_class_name,
                 u2.user_name AS two_user_name,
                 u2.user_id AS two_user_id,
-                u2.is_deleted as two_is_deleted
+                u2.user_deleted as two_user_deleted
             FROM ' . TABLE_PROFILE_POSTS . ' 
             ' . $this->join->user('pp.user_id'). '
             LEFT JOIN ' . TABLE_USERS . '2 ON u2.user_id = pp.profile_id 

@@ -90,6 +90,7 @@ class ProcessCheck
         }
         
         throw new \Exception\Notice($key . '_characters');
+        
         return false;
     }
     

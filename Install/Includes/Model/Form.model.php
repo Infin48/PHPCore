@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -11,6 +11,7 @@
  */
 
 namespace Model;
+
 
 /**
  * Form
@@ -49,7 +50,9 @@ class Form
     public function isSend( string $button )
     {
         if (isset($_POST['key']) and $_POST['key'] == SESSION_ID) {
+
             if (isset($_POST[$button])) {
+
                 return true;
             }
         }

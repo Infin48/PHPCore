@@ -48,7 +48,7 @@ class Lock extends \Process\ProcessExtend
      */
     public function process()
     {
-        $this->db->update(TABLE_TOPICS, ['is_locked' => '1'], $this->data->get('topic_id'));
+        $this->db->update(TABLE_TOPICS, ['topic_locked' => '1'], $this->data->get('topic_id'));
 
         // SEND NOTIFICATION
         $this->notifi(
@@ -59,5 +59,8 @@ class Lock extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('topic_name'));
+        
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

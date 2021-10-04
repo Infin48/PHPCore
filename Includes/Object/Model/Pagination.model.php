@@ -23,6 +23,32 @@ class Pagination
     private array $pagination = ['enabled' => false, 'url' => ''];
 
     /**
+     * @var array $label Pagination label
+     */
+    private string $label;
+
+    /**
+     * @var int $page PPage number
+     */
+    private int $page;
+    
+    /**
+     * Constructor
+     *
+     * @param  string $label Pagination label
+     */
+    public function __construct( string $label = '' )
+    {
+        $this->label = $label;
+
+        if ($this->label) {
+            $this->page = PAGE[$this->label] ?? 1;
+        } else {
+            $this->page = PAGE;
+        }
+    }
+
+    /**
      * Sets max objects on one page
      *
      * @param  int $max
@@ -73,7 +99,7 @@ class Pagination
      */
     public function getOffset()
     {
-        return (PAGE - 1) * (int)$this->pagination['max'];
+        return ($this->page - 1) * (int)$this->pagination['max'];
     }
     
     /**
@@ -98,22 +124,39 @@ class Pagination
         $ceil = ceil($this->pagination['total'] / $this->pagination['max']);
         $ceil = ($ceil == 0) ? 1 : $ceil;
 
-        if (PAGE > $ceil or PAGE < 1) {
-            if (PAGE < 1) redirect($this->pagination['url'] . 'page-1/');
-            redirect($this->pagination['url'] . 'page-' . $ceil . '/');
+        
+        $_url = '';
+        if (is_array(PAGE) and $this->label) {
+            
+            foreach (PAGE as $key => $value) {
+                
+                if ($key != $this->label) {
+                    $_url .= $key . $value . '.';
+                }
+            }
+        }
+
+        $tab = '';
+        if (TAB) {
+            $tab = 'tab-' . TAB . '/';
+        }
+        
+        if ($this->page > $ceil or $this->page < 1) {
+            if ($this->page < 1) redirect($this->pagination['url'] . 'page-' . $_url . $this->label . '1/');
+            redirect($this->pagination['url'] . 'page-' . $_url . $this->label . $ceil . '/');
         }
 
         for ($i = 1; $i <= $ceil; $i++) {
 
             $page = $url = $i;
 
-            if ($ceil > 8 and PAGE >= 6 and $i === 2) {
+            if ($ceil > 8 and $this->page >= 6 and $i === 2) {
                 $page = '...';
-                $i = PAGE - 3;
+                $i = $this->page - 3;
                 $url = $i - 1;
             }
 
-            if ($ceil > 8 and PAGE <= $ceil - 5 and $i === PAGE + 3) {
+            if ($ceil > 8 and $this->page <= $ceil - 5 and $i === $this->page + 3) {
                 $page = '...';
 
                 $i = $ceil - 1;
@@ -122,19 +165,24 @@ class Pagination
 
             $paginationData[] = [
                 'page' => $page,
-                'url' => $this->pagination['url'] . 'page-' . $url . '/'
+                'url' => $this->pagination['url'] . 'page-' . $_url . $this->label . $url . '/' . $tab,
+                'active' => $this->page == $url ? true : false
             ];
-
         }
+
 
         return [
             'data' => $paginationData,
-            'url' => $this->pagination['url'],
-            'next' => PAGE != ceil($this->pagination['total'] / $this->pagination['max']) ? true : false,
-            'previous' => PAGE != 1 ? true : false,
+
+            'url' => $this->pagination['url'] . '/' . $tab,
+            'urlNext' => $this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page + 1) . '/' . $tab,
+            'urlPrevious' => $this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page - 1) . '/' . $tab,
+
+            'next' => $this->page != ceil($this->pagination['total'] / $this->pagination['max']) ? true : false,
+            'previous' => $this->page != 1 ? true : false,
             'enabled' => $this->pagination['total'] > $this->pagination['max'] ? true : false,
             'max' => $this->pagination['max'],
-            'offset' => (PAGE - 1) * (int)$this->pagination['max']
+            'offset' => ($this->page - 1) * (int)$this->pagination['max']
         ];
     }
 }

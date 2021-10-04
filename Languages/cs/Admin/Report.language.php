@@ -35,7 +35,7 @@ $language = array_merge($language, [
     'L_REPORT_PENDING_NO' => 'Žádná nevyřešená hlášení',
 
     'L_REPORT_SHOW' => 'Zobrazit',
-    'L_REPORT_SHOW_DESC' => 'Kliknutím na tlačítko budete přesměrován zpět na web',
+    'L_REPORT_SHOW_DESC' => 'Kliknutím na tlačítko budete přesměrován zpět na web.',
     'L_REPORT_SHOW_STATUS' => 'Stav',
     'L_REPORT_SHOW_REASONS' => 'Počet nahlášení',
     'L_REPORT_SHOW_FIRST_REPORT' => 'První nahlášení',

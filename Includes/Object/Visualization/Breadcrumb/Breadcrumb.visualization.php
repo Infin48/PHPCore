@@ -26,6 +26,6 @@ class Breadcrumb extends \Visualization\Visualization
      */
     public function href( string $href )
     {
-        $this->obj->set->data('href', $href);
+        $this->obj->set->data('href', '$' . $href);
     }
 }

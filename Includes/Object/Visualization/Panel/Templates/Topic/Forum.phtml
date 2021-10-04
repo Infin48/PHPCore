@@ -1,0 +1,11 @@
+<a>
+    <label for="f<?= $row['data']['forum_id'] ?>">
+        <?= $row['data']['forum_name'] ?>
+    </label>
+    <div class="radio">
+        <input id="f<?= $row['data']['forum_id'] ?>" type="radio" name="new_forum_id" value="<?= $row['data']['forum_id'] ?>"<?php if ($row['data']['forum_id'] == $this->data->data['forum_id']) : ?> checked<?php endif; ?>>
+        <label for="f<?= $row['data']['forum_id'] ?>">
+            <div></div>
+        </label>
+    </div>
+</a>

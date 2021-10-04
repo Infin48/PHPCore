@@ -19,7 +19,7 @@ use Block\Admin\ProfilePost;
 use Block\Admin\ProfilePostComment;
 
 use Visualization\Field\Field;
-use Visualization\Block\Block;
+use Visualization\Admin\Block\Block;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -32,7 +32,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.forum'
     ];
     
@@ -50,35 +50,35 @@ class Show extends \Page\Page
         $deleted = new Deleted();
 
         // REPORT DATA
-        $data = $deleted->get($this->getID()) or $this->error();
+        $data = $deleted->get($this->url->getID()) or $this->error();
 
         // FIELD
-        $field = new Field('Admin/Deleted');
+        $field = new Field('/Admin/Deleted');
 
         // ASSIGN DATA BASED ON TYPE
         switch ($data['deleted_type']) {
             case 'Post':
                 $content = (new Post)->get($data['deleted_type_id']);
 
-                $field->object('show')->setOptions('type', 'Deleted/Post')
+                $field->object('show')->setOptions('type', '/Admin/Deleted/Post')
                     ->row('post_id')->show();
             break;
             case 'Topic': 
                 $content = (new Topic)->get($data['deleted_type_id']);
 
-                $field->object('show')->setOptions('type', 'Deleted/Topic')
+                $field->object('show')->setOptions('type', '/Admin/Deleted/Topic')
                     ->row('topic_id')->show();
             break;
             case 'ProfilePost': 
                 $content = (new ProfilePost)->get($data['deleted_type_id']);
 
-                $field->object('show')->setOptions('type', 'Deleted/ProfilePost')
+                $field->object('show')->setOptions('type', '/Admin/Deleted/ProfilePost')
                     ->row('profile_post_id')->show();
             break;
             case 'ProfilePostComment': 
                 $content = (new ProfilePostComment)->get($data['deleted_type_id']);
 
-                $field->object('show')->setOptions('type', 'Deleted/ProfilePostComment')
+                $field->object('show')->setOptions('type', '/Admin/Deleted/ProfilePostComment')
                     ->row('profile_post_comment_id')->show();
             break;
 
@@ -92,13 +92,16 @@ class Show extends \Page\Page
         $data = array_merge($content, $data);
 
         // URL TO DELETED CONTENT
-        $field->object('show')->row('show')->setData('href', '$' . $this->build->url->{lcfirst($data['deleted_type'])}($data));
+        $field->object('show')->row('show')->setData('href', '$' . $this->build->url->{lcfirst($data['deleted_type'])}(array_merge($data, [
+            'user_id' => $data['profile_user_id'] ?? '',
+            'user_name' => $data['profile_user_name'] ?? ''
+        ])));
         $field->data($data);
         $field->disButtons();
         $this->data->field = $field->getData();
 
         // BLOCK
-        $block = new Block('Admin/Deleted/Show');
+        $block = new Block('/Deleted/Show');
         $block
             ->object('type')->value($this->language->get('L_CONTENT_LIST')[$data['deleted_type']])
             ->object('id')->value($data['deleted_id'])
@@ -107,7 +110,7 @@ class Show extends \Page\Page
         $this->data->block = $block->getData();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Deleted');
+        $breadcrumb = new Breadcrumb('/Admin/Deleted');
         $this->data->breadcrumb = $breadcrumb->getData();
     }
 }

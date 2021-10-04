@@ -30,11 +30,8 @@ class Edit extends \Process\ProcessExtend
                 'type' => 'text',
                 'required' => true
             ],
-            'is_default'        => [
+            'group_default'        => [
                 'type' => 'checkbox'
-            ],
-            'group_permission'  => [
-                'type' => 'array'
             ]
         ],
         'data' => [
@@ -54,22 +51,23 @@ class Edit extends \Process\ProcessExtend
      */
     public function process()
     {
-        if ($this->data->is('is_default')) {         
+        if ($this->data->is('group_default')) {         
             
             $this->db->query('
                 UPDATE ' . TABLE_USERS . '
                 SET group_id = ?
                 WHERE group_id = ?
-            ', [$this->data->get('group_id'), $this->system->settings->get('default_group')]);
+            ', [$this->data->get('group_id'), $this->system->get('default_group')]);
 
-            $this->system->settings->set('default_group', $this->data->get('group_id'));
+            $this->db->table(TABLE_SETTINGS, [
+                'default_group' => $this->data->get('group_id')
+            ]);
         }
 
         $this->db->update(TABLE_GROUPS, [
             'group_name'        => $this->data->get('group_name'),
             'group_color'       => $this->data->get('group_color'),
-            'group_class_name'  => parse($this->data->get('group_name')) . $this->data->get('group_id'),
-            'group_permission'  => implode(',', $this->data->get('group_permission'))
+            'group_class_name'  => parse($this->data->get('group_name')) . $this->data->get('group_id')
         ], $this->data->get('group_id'));
 
         $css = '';
@@ -78,9 +76,12 @@ class Edit extends \Process\ProcessExtend
         }
         file_put_contents(ROOT . '/Includes/Template/css/Group.min.css', $css);
 
+        // UPDATE GROUPS SESSION
+        $this->db->table(TABLE_SETTINGS, [
+            'session.groups' => RAND
+        ]);
+
         // ADD RECORD TO LOG
         $this->log($this->data->get('group_name'));
-
-        $this->updateSession();
     }
 }

@@ -15,7 +15,7 @@ namespace Page\Admin\Page;
 use Block\Page as BlockPage;
 
 use Visualization\Field\Field;
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -27,7 +27,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.page'
     ];
 
@@ -45,19 +45,19 @@ class Index extends \Page\Page
         $page = new BlockPage();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Page/Index');
+        $field = new Field('/Admin/Page/Index');
         $this->data->field = $field->getData();
 
         // LIST
-        $list = new Lists('Admin/Page');
-        $list->object('page')->fill($page->getAll());
+        $list = new Lists('/Page');
+        $list->object('page')->fill(data: $page->getAll());
         $this->data->list = $list->getData();
 
         // CREATE NEW PAGE
-        $this->process->form(type: 'Admin/Page/Create');
+        $this->process->form(type: '/Admin/Page/Create');
     }
 }

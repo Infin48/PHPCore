@@ -51,6 +51,11 @@ class Data
      * @var array $panel Panel data
      */
     public array $panel = [];
+
+    /**
+     * @var array $plugin Plugin settings
+     */
+    public array $plugin = [];
     
     /**
      * @var array $navbar Navbar data
@@ -75,12 +80,17 @@ class Data
     /**
      * Adds data to page
      *
-     * @param array $data
+     * @param array|string $data
+     * @param mixed $value
      * 
      * @return void
      */
-    public function data( array $data )
+    public function data( array|string $data, mixed $value = null )
     {
+        if (is_string($data)) {
+            $this->data[$data] = $value;
+            return;
+        }
         $this->data = array_merge($this->data, $data);
     }
 }

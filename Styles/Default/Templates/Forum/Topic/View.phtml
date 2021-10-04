@@ -3,11 +3,11 @@
         <div class="page-alert-icon">
             <i class="fas fa-trash"></i>
         </div>
-        <div class="page-alert-body page-alert-body-flex">
+        <div class="page-alert-body">
             <div class="page-alert-content">
-                <span><?= $L_TOPIC_DELETED ?></span>
+                <span class="page-alert-title"><?= $L_TOPIC_DELETED ?></span>
             </div>
-            <a class="page-alert-button" href="<?= $this->system->url->build('/admin/deleted/show/' . $this->data->data['deleted_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
+            <a class="page-alert-button" href="<?= $this->url->build('/admin/deleted/show/' . $this->data->data['deleted_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
         </div>
     </div>
 <?php endif; ?>
@@ -17,29 +17,31 @@
         <div class="page-alert-icon">
             <i class="fas fa-exclamation"></i>
         </div>
-        <div class="page-alert-body page-alert-body-flex">
+        <div class="page-alert-body">
             <div class="page-alert-content">
-                <span><?= $L_TOPIC_REPORTED ?></span>
+                <span class="page-alert-title"><?= $L_TOPIC_REPORTED ?></span>
             </div>
-            <a class="page-alert-button" href="<?= $this->system->url->build('/admin/report/show/' . $this->data->data['report_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
+            <a class="page-alert-button" href="<?= $this->url->build('/admin/report/show/' . $this->data->data['report_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
         </div>
     </div>
 <?php endif; ?>
 
-<?php if ($this->data->data['is_locked'] == 1) : ?>
+<?php if ($this->data->data['topic_locked'] == 1) : ?>
     <div class="page-alert page-alert-type-warning">
         <div class="page-alert-icon">
             <i class="fas fa-lock"></i>
         </div>
-        <div class="page-alert-body page-alert-body-flex">
-            <div class="page-alert-content"><?= $L_TOPIC_LOCKED_ALERT ?></div>
+        <div class="page-alert-body">
+            <div class="page-alert-content page-alert-content-clear">
+                <span class="page-alert-title"><?= $L_TOPIC_LOCKED_ALERT ?></span>
+            </div>
         </div>
     </div>
 <?php endif; ?>
 
-<?php require $this->template->template('/Blocks/Panel/Panel.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Panel/Panel.phtml'); ?>
 <div class="block-list">
-    <?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+    <?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
 </div>
 
 <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>

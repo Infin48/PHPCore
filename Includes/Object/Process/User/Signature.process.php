@@ -24,7 +24,7 @@ class Signature extends \Process\ProcessExtend
         'form' => [
             'user_signature' => [
                 'type' => 'html',
-                'length_max' => 5000
+                'length_max' => 1000
             ]
         ]
     ];

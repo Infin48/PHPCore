@@ -12,33 +12,47 @@
 
 $language = [
 
-    'L_NAVBAR' => [
-        'L_START' => 'Titulní stránka',
+    'L_BREADCRUMB' => [
+
         'L_LANGUAGE' => 'Jazyk',
-        'L_INSTALL' => 'Instalace',
         'L_DATABASE' => 'Databáze',
         'L_ADMIN' => 'Administrátor',
-        'L_SETTINGS_SETTINGS' => 'Globální nastavení',
-        'L_INSTALLED' => 'Nainstalováno',
-        'L_REPEAT_INSTALLATION' => 'Opakovat instalaci'
+        'L_SETTINGS' => 'Nastavení',
+        'L_END' => 'Konec',
+
+        'L_UPDATE' => 'Aktualizace'
     ],
+
+    'L_START' => 'Titulní stránka',
+    'L_LANGUAGE' => 'Jazyk',
+    'L_INSTALL' => 'Instalace',
+    'L_DATABASE' => 'Databáze',
+    'L_ADMIN' => 'Administrátor',
+    'L_SETTINGS_SETTINGS' => 'Globální nastavení',
+    'L_BACK_TO_INDEX' => 'Zpět na titulní stránku',
+    'L_BACK' => 'Zpět',
+
+    'L_EXTENSIONS' => 'Vyžadovaná rozšíření',
+    'L_PERMISSION_WRITE' => 'Soubory vyžadující oprávnění zapisovat',
+
+    // UPDATE
+
+    'L_UPDATE_INSTALLED' => 'Aktualizace {name} byla úspěšně nainstalována!',
+    'L_UPDATE_INSTALLATION' => 'Probíhá aktualizace, prosím nezavírejte stránku!',
+    'L_UPDATE_ERROR' => 'Během aktualizace se vyskytla chyba!',
+    'L_UPDATE_THANKS' => 'Děkujeme, že používáte aplikaci PHPCore.',
+    
+    'L_RETRY' => 'Opakovat',
+
 
     // INDEX PAGE
 
-    'L_INDEX_WRITABLE' => 'Oprávění zapisovat',
-    'L_INDEX_WRITABLE_DESC' => 'Soubory vyžadující přístup k zapisování',
-
-    'L_INDEX_EXTENSION' => 'Rozšíření',
-    'L_INDEX_EXTENSION_DESC' => 'Vyžadovaná rozšíření pro správný provoz aplikace',
-
-    'L_INDEX_START' => 'Spustit instalaci',
-    'L_INDEX_THANKS' => 'Děkujeme, že jste si stáhli aplikaci PHPCore :)',
-
-    'L_PHP_VERSION' => 'Verze PHP',
+    'L_PHP_VERSION' => 'PHP 8.0.0 nebo vyšší',
     
 
     // BASICS
 
+    'L_UPDATE' => 'Aktualizovat',
     'L_NEXT' => 'Další',
     'L_NAME' => 'Název',
     'L_USERNAME' => 'Uživatelské jméno',
@@ -51,14 +65,8 @@ $language = [
 
 
     'L_CONTINUE' => 'Pokračovat',
-    'L_RETRY' => 'Opakovat',
 
     'L_INTERNAL_ERROR' => 'Byla nalezena interní chyba',
-
-    'L_INSTALL_DESC' => 'Prosím vyčkejte než bude instalace dokončena',
-    'L_INSTALL_PROCESS' => 'Probíhá instalace tabulek',
-    'L_INSTALL_ERROR' => 'Během instalace se vyskytla chyba',
-    'L_INSTALL_SUCCESS' => 'Tabulky byly úspěšně nainstalovány',
     
     // LANGUAGE
 
@@ -91,12 +99,11 @@ $language = [
     'L_SETTINGS_NAME' => 'Název webových stránek',
 
     'L_SETTINGS_DESCRIPTION' => 'Popis webových stránek',
-    'L_SETTINGS_DESCRIPTION_DESC' => 'Stručný popis webových stránek',
 
     // OTHER
 
     'L_INSTALLED_SUCESS' => 'PHPCore byl úspěšně nainstalován',
-    'L_DELETE_INSTALL_PAGE' => 'Prosím odstraňte nebo přejmenujte složku "Install"',
+    'L_DELETE_INSTALL_PAGE' => 'Prosím odstraňte nebo přejmenujte složku "Install".',
     'L_INSTALLATION' => 'Instalace',
 
 ];

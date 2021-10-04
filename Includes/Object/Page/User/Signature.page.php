@@ -25,7 +25,7 @@ class Signature extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'editor' => EDITOR_MEDIUM,
+        'editor' => EDITOR_BIG,
         'template' => 'User/Signature',
         'loggedIn' => true
     ];
@@ -38,21 +38,22 @@ class Signature extends \Page\Page
     protected function body()
     {
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('User/Index');
+        $breadcrumb = new Breadcrumb('/User/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('User/Signature');
+        $field = new Field('/User/Signature');
         $field->data($this->user->get());
         $this->data->field = $field->getData();
 
         // SIDEBAR
-        $sidebar = new Sidebar('User');
+        $sidebar = new Sidebar('/User');
         $sidebar->left();
         $sidebar->small();
+        $sidebar->object('basic')->row('signature')->select();
         $this->data->sidebar = $sidebar->getData(); 
 
         // PROCESS
-        $this->process->form(type: 'User/Signature');
+        $this->process->form(type: '/User/Signature');
     }
 }

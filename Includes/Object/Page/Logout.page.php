@@ -32,6 +32,6 @@ class Logout extends Page
     protected function body()
     {
         // LOGOUT USER
-        $this->process->call(type: 'User/Logout', url: '/');
+        $this->process->call(type: '/User/Logout', url: '/');
     }
 }

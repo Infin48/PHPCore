@@ -27,7 +27,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/group/',
         'permission' => 'admin.group'
     ];
@@ -46,34 +46,29 @@ class Show extends \Page\Page
         $group = new Group();
 
         // GROUP
-        $group = $group->get($this->getID()) or $this->error();
+        $group = $group->get($this->url->getID()) or $this->error();
 
         $this->user->perm->index($group['group_index']) or $this->redirect();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Group');
+        $breadcrumb = new Breadcrumb('/Admin/Group');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Group/Group');
+        $field = new Field('/Admin/Group/Group');
         $field->data($group);
 
 
-        if ($this->system->settings->get('default_group') != $group['group_id']) {
+        if ($this->system->get('default_group') != $group['group_id']) {
 
-            $field->object('group')->row('is_default')->show();
+            $field->object('group')->row('group_default')->show();
         }
 
         $this->data->field = $field->getData();
 
         // EDIT GROUP
-        $this->process->form(type: 'Admin/Group/Edit', data: [
-            'group_id' => $group['group_id'],
-            'options' => [
-                'input' => [
-                    'group_permission' => $this->user->perm->getPermissions()
-                ]
-            ]
+        $this->process->form(type: '/Admin/Group/Edit', data: [
+            'group_id' => $group['group_id']
         ]);
 
         // PAGE TITLE

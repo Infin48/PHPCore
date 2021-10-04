@@ -1,0 +1,25 @@
+<?php if (!empty($this->data->block['body'])) : ?>
+    <div class="block-list">
+        <?php foreach ($this->data->block['body'] as $block) : ?>
+            <div class="block block-<?= $block['data']['color'] ?>">
+                <div class="block-content">
+                    <span class="block-number">
+                        <?php if (isset($block['data']['href']) and !empty($block['data']['href'])) : ?>
+                            <a target="_blank" href="<?= $block['data']['href'] ?>">
+                                <span><?= $block['data']['value'] ?></span>
+                                <i class="fas fa-share"></i>
+                            </a>
+                        <?php else : ?>
+                            <span><?= $block['data']['value'] ?></span>
+                        <?php endif; ?>
+                    </span>
+                    <br>
+                    <span class="block-title"><?= ${$block['data']['title']} ?></span>
+                </div>
+                <div class="block-icon">
+                    <i class="<?= $block['data']['icon'] ?>"></i>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

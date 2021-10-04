@@ -15,7 +15,7 @@ namespace Page\Admin\Menu;
 use Block\Button;
 use Block\ButtonSub;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -27,7 +27,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.menu'
     ];
 
@@ -42,7 +42,7 @@ class Index extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
@@ -50,47 +50,31 @@ class Index extends \Page\Page
         $buttonSub = new ButtonSub();
 
         // LIST
-        $list = new Lists('Admin/Menu');
-
-        // BUTTONS
-        $buttons = $button->getAll();
-
-        $i = 1;
-        foreach ($buttons as $item) {
-
-            $list->object('button')->appTo($item)->jumpTo();
+        $list = new Lists('/Menu');
+        $list->object('button')->fill(data: $button->getAll(), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) use ($buttonSub) { 
 
             if ($i === 1) {
                 $list->delButton('up');
             }
 
-            if ($i === count($buttons)) {
+            if ($i === $count) {
                 $list->delButton('down');
             }
 
-            if ((bool)$item['is_dropdown'] === true) {
+            if ($list->obj->get->data('button_dropdown') == 1) {
 
-                // SUB BUTTONS
-                $subButtons = $buttonSub->getParent($item['button_id']);
+                $list->fill(data: $buttonSub->getParent($list->obj->get->data('button_id')), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) { 
 
-                $x = 1;
-                foreach ($subButtons as $subButton) {
-
-                    $list->appTo($subButton)->jumpTo();
-
-                    if ($x === 1) {
+                    if ($i === 1) {
                         $list->delButton('up');
                     }
         
-                    if ($x === count($subButtons)) {
+                    if ($i === $count) {
                         $list->delButton('down');
                     }
-
-                    $x++;
-                }
+                });
             }
-            $i++;
-        }
+        });
         $this->data->list = $list->getData();
     }
 }

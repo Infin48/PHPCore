@@ -37,15 +37,15 @@ class Add extends \Page\Page
     public function body()
     {
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Page');
+        $breadcrumb = new Breadcrumb('/Admin/Page');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Page');
+        $field = new Field('/Admin/Page');
         $field->object('page')->title('L_PAGE_NEW');
         $this->data->field = $field->getData();
 
         // CREATE PAGE
-        $this->process->form('Admin/Page/Create');
+        $this->process->form(type: '/Admin/Page/Create');
     }
 }

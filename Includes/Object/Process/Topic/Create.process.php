@@ -12,7 +12,7 @@
 
 namespace Process\Topic;
 
-use Model\File;
+use Model\File\File;
 
 /**
  * Create
@@ -76,7 +76,7 @@ class Create extends \Process\ProcessExtend
         if ($this->perm->has('topic.image')) {
 
             // LOAD TOPIC IMAGE
-            $file->load('topic_image');
+            $image = $file->form('topic_image', FILE_TYPE_IMAGE);
         }
 
         // INSERT TOPIC
@@ -86,7 +86,7 @@ class Create extends \Process\ProcessExtend
             'topic_url'     => parse($this->data->get('topic_name')),
             'topic_text'    => $this->data->get('topic_text'),
             'topic_name'    => $this->data->get('topic_name'),
-            'topic_image'   => $file->check() ? $file->getFormat() . '?' . RAND : '',
+            'topic_image'   => (isset($image) and $image->check()) ? $image->getFormat() . '?' . RAND : '',
             'category_id'   => $this->data->get('category_id')
         ]);
 
@@ -116,10 +116,12 @@ class Create extends \Process\ProcessExtend
             'forum_topics' => [PLUS],
         ],$this->data->get('forum_id'));
 
-        // UPLOAD IMAGE
-        $file->upload('/Topic/' . $id);
+        if (isset($image) and $image->check()) {
+            // UPLOAD IMAGE
+            $image->upload('/Uploads/Topic/' . $id);
+        }
 
         // SETS REDIRECT URL
-        $this->redirectTo('/forum/topic/' . $id . '.' . parse($this->data->get('topic_name')));
+        $this->redirect('/forum/topic/' . $id . '.' . parse($this->data->get('topic_name')));
     }
 }

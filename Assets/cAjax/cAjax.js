@@ -1,13 +1,13 @@
 /**
- * This file is part of the PHPCore forum software
+ * This file is part of the  forum software
  * 
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
- * @copyright (c) PHPCore Limited https://phpcore.cz
+ * @copyright (c)  Limited https://.cz
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
-(function($) {
+ (function($) {
 
     // WINDOW
     var $window = $('[ajax-selector="window"]');
@@ -32,18 +32,19 @@
             var $button = $element = $(this);
 
             if (!$element.data('id')) {
-                $.each(['block', 'field', 'list-row'], function (key, selector) {
+                $.each(['block block-form', 'block', 'field', 'list-row', 'panel'], function (key, selector) {
                     if ($button.closest('[ajax-selector="'+selector+'"]').length) {
                         $element = $button.closest('[ajax-selector="'+selector+'"]').first();
                         return false;
                     }
                 });
             }
+            var ajaxProcess = $(this).attr('ajax-process') ? $(this).attr('ajax-process') : $(this).attr('ajax');
+            settings.id = $element.attr('ajax-process-id');
+            settings.type = $element.attr('ajax-process-type');
+            settings.process = $element.attr('ajax-process-type') ? $element.attr('ajax-process-type') + ajaxProcess : ajaxProcess;
 
-            settings.id = $element.attr('data-id');
-            settings.type = $element.attr('data-type');
-            settings.process = $element.attr('data-type') ? settings.type + '/' + process.substr(0,1).toUpperCase()+process.substr(1) : null;
-            if (settings.ajax){
+            if (settings.ajax) {
 
                 if (settings.ajax.method == 'post') {
                     delete settings.ajax.context.id;
@@ -61,7 +62,16 @@
             }
 
             if (settings.onload) {
-                settings.onload.call($button, settings, $element);
+                if (settings.process in settings.onload) {
+                            
+                    settings.onload[settings.process].call($button, settings, $element);
+                } else {
+
+                    if ('default' in settings.onload) {
+
+                        settings.onload.default.call($button, settings, $element);
+                    }
+                }
             }
             
             methods = {
@@ -117,6 +127,11 @@
                         return true;
                     }
 
+                    if (settings.data.refresh) {
+                        location.reload();
+                        return true;
+                    }
+
                     if (settings.data.message) {
                         $alert.removeClass('window-hide').addClass('window-active').addClass('window-alert-success');
                         $alert.find('[ajax-selector="window-alert-body"]').text(settings.data.message);
@@ -128,8 +143,19 @@
                     if (settings.refresh == true) {
                         location.reload();
                     }
+                    
+                    if (settings.success) {
+                        if (settings.process in settings.success) {
+                            
+                            settings.success[settings.process].call($button, settings, $element);
+                        } else {
 
-                    settings.success.call($button, settings, $element);
+                            if ('default' in settings.success) {
+
+                                settings.success.default.call($button, settings, $element);
+                            }
+                        }
+                    }
 
                     $window.removeClass('window-active');
                 }
@@ -164,7 +190,6 @@
 
                     $window.addClass('window-active');
                     $window.find('[ajax-selector="window-title"]').text(settings.data.windowTitle);
-                    console.log(settings.data.windowContent);
                     $window.find('[ajax-selector="window-body"]').html(settings.data.windowContent);
 
                     if (settings.data.windowSubmit) {

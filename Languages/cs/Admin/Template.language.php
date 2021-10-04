@@ -12,7 +12,9 @@
 
 $language = array_merge($language, [
     'L_TEMPLATE_LIST_NO' => 'Žádné šablony',
-    'L_TEMPLATE_LIST' => 'Seznam šablon k dispozici',
-    'L_TEMPLATE_CURRENT' => 'Současná šablona',
-    'L_TEMPLATE_DEFAULT' => 'Nastavit jako výchozí šablonu',
+    'L_TEMPLATE_LIST' => 'Seznam šablon',
+    'L_TEMPLATE_ACTIVATE' => 'Aktivovat',
+    'L_TEMPLATE_PREVIEW' => 'Náhled',
+    'L_TEMPLATE_DEFAULT' => 'Výchozí šablona',
+    'L_TEMPLATE_INCOMPATIBLE' => 'Kompatibilita není zaručena'
 ]);

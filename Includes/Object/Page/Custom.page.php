@@ -39,11 +39,11 @@ class Custom extends Page
         $page = new Blockpage();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Index');
+        $breadcrumb = new Breadcrumb('/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PAGE
-        $page = $page->get((int)$this->getID()) or $this->error();
+        $page = $page->get((int)$this->url->getID()) or $this->error();
 
         $this->data->data([
             'body' => @file_get_contents(ROOT . '/Pages/' . $page['page_id'] . '/html.html'),

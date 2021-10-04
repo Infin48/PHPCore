@@ -44,31 +44,28 @@ class Index extends \Page\Page
         $conversation = new Conversation();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('User/Index');
+        $breadcrumb = new Breadcrumb('/User/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PANEL
-        $panel = new Panel('ConversationList');
+        $panel = new Panel('/ConversationList');
         $this->data->panel = $panel->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_PRIVATE_MESSAGES);
         $pagination->total($conversation->getAllCount());
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $conversation->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Conversation');
+        $list = new Lists('/Conversation');
+        $list->object('conversation')->fill(data: $conversation->getAll(), function: function ( \Visualization\Lists\Lists $list ) {
 
-        foreach ($conversation->getAll() as $item) {
-
-            $list->object('conversation')->appTo($item)->jumpTo();
-
-            if (in_array($item['conversation_id'], $this->user->get('unread'))) {
+            if (in_array($list->obj->get->data('conversation_id'), $this->user->get('unread'))) {
                 $list->select();
             }
-        }
+        });
         $this->data->list = $list->getData();
     }
 }

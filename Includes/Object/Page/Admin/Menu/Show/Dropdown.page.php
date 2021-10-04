@@ -27,7 +27,7 @@ class Dropdown extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/menu/',
         'permission' => 'admin.menu'
     ];
@@ -43,23 +43,23 @@ class Dropdown extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Menu');
+        $breadcrumb = new Breadcrumb('/Admin/Menu');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // BLOCK
         $dropdown = new BlockDropdown();
 
         // BUTTON
-        $button = $dropdown->get($this->getID()) or $this->error();
+        $button = $dropdown->get($this->url->getID()) or $this->error();
 
         // FIELD
-        $field = new Field('Admin/Menu/Dropdown');
+        $field = new Field('/Admin/Menu/Dropdown');
         $field->data($button);
         $field->object('dropdown')->title('L_MENU_DROPDOWN_EDIT');
         $this->data->field = $field->getData();
 
         // EDIT DROPDOWN
-        $this->process->form(type: 'Admin/Menu/Dropdown/Edit', data: [
+        $this->process->form(type: '/Admin/Menu/Dropdown/Edit', data: [
             'button_id' => $button['button_id'],
             'button_name' => $button['button_name']
         ]);

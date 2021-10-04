@@ -57,5 +57,7 @@ class Login extends \Process\ProcessExtend
         if ($login->login() === true) {
             session_regenerate_id(true);
         }
+
+        $this->redirect(INDEX);
     }
 }

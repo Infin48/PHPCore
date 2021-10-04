@@ -50,7 +50,7 @@ class Stick extends \Process\ProcessExtend
     {
         // STICK TOPIC
         $this->db->update(TABLE_TOPICS, [
-            'is_sticky' => '1'
+            'topic_sticked' => '1'
         ], $this->data->get('topic_id'));
 
         // SEND NOTIFICATION
@@ -62,5 +62,8 @@ class Stick extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('topic_name'));
+        
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

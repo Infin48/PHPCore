@@ -1,0 +1,10 @@
+<span class="username user--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['user_name'] ?></span>
+<br>
+<span><?= $this->data->data['user_text'] ?></span>
+<div class="statue statue--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['group_name'] ?></div>
+<div class="statue<?php if ($this->data->data['user_reputation'] > 0) : ?> statue-green<?php else :?> statue-grey<?php endif; ?>">
+    <?php if ($this->data->data['user_reputation'] > 0) : ?>    
+        <i class="fas fa-thumbs-up"></i>
+    <?php endif; ?>
+    <?= $this->data->data['user_reputation'] ?>
+</div>

@@ -18,16 +18,16 @@ namespace Visualization;
 class VisualizationObjectDelete
 {
     /**
-     * @var array $object Object
+     * @var \Visualization\VisualizationObject $object Object
      */
-    public array $object = [];
+    public \Visualization\VisualizationObject $object;
 
     /**
      * Constructor
      *
-     * @param  array $object
+     * @param  \Visualization\VisualizationObject $object
      */
-    public function __construct( array $object )
+    public function __construct( \Visualization\VisualizationObject $object )
     {
         $this->object = $object;
     }
@@ -41,7 +41,7 @@ class VisualizationObjectDelete
      */
     public function data( string $key )
     {
-        unset($this->object['data'][$key]);
+        unset($this->object->object['data'][$key]);
     }
 
     /**
@@ -53,7 +53,7 @@ class VisualizationObjectDelete
      */
     public function options( string $key )
     {
-        unset($this->object['options'][$key]);
+        unset($this->object->object['options'][$key]);
     }
 
     /**
@@ -66,10 +66,10 @@ class VisualizationObjectDelete
     public function button( string $key = null )
     {
         if (is_null($key)) {
-            unset($this->object['data']['button']);
+            unset($this->object->object['data']['button']);
             return;
         }
-        unset($this->object['data']['button'][$key]);
+        unset($this->object->object['data']['button'][$key]);
     }
 
     /**
@@ -81,7 +81,7 @@ class VisualizationObjectDelete
      */
     public function body( string $key )
     {
-        unset($this->object['body'][$key]);
+        unset($this->object->object['body'][$key]);
     }
 
     /**
@@ -91,6 +91,6 @@ class VisualizationObjectDelete
      */
     public function delete()
     {
-        $this->object = [];
+        $this->object->object = [];
     }
 }

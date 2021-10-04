@@ -1,7 +1,7 @@
 <?php if (isset($row['body']) and !empty($row['body'])) : ?>
-    <select name="<?= $rowName ?>"<?php if (isset($row['data']['multiple'])) : ?> multiple<?php endif; ?>>
+    <select name="<?= $rowName ?>"<?php if (isset($row['options']['multiple'])) : ?> multiple<?php endif; ?>>
         <?php foreach ($row['body'] ?? [] as $option) : ?>
-            <option value="<?= $option['data']['value'] ?>"<?php if (isset($option['options']['checked']) and $option['options']['checked'] === true) : ?> selected<?php endif; ?>>
+            <option value="<?= $option['data']['value'] ?>"<?php if (($this->form->get($rowName) == $option['data']['value'] or (is_array($this->form->get($rowName)) and in_array($option['data']['value'], $this->form->get($rowName)))) or (isset($option['options']['checked']) and $option['options']['checked'] === true)) : ?> selected<?php endif; ?>>
                 <?= str_starts_with($option['data']['title'], '$') ? substr($option['data']['title'], 1) : ${$option['data']['title']} ?>
             </option>
         <?php endforeach; ?>

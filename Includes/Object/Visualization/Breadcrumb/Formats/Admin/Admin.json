@@ -2,7 +2,7 @@
     "body": {
         "user": {
             "data": {
-                "href": "/admin/",
+                "href": "$/admin/",
                 "title": "L_ADMIN"
             }
         }

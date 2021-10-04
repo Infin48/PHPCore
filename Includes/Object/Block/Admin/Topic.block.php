@@ -55,8 +55,8 @@ class Topic extends \Block\Topic
     public function getParent( int $forumID )
     {
         return $this->db->query('
-            SELECT t.topic_id, t.deleted_id, topic_name, topic_created, topic_image, ' . $this->select->user() . ', is_sticky, is_locked, topic_url, topic_views, topic_posts,
-            p.post_id, u2.user_name AS last_user_name, u2.user_id AS last_user_id, u2.user_profile_image AS last_user_profile_image, u2.is_deleted AS last_is_deleted, p.post_created AS last_post_created, g2.group_class_name AS last_group_class_name,
+            SELECT t.topic_id, t.deleted_id, topic_name, topic_created, topic_image, ' . $this->select->user() . ', topic_sticked, topic_locked, topic_url, topic_views, topic_posts,
+            p.post_id, u2.user_name AS last_user_name, u2.user_id AS last_user_id, u2.user_profile_image AS last_user_profile_image, u2.user_deleted AS last_user_deleted, p.post_created AS last_post_created, g2.group_class_name AS last_group_class_name,
             CASE WHEN tlb.topic_id IS NULL THEN 0 ELSE 1 END AS is_label
             FROM ' . TABLE_TOPICS . ' 
             ' . $this->join->user('t.user_id'). '
@@ -70,7 +70,7 @@ class Topic extends \Block\Topic
             LEFT JOIN ' . TABLE_GROUPS . '2 ON g2.group_id= u2.group_id
             WHERE t.forum_id = ?
             GROUP BY t.topic_id 
-            ORDER BY is_sticky DESC, topic_created DESC 
+            ORDER BY topic_sticked DESC, topic_created DESC 
             LIMIT ?, ?
         ', [$forumID, $this->pagination['offset'], $this->pagination['max']], ROWS);
     }

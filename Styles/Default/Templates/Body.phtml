@@ -7,17 +7,16 @@
         <div class="navbar navbar-mobile" ajax-selector="navbar navbar-mobile"></div>
         <div class="page" ajax-selector="page">
     
-            <?php require $this->template->template('/Blocks/Navbar/Navbar.phtml'); ?>
+            <?php require $this->template->template('/Blocks/Visualization/Navbar/Navbar.phtml'); ?>
             
-            <div class="page-header page-header-align-<?= $this->system->settings->get('site.background_image_position') ?> <?php if (isset($this->data->data['bigHeader']) and $this->data->data['bigHeader'] === true) : ?>page-header-type-big<?php endif; ?>" <?php if (!empty($this->system->settings->get('site.background_image'))) : ?> style="background-image: url('/Uploads/Site/Header.<?= $this->system->settings->get('site.background_image') ?>?<?= $this->system->settings->get('session') ?>');"<?php endif; ?>>
+            <div class="page-header page-header-align-<?= $this->system->get('site.background_image_position') ?> <?php if (isset($this->data->data['bigHeader']) and $this->data->data['bigHeader'] === true) : ?>page-header-type-big<?php endif; ?>" <?php if (!empty($this->system->get('site.background_image'))) : ?> style="background-image: url('/Uploads/Site/Header.<?= $this->system->get('site.background_image') ?>?<?= $this->system->get('session') ?>');"<?php endif; ?>>
                 <div class="page-header-overlay"></div>
                 <div class="page-header-container container">
                     <?php if (isset($this->data->data['bigHeader']) and $this->data->data['bigHeader'] === true) : ?>
-                        <span class="name"><?= $this->system->settings->get('site.name') ?></span>
-                        <br>
-                        <span class="sub-title"><?= $this->system->settings->get('site.description') ?></span>
+                        <h1><?= $this->system->get('site.name') ?></h1>
+                        <h2><?= $this->system->get('site.description') ?></h2>
                     <?php else : ?>
-                        <span><?= $this->data->head['title'] ?></span>
+                        <h1><?= $this->data->head['title'] ?></h1>
                     <?php endif; ?>
                 </div>
             </div>
@@ -27,7 +26,7 @@
                 <div class="page-breadcumb">
                     <div class="page-breadcumb-container container">
                         <?php foreach ($this->data->breadcrumb['body'] as $breadcrumb) : ?>
-                            <a href="<?= $this->system->url->build($breadcrumb['data']['href']) ?>"><?= str_starts_with($breadcrumb['data']['title'], '$') ? substr($breadcrumb['data']['title'], 1) : $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
+                            <a href="<?= $this->url->build($breadcrumb['data']['href']) ?>"><?= str_starts_with($breadcrumb['data']['title'], '$') ? substr($breadcrumb['data']['title'], 1) : $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -37,9 +36,16 @@
                     
                     <?php if (isset($this->data->data['message']['text'])) : ?>
                         <div class="page-alert page-alert-type-<?= $this->data->data['message']['type'] ?>" ajax-selector="alert">
-                            <div class="page-alert-body page-alert-body-flex">
-                                <div class="page-alert-content">
-                                    <span><?= $this->data->data['message']['text'] ?></span>
+                            <div class="page-alert-icon">
+                                <?php if ($this->data->data['message']['type'] == 'success') : ?>
+                                    <i class="fas fa-check"></i>
+                                <?php else : ?>
+                                    <i class="fas fa-exclamation"></i>
+                                <?php endif; ?>
+                            </div>  
+                            <div class="page-alert-body">
+                                <div class="page-alert-content page-alert-content-clear">
+                                    <span class="page-alert-title"><?= $this->data->data['message']['text'] ?></span>
                                 </div>
                                 <span class="page-alert-close" ajax="close">
                                     <i class="fas fa-times"></i>
@@ -51,15 +57,28 @@
                     <?php if (!empty($this->data->data['globalNotification'])) : ?>
                         <?php foreach ($this->data->data['globalNotification'] as $globalNotification) : ?>
                             <div class="page-alert page-alert-type-<?= NOTIFICATION[$globalNotification['notification_type']] ?>">
-                                <div class="page-alert-body page-alert-body-flex">
+                                <div class="page-alert-icon">
+                                    <?php if ($globalNotification['notification_type'] == 1) : ?>
+                                        <i class="fas fa-info-circle"></i>
+                                    <?php elseif ($globalNotification['notification_type'] == 2) : ?>
+                                        <i class="fas fa-bell"></i>
+                                    <?php else : ?>
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    <?php endif; ?>
+                                </div>        
+                                <div class="page-alert-body">
                                     <div class="page-alert-content">
-                                        <span><?= $globalNotification['notification_name'] ?></span>
+                                        <span class="page-alert-title"><?= $globalNotification['notification_name'] ?></span>
                                         <br>
-                                        <span class="page-alert-description"><?= $globalNotification['notification_text'] ?></span>
+                                        <span><?= $globalNotification['notification_text'] ?></span>
                                     </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <?php if ($this->data->data['pageName'] === 'profile') : ?>
+                        <div class="page-content-profile-header" <?php if (!empty($this->data->data['user_header_image'])) : ?>style="background-image: url(/Uploads/User/<?= $this->data->data['user_id'] ?>/Header.<?= $this->data->data['user_header_image'] ?>)"<?php endif; ?>></div>
                     <?php endif; ?>
 
 
@@ -71,7 +90,7 @@
                         <?php else : ?>
                             <?php if (isset($this->data->sidebar['side']) and $this->data->sidebar['side'] == 'left') : ?>
                                 <div class="page-content-side page-content-side-align-left page-content-side-type-<?= $this->data->sidebar['type'] ?>">
-                                    <?php require $this->template->template('/Blocks/Sidebar/Sidebar.phtml'); ?>
+                                    <?php require $this->template->template('/Blocks/Visualization/Sidebar/Sidebar.phtml'); ?>
                                 </div>
                             <?php endif; ?>
                             <div class="page-content-middle">
@@ -79,18 +98,14 @@
                             </div>
                             <?php if (isset($this->data->sidebar['side']) and $this->data->sidebar['side'] == 'right') : ?>
                                 <div class="page-content-side page-content-side-align-right page-content-side-type-<?= $this->data->sidebar['type'] ?>">
-                                    <?php require $this->template->template('/Blocks/Sidebar/Sidebar.phtml'); ?>
+                                    <?php require $this->template->template('/Blocks/Visualization/Sidebar/Sidebar.phtml'); ?>
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
-            <div class="footer">
-                <div class="footer-container container">
-                    <span>© Copyright 2021 <?= $_SERVER['SERVER_NAME'] ?> All Rights Reserved.</span><br><span>Powered by PHPCore</span>
-                </div>
-            </div>
+            <?php require $this->template->template('/Blocks/Footer.phtml'); ?>
         </div>
         <div class="title" ajax-selector="title"><span class="text" ajax-selector="text"></span><div class="arrow"></div></div>
         <div class="window" ajax-selector="window">
@@ -117,6 +132,15 @@
             <div></div>
             <div></div>
         </div>
+        <?php if ($this->data->data['preview'] ?? false) : ?>
+            <div class="preview">
+                <div class="preview-body">
+                    <span><?= $L_PREVIEW_TEMPLATE ?>: <span class="fw-600"><?= $this->data->data['preview'] ?></span></span>
+                    <br>
+                    <a ajax="execute" ajax-process="/Admin/Template/ClosePreview"><?= $L_PREVIEW_CLOSE ?></a>
+                </div>
+            </div>
+        <?php endif; ?>
         <?php require $this->template->template('/Blocks/Cookie.phtml'); ?>
         <?php require ROOT . '/Includes/Template/Footer.phtml' ?>
     </body>

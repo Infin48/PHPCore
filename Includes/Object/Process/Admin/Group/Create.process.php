@@ -63,9 +63,12 @@ class Create extends \Process\ProcessExtend
         }
         file_put_contents(ROOT . '/Includes/Template/css/Group.min.css', $css);
 
+        // UPDATE GROUPS SESSION
+        $this->db->table(TABLE_SETTINGS, [
+            'session.groups' => RAND
+        ]);
+
         // ADD RECORD TO LOG
         $this->log($this->data->get('group_name'));
-
-        $this->updateSession();
     }
 }

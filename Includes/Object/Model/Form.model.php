@@ -72,4 +72,9 @@ class Form
 
         return false;
     }
+
+    public function getFile( string $file )
+    {
+        return $_FILES[$file]['tmp_name'] ?? ''; 
+    }
 }

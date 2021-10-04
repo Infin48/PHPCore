@@ -25,7 +25,8 @@
             "body": {
                 "email.prefix": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_SETTINGS_EMAIL_PREFIX",
@@ -39,13 +40,12 @@
                 "title": "L_SETTINGS_EMAIL"
             },
             "body": {
-                "email_smtp_enabled": {
+                "email.smtp_enabled": {
                     "options": {
                         "type": "radio"
                     },
                     "data": {
                         "title": "L_SETTINGS_EMAIL_TYPE",
-                        "value": "email.smtp_enabled",
                         "placeholder": "L_NAME"
                     },
                     "body": {
@@ -63,56 +63,52 @@
                         }
                     }
                 },
-                "email_smtp_host": {
+                "email.smtp_host": {
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "email_smtp_enabled"
+                            "show": "email.smtp_enabled:1"
                         }
                     },
                     "data": {
                         "title": "L_HOST",
-                        "value": "email.smtp_host",
                         "placeholder": "L_HOST"
                     }
                 },
-                "email_smtp_username": {
+                "email.smtp_username": {
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "email_smtp_enabled"
+                            "show": "email.smtp_enabled:1"
                         }
                     },
                     "data": {
                         "title": "L_USERNAME",
-                        "value": "email.smtp_username",
                         "placeholder": "L_USERNAME"
                     }
                 },
-                "email_smtp_password": {
+                "email.smtp_password": {
                     "options": {
                         "type": "password",
                         "on": {
-                            "show": "email_smtp_enabled"
+                            "show": "email.smtp_enabled:1"
                         }
                     },
                     "data": {
                         "title": "L_PASSWORD",
-                        "value": "email.smtp_password",
                         "placeholder": "L_PASSWORD"
                     }
                 },
-                "email_smtp_port": {
+                "email.smtp_port": {
                     "options": {
                         "type": "text",
                         "on": {
-                            "show": "email_smtp_enabled"
+                            "show": "email.smtp_enabled:1"
                         }
                     },
                     "data": {
                         "desc": "L_SETTINGS_EMAIL_SMTP_PORT_DESC",
                         "title": "L_PORT",
-                        "value": "email.smtp_port",
                         "placeholder": "L_PORT"
                     }
                 }

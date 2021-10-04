@@ -27,7 +27,7 @@ $language = array_merge($language, [
     // ABOUT
 
     'L_USER_TEXT' => 'Vlastní text',
-    'L_USER_TEXT_DESC' => 'Stručná fráze či věta, která bude zobrazena na profilu pod vaším jménem',
+    'L_USER_TEXT_DESC' => 'Stručná fráze nebo věta, která bude zobrazena na profilu pod vaším jménem.',
 
 
     // PROFILE SETTINGS
@@ -47,39 +47,35 @@ $language = array_merge($language, [
     'L_USER_PROFILE_IMAGE' => 'Profilový obrázek',
     'L_USER_PROFILE_IMAGE_DELETE' => 'Smazat profilový obrázek',
 
-    'L_USER_PROFILE_ON' => 'Tato informace bude viditelná na vašem profilu',
+    'L_USER_PROFILE_ON' => 'Tato informace bude viditelná na vašem profilu.',
 
 
     // OPTIONS
 
-    'L_PASSWORD_CURRENT_DESC' => 'Pro změnu uživatelského nastavení musíte zadaz vaše stávající heslo',
+    'L_PASSWORD_CURRENT_DESC' => 'Pro změnu uživatelského nastavení musíte zadaz vaše stávající heslo.',
 
     
     // SIGNATURE
 
     'L_USER_SIGNATURE' => 'Podpis',
-    'L_USER_SIGNATURE_DESC' => 'Bude zobrazen na profilu a pod každým vaším příspěvkem',
+    'L_USER_SIGNATURE_DESC' => 'Bude zobrazen na profilu a pod každým vaším příspěvkem.',
 
 
     // CONVERSATION
 
     'L_USER_CONVERSATION_SEND' => 'Poslat zprávu',
-    'L_USER_CONVERSATION_OPTIONS' => 'Možnosti',
     'L_USER_CONVERSATION_NEW' => 'Nová konverzace',
     'L_USER_CONVERSATION_NAME' => 'Předmět konverzace',
     'L_USER_CONVERSATION_INFO' => 'Informace o konverzaci',
     'L_USER_CONVERSATION_NO' => 'Žádné konverzace',
-    'L_USER_CONVERSATION_LEAVE' => 'Opustit konverzaci',
     'L_USER_CONVERSATION_MESSAGE_NO' => 'Žádné zprávy',
-    'L_USER_CONVERSATION_MESSAGE_SEND' => 'Poslat zprávu',
     'L_USER_CONVERSATION_MESSAGE_COUNT' => 'Odpovědí',
     'L_USER_CONVERSATION_RECIPIENT_LIST' => 'Seznam účastníků',
     'L_USER_CONVERSATION_RECIPIENT_COUNT' => 'Účastníků',
-    'L_USER_CONVERSATION_RECIPIENT_NO' => 'Žádní příjemci',
+    'L_USER_CONVERSATION_RECIPIENT_NO' => 'Žádní účastníci',
     'L_USER_CONVERSATION_MESSAGE_LAST' => 'Poslední odpověď',
     'L_USER_CONVERSATION_RECIPIENT_ADD' => 'Přidat účastníky',
-    'L_USER_CONVERSATION_RECIPIENT_ADD_DESC' => 'Rozlišujte malá a velká písmena',
-    'L_USER_CONVERSATION_MARK_AS_UNREAD' => 'Označit jako nepřečtené',
+    'L_USER_CONVERSATION_RECIPIENT_ADD_DESC' => 'Zadejte uživatelské jméno a klikněte na tlačítko <strong>Přidat</strong>.',
 
 
     // REGISTRATION
@@ -107,7 +103,7 @@ $language = array_merge($language, [
     'L_USER_REPUTATION' => 'Reputace',
 
     'L_PROFILE_POSTS' => 'Příspěvky',
-    'L_PROFILE_POST_NO' => 'Na profilu uživate <strong>{user_name}</strong> nejsou žádné příspěvky',
+    'L_PROFILE_POST_NO' => 'Na profilu uživate <strong>{user_name}</strong> nejsou žádné příspěvky.',
 
     'L_PROFILE_ANSWER' => 'Napište komentář...',
     

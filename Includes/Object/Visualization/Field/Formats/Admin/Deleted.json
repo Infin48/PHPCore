@@ -3,7 +3,7 @@
         "show": {
             "options": {
                 "id": "deleted_id",
-                "type": "Deleted"
+                "type": "/Admin/Deleted"
             },
             "data": {
                 "title": "L_DELETED_DETAILS"
@@ -75,11 +75,11 @@
                         "type": "button"
                     },
                     "data": {
-                        "ajax": "back",
+                        "ajax": "process",
                         "desc": "L_DELETED_RETURN_DESC",
                         "icon": "fas fa-undo-alt",
                         "title": "L_DELETED_RETURN",
-                        "button": "L_DELETED_RETURN"
+                        "button": "L_RETURN"
                     }
                 },
                 "delete": {
@@ -87,11 +87,11 @@
                         "type": "button"
                     },
                     "data": {
-                        "ajax": "delete",
+                        "ajax": "process-window",
                         "desc": "L_DELETED_DELETE_DESC",
                         "icon": "fas fa-trash",
                         "title": "L_DELETED_DELETE",
-                        "button": "L_DELETED_DELETE"
+                        "button": "L_DELETE"
                     }
                 }
             }

@@ -1,0 +1,14 @@
+<?php if (($this->user->isLogged() and LOGGED_USER_ID != $this->data->data['user_id']) or ($this->user->perm->has('admin.user') and $this->user->perm->compare(index: $this->data->data['group_index'], admin: $this->data->data['user_admin']))) : ?>
+    <div class="table">
+        <?php  if ($this->user->isLogged() and LOGGED_USER_ID != $this->data->data['user_id']) : ?>
+            <div class="table-left">
+                <a class="a-reverse" href="<?= $this->url->build('/user/conversation/add/to-' . $this->data->data['user_id']) ?>"><?= $L_USER_CONVERSATION_SEND ?></a>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->user->perm->has('admin.user') and $this->user->perm->compare(index: $this->data->data['group_index'], admin: $this->data->data['user_admin'])) : ?>
+            <div class="table-right">
+                <a class="a-reverse" href="<?= $this->url->build('/admin/user/show/' . $this->data->data['user_id']) ?>"><i class="fas fa-user-cog"></i></a>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

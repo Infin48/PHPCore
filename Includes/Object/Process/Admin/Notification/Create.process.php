@@ -33,7 +33,7 @@ class Create extends \Process\ProcessExtend
             'notification_type' => [
                 'custom' => [1, 2, 3]
             ],
-            'is_hidden' => [
+            'notification_hidden' => [
                 'type' => 'checkbox'
             ]
         ]
@@ -56,7 +56,7 @@ class Create extends \Process\ProcessExtend
 
         // ADDS NOTIFICAION
         $this->db->insert(TABLE_NOTIFICATIONS, [
-            'is_hidden'             => $this->data->get('is_hidden'),
+            'notification_hidden'   => $this->data->get('notification_hidden'),
             'notification_name'     => $this->data->get('notification_name'),
             'notification_text'     => $this->data->get('notification_text'),
             'notification_type'     => $this->data->get('notification_type')

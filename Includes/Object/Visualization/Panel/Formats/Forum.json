@@ -7,8 +7,8 @@
             },
             "data": {
                 "href": "/add/",
-                "icon": "fas fa-reply",
-                "title": "L_TOPIC_CREATE"
+                "icon": "fas fa-plus",
+                "title": "L_NEW_TOPIC"
             }
         }
     }

@@ -50,6 +50,11 @@ class Edit extends \Process\ProcessExtend
     ];
 
     /**
+     * @var string $HTML HTML configuration
+     */
+    public string $HTML = 'small';
+
+    /**
      * Body of process
      *
      * @return void

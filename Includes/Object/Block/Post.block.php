@@ -27,7 +27,7 @@ class Post extends Block
     public function get( int $postID )
     {
         return $this->db->query('
-            SELECT p.*, t.topic_id, t.is_locked, t.topic_url, t.topic_name, t.topic_posts, CASE WHEN fpp.forum_id IS NOT NULL THEN 1 ELSE 0 END AS post_permission,
+            SELECT p.*, t.topic_id, t.topic_locked, t.topic_url, t.topic_name, t.topic_posts, CASE WHEN fpp.forum_id IS NOT NULL THEN 1 ELSE 0 END AS post_permission,
                 (SELECT COUNT(*) FROM ' . TABLE_POSTS . '2 WHERE p2.post_id <= p.post_id AND p2.topic_id = p.topic_id AND p2.deleted_id IS NULL) AS position
             FROM ' . TABLE_POSTS . ' 
             LEFT JOIN ' . TABLE_TOPICS . ' ON t.topic_id = p.topic_id
@@ -109,7 +109,7 @@ class Post extends Block
     public function getlast( int $number = 5 )
     {
         return $this->db->query('
-            SELECT t.topic_id, topic_name, is_locked, is_sticky, topic_url, t.forum_id, post_id, ' . $this->select->user() . ', user_last_activity, CASE WHEN post_created > topic_created THEN post_created ELSE topic_created END AS created
+            SELECT t.topic_id, topic_name, topic_locked, topic_sticked, topic_url, t.forum_id, post_id, ' . $this->select->user() . ', user_last_activity, CASE WHEN post_created > topic_created THEN post_created ELSE topic_created END AS created
             FROM ' . TABLE_TOPICS . '
             LEFT JOIN ' . TABLE_POSTS . ' ON p.topic_id = t.topic_id AND p.post_id = ( 
                 SELECT MAX(post_id)
@@ -138,7 +138,7 @@ class Post extends Block
     public function getLikes( int $postID, int $number = 5 )
     {
         return $this->db->query('
-            SELECT u.user_id, u.user_name, u.is_deleted
+            SELECT u.user_id, u.user_name, u.user_deleted
             FROM ' . TABLE_POSTS_LIKES . '
             LEFT JOIN ' . TABLE_USERS . ' ON u.user_id = pl.user_id
             WHERE post_id = ?

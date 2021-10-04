@@ -66,9 +66,12 @@ class Edit extends \Process\ProcessExtend
         }
         file_put_contents(ROOT . '/Includes/Template/css/Label.min.css', $css);
 
+        // UPDATE LABELS SESSION
+        $this->db->table(TABLE_SETTINGS, [
+            'session.labels' => RAND
+        ]);
+        
         // ADD RECORD TO LOG
         $this->log($this->data->get('label_name'));
-
-        $this->updateSession();
     }
 }

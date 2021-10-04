@@ -50,6 +50,11 @@ class Create extends \Process\ProcessExtend
     ];
 
     /**
+     * @var string $HTML HTML configuration
+     */
+    public string $HTML = 'small';
+
+    /**
      * Body of process
      *
      * @return void
@@ -63,7 +68,7 @@ class Create extends \Process\ProcessExtend
             'profile_post_comment_text' => $this->data->get('text')
         ]);
 
-        $this->id = $this->db->lastInsertId();
+        self::$id = $this->db->lastInsertId();
 
         // SEND USER NOTIFICATION
         $this->notifi(

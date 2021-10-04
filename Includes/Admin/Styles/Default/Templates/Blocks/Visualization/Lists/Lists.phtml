@@ -1,0 +1,151 @@
+<?php foreach ($this->data->list['body'] ?? [] as $listName => $list) : ?>
+
+    <?php if (($list['options']['type'] ?? 'default') == 'grid') : ?>
+        <div class="list list-name-<?= $listName ?> list-grid-template" ajax-selector="list">
+            <?php if (isset($list['data']['title'])) : ?>
+                <div class="list-head">
+                    <div class="list-row-big">
+                        <span class="inner">
+                            <span><?= ${$list['data']['title']} ?></span>
+                        </span>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="list-body" ajax-selector="list-body">
+                <?php foreach ($list['body'] as $rowName => $row) : ?>
+                    <div class="list-row list-row-name-<?= $rowName ?> <?=$row['options']['disabled'] ?? false == true ? ' list-row-disabled' : '' ?>" ajax-selector="list-row<?=$row['options']['disabled'] ?? false === true ? ' list-row-disabled' : '' ?>" ajax-process-type="<?= $row['options']['type'] ?? '' ?>" ajax-process-id="<?= $row['data']['id'] ?? ''?>">
+                        <?php foreach ($row['data']['label'] ?? [] as $label) : ?>
+                            <div class="list-row-label list-row-label-<?= $label['color'] ?>"><?= ${$label['text']} ?></div>
+                        <?php endforeach; ?>
+                        <?php if (isset($row['data']['image'])) : ?>
+                            <div class="list-row-image">
+                                <?php if ($row['data']['image'] ?? false) : ?>
+                                    <img src="<?= $row['data']['image'] ?>?<?= RAND ?>">
+                                <?php else : ?>
+                                    <i class="fas fa-question"></i>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="list-row-inner" ajax-selector="list-row-inner">
+                            <div class="list-row-body">
+                                <div class="list-row-big">
+                                    <span class="list-title">
+                                        <span><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
+                                        <span><?= $row['data']['version']['current'] ?></span>
+                                    </span>
+                                    <span class="fw-600"><?= $L_AUTHOR ?></span>: <?php if ($row['data']['author']['link'] ?? false) : ?><a class="username" target="_blank" href="<?= $row['data']['author']['link'] ?>"><span><?= $row['data']['author']['name'] ?? '?' ?></span><i class="fas fa-share"></i></a><?php else : ?><span><?= $row['data']['author']['name'] ?? '?' ?></span><?php endif; ?>
+                                    <br>
+                                    <?php if ($row['data']['desc'] ?? false) : ?>
+                                        <span><?= str_starts_with($row['data']['desc'], '$') ? substr($row['data']['desc'] , 1) : $row['data']['desc'] ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if (isset($row['data']['button']) and !empty($row['data']['button'])) : ?>
+                                    <div class="list-row-medium" ajax-selector="list-row-medium">
+                                        <?php require $this->template->template('/Blocks/Visualization/Lists/ListsButton.phtml'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <?php if (empty($list['body']) and isset($list['options']['empty'])) : ?>
+                    <div class="list-row">
+                        <div class="list-row-inner" ajax-selector="list-row-inner">
+                            <div class="list-row-body">
+                                <div class="list-row-big">
+                                    <span class="list-title"><?= ${$list['options']['empty']} ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else : ?>
+        <div class="list list-name-<?= $listName ?>" ajax-selector="list">
+            <div class="list-head">
+                <div class="list-row-big<?php if (!isset($list['data']['desc'])) : ?> vertical-align<?php endif; ?>">
+                    <span class="inner">
+                        <span><?= ${$list['data']['title']} ?></span>
+                        <?php if (isset($list['data']['desc'])) : ?>
+                            <br>
+                            <span class="list-head-description"><?= str_starts_with($list['data']['desc'], '$') ?  substr($list['data']['desc'], 1) : ${$list['data']['desc']} ?></span>
+                        <?php endif; ?>  
+                    </span>
+                </div>
+                <?php if ((isset($list['data']['button']) and !empty($list['data']['button'])) or (isset($this->data->pagination['enabled'])) and $this->data->pagination['enabled'] === true) : ?>
+                    <div class="list-row-medium">
+                        <?php if (isset($list['data']['button'])) : ?>
+                            <?php require $this->template->template('/Blocks/Visualization/Lists/ListsButton.phtml'); ?>
+                        <?php endif; ?>
+                        <?php if (isset($this->data->pagination['enabled'])) : ?> 
+                            <?php if ($this->data->pagination['enabled'] === true) : ?> 
+                                <?php require $this->template->template('/Blocks/Pagination.phtml') ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="list-body" ajax-selector="list-body">
+                <?php foreach ($list['body'] as $rowName => $row) : ?>
+                    <div class="list-row list-row-name-<?= $rowName ?> <?=$row['options']['disabled'] ?? false == true ? ' list-row-disabled' : '' ?>" ajax-selector="list-row<?=$row['options']['disabled'] ?? false === true ? ' list-row-disabled' : '' ?>" ajax-process-type="<?= $row['options']['type'] ?? '' ?>" ajax-process-id="<?= $row['data']['id'] ?? ''?>">
+                        <div class="list-row-inner" ajax-selector="list-row-inner">
+                            <?php foreach ($row['data']['label'] ?? [] as $label) : ?>
+                                <div class="list-row-label list-row-label-<?= $label['color'] ?>">
+                                    <?php if ($label['icon']) : ?>
+                                        <i class="<?= $label['icon'] ?>"></i>
+                                    <?php else : ?>
+                                        <?= ${$label['text']} ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                            <div class="list-row-body" ajax-selector="list-row-body">
+                                <div class="list-row-big<?php if (!isset($row['data']['desc']) and !isset($row['options']['template']['big'])) : ?> vertical-align<?php endif; ?>">
+                                    <?php require $this->template->template('/Blocks/Visualization/Lists/ListsRow.phtml'); ?>
+                                </div>
+                                <?php if (isset($row['data']['button']) and !empty($row['data']['button'])) : ?>
+                                    <div class="list-row-medium" ajax-selector="list-row-medium">
+                                        <?php require $this->template->template('/Blocks/Visualization/Lists/ListsButton.phtml'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php if (isset($row['body']) and !empty($row['body'])) : ?>
+                            <div class="list-body" ajax-selector="list-body">
+                                <?php $cache = $row; ?>
+                                <?php foreach ((array)$cache['body'] as $rowName => $row) : ?>
+                                    <div class="list-row" ajax-selector="list-row" ajax-process-type="<?= $row['options']['type'] ?? '' ?>" ajax-process-id="<?= $row['data']['id'] ?? '' ?>">
+                                        <div class="list-row-inner" ajax-selector="list-row-inner">
+                                            <div class="list-row-body" ajax-selector="list-row-body">
+                                                <div class="list-row-big">
+                                                    <?php require $this->template->template('/Blocks/Visualization/Lists/ListsRow.phtml'); ?>
+                                                </div>
+                                                <?php if (isset($row['data']['button']) and !empty($row['data']['button'])) : ?>
+                                                    <div class="list-row-medium" ajax-selector="list-row-medium">
+                                                        <?php require $this->template->template('/Blocks/Visualization/Lists/ListsButton.phtml'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <?php $row = $cache;?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+                <?php if (empty($list['body']) and isset($list['options']['empty'])) : ?>
+                    <div class="list-row">
+                        <div class="list-row-inner" ajax-selector="list-row-inner">
+                            <div class="list-row-body">
+                                <div class="list-row-big">
+                                    <span class="list-title"><?= ${$list['options']['empty']} ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

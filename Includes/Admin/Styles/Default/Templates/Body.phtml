@@ -5,7 +5,7 @@
 
     <body id="body">
         
-        <?php require $this->template->template('/Blocks/Navbar/Navbar.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Navbar/Navbar.phtml'); ?>
 
         <div class="page" ajax-selector="page">
             <?php require $this->template->template('/Blocks/NavbarTop.phtml'); ?>
@@ -14,7 +14,14 @@
             
                     <?php if (!empty($this->data->data['message']['text'])) : ?>
                         <div class="page-alert page-alert-type-<?= $this->data->data['message']['type'] ?>" ajax-selector="alert">
-                            <div class="page-alert-body page-alert-body-flex">
+                            <div class="page-alert-icon">
+                                    <?php if ($this->data->data['message']['type'] == 'success') : ?>
+                                        <i class="fas fa-check"></i>
+                                    <?php else : ?>
+                                        <i class="fas fa-exclamation"></i>
+                                    <?php endif; ?>
+                                </div>      
+                            <div class="page-alert-body">
                                 <div class="page-alert-content">
                                     <?= $this->data->data['message']['text'] ?>
                                 </div>
@@ -45,10 +52,10 @@
                 <div class="window-body" ajax-selector="window-alert-body"></div>
             </div>
         </div>
-        <script src="/Assets/jQuery/jQuery.min.js?<?= $this->system->settings->get('session') ?>"></script> 
-        <script src="/Assets/cAjax/cAjax.min.js?9988"></script>
-        <script src="/Includes/Admin/Styles/Default/Themes/Addons.js?125205"></script>
-        <script src="/Assets/ApexCharts/ApexCharts.min.js"></script>
+        <script src="/Assets/jQuery/jQuery.min.js??<?= $this->system->get('session.scripts') ?>"></script> 
+        <script src="/Assets/cAjax/cAjax.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <script src="/Includes/Admin/Styles/Default/Themes/Addons.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <script src="/Assets/ApexCharts/ApexCharts.min.js?<?= $this->system->get('session.scripts') ?>"></script>
     </body>
     
 </html>

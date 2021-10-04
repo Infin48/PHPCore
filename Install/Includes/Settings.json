@@ -1,4 +1,7 @@
 {
     "db": false,
-    "page": 0
+    "back": false,
+    "page": "index",
+    "language": "cs",
+    "operation": ""
 }

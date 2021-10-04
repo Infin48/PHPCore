@@ -28,7 +28,7 @@ class Users extends Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Users',
+        'template' => '/Users',
     ];
 
     /**
@@ -42,19 +42,19 @@ class Users extends Page
         $user = new User();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Index');
+        $breadcrumb = new Breadcrumb('/Index');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // PAGINATION
         $pagination = new Pagination();
         $pagination->max(MAX_USERS);
-        $pagination->url($this->getURL());
+        $pagination->url($this->url->getURL());
         $pagination->total($user->getAllCount());
         $user->pagination = $this->data->pagination = $pagination->getData();
 
         // LIST
-        $list = new Lists('Users');
-        $list->object('users')->fill($user->getAll());
+        $list = new Lists('/Users');
+        $list->object('users')->fill(data: $user->getAll());
         $this->data->list = $list->getData();
     }
 }

@@ -68,7 +68,7 @@ class Block extends \Visualization\Visualization
                 if ($notice['hide'] === true) {
                     $visual->obj->set->notice($noticeName, false);
                 } else {
-                    $visual->obj->set->notice($noticeName, $this->template->template('/Blocks/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
+                    $visual->obj->set->notice($noticeName, $this->template->template('/Blocks/Visualization/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
                 }
             }
         }
@@ -81,13 +81,13 @@ class Block extends \Visualization\Visualization
 
                     // DELETE 'LIKE' AND 'UNLIKE' BUTTONS
                     if (in_array($btn, ['like', 'unlike'])) {
-                        $visual->obj->set->delete->button($btn);
+                        $visual->obj->delete->button($btn);
                         continue;
                     }
                 } else {
 
                     // DELETE 'EDIT' BUTTON
-                    $visual->obj->set->delete->button('edit');
+                    $visual->obj->delete->button('edit');
 
                     switch ($btn) {
     
@@ -95,7 +95,7 @@ class Block extends \Visualization\Visualization
                         
                             // DELETE 'LIKE' BUTTON IF LOGGED USER ALREADY LIKED THIS OBJECT
                             if (in_array(LOGGED_USER_ID, array_column((array)$visual->obj->get->data('likes'), 'user_id'))) {
-                                $visual->obj->set->delete->button($btn);
+                                $visual->obj->delete->button($btn);
                                 continue 2;
                             } 
                         break;
@@ -104,7 +104,7 @@ class Block extends \Visualization\Visualization
 
                             // DELETE 'UNLIKE' BUTTON IF LOGGED USER DOESN'T LIKED THIS OBJECT
                             if (!in_array(LOGGED_USER_ID, array_column((array)$visual->obj->get->data('likes'), 'user_id'))) {
-                                $visual->obj->set->delete->button($btn);
+                                $visual->obj->delete->button($btn);
                                 continue 2;
                             }
                         break;
@@ -112,7 +112,7 @@ class Block extends \Visualization\Visualization
                 }
                 
                 // ASSIGN BUTTON TEMPLATE
-                $visual->obj->set->button($btn, $visual->template->template('/Blocks/Block/Buttons/' . ucfirst($btn) . '.phtml'));
+                $visual->obj->set->button($btn, $visual->template->template('/Blocks/Visualization/Block/Buttons/' . ucfirst($btn) . '.phtml'));
             }
         }
     }

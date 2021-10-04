@@ -24,7 +24,7 @@ class Add extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/notification/',
         'permission' => 'admin.notification'
     ];
@@ -40,15 +40,16 @@ class Add extends \Page\Page
         $this->navbar->object('settings')->row('notification')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Notification');
+        $breadcrumb = new Breadcrumb('/Admin/Notification');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Notification');
+        $field = new Field('/Admin/Notification');
         $field->object('notification')->title('L_NOTIFICATION_NEW');
+        $field->row('notification_type')->option('info')->check();
         $this->data->field = $field->getData();
-
+        
         // CREATE NEW NOTIFICATION
-        $this->process->form('Admin/Notification/Create');
+        $this->process->form(type: '/Admin/Notification/Create');
     }
 }

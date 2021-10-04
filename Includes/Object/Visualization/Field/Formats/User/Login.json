@@ -49,7 +49,7 @@
         "submit": {
             "data": {
                 "type": "submit",
-                "value": "L_LOGIN_BUTTON"
+                "value": "L_LOGIN"
             }
         }
     }

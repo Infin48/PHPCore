@@ -22,7 +22,7 @@ class Database
     /**
      * @var \PDO $connect PDO
      */
-    protected static \PDO $connect;
+    protected static $connect;
 
     /**
      * @var int $id Last inserted ID
@@ -46,7 +46,7 @@ class Database
         if (!isset(self::$connect)) {
             try {
 
-                $access = json_decode(@file_get_contents(ROOT . '/Includes/Settings/.htdata.json'), true);
+                $access = json_decode(@file_get_contents(ROOT . '/Includes/.htdata.json'), true);
 
                 // CONNECT
                 self::$connect = @new \PDO('mysql:dbname=' . $access['name'] . ';host=' . $access['host'] . ';port=' . $access['port'] . ';charset=utf8mb4', $access['user'], $access['pass'], $this->options);
@@ -56,6 +56,16 @@ class Database
             }
         }
     }
+    
+    /**
+     * Destroys database connection
+     *
+     * @return void
+     */
+    public static function destroy()
+    {
+        self::$connect = null;
+    }
 
     /**
      * Returns last inserted ID
@@ -64,7 +74,7 @@ class Database
      */
     public function lastInsertId()
     {
-        return $this->id ?? 0;
+        return $this->id ?? self::$connect->lastInsertId();
     }
     
     /**

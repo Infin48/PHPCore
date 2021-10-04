@@ -30,6 +30,10 @@ class Index extends \Process\ProcessExtend
                 'type' => 'text',
                 'required' => true
             ],
+            'site_keywords'  => [
+                'type' => 'text',
+                'required' => true
+            ],
             'image_max_size'    => [
                 'type' => 'number',
                 'required' => true
@@ -55,13 +59,14 @@ class Index extends \Process\ProcessExtend
      */
     public function process()
     {
-        $settings = $this->system->settings->get();
-        $settings['site.name'] = $this->data->get('site_name');
-        $settings['site.description'] = $this->data->get('site_description');
-        $settings['image.max_size'] = $this->data->get('image_max_size');
-        $settings['cookie.enabled'] = $this->data->get('cookie_enabled');
-        $settings['cookie.text'] = $this->data->get('cookie_text');
-        $this->system->settings->set($settings);
+        $this->db->table(TABLE_SETTINGS, [
+            'site.name' => $this->data->get('site_name'),
+            'site.description' => $this->data->get('site_description'),
+            'site.keywords' => $this->data->get('site_keywords'),
+            'image.max_size' => (int)$this->data->get('image_max_size'),
+            'cookie.enabled' => (int)$this->data->get('cookie_enabled'),
+            'cookie.text' => $this->data->get('cookie_text')
+        ]);
         
         $this->updateSession();
 

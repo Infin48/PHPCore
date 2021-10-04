@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -17,8 +17,8 @@ use Model\Language;
 /**
  * System 
  */
-class System extends \Exception {
-
+class System extends \Exception
+{
     /**
      * Constructor
      *
@@ -29,6 +29,7 @@ class System extends \Exception {
         $language = new Language();
 
         if (AJAX === true) {
+
             echo json_encode([
                 'status' => 'error',
                 'error' => $error,
@@ -42,6 +43,7 @@ class System extends \Exception {
         extract($language->get());
 
         require ROOT . '/Includes/Object/Exception/Template/Body.phtml';
+
         exit();
     }
 }

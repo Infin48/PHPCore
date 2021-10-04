@@ -2,19 +2,19 @@
     "body": {
         "index": {
             "data": {
-                "href": "/admin/",
+                "href": "$/admin/",
                 "title": "L_ADMIN"
             }
         },
         "report": {
             "data": {
-                "href": "/admin/report/",
+                "href": "$/admin/report/",
                 "title": "L_REPORT"
             }
         },
         "topic": {
             "data": {
-                "href": "/admin/report/topic/",
+                "href": "$/admin/report/topic/",
                 "title": "L_REPORT_TOPIC"
             }
         }

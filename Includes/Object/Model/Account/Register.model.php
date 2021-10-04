@@ -96,7 +96,7 @@ class Register extends \Model\Model
                 'header'  => 'Content-type: application/x-www-form-urlencoded\r\n',
                 'method'  => 'POST',
                 'content' => http_build_query([
-                    'secret' => $this->system->settings->get('registration.key_secret'),
+                    'secret' => $this->system->get('registration.key_secret'),
                     'response' => $this->token,
                     'remoteip' => $_SERVER['REMOTE_ADDR']
                 ])
@@ -132,7 +132,7 @@ class Register extends \Model\Model
         }
 
         $this->db->insert(TABLE_USERS, [
-            'group_id' => $this->system->settings->get('default_group'),
+            'group_id' => $this->system->get('default_group'),
             'user_name' => $this->username,
             'user_email' => $this->email,
             'user_password' => password_hash($this->password, PASSWORD_DEFAULT),

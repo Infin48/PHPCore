@@ -55,5 +55,8 @@ class Delete extends \Process\ProcessExtend
 
         // ADD RECORD TO LOG
         $this->log($this->data->get('page_name'));
+
+        // REFRESH PAGE
+        $this->refresh();
     }
 }

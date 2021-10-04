@@ -62,7 +62,7 @@ class Create extends \Process\ProcessExtend
             'conversation_message_text'	=> $this->data->get('text')
         ]);
 
-        $this->id = $this->db->lastInsertId();
+        self::$id = $this->db->lastInsertId();
 
         // EDIT PRIVATE MESSAGE
         $this->db->update(TABLE_CONVERSATIONS, [

@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -12,28 +12,19 @@
 
 namespace Page;
 
+use Model\JSON;
 use Model\Data;
-use Model\System;
 use Model\Language;
 
 use Process\Process;
+
+use Style\Style;
 
 /**
  * Router
  */
 class Router extends Page
-{
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->data = new Data();
-        $this->system = new System();
-        $this->language = new Language();
-        $this->process = new Process();
-    }
-    
+{    
     /**
      * Body of this page
      *
@@ -41,52 +32,228 @@ class Router extends Page
      */
     public function body()
     {
-        $this->templateName = 'Body';
+        $JSON = new JSON('/Install/Includes/Settings.json');
 
-        $settings = json_decode(file_get_contents(ROOT . '/Install/Includes/Settings.json'), true);
+        $this->style = new Style();
+        $this->style->setTemplate('/Body');
 
-        $this->language->load('/Languages/' . ($this->system->get('site.language') ?? 'cs') . '/Install');
+        switch ($JSON->get('page')) {
 
-        $this->data->data([
-            'page' => $settings['page']
-        ]);
 
-        if (isset($_GET['repeat'])) {
+            case 'database':
 
-            $this->system->install([
-                'db' => false,
-                'page' => 0,
-            ]);
-            redirect('/Install/');
+                $this->page = new \Page\Database();
+
+            break;
+
+
+            case 'extensions':
+
+                $this->page = new \Page\Extensions();
+
+            break;
+
+
+            case 'write':
+
+                $this->page = new \Page\Write();
+
+            break;
+
+
+            case 'index':
+
+                $this->page = new \Page\Index();
+
+            break;
+
+
+            case 'update':
+
+                $this->page = new \Page\Update\Update();
+
+            break;
+
+
+            case 'install-language':
+
+                $this->page = new \Page\Install\Language();
+
+            break;
+
+
+            case 'install-admin':
+
+                $this->page = new \Page\Install\Admin();
+
+            break;
+
+
+            case 'install-site':
+
+                $this->page = new \Page\Install\Site();
+
+            break;
+
+
+            case 'end':
+
+                if ($JSON->get('operation') === 'install') {
+
+                    $this->page = new \Page\Install\End();
+                } else {
+
+                    $this->page = new \Page\Update\End();
+                }
+
+            break;
         }
 
-        if (isset($_GET['install'])) {
+        $this->data = new Data();
+        $this->data->data = [
+            'page' => $JSON->get('page'),
+            'back' => $JSON->get('back'),
+            'operation'=> $JSON->get('operation')
+        ];
 
-            define('AJAX', true);
+        $this->language = new Language();
+        $this->process = new Process();
 
-            $this->page = new \Page\Ajax\Installation();
-            $this->page->system = $this->system;
-            $this->page->language = $this->language;
-            $this->page->body();
+        $this->language->load('/Languages/' . ($JSON->get('language') ?? 'cs') . '/Install');
+
+        if (isset($_GET['go'])) {
+
+            $JSON->set('back', false);
+
+            switch ($_GET['go']) {
+
+
+                case 'back':
+
+                    $JSON->set('back', true);
+
+                    switch ($JSON->get('page')) {
+
+
+                        case 'extensions':
+
+                            $JSON->set('page', 'index');
+                        break;
+
+
+                        case 'write':
+
+                            $JSON->set('page', 'index');
+                        break;
+
+
+                        case 'database':
+
+                            if ($JSON->get('operation') === 'install') {
+
+                                $JSON->set('page', 'install-language');
+                            } else {
+
+                                $JSON->set('page', 'index');
+                            }
+                        break;
+
+
+                        case 'update':
+
+                            $JSON->set('page', 'database');
+                        break;
+
+
+                        case 'install-admin':
+
+                            $JSON->set('page', 'database');
+                        break;
+
+
+                        case 'install-language':
+
+                            $JSON->set('page', 'index');
+                        break;
+
+
+                        case 'install-site':
+
+                            $JSON->set('page', 'install-admin');
+                        break;
+                    }
+                break;
+
+
+                case 'repeat':
+
+                    $JSON->set('db', false);
+                    $JSON->set('page', 'menu');
+                    $JSON->set('operation', '');
+                break;
+
+
+                case 'index':
+
+                    $JSON->set('db', false);
+                    $JSON->set('page', 'index');
+                    $JSON->set('operation', '');
+                break;
+
+
+                case 'install':
+
+                    $JSON->set('page', 'install-language');
+                    $JSON->set('operation', 'install');
+                break;
+
+
+                case 'update':
+
+                    $JSON->set('page', 'database');
+                    $JSON->set('operation', 'update');
+                break;
+
+
+                case 'extensions':
+
+                    $JSON->set('page', 'extensions');
+                break;
+
+                
+                case 'write':
+
+                    $JSON->set('page', 'write');
+                break;
+
+
+                case 'installUpdate':
+
+                    define('AJAX', true);
+
+                    $update = new \Page\Update\Ajax\Update();
+                    $update->body();
+                break;
+            }
+
+            $JSON->save();
+
+            refresh();
         }
 
-        define('AJAX', false);
-
-        $this->page = match((int)$settings['page']) {
-            0 => new \Page\Index(),
-            1 => new \Page\Language(),
-            2 => new \Page\Database(),
-            3 => new \Page\Installation(),
-            4 => new \Page\Admin(),
-            5 => new \Page\Site(),
-            6 => new \Page\End()
-        };
-        
+        // PAGE
         $this->page->data = $this->data;
-        $this->page->system = $this->system;
+        $this->page->style = $this->style;
         $this->page->process = $this->process;
         $this->page->language = $this->language;
 
+        $this->page->ini();
         $this->page->body();
+
+        // STYLE
+        $this->style->data = $this->data;
+        $this->style->language = $this->language;
+
+        $this->style->show();
     }
 }

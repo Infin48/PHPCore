@@ -3,7 +3,7 @@
         "permission": {
             "options": {
                 "template": {
-                    "body": "/Permission.phtml"
+                    "body": "/Group/Permission.phtml"
                 }
             }
         }

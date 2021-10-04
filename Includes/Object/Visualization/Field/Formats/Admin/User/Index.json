@@ -7,7 +7,8 @@
             "body": {
                 "user_name": {
                     "options": {
-                        "type": "text"
+                        "type": "text",
+                        "required": true
                     },
                     "data": {
                         "title": "L_USERNAME",

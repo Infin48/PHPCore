@@ -26,7 +26,11 @@ class ButtonSub extends Block
      */
     public function get( int $buttonSubID )
     {
-        return $this->db->query('SELECT * FROM ' . TABLE_BUTTONS_SUB . ' WHERE button_sub_id = ?', [$buttonSubID]);
+        return $this->db->query('
+            SELECT *
+            FROM ' . TABLE_BUTTONS_SUB . '
+            WHERE button_sub_id = ?
+        ', [$buttonSubID]);
     }
 
     /**
@@ -39,9 +43,8 @@ class ButtonSub extends Block
     public function getParent( int $dropdownID )
     {
         return $this->db->query('
-            SELECT *, IFNULL(page_url, button_sub_link) AS button_sub_link
+            SELECT *
             FROM ' . TABLE_BUTTONS_SUB . '
-            LEFT JOIN ' . TABLE_PAGES . ' ON pg.page_id = bs.page_id
             WHERE button_id = ?
             ORDER BY position_index DESC
         ', [$dropdownID], ROWS);

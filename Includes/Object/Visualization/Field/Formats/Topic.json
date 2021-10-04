@@ -13,10 +13,9 @@
                 },
                 "topic_text": {
                     "options": {
-                        "type": "textarea"
+                        "type": "html"
                     },
                     "data": {
-                        "class": "editor",
                         "placeholder": "L_TEXT"
                     }
                 },
@@ -34,7 +33,7 @@
                         "default": {
                             "options": {
                                 "template": {
-                                    "option": "$/Topic/Label.phtml"
+                                    "option": "%/Topic/Label.phtml"
                                 }
                             },
                             "data": {}

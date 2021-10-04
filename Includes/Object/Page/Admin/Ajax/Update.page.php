@@ -12,7 +12,7 @@
 
 namespace Page\Admin\Ajax;
 
-use Model\Get;
+use Model\Ajax;
 
 /**
  * Update
@@ -34,49 +34,70 @@ class Update extends \Page\Page
      */
     protected function body()
     {
-        $get = new Get();
+        $ajax = new Ajax();
 
-        if ($get->is('error')) {
+        $ajax->ajax(
 
-            $this->data->data([
-                'url' => $this->system->url->build('/admin/update/'),
-                'back' => $this->language->get('L_BACK'),
-                'text' => $this->language->get('L_UPDATE_ERROR'),
-                'error' => $this->language->get('L_UPDATE_ERROR_DESC'),
-                'status' => 'error'
-            ]);
+            exec: function ( \Model\Ajax $ajax ) {
 
-        } else {
-
-            $API = json_decode(@file_get_contents('https://api.github.com/repos/Infin48/PHPCore/releases', false, CONTEXT), true);
-            
-            if (empty($API) or $API[0]['tag_name'] == $this->system->settings->get('site.version')) {
-                $this->data->data([
-                    'url' => $this->system->url->build('/admin/update/'),
-                    'back' => $this->language->get('L_BACK'),
-                    'text' => $this->language->get('L_UPDATE_INSTALLED_ALREADY'),
-                    'status' => 'current'
-                ]);
-            } else {
-
-                if ($this->process->call(type: 'Admin/Update', mode: 'direct', data: ['path' => $API[0]['zipball_url'], 'tag' => $API[0]['tag_name']])) {
-                    $this->data->data([
-                        'url' => $this->system->url->build('/admin/update/'),
-                        'text' => strtr($this->language->get('L_UPDATE_INSTALLED'), ['{name}' => $API[0]['name'] ?: $API[0]['tag_name']]),
+                if ($ajax->is('error')) {
+                    
+                    $ajax->data([
+                        'url' => $this->url->build('/admin/update/'),
                         'back' => $this->language->get('L_BACK'),
-                        'status' => 'installed',
+                        'text' => $this->language->get('L_UPDATE_ERROR'),
+                        'error' => $this->language->get('L_UPDATE_ERROR_DESC')
+                    ]);
+                    $ajax->error();
+                    $ajax->end();
+                }
+
+                $API = json_decode(@file_get_contents('https://api.github.com/repos/Infin48/PHPCore/releases', false, CONTEXT), true);
+
+                if (empty($API) or $API[0]['tag_name'] == $this->system->get('site.version')) {
+                    $ajax->data([
+                        'url' => $this->url->build('/admin/update/'),
+                        'back' => $this->language->get('L_BACK'),
+                        'text' => $this->language->get('L_UPDATE_INSTALLED_ALREADY'),
+                        'status' => 'current'
                     ]);
                 } else {
 
-                    $this->data->data([
-                        'url' => $this->system->url->build('/admin/update/'),
-                        'back' => $this->language->get('L_BACK'),
-                        'text' => $this->language->get('L_UPDATE_ERROR'),
-                        'error' => $this->language->get('L_UPDATE_ERROR_DESC'),
-                        'status' => 'error'
-                    ]);
+                    $ajax->process(
+
+                        process: $this->process,
+
+                        type: 'Admin/Update',
+                        data: [
+                            'tag' => $API[0]['tag_name'],
+                            'path' => $API[0]['zipball_url']
+                        ],
+
+                        success: function ( \Model\Ajax $ajax ) use ($API) {
+
+                            $ajax->data([
+                                'url' => $this->url->build('/admin/update/'),
+                                'text' => strtr($this->language->get('L_UPDATE_INSTALLED'), ['{name}' => $API[0]['name'] ?: $API[0]['tag_name']]),
+                                'back' => $this->language->get('L_BACK')
+                            ]);
+                            $ajax->status('installed');
+
+                        },
+
+                        failure: function ( \Model\Ajax $ajax ) {
+
+                            $ajax->data([
+                                'url' => $this->url->build('/admin/update/'),
+                                'back' => $this->language->get('L_BACK'),
+                                'text' => $this->language->get('L_UPDATE_ERROR'),
+                                'error' => $this->language->get('L_UPDATE_ERROR_DESC')
+                            ]);
+                            $ajax->error();
+                        }
+                    );
                 }
             }
-        }
+        );
+        $ajax->end();
     }
 }

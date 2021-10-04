@@ -2,7 +2,7 @@
     "body": {
         "forum": {
             "data": {
-                "href": "/forum/",
+                "href": "$/forum/",
                 "title": "L_FORUM"
             }
         }

@@ -12,6 +12,8 @@
 
 namespace Process\Admin\Settings;
 
+use Model\File\Text;
+
 /**
  * Registration
  */
@@ -50,17 +52,28 @@ class Registration extends \Process\ProcessExtend
     public function process()
     {
         if ($this->data->is('registration_enabled')) {
-            file_put_contents(ROOT . '/Assets/reCAPTCHA/reCAPTCHA.js', strtr(file_get_contents(ROOT . '/Assets/reCAPTCHA/reCAPTCHA.org.js'), ['{site_key}' => $this->data->get('registration_key_site')]));
+
+            if (!$this->data->get('registration_key_site') or !$this->data->get('registration_key_secret')) {
+                return true;
+            }
+
+            $text = new Text('/Assets/reCAPTCHA/reCAPTCHA.org.min.js');
+            $text->set('site_key', $this->data->get('registration_key_site'));
+            $text->save('/Assets/reCAPTCHA/reCAPTCHA.min.js');
         }
 
-        $settings = $this->system->settings->get();
-        $settings['registration.terms'] = $this->data->get('registration_terms');
-        $settings['registration.key_site'] = $this->data->get('registration_key_site');
-        $settings['registration.key_secret'] = $this->data->get('registration_key_secret');
-        $settings['registration.enabled'] = $this->data->get('registration_enabled');
-        $this->system->settings->set($settings);
+        $this->db->table(TABLE_SETTINGS, [
+            'registration.terms' => $this->data->get('registration_terms'),
+            'registration.enabled' => (int)$this->data->get('registration_enabled'),
+            'registration.key_site' => $this->data->get('registration_key_site'),
+            'registration.key_secret' => $this->data->get('registration_key_secret')
+        ]);
 
-        $this->updateSession();
+        // UPDATE SESSIONS
+        $this->db->table(TABLE_SETTINGS, [
+            'session' => RAND,
+            'session.scripts' => RAND
+        ]);
 
         // ADD RECORD TO LOG
         $this->log();

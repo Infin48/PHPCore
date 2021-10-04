@@ -12,7 +12,6 @@
 
 namespace Page\Admin\Menu\Add;
 
-use Block\Page as BlockPage;
 use Block\Dropdown;
 
 use Visualization\Field\Field;
@@ -44,28 +43,24 @@ class Buttonsub extends \Page\Page
         $this->navbar->object('settings')->row('menu')->active();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Menu');
+        $breadcrumb = new Breadcrumb('/Admin/Menu');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // BLOCK
-        $page = new BlockPage();
         $dropdown = new Dropdown();
 
-        // PAGES
-        $pages = $page->getAll();
-
         // DROPDOWN
-        $dropdown = $dropdown->get($this->getID()) or $this->error();
+        $dropdown = $dropdown->get($this->url->getID()) or $this->error();
 
         // FIELD
-        $field = new Field('Admin/Menu/Sub');
+        $field = new Field('/Admin/Menu/Sub');
         $field->object('sub')->title('L_MENU_BUTTON_NEW')
-            ->row('page_id')->fill($pages);
+            ->row('button_sub_link_type')->option('local')->check();
         $this->data->field = $field->getData();
 
         // CREATE NEW SUB BUTTON
-        $this->process->form(type: 'Admin/Menu/ButtonSub/Create', data: [
-            'button_id'   => $this->getID()
+        $this->process->form(type: '/Admin/Menu/ButtonSub/Create', data: [
+            'button_id'   => $this->url->getID(),
         ]);
     }
 }

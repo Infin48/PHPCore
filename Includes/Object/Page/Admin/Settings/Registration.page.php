@@ -24,7 +24,7 @@ class Registration extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.settings'
     ];
 
@@ -39,15 +39,15 @@ class Registration extends \Page\Page
         $this->navbar->object('settings')->row('settings')->active()->option('registration')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Settings/Registration');
-        $field->data($this->system->settings->get());
+        $field = new Field('/Admin/Settings/Registration');
+        $field->data($this->system->get());
         $this->data->field = $field->getData();
 
         // EDIT SETTINGS
-        $this->process->form(type: 'Admin/Settings/Registration');
+        $this->process->form(type: '/Admin/Settings/Registration');
     }
 }

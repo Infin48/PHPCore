@@ -12,6 +12,8 @@
 
 namespace Process;
 
+use Model\JSON;
+
 /**
  * Language
  */
@@ -32,6 +34,7 @@ class Language extends \Process\ProcessExtend
         ]
     ];
 
+
     /**
      * Body of process
      *
@@ -41,12 +44,13 @@ class Language extends \Process\ProcessExtend
     {
         if (in_array($this->data->get('language'), $this->data->get('languageList'))) {
 
-            $this->system->install([
-                'db' => false,
-                'page' => 2
-            ]);
 
-            $this->system->set('site.language', $this->data->get('language'));
+            $JSON = new JSON('/Install/Includes/Settings.json');
+            $JSON->set('db', false);
+            $JSON->set('page', 'database');
+            $JSON->set('language', $this->data->get('language'));
+            $JSON->set('back', false);
+            $JSON->save();
         }
     }
 }

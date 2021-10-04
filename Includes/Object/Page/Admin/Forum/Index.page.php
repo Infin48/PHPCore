@@ -15,7 +15,7 @@ namespace Page\Admin\Forum;
 use Block\Admin\Forum;
 use Block\Admin\Category;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -27,7 +27,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.forum'
     ];
     
@@ -42,7 +42,7 @@ class Index extends \Page\Page
         $this->navbar->object('forum')->row('forum')->active();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // BLOCK
@@ -50,43 +50,28 @@ class Index extends \Page\Page
         $category = new Category();
 
         // LIST
-        $list = new Lists('Admin/Forum');
+        $list = new Lists('/Forum');
+        $list->object('forum')->fill(data: $category->getAll(), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) use ($forum) { 
 
-        // CATEGORIES
-        $categories = $category->getAll();
-
-        $i = 1;
-        foreach ($categories as $_category) {
-
-            $list->object('forum')->appTo($_category)->jumpTo();
-
-            if ($i == 1) {
+            if ($i === 1) {
                 $list->delButton('up');
             }
 
-            if ($i === count($categories)) {
+            if ($i === $count) {
                 $list->delButton('down');
             }
 
-            // FORUMS
-            $forums = $forum->getParent($_category['category_id']);
+            $list->fill(data: $forum->getParent($list->obj->get->data('category_id')), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) { 
 
-            $x = 1;
-            foreach ($forums as $_forum) {
-                $list->appTo($_forum)->jumpTo();
-
-                if ($x == 1) {
+                if ($i === 1) {
                     $list->delButton('up');
                 }
-
-                if ($x === count($forums)) {
+    
+                if ($i === $count) {
                     $list->delButton('down');
                 }
-
-                $x++;
-            }
-            $i++;
-        }
+            });
+        });
         $this->data->list = $list->getData();
     }
 }

@@ -28,7 +28,7 @@ class Permission extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/forum/',
         'permission' => 'admin.forum'
     ];
@@ -48,19 +48,19 @@ class Permission extends \Page\Page
         $category = new Category();
 
         // GET FORUM DATA
-        $_category = $category->get($this->getID()) or $this->error();
+        $_category = $category->get($this->url->getID()) or $this->error();
 
         // SEE PERMISSION
-        $_category['see'] = $category->getSee($this->getID());
+        $_category['see'] = $category->getSee($this->url->getID());
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Forum');
+        $breadcrumb = new Breadcrumb('/Admin/Forum');
         $this->data->breadcrumb = $breadcrumb->getData(); 
 
         // FIELD
-        $field = new Field('Admin/Category/Permission');
+        $field = new Field('/Admin/Category/Permission');
         $field->data($_category);
-        $field->object('groups')->fill(array_merge($group->getAll(), [0 => [
+        $field->object('groups')->fill(data: array_merge($group->getAll(), [0 => [
             'group_id' => 0,
             'group_name' => $this->language->get('L_GROUP_VISITOR'),
             'group_color' => '#4e4e4e',
@@ -69,8 +69,8 @@ class Permission extends \Page\Page
         $this->data->field = $field->getData();
 
         // EDIT FORUM PERMISSION
-        $this->process->form(type: 'Admin/Category/Permission', data: [
-            'category_id' => $this->getID()
+        $this->process->form(type: '/Admin/Category/Permission', data: [
+            'category_id' => $this->url->getID()
         ]);
 
         // PAGE TITLE

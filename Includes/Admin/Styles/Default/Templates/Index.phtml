@@ -1,4 +1,4 @@
-<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
 <?php
         $cache = $this->data->list;
         $this->data->list['body'] = ['news' => $cache['body']['news']];
@@ -14,7 +14,7 @@
         <?php
             $this->data->list['body'] = ['news' => $cache['body']['news']];;
         ?>
-        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
     </div>
     <?php
         $this->data->list['body'] = ['users' => $cache['body']['users']];;
@@ -29,15 +29,15 @@
         <?php
             $this->data->list['body'] = ['users' => $cache['body']['users']];;
         ?>
-        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
     </div>
     <?php
         $this->data->list['body'] = ['log' => $cache['body']['log']];;
     ?>
     <div class="lists-middle">
-        <?php require $this->template->template('/Blocks/Lists/Lists.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
 
-        <?php require $this->template->template('/Blocks/Field/Field.phtml'); ?>
+        <?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
     </div>
 </div>
 <script src="/Assets/ApexCharts/ApexCharts.min.js"></script>
@@ -58,13 +58,16 @@
         dataLabels: {
             enabled: false
         },
+        stroke: {
+          curve: 'straight'
+        },
         series: [
             {
-                name: 'Příspěvků',
+                name: '<?= $L_POSTS ?>',
                 data: data.posts
             },
             {
-                name: 'Témat',
+                name: '<?= $L_TOPICS ?>',
                 data: data.topics
             }
         ],
@@ -86,9 +89,12 @@
         dataLabels: {
             enabled: false
         },
+        stroke: {
+          curve: 'straight'
+        },
         series: [
             {
-                name: 'Uživatelů',
+                name: '<?= $L_USERS ?>',
                 data: data.users
             }
         ],

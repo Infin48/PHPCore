@@ -10,26 +10,6 @@
                         "icon": "fas fa-bars"
                     }
                 },
-                "home": {
-                    "options": {
-                        "type": "button"
-                    },
-                    "data": {
-                        "icon": "fas fa-home",
-                        "href": "/",
-                        "title": "L_HOME"
-                    }
-                },
-                "forum": {
-                    "options": {
-                        "type": "button"
-                    },
-                    "data": {
-                        "icon": "fas fa-comments",
-                        "href": "/forum/",
-                        "title": "L_FORUM"
-                    }
-                },
                 "default": {
                     "options": {
                         "template": {
@@ -72,7 +52,7 @@
                     "data": {
                         "type": "button",
                         "icon": "fas fa-envelope",
-                        "href": "/user/conversation/"
+                        "href": "$/user/conversation/"
                     }
                 },
                 "notification": {
@@ -80,7 +60,7 @@
                         "type": "menu",
                         "empty": "L_NOTIFICATION_NO",
                         "template": {
-                            "bottom": "$/Notification/Bottom.phtml"
+                            "bottom": "%/Notification/Bottom.phtml"
                         }
                     },
                     "data": {
@@ -94,7 +74,7 @@
                         "default": {
                             "options": {
                                 "template": {
-                                    "body": "$/Notification/Body.phtml"
+                                    "body": "%/Notification/Body.phtml"
                                 }
                             },
                             "data": {}
@@ -120,13 +100,14 @@
                         },
                         "user": {
                             "data": {
-                                "href": "/user/",
+                                "href": "$/user/",
                                 "title": "L_USER_PANEL"
                             }
                         },
                         "logout": {
                             "data": {
-                                "href": "/logout/",
+                                "ajax": "execute",
+                                "ajaxProcess": "/User/Logout",
                                 "title": "L_LOG_OUT"
                             }
                         }
@@ -145,7 +126,7 @@
                     },
                     "data": {
                         "icon": "fas fa-sign-in-alt",
-                        "href": "/login/",
+                        "href": "$/login/",
                         "title": "L_LOGIN"
                     }
                 },
@@ -156,7 +137,7 @@
                     },
                     "data": {
                         "icon": "fas fa-user-plus",
-                        "href": "/register/",
+                        "href": "$/register/",
                         "title": "L_REGISTER"
                     }
                 }

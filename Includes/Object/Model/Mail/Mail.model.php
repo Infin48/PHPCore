@@ -45,17 +45,17 @@ class Mail extends \Model\Model
             $this->mail->Debugoutput = 'error_log';
             $this->mail->CharSet = 'UTF-8';
 
-            if ($this->system->settings->get('email.smtp_enabled')) {
+            if ($this->system->get('email.smtp_enabled')) {
                 $this->mail->isSMTP();
-                $this->mail->Host       = $this->system->settings->get('email.smtp_host');
+                $this->mail->Host       = $this->system->get('email.smtp_host');
                 $this->mail->SMTPAuth   = true;
-                $this->mail->Username   = $this->system->settings->get('email.smtp_username');
-                $this->mail->Password   = $this->system->settings->get('email.smtp_password');
+                $this->mail->Username   = $this->system->get('email.smtp_username');
+                $this->mail->Password   = $this->system->get('email.smtp_password');
                 $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $this->mail->Port       = (int)$this->system->settings->get('email.smtp_port');
+                $this->mail->Port       = (int)$this->system->get('email.smtp_port');
             }
 
-            $this->mail->setFrom($this->system->settings->get('email.prefix') . '@' . $_SERVER['SERVER_NAME'], $this->system->settings->get('site.name'));
+            $this->mail->setFrom($this->system->get('email.prefix') . '@' . $_SERVER['SERVER_NAME'], $this->system->get('site.name'));
 
         } catch (Exception $e) {
             throw new \Exception\Notice($this->mail->ErrorInfo);

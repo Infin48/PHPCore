@@ -8,7 +8,7 @@
     ];
 
 ?>
-<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
 
 <div class="chart-two">
     <div class="chart">
@@ -35,7 +35,7 @@
     ];
 
 ?>
-<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
 
 <div class="chart-two">
     <div class="chart">
@@ -62,7 +62,7 @@
     ];
 
 ?>
-<?php require $this->template->template('/Blocks/Block/Block.phtml'); ?>
+<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
 
 <div class="chart-two">
     <div class="chart">
@@ -93,8 +93,11 @@
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Uživatelů',
+                name: '<?= $L_USERS ?>',
                 data: data.day.users
             }
         ],
@@ -112,8 +115,11 @@
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Uživatelů',
+                name: '<?= $L_USERS ?>',
                 data: data.month.users
             }
         ],
@@ -131,8 +137,11 @@
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Témat',
+                name: '<?= $L_TOPICS ?>',
                 data: data.day.topics
             }
         ],
@@ -150,8 +159,11 @@
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Témat',
+                name: '<?= $L_TOPICS ?>',
                 data: data.month.topics
             }
         ],
@@ -169,8 +181,11 @@
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Příspěvků',
+                name: '<?= $L_POSTS ?>',
                 data: data.day.posts
             }
         ],
@@ -184,12 +199,16 @@
         colors:['#de4b4b'],
         chart: {
             height: '100%',
+            width: '100%',
             type: 'area',
             toolbar: {show: false}
         },
         dataLabels: {enabled: false},
+        stroke: {
+          curve: 'straight'
+        },
         series: [{
-                name: 'Příspěvků',
+                name: '<?= $L_POSTS ?>',
                 data: data.month.posts
             }
         ],

@@ -12,7 +12,8 @@
 
 namespace Process\Admin\Settings;
 
-use Model\File;
+use Model\File\File;
+use Model\File\Text;
 
 /**
  * Other
@@ -41,10 +42,6 @@ class Other extends \Process\ProcessExtend
                 'type' => 'text',
                 'required' => true
             ],
-            'site_language'                  => [
-                'type' => 'text',
-                'required' => true
-            ],
             'site_language_editor'           => [
                 'type' => 'text',
                 'required' => true
@@ -68,42 +65,57 @@ class Other extends \Process\ProcessExtend
             return false;
         }
 
-        $file = new File();
-        $settings = $this->system->settings->get();
-
-        $file->load('site_background_image');
-        if ($file->check(false)) {
-            $file->upload('Site/Header');
-            $settings['site.background_image'] = $file->getFormat();
+        if (!in_array($this->data->get('site_locale'), \ResourceBundle::getLocales(''))) {
+            return false;
         }
 
-        $file->load('site_favicon');
-        if ($file->check(false)) {
-            $file->upload('Site/Favicon');
-            $settings['site.favicon'] = $file->getFormat();
+        $settings = [
+            'site.locale' => $this->data->get('site_locale'),
+            'site.timezone' => $this->data->get('site_timezone'),
+            'site.language_editor' => $this->data->get('site_language_editor'),
+            'site.background_image_position' => $this->data->get('site_background_image_position')
+        ];
+
+        $file = new File();
+
+        $image = $file->form('site_background_image', FILE_TYPE_IMAGE);
+        $image->ignoreLimit();
+
+        if ($image->check()) {
+            $image->upload('/Uploads/Site/Header');
+            $settings['site.background_image'] = $image->getFormat();
+        }
+
+        $image = $file->form('site_favicon', FILE_TYPE_IMAGE);
+        $image->ignoreLimit();
+        
+        if ($image->check()) {
+            $image->upload('/Uploads/Site/Favicon');
+            $settings['site.favicon'] = $image->getFormat();
         }
 
         if ($this->data->is('delete_site_background_image')) {
             $settings['site.background_image'] = '';
-            $file->deleteImage('Site/Header');
+            $file->deleteImage('/Site/Header');
         }
 
         if ($this->data->is('delete_site_favicon')) {
             $settings['site.favicon'] = '';
-            $file->deleteImage('Site/Favicon');
+            $file->deleteImage('/Site/Favicon');
         }
 
-        $settings['site.locale'] = $this->data->get('site_locale');
-        $settings['site.timezone'] = $this->data->get('site_timezone');
-        $settings['site.language'] = $this->data->get('site_language');
-        $settings['site.language_editor'] = $this->data->get('site_language_editor');
-        $settings['site.background_image_position'] = $this->data->get('site_background_image_position');
+        $this->db->table(TABLE_SETTINGS, $settings);
 
-        $this->system->settings->set($settings);
+        $text = new Text('/Assets/Trumbowyg/trumbowygOrg.min.js');
+        $text->set('language', $this->data->get('site_language_editor'));
+        $text->save('/Assets/Trumbowyg/trumbowyg.min.js');
 
-        $this->updateSession();
-        file_put_contents(ROOT . '/Assets/Trumbowyg/trumbowyg.min.js', strtr(file_get_contents(ROOT . '/Assets/Trumbowyg/trumbowygOrg.min.js'), ['{language}' => $this->data->get('site_language_editor')]));
-    
+        // UPDATE SESSIONS
+        $this->db->table(TABLE_SETTINGS, [
+            'session' => RAND,
+            'session.scripts' => RAND
+        ]);
+
         // ADD RECORD TO LOG
         $this->log();
     }

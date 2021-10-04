@@ -27,7 +27,7 @@ class Permission extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/group/',
         'permission' => 'admin.group'
     ];
@@ -46,7 +46,7 @@ class Permission extends \Page\Page
         $group = new Group();
 
         // GROUP
-        $group = $group->get($this->getID()) or $this->error();
+        $group = $group->get($this->url->getID()) or $this->error();
 
         // IF LOGGED USER DOENSN'T HAVE PERMISISON TO EDIT THIS GROUP 
         $this->user->perm->index($group['group_index']) or $this->redirect();
@@ -57,23 +57,18 @@ class Permission extends \Page\Page
         ]);
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Group');
+        $breadcrumb = new Breadcrumb('/Admin/Group');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Group/Permission');
+        $field = new Field('/Admin/Group/Permission');
         $field->data($group);
         $this->data->field = $field->getData();
 
         // EDIT GROUP
-        $this->process->form(type: 'Admin/Group/Permission', data: [
+        $this->process->form(type: '/Admin/Group/Permission', data: [
             'group_id' => $group['group_id'],
-            'group_name' => $group['group_name'],
-            'options' => [
-                'input' => [
-                    'group_permission' => $this->user->perm->getPermissions()
-                ]
-            ]
+            'group_name' => $group['group_name']
         ]);
 
         // PAGE TITLE

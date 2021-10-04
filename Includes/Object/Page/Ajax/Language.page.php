@@ -12,7 +12,7 @@
 
 namespace Page\Ajax;
 
-use Model\Get;
+use Model\Ajax;
 
 /**
  * Language
@@ -33,47 +33,60 @@ class Language extends \Page\Page
      */
     protected function body()
     {
-        $get = new Get();
+        $ajax = new Ajax();
 
-        $get->get('process') or exit();
+        $ajax->ajax(
 
-        switch ($get->get('process')) {
+            require: ['process'],
 
-            case 'Post/Editor':
-            case 'ProfilePost/Editor':
-            case 'ProfilePostComment/Editor':
-            case 'ConversationMessage/Editor':
-                $this->data->data([
-                    'button' => $this->file('/Blocks/Block/Buttons/Save.phtml'),
-                    'status' => 'ok'
-                ]);
-            break;
+            exec: function ( \Model\Ajax $ajax ) {
+        
+                $ajax->ok();
 
-            case 'Post/Delete':
-            case 'ProfilePost/Delete':
-            case 'ProfilePostComment/Delete':
-                $this->data->data([
-                    'windowTitle' => $this->language->get('L_WINDOW_CONFIRM'),
-                    'windowClose' => $this->language->get('L_NO'),
-                    'windowSubmit' => $this->language->get('L_YES'),
-                    'windowContent' => $this->language->get('L_WINDOW')[$get->get('process')],
-                    'status' => 'ok'
-                ]);
-            break;
+                switch ($ajax->get('process')) {
 
-            case 'Post/Report':
-            case 'Topic/Report':
-            case 'ProfilePost/Report':
-            case 'ProfilePostComment/Report':
-            
-                $this->data->data([
-                    'windowTitle' => $this->language->get('L_WINDOW_REPORT_TITLE'),
-                    'windowClose' => $this->language->get('L_CANCEL'),
-                    'windowSubmit' => $this->language->get('L_SUBMIT'),
-                    'windowContent' => $this->language->get('L_WINDOW_REPORT_DESC') . '<br><textarea></textarea>',
-                    'status' => 'ok'
-                ]);
-            break;
-        }
+                    case '/Post/Editor':
+                    case '/ProfilePost/Editor':
+                    case '/ProfilePostComment/Editor':
+                    case '/ConversationMessage/Editor':
+
+                        $ajax->data([
+                            'button' => $this->file('/Blocks/Visualization/Block/Buttons/Save.phtml')
+                        ]);
+                    break;
+
+                    case '/Topic/Delete':
+                    case '/Post/Delete':
+                    case '/ProfilePost/Delete':
+                    case '/ProfilePostComment/Delete':
+
+                        $ajax->data([
+                            'windowTitle' => $this->language->get('L_WINDOW')['L_TITLE']['L_CONFIRM'],
+                            'windowClose' => $this->language->get('L_NO'),
+                            'windowSubmit' => $this->language->get('L_YES'),
+                            'windowContent' => $this->language->get('L_WINDOW')['L_DESC'][$ajax->get('process')]
+                        ]);
+                    break;
+
+                    case '/Post/Report':
+                    case '/Topic/Report':
+                    case '/ProfilePost/Report':
+                    case '/ProfilePostComment/Report':
+                    
+                        $ajax->data([
+                            'windowTitle' => $this->language->get('L_WINDOW')['L_TITLE']['L_REPORT'],
+                            'windowClose' => $this->language->get('L_BUTTON')['L_CANCEL'],
+                            'windowSubmit' => $this->language->get('L_BUTTON')['L_SUBMIT'],
+                            'windowContent' => $this->language->get('L_WINDOW')['L_DESC']['L_REPORT'] . '<br><textarea></textarea>'
+                        ]);
+                    break;
+
+                    default:
+                        $ajax->false();
+                    break;
+                }
+            }
+        );
+        $ajax->end();
     }
 }

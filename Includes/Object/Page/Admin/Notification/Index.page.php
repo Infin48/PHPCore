@@ -14,7 +14,7 @@ namespace Page\Admin\Notification;
 
 use Block\Admin\Notification;
 
-use Visualization\Lists\Lists;
+use Visualization\Admin\Lists\Lists;
 use Visualization\Breadcrumb\Breadcrumb;
 
 /**
@@ -26,7 +26,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Overall',
+        'template' => '/Overall',
         'permission' => 'admin.notification'
     ];
     
@@ -44,31 +44,21 @@ class Index extends \Page\Page
         $notification = new Notification();
         
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Admin');
+        $breadcrumb = new Breadcrumb('/Admin/Admin');
         $this->data->breadcrumb = $breadcrumb->getData();
         
         // LIST
-        $list = new Lists('Admin/Notification');
-
-        // NOTIFICATIONS
-        $notifications = $notification->getAll();
-
-        $i = 1;
-        foreach ($notifications as $notification) {
-
-            $list->object('notification')->appTo($notification)->jumpTo();
+        $list = new Lists('/Notification');
+        $list->object('notification')->fill(data: $notification->getAll(), function: function ( \Visualization\Admin\Lists\Lists $list, int $i, int $count ) { 
 
             if ($i === 1) {
                 $list->delButton('up');
             }
 
-            if ($i === count($notifications)) {
+            if ($i === $count) {
                 $list->delButton('down');
             }
-
-            $i++;
-        }
-
+        });
         $this->data->list = $list->getData();
     }
 }

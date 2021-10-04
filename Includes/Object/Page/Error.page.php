@@ -21,7 +21,7 @@ class Error extends Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Error'
+        'template' => '/Error'
     ];
 
     /**

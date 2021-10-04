@@ -12,6 +12,8 @@
 
 namespace Model\Build;
 
+use Model\Url;
+
 /**
  * BuildUrl
  */
@@ -26,84 +28,90 @@ class BuildUrl extends Build
      */
     private function convertToURL( string $url )
     {
-        return $this->system->url->build($url);
+        return Url::build($url);
     }
 
     /**
      * Builds url to post
      *
-     * @param  array $data Post data [topic_id, topic_url, post_id, ?position]
+     * @param  array $data Post data [topic_id, topic_url, post_id, position, user_notification_id]
      * 
      * @return string
      */
     public function post( $data )
     {
         $page = isset($data['position']) ? ceil($data['position'] / MAX_POSTS) : 1;
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
 
-        return $this->convertToURL('/forum/topic/' . $data['topic_id'] . '.' . $data['topic_url'] . '/page-' . $page . '/select-' . $data['post_id'] . '/#' . $data['post_id']);
+        return $this->convertToURL('/forum/topic/' . $data['topic_id'] . '.' . $data['topic_url'] . '/page-' . $page . '/select-' . $data['post_id'] . '/' . $mark . '#' . $data['post_id']);
     }
 
     /**
      * Builds url to topic
      *
-     * @param  array $data Topic data [topic_id, topic_url]
+     * @param  array $data Topic data [topic_id, topic_url, user_notification_id]
      * 
      * @return string
      */
     public function topic( $data )
     {
-        return $this->convertToURL('/forum/topic/' . $data['topic_id'] . '.' . $data['topic_url']);
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
+        return $this->convertToURL('/forum/topic/' . $data['topic_id'] . '.' . $data['topic_url'] . '/' . $mark);
     }
 
     /**
      * Builds url to forum
      *
-     * @param  array $data Forum data [forum_id, forum_url]
+     * @param  array $data Forum data [forum_id, forum_url, user_notification_id]
      * 
      * @return string
      */
     public function forum( $data )
     {
-        return $this->convertToURL('/forum/show/' . $data['forum_id'] . '.' . $data['forum_url']);
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
+        return $this->convertToURL('/forum/show/' . $data['forum_id'] . '.' . $data['forum_url'] . '/' . $mark);
     }
 
     /**
      * Builds url to profile post
      *
-     * @param  array $data Profile post data [profile_user_id, profile_user_name, profile_post_id, ?position]
+     * @param  array $data Profile post data [user_id, user_name, profile_post_id, position, user_notification_id]
      * 
      * @return string
      */
     public function profilePost( $data )
     {
         $page = isset($data['position']) ? ceil($data['position'] / MAX_PROFILE_POSTS) : 1;
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
 
-        return $this->convertToURL('/profile/' . $data['profile_user_id'] . '.' . $data['profile_user_name'] . '/page-' . $page . '/select-' . $data['profile_post_id'] . '/#' . $data['profile_post_id']);
+        return $this->convertToURL('/profile/' . $data['user_id'] . '.' . $data['user_name'] . '/page-' . $page . '/select-' . $data['profile_post_id'] . '/' . $mark . '#' . $data['profile_post_id']);
     }
 
     /**
      * Builds url to profile post comment
      *
-     * @param  array $data Profile post comment data [profile_user_id, profile_user_name, profile_post_comment_id, ?position]
+     * @param  array $data Profile post comment data [user_id, user_name, profile_post_id, profile_post_comment_id, position, user_notification_id]
      * 
      * @return string
      */
     public function profilePostComment( $data )
     {
         $page = isset($data['position']) ? ceil($data['position'] / MAX_PROFILE_POSTS) : 1;
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
 
-        return $this->convertToURL('/profile/' . $data['profile_user_id'] . '.' . $data['profile_user_name'] . '/page-' . $page . '/select-c' . $data['profile_post_comment_id'] . '/#c' . $data['profile_post_comment_id']);
+        return $this->convertToURL('/profile/' . $data['user_id'] . '.' . $data['user_name'] . '/page-' . $page . '/select-p' . $data['profile_post_id'] . '.c' . $data['profile_post_comment_id'] . '/' . $mark . '#c' . $data['profile_post_comment_id']);
     }
 
     /**
      * Builds url to user profile
      *
-     * @param  array $data User profile data [user_id, user_name]
+     * @param  array $data User profile data [user_id, user_name, user_notification_id]
      * 
      * @return string
      */
     public function profile( $data )
     {
-        return $this->convertToURL('/profile/' . $data['user_id'] . '.' . $data['user_name']);
+        $mark = isset($data['user_notification_id']) ? 'mark-' . $data['user_notification_id'] . '/' : '';
+        return $this->convertToURL('/profile/' . $data['user_id'] . '.' . $data['user_name'] . '/' . $mark);
     }
 }

@@ -26,5 +26,5 @@ $language = array_merge($language, [
     'L_NOTIFICATION_TYPE_NOTIFICATION' => 'Oznámení',
 
     'L_NOTIFICATION_HIDE' => 'Skrýt oznámení',
-    'L_NOTIFICATION_HIDE_DESC' => 'Oznámení bude pro všechny uživatelé skryté'
+    'L_NOTIFICATION_HIDE_DESC' => 'Oznámení bude pro všechny uživatelé skryté.'
 ]);

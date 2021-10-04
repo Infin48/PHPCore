@@ -1,8 +1,8 @@
 <?php
 
-/**
+/** 
  * This file is part of the PHPCore forum software
- * 
+ *   
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
@@ -15,13 +15,14 @@ namespace Exception;
 /**
  * Notice
  */
-class Notice extends \Exception {
-
+class Notice extends \Exception
+{
     /**
      * Constructor
      *
      * @param string $notice Notice
      */
+
     public function __construct( string $notice )
     {
         global $router;

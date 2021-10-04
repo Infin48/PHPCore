@@ -3,10 +3,12 @@ function parseNewLines(html) {
     var result = [];
     var lastTextPosition = null;
     var firstTextPosition = null;
+
     html = $(html);
     $.each(html, function (i, el) {
-        array[i] = '<'+html[i].tagName.toLowerCase()+'>' + $(el).html() + '</'+html[i].tagName.toLowerCase()+'>';
-        if ($(el).html().replace(/(<([^>]+)>)/ig, '') != '') {
+
+        array[i] = $(el).prop('outerHTML');
+        if ($(el).html().replace(/(<([^>]+)>)/ig, '') != '' || $(el).find('img').length) {
             if (firstTextPosition == null) {
                 firstTextPosition = i;
             }
@@ -38,15 +40,15 @@ window.FontAwesomeConfig = {
 }
 
 
-$('[ajax-selector="tab '+$('.active[ajax="tab"]').data('name')+'"]').show();
+$('[ajax-selector="tab-content tab-content-'+$('.tab-button-active[ajax="tab"]').data('name')+'"]').show();
 
 $('[ajax="tab"]').on('click', function () {
  
-    $('[ajax="tab"]').removeClass('active');
-    $(this).addClass('active');
+    $('[ajax="tab"]').removeClass('tab-button-active');
+    $(this).addClass('tab-button-active');
 
-    $('[ajax-selector^="tab"]').hide();
-    $('[ajax-selector="tab '+$(this).data('name')+'"]').show();
+    $('[ajax-selector^="tab-content"]').hide();
+    $('[ajax-selector="tab-content tab-content-'+$(this).data('name')+'"]').show();
 });
 
 $('.dropdown-name-collapse a').on('click', function() {
@@ -81,8 +83,11 @@ $('[ajax-selector="dropdown"] > a').on('click', function() {
 });
 
 // SUBMIT HTML
-$('input[type="submit"]').on('click', function() {
-    $('.trumbowyg-textarea').val(parseNewLines($('.trumbowyg .trumbowyg-editor').html()));
+$('input[type="submit"], a[ajax]').on('click', function(event) {
+
+    if ($('.trumbowyg-textarea').length) {
+        $('.trumbowyg-textarea').val(parseNewLines($('.trumbowyg .trumbowyg-editor').html()));
+    }
 });
 
 $('[ajax-selector="navbar navbar-default"] [ajax-selector="dropdown"] > a, [ajax-selector="navbar navbar-default"] [ajax-selector="dropdown-menu"], [ajax-selector="panel"] [ajax-selector="dropdown"] > a, [ajax-selector="panel"] [ajax-selector="dropdown-menu"]').hover(function() {
@@ -96,4 +101,3 @@ $('body').on('click', function (e) {
         $('[ajax-selector="window"]').removeClass('window-active');
     }
 });
-

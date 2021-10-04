@@ -27,7 +27,7 @@ class Show extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Overall',
+        'template' => '/Overall',
         'redirect' => '/admin/notification/',
         'permission' => 'admin.notification'
     ];
@@ -46,20 +46,20 @@ class Show extends \Page\Page
         $notification = new Notification();
 
         // NOTIFICATION
-        $notification = $notification->get($this->getID()) or $this->error();
+        $notification = $notification->get($this->url->getID()) or $this->error();
 
         // BREADCRUMB
-        $breadcrumb = new Breadcrumb('Admin/Notification');
+        $breadcrumb = new Breadcrumb('/Admin/Notification');
         $this->data->breadcrumb = $breadcrumb->getData();
 
         // FIELD
-        $field = new Field('Admin/Notification');
+        $field = new Field('/Admin/Notification');
         $field->data($notification);
         $field->object('notification')->title('L_NOTIFICATION_EDIT');
         $this->data->field = $field->getData();
 
         // EDIT NOTIFICATION
-        $this->process->form(type: 'Admin/Notification/Edit', data: [
+        $this->process->form(type: '/Admin/Notification/Edit', data: [
             'notification_id' => $notification['notification_id']
         ]);
 

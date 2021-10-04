@@ -32,8 +32,8 @@ class Email extends \Page\Page
     protected function body()
     {
         // VERIFY USER
-        $this->process->call(type: 'User/Verify/Email', mode: 'silent', url: '/', data: [
-            'email_code' => $this->getID()
+        $this->process->call(type: '/User/Verify/Email', mode: 'silent', url: '/', data: [
+            'email_code' => $this->url->getID()
         ]);
     }
 }

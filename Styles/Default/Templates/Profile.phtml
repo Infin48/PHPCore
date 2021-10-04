@@ -1,134 +1,37 @@
-<div class="page-content-profile-header" <?php if (!empty($this->data->data['user_header_image'])) : ?>style="background-image: url(/Uploads/User/<?= $this->data->data['user_id'] ?>/Header.<?= $this->data->data['user_header_image'] ?>)"<?php endif; ?>></div>
-<div class="page-content-profile-body">
-    <div class="page-content-side page-content-side-align-left page-content-side-type-fixed page-content-side-type-clear">
-        <div class="list list-small list-clear list-align">
-            <?= $this->build->user->image($this->data->data, false) ?>
-            <div class="list-body">
-                <div class="list-row">
-                    <span class="username user--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['user_name'] ?></span>
-                    <br>
-                    <span><?= $this->data->data['user_text'] ?></span>
-                    <div class="statue statue--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['group_name'] ?></div>
-                    <div class="statue<?php if ($this->data->data['user_reputation'] > 0) : ?> statue-green<?php else :?> statue-grey<?php endif; ?>">
-                        <?php if ($this->data->data['user_reputation'] > 0) : ?>    
-                            <i class="fas fa-thumbs-up"></i>
-                        <?php endif; ?>
-                        <?= $this->data->data['user_reputation'] ?>
-                    </div>
-                </div>
-                <div class="list-row">
-                    <div class="table">
-                        <div class="table-left"><?= $L_USER_LAST_LOGGED_IN ?>:</div>
-                        <div class="table-right">
-                            <?php if (time() - strtotime($this->data->data['user_last_activity']) > 60) : ?>
-                                <?= $this->build->date->short($this->data->data['user_last_activity']) ?>
-                            <?php else: ?>
-                                <span class="online"><?= strtoupper($L_USER_ONLINE) ?></span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="table">
-                        <div class="table-left"><?= $L_REGISTERED ?>:</div>
-                        <div class="table-right"><?= $this->build->date->short($this->data->data['user_registered']) ?></div>
-                    </div>
-                    <hr>
-                    <div class="table">
-                        <div class="table-left"><?= $L_TOPICS ?>:</div>
-                        <div class="table-right"><?= $this->data->data['user_topics'] ?></div>
-                    </div>
-                    <hr>
-                    <div class="table">
-                        <div class="table-left"><?= $L_POSTS ?>:</div>
-                        <div class="table-right"><?= $this->data->data['user_posts'] ?></div>
-                    </div>
-                    <?php if (($this->user->isLogged() and LOGGED_USER_ID != $this->data->data['user_id']) or ($this->user->perm->has('admin.user') and $this->user->perm->compare(index: $this->data->data['group_index'], admin: $this->data->data['is_admin']))) : ?>
-                        <div class="table m-top">
-                            <?php  if ($this->user->isLogged() and LOGGED_USER_ID != $this->data->data['user_id']) : ?>
-                                <div class="table-left">
-                                    <a class="a-reverse" href="<?= $this->system->url->build('/user/conversation/add/to-' . $this->data->data['user_id']) ?>"><?= $L_USER_CONVERSATION_SEND ?></a>
-                                </div>
-                            <?php endif; ?>
-                            <?php if ($this->user->perm->has('admin.user') and $this->user->perm->compare(index: $this->data->data['group_index'], admin: $this->data->data['is_admin'])) : ?>
-                                <div class="table-right">
-                                    <a class="a-reverse" href="<?= $this->system->url->build('/admin/user/show/' . $this->data->data['user_id']) ?>"><i class="fas fa-user-cog"></i></a>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <?php if ($this->data->data['user_gender'] != 'undefined' or $this->data->data['user_location'] or $this->data->data['user_age']) : ?>
-            <div class="list list-small list-clear">
-                <div class="list-head">
-                    <span><?= $L_INFORMATIONS ?></span>
-                </div>
-                <div class="list-body">
-                    <div class="list-row">
-                        <?php if ($this->data->data['user_gender'] != 'undefined') : ?>
-                            <div class="table">
-                                <div class="table-left"><?= $L_USER_GENDER ?>:</div>
-                                <div class="table-right"><?= ${'L_USER_GENDER_' . strtoupper($this->data->data['user_gender'])} ?></div>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($this->data->data['user_location'])) : ?>
-                            <hr>
-                            <div class="table">
-                                <div class="table-left"><?= $L_USER_LOCATION ?>:</div>
-                                <div class="table-right"><?= $this->data->data['user_location'] ?></div>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($this->data->data['user_age'])) : ?>
-                            <hr>
-                            <div class="table">
-                                <div class="table-left"><?= $L_USER_AGE ?>:</div>
-                                <div class="table-right"><?= $this->data->data['user_age'] ?></div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
+<div class="tab">
+    <a ajax="tab" data-name="default" class="tab-button tab-button-active"><?= $L_PROFILE_POSTS ?></a>
+    <?php if (!empty($this->data->data['user_signature'])) : ?>
+        <a ajax="tab" data-name="signature" class="tab-button"><?= $L_USER_SIGNATURE ?></a>
+    <?php endif; ?>
+</div>
+<div class="tab-content" ajax-selector="tab-content tab-content-default">
 
-    <div class="page-content-profile-posts">
-        <div class="tab">
-            <a ajax="tab" data-name="default" class="tab-button active"><?= $L_PROFILE_POSTS ?></a>
-            <?php if (!empty($this->data->data['user_signature'])) : ?>
-                <a ajax="tab" data-name="signature" class="tab-button"><?= $L_USER_SIGNATURE ?></a>
-            <?php endif; ?>
-        </div>
-        <div class="tabcontent" ajax-selector="tab default">
+    <?php require ROOT . '/Includes/Object/Visualization/Block/Templates/ProfilePostNew.phtml' ?>
 
-            <?php require ROOT . '/Includes/Object/Visualization/Block/Templates/ProfilePostNew.phtml' ?>
-
-            <?php if (isset($this->data->pagination['enabled']) and $this->data->pagination['enabled'] == true) : ?>
-                <div class="panel panel-top">
-                    <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
-                </div>
-            <?php endif; ?>
-            <div class="block-list" ajax-selector="block-list">
-                <?php require $this->template->template('/Blocks/Block/ProfilePost.phtml'); ?>
-
-                <?php if (empty($this->data->block['body']['profilepost']['body'])) : ?>
-                    <div class="block" ajax-selector="block block-empty">
-                        <div class="block-body"><?= strtr($L_PROFILE_POST_NO, ['{user_name}' => $this->data->data['user_name']]) ?></div>
-                    </div>
-                <?php endif; ?>
-
-            </div>
+    <?php if (isset($this->data->pagination['enabled']) and $this->data->pagination['enabled'] == true) : ?>
+        <div class="panel panel-top">
             <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
         </div>
+    <?php endif; ?>
+    <div class="block-list" ajax-selector="block-list">
+        <?php require $this->template->template('/Blocks/Visualization/Block/ProfilePost.phtml'); ?>
 
-        <?php if (!empty($this->data->data['user_signature'])) : ?>
-        <div class="tabcontent" ajax-selector="tab signature">
-            <div class="field">
-                <div class="field-row field-row-grid">
-                    <div class="field-text"><?= $this->data->data['user_signature'] ?></div>
-                </div>
+        <?php if (empty($this->data->block['body']['profilepost']['body'])) : ?>
+            <div class="block" ajax-selector="block block-empty">
+                <div class="block-body"><?= strtr($L_PROFILE_POST_NO, ['{user_name}' => $this->data->data['user_name']]) ?></div>
+            </div>
+        <?php endif; ?>
+
+    </div>
+    <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
+</div>
+
+<?php if (!empty($this->data->data['user_signature'])) : ?>
+    <div class="tab-content" ajax-selector="tab-content tab-content-signature">
+        <div class="field">
+            <div class="field-row field-row-grid">
+                <div class="field-text"><?= $this->data->data['user_signature'] ?></div>
             </div>
         </div>
-    <?php endif; ?>
     </div>
-</div>
+<?php endif; ?>

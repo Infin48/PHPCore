@@ -12,7 +12,7 @@
 
 namespace Page\Admin\Ajax;
 
-use Model\Get;
+use Model\Ajax;
 
 /**
  * Language
@@ -34,16 +34,26 @@ class Language extends \Page\Page
      */
     protected function body()
     {
-        $get = new Get();
+        $ajax = new Ajax();
+        $ajax->ajax(
 
-        $get->get('process') or exit();
+            require: ['process'],
 
-        $this->data->data([
-            'windowTitle' => $this->language->get('L_WINDOW_CONFIRM_ACTION'),
-            'windowClose' => $this->language->get('L_NO'),
-            'windowSubmit' => $this->language->get('L_YES'),
-            'windowContent' => $this->language->get('L_WINDOW_DESC')[$get->get('process')],
-            'status' => 'ok'
-        ]);
+            exec: function ( \Model\Ajax $ajax ) {
+
+                if (!isset($this->language->get('L_WINDOW')['L_DESC'][$ajax->get('process')])) {
+                    $ajax->end();
+                }
+
+                $ajax->data([
+                    'windowTitle' => $this->language->get('L_WINDOW')['L_TITLE']['L_CONFIRM'],
+                    'windowClose' => $this->language->get('L_NO'),
+                    'windowSubmit' => $this->language->get('L_YES'),
+                    'windowContent' => $this->language->get('L_WINDOW')['L_DESC'][$ajax->get('process')]
+                ]);
+                $ajax->ok();
+            }
+        );
+        $ajax->end();
     }
 }

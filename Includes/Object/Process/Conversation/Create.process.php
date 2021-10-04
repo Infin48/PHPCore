@@ -27,17 +27,17 @@ class Create extends \Process\ProcessExtend
                 'required' => true,
                 'length_max' => 100
             ],
-            'to'            => [
+            'to'                    => [
                 'type' => 'array',
                 'required' => true,
-                'length_max' => 10,
+                'length_max' => 9,
                 'block' => '\Block\User.getAllID'
             ],
-            'conversation_text'       => [
+            'conversation_text'     => [
                 'type' => 'html',
                 'required' => true,
                 'length_max' => 100000
-            ],
+            ]
         ]
     ];
 
@@ -84,6 +84,6 @@ class Create extends \Process\ProcessExtend
             }
         }
 
-        $this->redirectTo('/user/conversation/show/' .$lastInsertId . '.' . parse($this->data->get('conversation_name')));
+        $this->redirect('/user/conversation/show/' .$lastInsertId . '.' . parse($this->data->get('conversation_name')));
     }
 }

@@ -45,17 +45,35 @@ require ROOT . '/Includes/Function.php';
 
 spl_autoload_register(function ($class) {
 
-    $path = ROOT . '/Includes/Object/' . implode('/', $_path = explode('\\', $class)) . '.';
+    $_path = explode('\\', $class);
+    $path = ROOT . '/Includes/Object/' . implode('/', $_path) . '.';
 
-    $path .= match ($_path[0]) {
-        'Page' => 'page.php',
-        'Style' => 'style.php',
-        'Model' => 'model.php',
-        'Block' => 'block.php',
-        'Process' => 'process.php',
-        'Exception' => 'exception.php',
-        'Visualization' => 'visualization.php'
-    };
+    if ($_path[1] === 'Plugin' and isset($_path[2])) {
+
+        $_path = array_values($_path);
+
+        $path = ROOT . '/Plugins/' . $_path[2] . '/Object/' . $_path[0] . '/' . implode('/' , array_slice($_path, 3)) . '.';
+
+        $path .= match ($_path[0]) {
+            'Page' => 'page.php',
+            'Model' => 'model.php',
+            'Block' => 'block.php',
+            'Process' => 'process.php'
+        };
+
+    } else {
+
+        $path .= match ($_path[0]) {
+            'Page' => 'page.php',
+            'Style' => 'style.php',
+            'Model' => 'model.php',
+            'Block' => 'block.php',
+            'Plugin' => 'plugin.php',
+            'Process' => 'process.php',
+            'Exception' => 'exception.php',
+            'Visualization' => 'visualization.php'
+        };
+    }
 
     if (file_exists($path) === false) {
 
@@ -64,6 +82,7 @@ spl_autoload_register(function ($class) {
             'Style' => throw new \Exception\System('Hledaná styl \'' . $path . '\' neexistuje!'),
             'Model' => throw new \Exception\System('Hledaný model \'' . $path . '\' neexistuje!'),
             'Block' => throw new \Exception\System('Hledaný blok \'' . $path . '\' neexistuje!'),
+            'Plugin' => throw new \Exception\System('Hledaný plugin \'' . $path . '\' neexistuje!'),
             'Process' => throw new \Exception\System('Hledaný proces \'' . $path . '\' neexistuje!'),
             'Exception' => throw new \Exception\System('Hledaná vyjímka \'' . $path . '\' neexistuje!'),
             'Visualization' => throw new \Exception\System('Hledaný vizualizátor \'' . $path . '\' neexistuje!')
@@ -79,7 +98,14 @@ set_exception_handler(function ($exception) {
 
 require ROOT . '/Includes/Constants.php';
 
-$router = new Page\Router();
+$url = urldecode($_SERVER['REQUEST_URI']);
+
+if (str_starts_with(strtolower($url), '/admin/')) {
+    $router = new Page\Admin\Router();
+} else {
+    $router = new Page\Router();
+}
 $router->body();
+Model\Database\Database::destroy();
 
 exit();
