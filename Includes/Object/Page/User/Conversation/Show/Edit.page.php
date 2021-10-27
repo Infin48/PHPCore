@@ -28,7 +28,7 @@ class Edit extends \Page\Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_BIG,
-        'template' => 'User/Conversation/Edit',
+        'template' => '/User/Conversation/Edit',
         'loggedIn' => true
     ];
 

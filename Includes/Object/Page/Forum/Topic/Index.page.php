@@ -37,7 +37,7 @@ class Index extends \Page\Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_BIG,
-        'template' => 'Forum/Topic/View',
+        'template' => '/Forum/Topic/View',
         'notification' => true
     ];
 

@@ -24,7 +24,7 @@ class Add extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'page/page',
+        'template' => '/Overall',
         'redirect' => '/admin/page/',
         'permission' => 'admin.page'
     ];

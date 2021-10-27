@@ -26,7 +26,7 @@ class Signature extends \Page\Page
      */
     protected array $settings = [
         'editor' => EDITOR_BIG,
-        'template' => 'User/Signature',
+        'template' => '/User/Signature',
         'loggedIn' => true
     ];
     

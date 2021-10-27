@@ -53,7 +53,7 @@
                         }
                     }
                 },
-                "notificationis_hidden": {
+                "notification_hidden": {
                     "options": {
                         "type": "checkbox"
                     },

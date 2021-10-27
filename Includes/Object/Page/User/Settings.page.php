@@ -25,7 +25,7 @@ class Settings extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'User/Settings',
+        'template' => '/User/Settings',
         'loggedIn' => true
     ];
     

@@ -27,7 +27,7 @@ class Add extends \Page\Page
      */
     protected array $settings = [
         'editor' => EDITOR_BIG,
-        'template' => 'User/Conversation/New',
+        'template' => '/User/Conversation/New',
         'loggedIn' => true
     ];
     

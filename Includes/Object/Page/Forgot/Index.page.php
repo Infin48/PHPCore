@@ -23,7 +23,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'Forgot/Send',
+        'template' => '/Forgot/Send',
         'loggedOut' => true
     ];
 

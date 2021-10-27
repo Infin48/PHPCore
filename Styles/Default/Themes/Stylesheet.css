@@ -1033,20 +1033,20 @@ html.profile .tab-content {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     background-color: #fff;
 }
-.list.list-name-users .list-body .list-row {
+.list.list-name-onlineusers .list-body .list-row {
     display: flex;
     flex-wrap: wrap;
 }
-.list.list-name-users .list-body .list-row a {
+.list.list-name-onlineusers .list-body .list-row a {
     margin: 5px 0;
     margin-right: 15px;
 }
-.page-content-side .list.list-name-users .profile-image {
+.page-content-side .list.list-name-onlineusers .profile-image {
     width: 25px;
     height: 25px;
     font-size: 18px;
 }
-.list.list-name-users .list-body > :last-child {
+.list.list-name-onlineusers .list-body > :last-child {
     background-color: #fafafa;
 }
 .list.list-align {
@@ -2600,9 +2600,6 @@ span.online {
     color: #4e4e4e;
     background-color: transparent;
     border: 3px solid #4e4e4e;
-}
-.list-name-users .list-row-name-bottom span {
-    margin-right: 5px;
 }
 .preview {
     position: fixed;

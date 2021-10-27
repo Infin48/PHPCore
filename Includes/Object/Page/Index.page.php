@@ -111,7 +111,7 @@ class Index extends Page
             ->option('topics')->value($stats['topic'])
             ->option('posts')->value($stats['post'])
             ->option('users')->value($stats['user'])
-            ->object('users')->row('users')->fill(data: $user->getOnline())
-            ->object('profile')->fill(data: $profilePost->getLast())->getData();
+            ->object('onlineusers')->row('users')->fill(data: $user->getOnline())
+            ->object('profileposts')->fill(data: $profilePost->getLast())->getData();
     }
 }

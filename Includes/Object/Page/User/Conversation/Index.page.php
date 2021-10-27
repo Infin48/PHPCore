@@ -29,7 +29,7 @@ class Index extends \Page\Page
      * @var array $settings Page settings
      */
     protected array $settings = [
-        'template' => 'User/Conversation/Index',
+        'template' => '/User/Conversation/Index',
         'loggedIn' => true
     ];
     

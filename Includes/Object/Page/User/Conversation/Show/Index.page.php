@@ -34,7 +34,7 @@ class Index extends \Page\Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_BIG,
-        'template' => 'User/Conversation/Show',
+        'template' => '/User/Conversation/Show',
         'loggedIn' => true
     ];
 

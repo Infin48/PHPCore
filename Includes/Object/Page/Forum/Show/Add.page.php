@@ -29,7 +29,7 @@ class Add extends \Page\Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_BIG,
-        'template' => 'Forum/Topic/New',
+        'template' => '/Forum/Topic/New',
         'permission' => 'topic.create'
     ];
 

@@ -2,7 +2,7 @@
     "name": "Česky",
     "version": {
         "current": "1.1.0",
-        "system": ["1.1.0"]
+        "system": ["1.1.0", "1.1.1"]
     },
     "author": {
         "name": "Infin48",

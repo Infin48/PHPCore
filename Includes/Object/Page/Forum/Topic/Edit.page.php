@@ -28,7 +28,7 @@ class Edit extends \Page\Page
     protected array $settings = [
         'id' => int,
         'editor' => EDITOR_BIG,
-        'template' => 'Forum/Topic/Edit',
+        'template' => '/Forum/Topic/Edit',
         'permission' => 'topic.edit'
     ];
 

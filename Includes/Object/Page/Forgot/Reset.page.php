@@ -26,7 +26,7 @@ class Reset extends \Page\Page
      */
     protected array $settings = [
         'id' => string,
-        'template' => 'Forgot/Change',
+        'template' => '/Forgot/Change',
         'loggedOut' => true
     ];
 

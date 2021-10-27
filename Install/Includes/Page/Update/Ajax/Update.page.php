@@ -46,7 +46,7 @@ class Update extends \Page\Page
             $db->table('phpcore_settings', [
                 'site.name' =>  $JSON->get('site.name'),
                 'site.locale' =>  $JSON->get('site.locale'),
-                'site.version' =>  '1.1.0',
+                'site.version' =>  '1.1.1',
                 'site.favicon' =>  $JSON->get('site.favicon'),
                 'site.updated' =>  DATE_DATABASE,
                 'site.started' =>  $JSON->get('site.started'),

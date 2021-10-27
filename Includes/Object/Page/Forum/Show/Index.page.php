@@ -32,7 +32,7 @@ class Index extends \Page\Page
      */
     protected array $settings = [
         'id' => int,
-        'template' => 'Forum/View',
+        'template' => '/Forum/View',
         'notification' => true
     ];
 
