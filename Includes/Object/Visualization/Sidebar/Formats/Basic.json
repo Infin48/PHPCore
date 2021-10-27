@@ -1,6 +1,6 @@
 {
     "body": {
-        "users": {
+        "onlineusers": {
             "data": {
                 "title": "L_ONLINE_USERS"
             },
@@ -49,7 +49,7 @@
                 }
             }
         },
-        "profile": {
+        "profileposts": {
             "options": {
                 "empty": "L_LAST_PROFILE_POSTS_NO"
             },
