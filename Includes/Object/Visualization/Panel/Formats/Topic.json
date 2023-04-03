@@ -80,7 +80,7 @@
                     },
                     "data": {
                         "title": "L_DELETE",
-                        "ajax": "process-window"
+                        "ajax": "process"
                     }
                 },
                 "lock":{
