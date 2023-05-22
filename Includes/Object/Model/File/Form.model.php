@@ -10,12 +10,12 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\File;
+namespace App\Model\File;
 
 /**
  * Form
  */
-class Form extends \Model\Model
+class Form
 {
     /**
      * @var bool $ignoreLimit If true - file will be ignore max file size limit
@@ -28,28 +28,33 @@ class Form extends \Model\Model
     public array $uploadedFile = [];
 
     /**
-     * @var \Model\File\File $file File
+     * @var string $path Path to file
      */
-    public \Model\File\File $file;
+    public string $path = '';
+
+    /**
+     * @var \App\Model\File\File $file File
+     */
+    protected \App\Model\File\File $file;
 
     /**
      * Constructor
      * 
-     * @param  string $file File name
+     * @param  \Model\File\File $file File name
+     * @param  array $data File data
      */
-    public function __construct( \Model\File\File $file, string $uploadedFile )
+    public function __construct( \App\Model\File\File $file, array $data = [] )
     {
-        parent::__construct();
-
         $this->file = $file;
+        $this->uploadedFile = $data;
 
-        $this->uploadedFile = $_FILES[$uploadedFile] ?? [];
-
-        if (empty($this->uploadedFile['tmp_name'])) {
+        if (empty($this->uploadedFile['tmp_name']))
+        {
             $this->uploadedFile = [];
         }
 
-        if (method_exists($this, 'ini')) {
+        if (method_exists($this, 'ini'))
+        {
             $this->{'ini'}();
         }
     }
@@ -57,7 +62,7 @@ class Form extends \Model\Model
     /**
      * Checks file
      * 
-     * @throws \Exception\Notice If is found an error
+     * @throws \App\Exception\Notice If is found an error
      * 
      * @return void|true
      */
@@ -67,13 +72,16 @@ class Form extends \Model\Model
             return false;
         }
         
-        if (!in_array($this->uploadedFile['type'], $this->formats)) {
-            throw new \Exception\Notice('file_format');
+        if (!in_array($this->uploadedFile['type'], $this->formats))
+        {
+            throw new \App\Exception\Notice('file_format');
         }
 
-        if ($this->ignoreLimit === false) {
-            if ($this->uploadedFile['size'] > $this->size) {
-                throw new \Exception\Notice('file_size');
+        if ($this->ignoreLimit === false)
+        {
+            if ($this->uploadedFile['size'] > $this->size)
+            {
+                throw new \App\Exception\Notice('file_size');
             }
         }
 
@@ -87,13 +95,71 @@ class Form extends \Model\Model
      * 
      * @return bool
      */
-    public function upload( string $path )
+    public function upload( string $path, string $name = null )
     {
-        if (move_uploaded_file($this->uploadedFile['tmp_name'], ROOT . $path . '.' . $this->getFormat())) {
+        if (!$this->uploadedFile)
+        {
+            return false;
+        }
+
+        if (is_null($name))
+        {
+            $name = $this->uploadedFile['name'];
+        } else $name .= '.' . $this->getFormat();
+
+        $this->path = $path . '/' . $name;
+
+        if (move_uploaded_file($this->uploadedFile['tmp_name'], ROOT . $this->path)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Compress uploaded file
+     * 
+     * @param string $quality Compress quality
+     * 
+     * @return bool
+     */
+    public function compress( int $quality = 25 )
+    {
+        if (!$this->uploadedFile)
+        {
+            return false;
+        }
+
+        $info = getimagesize($this->uploadedFile['tmp_name']);
+
+        if (!$info['mime'])
+        {
+            return;
+        }
+
+        if ($info['mime'] == 'image/gif')
+        {
+            return true;
+        }
+
+        $image = match ($info['mime'])
+        {
+            'image/webp' => imagecreatefromwebp($this->uploadedFile['tmp_name']),
+            'image/jpeg' => imagecreatefromjpeg($this->uploadedFile['tmp_name']),
+            'image/gif' => imagecreatefromgif($this->uploadedFile['tmp_name']),
+            'image/png' => imagecreatefrompng($this->uploadedFile['tmp_name']),
+
+            default => ''
+        };
+        
+        if (!$image)
+        {
+            return true;
+        }
+
+        imagejpeg($image, $this->uploadedFile['tmp_name'], $quality);
+
+        return true;
     }
 
     /**
@@ -116,5 +182,30 @@ class Form extends \Model\Model
     public function ignoreLimit()
     {
         $this->ignoreLimit = true;
+    }
+
+    /**
+     * Returns true if file exists
+     *
+     * @return bool
+     */
+    public function exists()
+    {
+        if ($this->uploadedFile)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns path to uploaded file
+     *
+     * @return bool
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 }

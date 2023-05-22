@@ -15,7 +15,7 @@ class HTMLPurifier_AttrDef_URI_Email_SimpleCheck extends HTMLPurifier_AttrDef_UR
      */
     public function validate($string, $config, $context)
     {
-        // no support for named mailboxes i.e. "Bob <bob@example.com>"
+        // no support for named mailboxes i.e. "bob <bob@example.com>"
         // that needs more percent encoding to be done
         if ($string == '') {
             return false;

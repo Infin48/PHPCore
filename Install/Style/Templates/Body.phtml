@@ -1,59 +1,26 @@
 <html lang="cs-cz" class="html-hidden">
     <head>
         <meta charset="UTF-8">
-        <title><?= $L_INSTALL ?> | PHPCore</title>
+        <title><?= $language->get('L_INSTALL') ?> | PHPCore</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="shortcut icon" type="image/x-icon" href="/Uploads/Site/PHPCore_icon.svg">
 
         <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Light.woff2?1" crossorigin>
-        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Light.woff?1" crossorigin>
         <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Regular.woff2?1" crossorigin>
-        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Regular.woff?1" crossorigin>
         <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Medium.woff2?1" crossorigin>
-        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Medium.woff?1" crossorigin>
         <link rel="preload" as="font" type="font/woff2" href="/Install/Style/Themes/Fonts/Quicksand-Bold.woff2?1" crossorigin>
-        <link rel="preload" as="font" type="font/woff" href="/Install/Style/Themes/Fonts/Quicksand-Bold.woff?1" crossorigin>
-        <link rel="stylesheet" type="text/css" href="/Install/Style/Themes/Quicksand.min.css?26">
         <link rel="stylesheet" type="text/css" href="/Install/Style/Themes/Stylesheet.css?<?= RAND ?>">
         <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
     </head> 
     <body>
-        <?php if ($this->data->data['page'] !== 'index' and $this->data->data['page'] !== 'end') : ?>
-            <a class="top-button" href="?go=back"><i class="fas fa-chevron-left"></i> <?= $L_BACK ?></a>
+        <?php if (!in_array($data->get('data.page'), ['index', 'install-end', 'update-end'])) : ?>
+            <a class="top-button" href="<?= $data->get('data.previous') ?>"><i class="fa-solid fa-chevron-left"></i> <?= $language->get('L_BTN.L_BACK') ?></a>
         <?php endif; ?>
-        <?php if ($this->data->data['page'] === 'end') : ?>
-            <a class="top-button" href="?go=index"><i class="fas fa-chevron-left"></i> <?= $L_BACK_TO_INDEX ?></a>
-        <?php endif; ?>
-        <?php if (!empty($this->data->breadcrumb)) : ?>
-            <div class="breadcrumb">
-                <div class="breadcrumb-content">
-                    <?php if (in_array('install-language', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if (in_array('install-language', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'install-language') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_LANGUAGE'] ?></span>
-                    <?php endif; ?>
-                    <?php if (in_array('database', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if ($this->data->data['back'] === true and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] == 'install-language') : ?>class="breadcrumb-active-previous"<?php endif; ?><?php if (in_array('database', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'database') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_DATABASE'] ?></span>
-                    <?php endif; ?>
-                    <?php if (in_array('update', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if (in_array('update', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'update') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_UPDATE'] ?></span>
-                    <?php endif; ?>
-                    <?php if (in_array('install-admin', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if ($this->data->data['back'] === true and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] == 'database') : ?>class="breadcrumb-active-previous"<?php endif; ?> <?php if (in_array('install-admin', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'install-admin') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_ADMIN'] ?></span>
-                    <?php endif; ?>
-                    <?php if (in_array('install-site', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if ($this->data->data['back'] === true and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] == 'install-admin') : ?>class="breadcrumb-active-previous"<?php endif; ?><?php if (in_array('install-site', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'install-site') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_SETTINGS'] ?></span>
-                    <?php endif; ?>
-                    <?php if (in_array('end', $this->data->breadcrumb['list'])) : ?>
-                        <span <?php if ($this->data->data['back'] === true and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] == 'install-site') : ?>class="breadcrumb-active-previous"<?php endif; ?><?php if (in_array('end', $this->data->breadcrumb['active'])) : ?>class="breadcrumb-active<?php if ($this->data->data['back'] == false and $this->data->breadcrumb['active'][array_key_last($this->data->breadcrumb['active'])] === 'end') : ?> breadcrumb-active-last<?php endif; ?>"<?php endif; ?>><?= $L_BREADCRUMB['L_END'] ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
+        <?php if (in_array($data->get('data.page'), ['install-end', 'update-end'])) : ?>
+            <a class="top-button" href="/menu/"><i class="fa-solid fa-chevron-left"></i> <?= $language->get('L_BACK_TO_INDEX') ?></a>
         <?php endif; ?>
         <?= $this->show() ?>
-        <script>
-            window.onload = function() {
-                document.getElementsByTagName('html')[0].classList.remove('html-hidden');
-            }
-        </script>
+        <script>window.onload=function(){document.getElementsByTagName('html')[0].classList.remove('html-hidden');}</script>
     </body>
 </html>

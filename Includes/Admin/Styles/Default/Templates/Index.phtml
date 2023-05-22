@@ -1,44 +1,26 @@
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-<?php
-        $cache = $this->data->list;
-        $this->data->list['body'] = ['news' => $cache['body']['news']];
-    ?>
-<div class="lists">
-    <div class="lists-middle">
+<div class="page-layout">
+    <?php if ( $this->system->get('site.mode') == 'forum' ) : ?>
         <div class="chart">
-            <div class="chart-head"><?= $L_STATISTICS_TOPIC_POST_MONTH ?></div>
+            <div class="chart-head"><?= $language->get('L_STATISTIC.L_TOPIC_POST.L_MONTH') ?></div>
             <div class="chart-body">
                 <div id="forum" style="height:300px;"></div>
             </div>
         </div>
-        <?php
-            $this->data->list['body'] = ['news' => $cache['body']['news']];;
-        ?>
-        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
-    </div>
-    <?php
-        $this->data->list['body'] = ['users' => $cache['body']['users']];;
-    ?>
-    <div class="lists-middle">
+    <?php endif; ?>
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
+    <?php if ( $this->system->get('site.mode') == 'forum' ) : ?>
         <div class="chart">
-            <div class="chart-head"><?= $L_STATISTICS_USER_MONTH ?></div>
+            <div class="chart-head"><?= $language->get('L_STATISTIC.L_USER.L_MONTH') ?></div>
             <div class="chart-body">
                 <div id="users" style="height:300px;"></div>
             </div>
         </div>
-        <?php
-            $this->data->list['body'] = ['users' => $cache['body']['users']];;
-        ?>
-        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
-    </div>
-    <?php
-        $this->data->list['body'] = ['log' => $cache['body']['log']];;
-    ?>
-    <div class="lists-middle">
-        <?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
-
-        <?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
-    </div>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
+    <?php endif; ?>
+    <?php if ($this->user->perm->has('admin.log')) : ?>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
+    <?php endif; ?>
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Form/Form.phtml'); ?>
 </div>
 <script src="/Assets/ApexCharts/ApexCharts.min.js"></script>
 <script>
@@ -63,11 +45,11 @@
         },
         series: [
             {
-                name: '<?= $L_POSTS ?>',
+                name: '<?= $language->get('L_POSTS') ?>',
                 data: data.posts
             },
             {
-                name: '<?= $L_TOPICS ?>',
+                name: '<?= $language->get('L_TOPICS') ?>',
                 data: data.topics
             }
         ],
@@ -94,7 +76,7 @@
         },
         series: [
             {
-                name: '<?= $L_USERS ?>',
+                name: '<?= $language->get('L_USERS') ?>',
                 data: data.users
             }
         ],

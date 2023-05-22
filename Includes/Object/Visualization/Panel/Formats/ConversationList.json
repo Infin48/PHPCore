@@ -5,9 +5,9 @@
                 "type": "button"
             },
             "data": {
-                "href":"/add/",
-                "icon":"fas fa-envelope",
-                "title":"L_NEW_CONVERSATION"
+                "href": "/user/conversation/add/",
+                "icon": "fa-solid fa-envelope",
+                "title":"L_BTN.L_CONVERSATION_NEW"
             }
         }
     }

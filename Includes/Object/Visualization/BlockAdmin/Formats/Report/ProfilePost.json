@@ -1,0 +1,12 @@
+{
+    "body": {
+        "profile_post": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_PROFILE_POST.L_REPORTED",
+                "value": "",
+                "color": "red"
+            }
+        }
+    }
+}

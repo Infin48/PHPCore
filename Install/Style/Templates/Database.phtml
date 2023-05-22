@@ -1,32 +1,32 @@
 
 <div class="page-column">
-    <div class="page-column-icon"><i class="fas fa-database"></i></div>
-    <div class="page-column-title"><?= $L_DATABASE ?></div>
-    <?php if (isset($this->data->data['notice'])) : ?>
+    <div class="page-column-icon"><i class="fa-solid fa-database"></i></div>
+    <div class="page-column-title"><?= $language->get('L_DATABASE.L_DATABASE') ?></div>
+    <?php if ($data->get('data.notice')) : ?>
         <div class="page-column-alert">
-            <span><?= $this->data->data['notice'] ?></span>
+            <span><?= $data->get('data.notice') ?></span>
         </div>
     <?php endif; ?>
     <form method="post">
         <div class="page-column-body">
             <div class="page-column-input">
-                <input type="text" name="host" placeholder="<?= $L_HOST ?>" value="<?= $this->form->get('host') ?>"><i class="fas fa-server"></i>
+                <input type="text" name="host" placeholder="<?= $language->get('L_DATABASE.L_HOST') ?>" value="<?= $post->get('host') ?>"><i class="fa-solid fa-server"></i>
             </div>
             <div class="page-column-input">
-                <input type="text" name="user_name" placeholder="<?= $L_DATABASE_USERNAME ?>" value="<?= $this->form->get('user_name') ?>"><i class="fas fa-user"></i>
+                <input type="text" name="user_name" placeholder="<?= $language->get('L_DATABASE.L_USERNAME') ?>" value="<?= $post->get('user_name') ?>"><i class="fa-solid fa-user"></i>
             </div>
             <div class="page-column-input">
-                <input type="password" name="user_password" placeholder="<?= $L_PASSWORD ?>" value="<?= $this->form->get('user_password') ?>"><i class="fas fa-key"></i>
+                <input type="password" name="user_password" placeholder="<?= $language->get('L_DATABASE.L_PASSWORD') ?>" value="<?= $post->get('user_password') ?>"><i class="fa-solid fa-key"></i>
             </div>
             <div class="page-column-input">
-                <input type="text" name="database" placeholder="<?= $L_DATABASE_NAME ?>" value="<?= $this->form->get('database') ?>"><i class="fas fa-database"></i>
+                <input type="text" name="database" placeholder="<?= $language->get('L_DATABASE.L_NAME') ?>" value="<?= $post->get('database') ?>"><i class="fa-solid fa-database"></i>
             </div>
             <div class="page-column-input">
-                <input type="text" name="port" placeholder="<?= $L_PORT ?>" value="<?= $this->form->get('port') ?>"><i class="fas fa-sort-numeric-up-alt"></i>
+                <input type="text" name="port" placeholder="<?= $language->get('L_DATABASE.L_PORT') ?>" value="<?= $post->get('port') ?>"><i class="fa-solid fa-sort-numeric-up-alt"></i>
             </div>
             <div class="field-submit">
                 <input type="hidden" value="<?= SESSION_ID ?>" name="key">
-                <input class="button" type="submit" name="submit" value="<?= $L_NEXT ?>">
+                <input class="button" type="submit" name="submit" value="<?= $language->get('L_NEXT') ?>">
             </div>
         </div>
     </form>

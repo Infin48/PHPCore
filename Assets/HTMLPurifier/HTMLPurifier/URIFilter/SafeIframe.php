@@ -23,8 +23,8 @@ class HTMLPurifier_URIFilter_SafeIframe extends HTMLPurifier_URIFilter
      */
     protected $regexp = null;
 
-    // XXX: The not so good bit about how this is all set up now is we
-    // can't check HTML.SafeIframe in the 'prepare' step: we have to
+    // Xxx: the not so good bit about how this is all set up now is we
+    // can't check html.safeiframe in the 'prepare' step: we have to
     // defer till the actual filtering.
     /**
      * @param HTMLPurifier_Config $config

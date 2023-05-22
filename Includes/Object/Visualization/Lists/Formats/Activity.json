@@ -1,0 +1,19 @@
+{
+    "body": {
+        "activity": {
+            "data": {
+                "empty": "L_USER.L_ACTIVITY.L_NO"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Activity.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

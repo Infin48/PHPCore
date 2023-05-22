@@ -1,8 +1,11 @@
-<div class="vertical-align">
-    <?= $this->build->user->image($row['data']) ?>
-    <div class="inner">
-        <?= $this->build->user->link($row['data'], true) ?>
-        <br>
-        <?= $row['data']['group_name'] ?>
+<div class="list-row-align">
+    <span class="list-row-id">#<?= $list->get('data.user_id') ?></span>
+    <div class="list-row-align">
+        <?= $this->build->user->image($list->get('data')) ?>
+        <div class="inner">
+            <?= $this->build->user->link(data: $list->get('data')) ?>
+            <br>
+            <?= $list->get('data.group_name') ?>
+        </div>
     </div>
 </div>

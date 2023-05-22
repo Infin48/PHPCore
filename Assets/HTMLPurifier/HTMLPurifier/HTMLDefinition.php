@@ -26,7 +26,7 @@
 class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 {
 
-    // FULLY-PUBLIC VARIABLES ---------------------------------------------
+    // Fully-public variables ---------------------------------------------
 
     /**
      * Associative array of element names to HTMLPurifier_ElementDef.
@@ -99,7 +99,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
 
 
-    // RAW CUSTOMIZATION STUFF --------------------------------------------
+    // Raw customization stuff --------------------------------------------
 
     /**
      * Adds a custom attribute to a pre-existing element
@@ -130,7 +130,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     {
         $module = $this->getAnonymousModule();
         // assume that if the user is calling this, the element
-        // is safe. This may not be a good idea
+        // is safe. this may not be a good idea
         $element = $module->addElement($element_name, $type, $contents, $attr_collections, $attributes);
         return $element;
     }
@@ -167,7 +167,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     private $_anonModule = null;
 
-    // PUBLIC BUT INTERNAL VARIABLES --------------------------------------
+    // Public but internal variables --------------------------------------
 
     /**
      * @type string
@@ -211,7 +211,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     {
         if ($this->_anonModule) {
             // for user specific changes
-            // this is late-loaded so we don't have to deal with PHP4
+            // this is late-loaded so we don't have to deal with php4
             // reference wonky-ness
             $this->manager->addModule($this->_anonModule);
             unset($this->_anonModule);
@@ -307,7 +307,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             }
             // emit errors
             foreach ($allowed_elements as $element => $d) {
-                $element = htmlspecialchars($element); // PHP doesn't escape errors, be careful!
+                $element = htmlspecialchars($element); // Php doesn't escape errors, be careful!
                 trigger_error("Element '$element' is not supported $support", E_USER_WARNING);
             }
         }
@@ -317,8 +317,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
         $allowed_attributes_mutable = $allowed_attributes; // by copy!
         if (is_array($allowed_attributes)) {
             // This actually doesn't do anything, since we went away from
-            // global attributes. It's possible that userland code uses
-            // it, but HTMLModuleManager doesn't!
+            // global attributes. it's possible that userland code uses
+            // it, but htmlmodulemanager doesn't!
             foreach ($this->info_global_attr as $attr => $x) {
                 $keys = array($attr, "*@$attr", "*.$attr");
                 $delete = true;
@@ -467,7 +467,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             if (empty($chunk)) {
                 continue;
             }
-            // remove TinyMCE element control characters
+            // remove tinymce element control characters
             if (!strpos($chunk, '[')) {
                 $element = $chunk;
                 $attr = false;

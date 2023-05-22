@@ -1,19 +1,13 @@
-<div class="block-inner m-top fw-600" ajax-selector="likes">
+<div class="block-inner fw-600" js="likes">
     <span>
-        <span class="like" ><i class="fas fa-thumbs-up"></i></span> x <span class="count" ajax-selector="count"><?= isset($row) ? $row['data']['count_of_likes'] : '' ?></span>
+        <span class="like" ajax="title" ajax-title="<?= $this->language->get('L_LIKE.L_LIKE') ?>"><i class="fa-solid fa-thumbs-up"></i></span> x <span class="count" js="count"><?= $block->get('data.count_of_likes') ?></span>
     </span>
-    <span class="commas" ajax-selector="list">
-        <?php if (isset($row)) : ?>
-            <?php foreach ($row['data']['likes'] as $username) : ?>
-                <?php if ($this->user->isLogged() and $username['user_id'] == LOGGED_USER_ID) : ?>
-                    <span><?= $L_YOU ?></span>
-                <?php else : ?>
-                    <?= $this->build->user->link($username) ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-            <?php if ($row['data']['is_more_likes'] == 1) : ?>
-                <a ajax="likes" ajax-process="/Likes">... <?= $L_LIKES_MORE ?> <?= (int)$row['data']['count_of_likes'] - 5 ?></a>
-            <?php endif; ?>
+    <span class="commas" js="list">
+        <?php $block->each('data.likes', function ($like) { ?>
+            <?= $like->get('user_name') ?>
+        <?php }); ?>
+        <?php if ($block->get('data.count_of_likes') > 5) : ?>
+            <a ajax-action="likes" ajax-window>... <?= $this->language->get('L_LIKE.L_MORE') ?> <?= (int)$block->get('data.count_of_likes') - 5 ?></a>
         <?php endif; ?>
     </span>
 </div>

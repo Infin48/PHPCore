@@ -10,67 +10,93 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Visualization\Field\Field;
-use Visualization\Admin\Block\Block;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin;
 
 /**
  * Update
  */
-class Update extends \Page\Page
+class Update extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Update',
-        'permission' => 'admin.settings'
-    ];
+    protected string $template = 'Root/Style:/Templates/Update.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.settings';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('other')->row('update')->active();
+        // System
+        $system = $data->get('inst.system');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Language
+        $language = $data->get('inst.language');
 
-        // BLOCK
-        $block = new Block('/Update');
+        // Navbar
+        $this->navbar->elm1('other')->elm2('update')->active();
+
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Update.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+
+        // Notification
+        $notification = new \App\Visualization\Notification\Notification($data->notification);
+        $notification
+            // Create new object(notification) and jump inside
+            ->create()->jumpTo()
+            // Set name
+            ->set('data.name', 'update')
+            // Set type
+            ->set('data.type', 'warning')
+            // Set title
+            ->set('data.title', $language->get('L_NOTIFI.L_UPDATE.L_TITLE'));
+        $data->notification = $notification->getDataToGenerate();
+
+        // Block
+        $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Update.json');
         $block
-            ->object('version')->value($this->system->get('site.version'))
-            ->object('last_updated')->value($this->build->date->short($this->system->get('site.updated')));
-        $this->data->block = $block->getData();
+            // Set current PHPCore version
+            ->elm1('version')->value(PHPCORE_VERSION)
+            // Set date of last update
+            ->elm1('last_updated')->value($this->build->date->short($system->get('site.updated')));
 
-        $API = json_decode(@file_get_contents('https://api.github.com/repos/Infin48/PHPCore/releases', false, CONTEXT), true);
+        // Save block and get ready to generate
+        $data->block = $block->getDataToGenerate();
 
-        // FIELD
-        $field = new Field('/Admin/Update');
-        $field->disButtons();
-        if (($API[0] ?? false) and $API[0]['tag_name'] != $this->system->get('site.version')) {
-            
-            $field->data($API[0]);
-            $field->object('available')->show();
-            $field->data(array_merge($API[0], [
-                'pre-release' => $this->language->get($API[0]['prerelease'] == 1 ? 'L_UPDATE_TYPE_PRERELEASE' : 'L_UPDATE_TYPE_STABLE')
-            ]));
-            $field->object('available')
-                ->row('details')->setData('href', '$' . $API[0]['html_url'])
-                ->row('download')->setData('href', '$' . $API[0]['zipball_url']);
+        // Load JSON from GitHub
+        $JSON = new \App\Model\File\JSON('https://api.github.com/repos/Infin48/PHPCore/releases');
+        
+        // If exists release
+        if ($JSON->get('0'))
+        {
+            // If this latest release is newer then installed 
+            if (version_compare($JSON->get('0.tag_name'), PHPCORE_VERSION, '>='))
+            {
+                // Form
+                $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Update.json');
+                $form
+                    ->form('update')
+                        // Fill form with data
+                        ->data($JSON->get('0'))
+                        // Remove buttons
+                        ->disButtons()
+                        ->frame('available')
+                            // Set link to details button
+                            ->input('details')->set('data.href', '$' . $JSON->get('0.html_url'))
+                            // Set link to download button
+                            ->input('download')->set('data.href', '$' . $JSON->get('0.zipball_url'));
 
-        } else {
-
-            $field->object('empty')->show();
+                // Save form and get ready to generate
+                $data->form = $form->getDataToGenerate();
+            }
         }
-
-        $this->data->field = $field->getData();
     }
 }

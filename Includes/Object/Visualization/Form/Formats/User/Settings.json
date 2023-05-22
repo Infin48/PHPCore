@@ -1,0 +1,165 @@
+{
+    "body": {
+        "settings": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "settings": {
+                    "body": {
+                        "user_text": {
+                            "options": {
+                                "type": "text",
+                                "max-length": "50"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_TEXT.L_DESC",
+                                "title": "L_USER.L_TEXT.L_TEXT",
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        },
+                        "user_location": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_ON_PROFILE",
+                                "title": "L_USER.L_LOCATION",
+                                "placeholder": "L_PLACEHOLDER.L_LOCATION"
+                            }
+                        },
+                        "user_age": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_ON_PROFILE",
+                                "title": "L_USER.L_AGE",
+                                "placeholder": "L_PLACEHOLDER.L_AGE"
+                            }
+                        },
+                        "user_gender": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_USER.L_GENDER",
+                                "desc": "L_USER.L_ON_PROFILE"
+                            },
+                            "body": {
+                                "man": {
+                                    "data": {
+                                        "label": "L_MAN",
+                                        "value": "man"
+                                    }
+                                },
+                                "woman": {
+                                    "data": {
+                                        "label": "L_WOMAN",
+                                        "value": "woman"
+                                    }
+                                },
+                                "undefined": {
+                                    "data": {
+                                        "label": "L_UNDEFINED",
+                                        "value": "undefined"
+                                    }
+                                }
+                            }
+                        },
+                        "user_profile_image": {
+                            "options": {
+                                "type": "file/image"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_PROFILE_IMAGE.L_DESC",
+                                "title": "L_USER.L_PROFILE_IMAGE.L_PROFILE_IMAGE"
+                            }
+                        },
+                        "delete_user_profile_image": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_USER.L_PROFILE_IMAGE.L_DELETE"
+                            },
+                            "body": {
+                                "delete_user_profile_image": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "user_header_image": {
+                            "options": {
+                                "type": "file/image"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_HEADER_IMAGE.L_DESC",
+                                "title": "L_USER.L_HEADER_IMAGE.L_HEADER_IMAGE",
+                                "delete": "L_USER.L_HEADER_IMAGE.L_DELETE"
+                            }
+                        },
+                        "delete_user_header_image": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_USER.L_HEADER_IMAGE.L_DELETE"
+                            },
+                            "body": {
+                                "delete_user_header_image": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "contact": {
+                    "body": {
+                        "user_discord": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DISCORD.L_DISCORD",
+                                "desc": "L_USER.L_DISCORD.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        },
+                        "user_instagram": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "title": "L_USER.L_INSTAGRAM",
+                                "placeholder": "L_PLACEHOLDER.L_URL"
+                            }
+                        },
+                        "user_facebook": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "title": "L_USER.L_FACEBOOK",
+                                "placeholder": "L_PLACEHOLDER.L_URL"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

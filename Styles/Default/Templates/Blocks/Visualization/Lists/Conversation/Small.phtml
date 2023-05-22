@@ -1,5 +1,5 @@
 <div class="inner">
-    <strong><?= $L_MESSAGES ?> :</strong> <span><?= $row['data']['conversation_messages'] ?></span>
+    <strong><?= $this->language->get('L_MESSAGES') ?> :</strong> <span><?= $list->get('data.conversation_messages') ?></span>
     <br>
-    <strong><?= $L_USER_CONVERSATION_RECIPIENT_COUNT ?>:</strong> <span><?= $row['data']['recipients'] ?></span>
+    <strong><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_COUNT') ?>:</strong> <span><?= $list->get('data.recipients') ?></span>
 </div>

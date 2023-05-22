@@ -31,8 +31,8 @@ class HTMLPurifier_HTMLModule_Bdo extends HTMLPurifier_HTMLModule
             array('Core', 'Lang'),
             array(
                 'dir' => 'Enum#ltr,rtl', // required
-                // The Abstract Module specification has the attribute
-                // inclusions wrong for bdo: bdo allows Lang
+                // The abstract module specification has the attribute
+                // inclusions wrong for bdo: bdo allows lang
             )
         );
         $bdo->attr_transform_post[] = new HTMLPurifier_AttrTransform_BdoDir();

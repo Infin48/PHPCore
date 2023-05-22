@@ -1,0 +1,10 @@
+<?php if ( $input->get('data.color') == 'green') : ?>
+    <i class="fa-solid fa-green fa-circle-check"></i>
+<?php else : ?>
+    <i class="fa-solid fa-red fa-circle-xmark"></i>
+<?php endif; ?>
+<?php if ( $input->get('data.titleIcon') ) : ?>
+    <span>
+        <?= $input->get('data.titleIcon') ?>
+    </span>
+<?php endif; ?>

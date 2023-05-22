@@ -1,0 +1,142 @@
+{
+    "body": {
+        "status": {
+            "body": {
+                "other": {
+                    "data": {
+                        "title": "L_STATUS.L_OTHER"
+                    },
+                    "body": {
+                        "localeWeb": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "color": "red",
+                                "title": "L_STATUS.L_LOCALISATION.L_LOCALISATION"
+                            }
+                        },
+                        "php": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "color": "red",
+                                "title": "L_STATUS.L_PHP.L_PHP"
+                            }
+                        }
+                    }
+                },
+                "writable": {
+                    "data": {
+                        "title": "L_STATUS.L_WRITABLE"
+                    },
+                    "body": {
+                        "/Includes/.htdata.json": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Includes/.htdata.json"
+                            }
+                        },
+                        "/Includes/Template/css/Group.min.css": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Includes/Template/css/Group.min.css"
+                            }
+                        },
+                        "/Includes/Template/css/Label.min.css": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Includes/Template/css/Label.min.css"
+                            }
+                        },
+                        "/Includes/Template/css/Role.min.css": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Includes/Template/css/Role.min.css"
+                            }
+                        },
+                        "/Assets/reCAPTCHA/reCAPTCHA.min.js": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Assets/reCAPTCHA/reCAPTCHA.min.js"
+                            }
+                        }
+                    }
+                },
+                "exec": {
+                    "data": {
+                        "title": "L_STATUS.L_EXECUTABLE"
+                    },
+                    "body": {
+                        "/Uploads": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$/Uploads"
+                            }
+                        }
+                    }
+                },
+                "extension": {
+                    "data": {
+                        "title": "L_STATUS.L_EXTENSION"
+                    },
+                    "body": {
+                        "GD": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$GD"
+                            }
+                        },
+                        "mbstring": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$mbstring"
+                            }
+                        },
+                        "PDO": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$PDO"
+                            }
+                        },
+                        "PDO_mysql": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$PDO_mysql"
+                            }
+                        },
+                        "SPL": {
+                            "options": {
+                                "type": "icon"
+                            },
+                            "data": {
+                                "title": "$SPL"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

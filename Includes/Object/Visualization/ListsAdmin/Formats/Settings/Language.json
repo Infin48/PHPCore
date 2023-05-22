@@ -1,0 +1,30 @@
+{
+    "body": {
+        "language": {
+            "options": {
+                "type": "grid",
+                "image": false
+            },
+            "data": {
+                "title": "L_SETTINGS.L_LANGUAGE.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "language"
+                        },
+                        "convert": {
+                            "id": "id",
+                            "title": "name"
+                        },
+                        "button": {
+                            "delete": {},
+                            "activate": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

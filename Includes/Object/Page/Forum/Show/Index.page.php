@@ -10,95 +10,149 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Forum\Show;
-
-use Block\Topic;
-use Block\Forum;
-use Block\Admin\Topic as AdminTopic;
-
-use Model\Pagination;
-
-use Visualization\Lists\Lists;
-use Visualization\Panel\Panel;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Forum\Show;
 
 /**
  * Index
  */
-class Index extends \Page\Page
-{    
+class Index extends \App\Page\Page
+{
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Forum/View',
-        'notification' => true
-    ];
+    protected bool $ID = true;
+
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Forum/View.phtml';
+
+    /**
+     * @var bool $notification If true - notifications will be displayed
+     */
+    protected bool $notification = true;
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // BLOCK
-        $forum = new Forum();
-        $topic = new Topic();
+        // System
+        $system = $data->get('inst.system');
 
-        if ($this->user->perm->has('admin.forum')) {
-            $topic = new AdminTopic();
+        // User
+        $user = $data->get('inst.user');
+
+        // User permission
+        $permission = $user->get('permission');
+
+        // If is enabled blog mode
+        if ($system->get('site.mode') == 'blog')
+        {
+            // Show 404 error page
+            $this->error404();
         }
 
-        // GET FORUM
-        $forum = $forum->get($this->url->getID()) or $this->error();
+        // Get forum
+        $row = $db->select('app.forum.get()', $this->url->getID()) or $this->error404();
 
-        if ($forum['topic_permission'] == 0) {
-            $this->user->perm->disable('topic.create');
+        // Save forum data
+        $data->set('data.forum', $row);
+
+        // If logged user doesn't have permission to see this forum
+        if (!array_intersect([LOGGED_USER_GROUP_ID, '*'], $data->get('data.forum.permission_see')))
+        {
+            $this->error404();
         }
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Forum/Show');
-        $breadcrumb->object('category')->title('$' . $forum['category_name']);
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Forum.json');
+        $breadcrumb->elm1('category')->title($data->get('data.forum.category_name'))->up()
+            ->create()->jumpTo()->title($data->get('data.forum.forum_name'))->href($this->build->url->forum($data->get('data.forum')));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // PANEL
-        $panel = new Panel('/Forum');
+        // Panel
+        $panel = new \App\Visualization\Panel\Panel('Root/Panel:/Formats/Forum.json');
+        // Setup button for creating new topic
+        $panel->elm1('new', function ( \App\Visualization\Panel\Panel $panel ) use ($data, $permission)
+        {    
+            // If user has permission to manage topics in this forum
+            if (array_intersect([LOGGED_USER_GROUP_ID, '*'], $data->get('data.forum.permission_topic')))
+            {
+                // Logged user has permission to create topics
+                if ($permission->has('topic.create'))
+                {
+                    // Show button
+                    $panel->show();
+                }
+            }
+        });
 
-        // IF USER HAS PERMISSION TO CREATE TOPIC
-        if ($this->user->perm->has('topic.create')) {
+        // Finish panel and get ready for generate
+        $data->panel = $panel->getDataToGenerate();
 
-            // SHOW 'ADD TOPIC' BUTTON
-            $panel->object('new')->show();
+        // If logged user has permission to see deleted topic
+        $deleted = false;
+        if ($permission->has('admin.forum'))
+        {
+            $deleted = true;
         }
 
-        $this->data->panel = $panel->getData();
-
-        // PAGINATION
-        $pagination = new Pagination();
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(MAX_TOPICS);
         $pagination->url($this->url->getURL());
-        $pagination->total($topic->getParentCount($this->url->getID()));
-        $topic->pagination = $this->data->pagination = $pagination->getData();
+        $pagination->total($db->select('app.topic.parentCount()', $this->url->getID(), $deleted));
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $list = new Lists('/Topic');
-        $list->object('topic')->fill(data: $topic->getParent($this->url->getID()), function: function ( \Visualization\Lists\Lists $list ) use ($topic) { 
+        // List
+        $list = new \App\Visualization\Lists\Lists('Root/Lists:/Formats/Topic.json');
+        $list->elm1('topic')->fill(data: $db->select('app.topic.parent()', $this->url->getID(), $deleted), function: function ( \App\Visualization\Lists\Lists $list )
+        {
+            // Default variables
+            $list
+                // data.link = Link to topic
+                ->set('data.link', '<a href="' . $this->build->url->topic($list->get('data')) . '">' . $list->get('data.topic_name') . '</a>')
+                // data.user = Link to user
+                ->set('data.user', $this->build->user->link(data: $list->get('data')))
+                // data.date = Date of creating topic
+                ->set('data.date', $this->build->date->short($list->get('data.topic_created')))
+                // data.user_image = User profile image
+                ->set('data.user_image', $this->build->user->image(data: $list->get('data'), role: true));
+            
+                // If topic contain any post
+            if ($list->get('data.post_id'))
+            {
+                // Get from the whole data only data which is regarding to last created post
+                $data = getKeysWithPrefix($list->get('data'), prefix: 'last_');
 
-            if ($list->obj->get->data('is_label') == true) {
-
-                $list->obj->set->data('labels', $topic->getLabels($list->obj->get->data('topic_id')));
+                // Set variables for last post in topic
+                $list
+                    // data.lastpost.user = Link to user
+                    ->set('data.lastpost.user', $this->build->user->link(data: $data))
+                    // data.lastpost.date = Date of creating post
+                    ->set('data.lastpost.date', $this->build->date->short($data['post_created']))
+                    // data.lastpost.user_image = User profile image
+                    ->set('data.lastpost.user_image', $this->build->user->image(data: $data, role: true));
             }
-
-            if ($list->obj->get->data('deleted_id')) {
+            
+            // If topic is deleted
+            if ($list->get('data.deleted_id'))
+            {
+                // Disable row(topic)
                 $list->disable();
             }
         });
-        $this->data->list = $list->getData();
 
-        // HEAD
-        $this->data->head['title'] = $forum['forum_name'];
-        $this->data->head['description'] = $forum['forum_description'];
+        // Finish list and get ready from generate
+        $data->list = $list->getDataToGenerate();
+
+        // Set page title
+        $data->set('data.head.title', $data->get('data.forum.forum_name'));
+
+        // Set page description
+        $data->set('data.head.description', $data->get('data.forum.forum_description'));
     }
 }

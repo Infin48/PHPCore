@@ -20,18 +20,18 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
         $contents = 'Chameleon: #PCDATA | Inline ! #PCDATA | Flow';
         $attr = array(
             'cite' => 'URI',
-            // 'datetime' => 'Datetime', // not implemented
+            // 'datetime' => 'datetime', // not implemented
         );
         $this->addElement('del', 'Inline', $contents, 'Common', $attr);
         $this->addElement('ins', 'Inline', $contents, 'Common', $attr);
     }
 
-    // HTML 4.01 specifies that ins/del must not contain block
+    // Html 4.01 specifies that ins/del must not contain block
     // elements when used in an inline context, chameleon is
     // a complicated workaround to acheive this effect
 
-    // Inline context ! Block context (exclamation mark is
-    // separator, see getChildDef for parsing)
+    // Inline context ! block context (exclamation mark is
+    // separator, see getchilddef for parsing)
 
     /**
      * @type bool

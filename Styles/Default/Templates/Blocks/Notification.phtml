@@ -1,0 +1,29 @@
+<?php $this->data->notification->each('body', function ($notifi) { ?>
+    <div class="alert alert-type-<?= $notifi->get('data.type') ?> alert-name-<?= $notifi->get('data.name') ?>">
+        <div class="alert-icon">
+            <?php if ($notifi->get('data.icon')) : ?>
+                <i class="<?= $notifi->get('data.icon') ?>"></i>
+            <?php else : ?>
+                <?php if ($notifi->get('data.type') == 'info') : ?>
+                    <i class="fa-solid fa-circle-info"></i>
+                <?php elseif ($notifi->get('data.type') == 'notice') : ?>
+                    <i class="fa-solid fa-bell"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>        
+        <div class="alert-body">
+            <div class="alert-content">
+                <span class="alert-title"><?= $notifi->get('data.title') ?></span>
+                <?php if ($notifi->get('data.text')) : ?>
+                    <br>
+                    <span><?= $notifi->get('data.text') ?></span>
+                <?php endif; ?>
+            </div>
+            <?php $notifi->each('data.button', function ($button) { ?>
+                <a class="alert-button" href="<?= $button->get('href') ?>"><i class="<?= $button->get('icon') ?>"></i> <?= $button->get('text') ?></a>
+            <?php }); ?>
+        </div>
+    </div>
+<?php }); ?>

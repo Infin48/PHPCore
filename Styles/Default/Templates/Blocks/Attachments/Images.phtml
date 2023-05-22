@@ -1,0 +1,5 @@
+<?php $block->each('data.images', function ($image) { ?>
+    <a class="attachemnt image" href="<?= $image->get('path') ?>" target="_blank" data-pswp-width="<?= $image->get('width') ?>" data-pswp-height="<?= $image->get('height') ?>" >
+        <img src="<?= $image->get('path') ?>" alt="">
+    </a>
+<?php }); ?>

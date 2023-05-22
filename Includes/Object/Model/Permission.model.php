@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model;
+namespace App\Model;
 
 /**
  * Permission
@@ -21,6 +21,18 @@ class Permission
      * @var array $list List of permissions
      */
     private static array $list = [
+        'article' => [
+            'article.create',
+            'article.edit',
+            'article.label',
+            'article.delete',
+            'article.stick'
+        ],
+        'post' => [
+            'post.edit',
+            'post.create',
+            'post.delete'
+        ],
         'topic' => [
             'topic.edit',
             'topic.lock',
@@ -31,53 +43,61 @@ class Permission
             'topic.create',
             'topic.delete'
         ],
-        'post' => [
-            'post.edit',
-            'post.create',
-            'post.delete'
-        ],
         'profilepost' => [
             'profilepost.edit',
             'profilepost.create',
             'profilepost.delete'
         ],
+        'image' => [
+            'image.gif'
+        ],
         'admin' => [
-            'admin.user',
+            'admin.settings',
+            'admin.url',
+            'admin.plugin',
+            'admin.notification',
             'admin.page',
             'admin.menu',
-            'admin.forum',
-            'admin.index',
             'admin.group',
-            'admin.label',
+            'admin.user',
+            'admin.role',
             'admin.template',
-            'admin.settings',
-            'admin.notification'
+            'admin.sidebar',
+            'admin.forum',
+            'admin.label',
+            'admin.log',
+            'admin.index'
         ]
     ];
 
     /**
      * @var array $userPermission Stored logged user permission
      */
-    private array $userPermission = [];
-
-    /**
-     * @var int $data Logged user group index
-     */
-    private int $index = 0;
-
-    /**
-     * @var bool $data If true - logged user is admin otherwise false
-     */
-    private bool $admin = false;
+    private static array $userPermission = [];
     
     /**
-     * Sets index to logged user
+     * Constructor
      *
-     * @return void
+     * @param  array $permission List of permission which will be loaded
+     * @param  int $id Group ID of logged user
      */
-    public function setIndex( int $index )
+    public function __construct( array $permission = [], int $id = null )
     {
-        $this->index = $index;
+        if (is_null($id))
+        {
+            return;
+        }
+        
+        if (in_array('*', $permission) or $id == 1)
+        {
+            foreach (self::$list as $_permissions)
+            {
+                self::$userPermission = array_merge(self::$userPermission, $_permissions);
+            }
+
+            return;
+        }
+        self::$userPermission = $permission;
     }
 
     /**
@@ -127,11 +147,14 @@ class Permission
      * 
      * @return bool If true - logged user has given permission otherwise false
      */
-    public function has( array|string $permission )
+    public static function has( array|string $permission )
     {
-        if (is_array($permission)) {
-            foreach ($permission as $item) {
-                if ($this->has($item) === true) {
+        if (is_array($permission))
+        {
+            foreach ($permission as $item)
+            {
+                if (self::has($item) === true)
+                {
                     return true;
                 }
             }
@@ -139,18 +162,20 @@ class Permission
             return false;
         }
 
-        if (($ex = explode('.', $permission))[1] == '?') {
-
-            foreach ($this->userPermission as $permission) {
-
-                if (explode('.', $permission)[0] == $ex[0]) {
+        if (($ex = explode('.', $permission))[1] == '?')
+        {
+            foreach (self::$userPermission as $permission)
+            {
+                if (explode('.', $permission)[0] == $ex[0])
+                {
                     return true;
                 }
             }
             return false;
         }
 
-        if (in_array($permission, $this->userPermission)) {
+        if (in_array($permission, self::$userPermission))
+        {
             return true;
         }
 
@@ -166,79 +191,34 @@ class Permission
      */
     public function disable( string $permission )
     {
-        if (($ex = explode('.', $permission))[1] == '*') {
-            foreach ($this->userPermission as $key => $value) {
-                if (explode('.', $value)[0] == $ex[0]) {
-                    unset($this->userPermission[$key]);
+        if (($ex = explode('.', $permission))[1] == '*')
+        {
+            foreach (self::$userPermission as $key => $value)
+            {
+                if (explode('.', $value)[0] == $ex[0])
+                {
+                    unset(self::$userPermission[$key]);
                 }
 
             }
         } else {
-            if (in_array($permission, $this->userPermission)) {
-                unset($this->userPermission[array_search($permission, $this->userPermission)]);
+            if (in_array($permission, self::$userPermission))
+            {
+                unset(self::$userPermission[array_search($permission, self::$userPermission)]);
             }
         }
     }
-    
+
     /**
-     * Sets permissions to logged user
+     * Adds category
      *
-     * @param  array $permissions
+     * @param  string $category Permisison category 
      * 
      * @return void
      */
-    public function set( array $permissions )
+    public static function addCategory( string $category )
     {
-        if (in_array('*', $permissions) or $this->admin === true) {
-            foreach (self::$list as $_permissions) {
-                $this->userPermission = array_merge($this->userPermission, $_permissions);
-            }
-            return;
-        }
-        $this->userPermission = $permissions;
-    }
-
-    /**
-     * Compare given index with index of logged user
-     *
-     * @param  int $index
-     * 
-     * @return bool
-     */
-    public function index( int $index )
-    {
-        if ($this->admin === true) {
-            return true;
-        }
-
-        if ($this->index > $index) {
-            return true;
-        }
-        
-        return false;
-    }
-
-    /**
-     * Compare given user with logged user
-     *
-     * @param  int $index User index
-     * @param  bool $admin If true - user is admin otherwise false
-     * 
-     * @return bool
-     */
-    public function compare( int $index, bool $admin = false )
-    {
-        if ($this->admin === true) {
-            return true;
-        }
-
-        if ($admin !== true) {
-            if ($index < $this->index) {
-                return true;
-            }
-        }
-        
-        return false;
+        self::$list[$category] = [];
     }
 
     /**
@@ -249,11 +229,8 @@ class Permission
      * 
      * @return void
      */
-    public static function add( string $category, string $permission )
+    public static function addPermission( string $category, string $permission )
     {
-        if (!isset(self::$list[$category])) {
-            self::$list[$category] = [];
-        }
         array_push(self::$list[$category], $category . '.' . $permission);
     }
 }

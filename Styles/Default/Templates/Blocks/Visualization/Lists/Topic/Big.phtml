@@ -1,22 +1,27 @@
-<?= $this->build->user->image($row['data']) ?>
+<?= $list->get('data.user_image') ?>
 <div class="inner">
-    <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
-    <a class="fw-700" href="<?= $this->build->url->topic($row['data'])  ?>"><?= $row['data']['topic_name'] ?></a>
+    <div class="label-list">
+        <?php require $this->path->build('Root/Style:/Templates/Blocks/Labels.phtml'); ?>
+        <?= $list->get('data.link')  ?>
+    </div>
     <br>
     <span class="user">
-        <?= $this->build->user->link($row['data'], true) ?> · <?= $this->build->date->long($row['data']['topic_created']) ?>
+        <?= $list->get('data.user') ?> · <?= $list->get('data.date')  ?>
     </span>
 </div>
-<?php if ((bool)$row['data']['topic_sticked'] === true or (bool)$row['data']['topic_locked'] === true or $row['data']['topic_image']) : ?>
+<?php if ( $list->get('data.topic_sticked') or $list->get('data.topic_locked') or $list->get('data.topic_attachments') or $list->get('data.topic_image') ) : ?>
     <div class="icons">
-        <?php if ((bool)$row['data']['topic_sticked'] === true) : ?>
-            <span class="icon-alt" ajax="title" data-title="<?= $L_topic_sticked ?>"><i class="fas fa-thumbtack"></i></span>
+        <?php if ( $list->get('data.topic_attachments') ) : ?>
+            <span class="icon-alt" ajax="title" ajax-title="<?= $this->language->get('L_TOPIC.L_ATTACHEMNT') ?>"><i class="fa-solid fa-paperclip"></i></span>
         <?php endif; ?>
-        <?php if ((bool)$row['data']['topic_locked'] === true) : ?>
-            <span class="icon-alt" ajax="title" data-title="<?= $L_TOPIC_LOCKED ?>"><i class="fas fa-lock"></i></span>
+        <?php if ( $list->get('data.topic_image') ) : ?>
+            <span class="icon-alt" ajax="title" ajax-title="<?= $this->language->get('L_TOPIC.L_IMAGE.L_IMAGE') ?>"><i class="fa-solid fa-image"></i></span>
         <?php endif; ?>
-        <?php if ($row['data']['topic_image']) : ?>
-            <span class="icon-alt" ajax="title" data-title="<?= $L_TOPIC_IMAGE ?>"><i class="fas fa-image"></i></span>
+        <?php if ( $list->get('data.topic_sticked') ) : ?>
+            <span class="icon-alt" ajax="title" ajax-title="<?= $this->language->get('L_TOPIC.L_STICKED') ?>"><i class="fa-solid fa-thumbtack"></i></span>
+        <?php endif; ?>
+        <?php if ( $list->get('data.topic_locked') ) : ?>
+            <span class="icon-alt" ajax="title" ajax-title="<?= $this->language->get('L_TOPIC.L_LOCKED') ?>"><i class="fa-solid fa-lock"></i></span>
         <?php endif; ?>
     </div>
 <?php endif; ?>

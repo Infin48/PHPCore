@@ -1,50 +1,68 @@
 <meta charset="UTF-8" />
-<title><?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?></title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="<?= $this->data->head['description'] ?>" />
-<meta name="keywords" content="<?= $this->system->get('site.keywords') ?? '' ?>" />
+<title><?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+<meta name="description" content="<?= $this->data->get('data.head.description') ?>" />
+<meta name="keywords" content="<?= $system->get('site.keywords') ?? '' ?>" />
 
-<link rel="icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" type="image/svg+xml">
-<link rel="apple-touch-icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" />
+<link rel="icon" href="<?= $this->data->get('data.head.favicon') ?>?<?= $system->get('session') ?>" type="image/svg+xml">
+<link rel="apple-touch-icon" href="<?= $this->data->get('data.head.favicon') ?>?<?= $system->get('session') ?>" />
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="<?= $_SERVER['SERVER_NAME'] ?>">
 <meta property="og:url" content="<?= $this->url->getURL() ?>">
-<meta property="og:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?>">
-<meta property="og:description" content="<?= $this->data->head['description'] ?>">
+<meta property="og:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?>">
+<meta property="og:description" content="<?= $this->data->get('data.head.description') ?>">
 
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:site" content="<?= $_SERVER['SERVER_NAME'] ?>">
-<meta property="twitter:title" content="<?= $this->data->head['title'] . ' | ' . $this->system->get('site.name') ?>">
-<meta property="twitter:description" content="<?= $this->data->head['description'] ?>">
+<meta property="twitter:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?>">
+<meta property="twitter:description" content="<?= $this->data->get('data.head.description') ?>">
 
-<?php if ($this->data->data['topic_image'] ?? false and $this->data->data['topic_id'] ?? false) : ?>
-    <meta property="og:image" content="/Uploads/Topic/<?= $this->data->data['topic_id'] ?>.<?= $this->data->data['topic_image'] ?>">
-    <meta property="twitter:image:src" content="/Uploads/Topic/<?= $this->data->data['topic_id'] ?>.<?= $this->data->data['topic_image'] ?>">
+<?php if ($this->data->get('data.topic.topic_image') and $this->data->get('data.topic.topic_id')) : ?>
+    <meta property="og:image" content="<?= SITE_URL ?>/Uploads/Topics/<?= $this->data->get('data.topic.topic_id') ?>/Header.<?= $this->data->get('data.topic.topic_image') ?>">
+    <meta property="twitter:image:src" content="<?= SITE_URL ?>/Uploads/Topics/<?= $this->data->get('data.topic.topic_id') ?>/Header.<?= $this->data->get('data.topic.topic_image') ?>">
 <?php endif; ?>
 
-<?php if ($this->user->isLogged()) : ?>
-    <?php if (isset($this->data->data['editor'])) : ?>
-        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $this->system->get('session.styles') ?>">
+<?php if ($this->data->get('data.article.article_image') and $this->data->get('data.article.article_id')) : ?>
+    <meta property="og:image" content="<?= SITE_URL ?>/Uploads/Articles/<?= $this->data->get('data.article.article_id') ?>/Header.<?= $this->data->get('data.article.article_image') ?>">
+    <meta property="twitter:image:src" content="<?= SITE_URL ?>/Uploads/Articles/<?= $this->data->get('data.article.article_id') ?>/Header.<?= $this->data->get('data.article.article_image') ?>">
+<?php endif; ?>
+
+<?php if ( $this->user->isLogged() ) : ?>
+    <?php if ( $this->data->get('options.editor') ) : ?>
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $system->get('session.styles') ?>">
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css">
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/plugins/mention/ui/trumbowyg.mention.min.css">
     <?php endif; ?>
 <?php endif; ?>
 
-<?php if (isset($this->data->data['page_id'])) : ?>
-    <link defer rel="stylesheet" type="text/css" href="/Pages/<?= $this->data->data['page_id'] ?>/css.css?<?= RAND ?>">
+<?php if ($this->data->get('data.custom.page_id')) : ?>
+    <link defer rel="stylesheet" type="text/css" href="/Pages/<?= $this->data->get('data.custom.page_id') ?>/css.css?<?= RAND ?>">
 <?php endif; ?>
 
 <?php if($this->system->get('background_image')) : ?>
-    <link rel="preload" as="image" href="/Uploads/Site/header.<?= $this->system->get('background_image') ?>?<?= $this->system->get('session') ?>">
+    <link rel="preload" as="image" href="/Uploads/Site/header.<?= $system->get('background_image') ?>?<?= $system->get('session') ?>">
 <?php endif; ?>
 
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->get('session.groups') ?>">
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->get('session.labels') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Group.min.css?<?= $system->get('session.groups') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Label.min.css?<?= $system->get('session.labels') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Role.min.css?<?= $system->get('session.roles') ?>">
 
-<link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css">
+<link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css?10">
+<link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css?10">
 
-<link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $system->get('session.groups') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $system->get('session.labels') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Role.min.css?<?= $system->get('session.roles') ?>">
 
-<?php foreach ($this->data->data['plugins'] ?? [] as $plugin) : ?>
-    <?php if (file_exists($path = (ROOT . '/Plugins/' . $plugin . '/Styles/Themes/Stylesheet.min.css'))) : ?>
-        <link rel="stylesheet" type="text/css" href="<?= str_replace(ROOT, '', $path) ?>?<?= $this->system->get('session.styles') ?>">
+
+<?php if ( $this->data->get('options.photoSwipe') ) : ?>
+    <link rel="preload" as="style" href="/Assets/PhotoSwipe/dist/photoswipe.min.css">
+    <link defer rel="stylesheet" href="/Assets/PhotoSwipe/dist/photoswipe.min.css">
+    <style>.pswp__custom-caption{background:rgb(0 0 0 / 40%);font-size:18px;color:#fff;max-width:400px;padding:8px 12px;position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-weight:500;}.pswp__custom-caption a{color:#fff;text-decoration:underline;}.hidden-caption-content{display:none;}</style>
+<?php endif; ?>
+<style>.setup,.setup *,.preview *,.preview{box-sizing:border-box}.setup .setup-icon,.setup .setup-text{padding:.8rem 1rem}.preview .preview-name,.preview a,.setup{font-weight:600}.preview a,.setup .setup-text{color:#fff;background-color:#00000026}.preview a,.setup i,.setup span{display:block}.setup{top:10rem;left:0;z-index:999;transform:translateX(-100%);margin-left:3.2rem;transition:transform .6s ease-in-out;display:flex;color:#fff;line-height:1.5;text-decoration: none;}.setup i{font-size:1.5rem;color:#fff}.setup:hover{transform:translateX(-3.2rem)}.setup.setup-template{top:14rem}.preview,.setup{background-color:#3174d7;position:fixed}.preview{bottom:0;width:100%;padding:.67rem 1.33rem;color:#fff;z-index:99;font-size:1.1rem;left: 0;}.preview .preview-body{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}.preview a{padding:.33rem .67rem;transition:background-color .3s;cursor:pointer}.preview a:hover{background-color:#282828!important;color:#fff!important}</style>
+<?php foreach (LIST_OF_INSTALLED_PLUGINS as $plugin) : ?>
+    <?php if (file_exists($head = (ROOT . '/Plugins/' . $plugin . '/Styles/Default/Templates/Blocks/Head.phtml'))) : ?>
+        <?php require $head; ?>
     <?php endif; ?>
 <?php endforeach; ?>

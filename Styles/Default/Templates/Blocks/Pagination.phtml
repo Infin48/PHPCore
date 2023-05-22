@@ -2,22 +2,22 @@
     <div class="pagination">
         <?php if ($this->data->pagination['previous'] === true) : ?>
         <div class="pagination-page pagination-page-arrow">
-            <a class="vertical-align" href="<?= $this->url->build($this->data->pagination['urlPrevious']) ?>">
-                <i class="fas fa-angle-left"></i>
+            <a class="vertical-align" href="<?= $this->data->pagination['urlPrevious'] ?>">
+                <i class="fa-solid fa-angle-left"></i>
             </a>
         </div>
         <?php endif; ?>
 
         <?php foreach ($this->data->pagination['data'] as $page) : ?>
         <div class="pagination-page<?php if ($page['active']) : ?> pagination-page-active<?php endif; ?>">
-            <a href="<?= $this->url->build($page['url']) ?>"><?= $page['page'] ?></a>
+            <a href="<?= $page['url'] ?>"><?= $page['page'] ?></a>
         </div>
         <?php endforeach; ?>
 
         <?php if ($this->data->pagination['next'] === true) : ?>
         <div class="pagination-page pagination-page-arrow">
-            <a class="vertical-align" href="<?= $this->url->build($this->data->pagination['urlNext']) ?>">
-                <i class="fas fa-angle-right"></i>
+            <a class="vertical-align" href="<?= $this->data->pagination['urlNext'] ?>">
+                <i class="fa-solid fa-angle-right"></i>
             </a>
         </div>
         <?php endif; ?>

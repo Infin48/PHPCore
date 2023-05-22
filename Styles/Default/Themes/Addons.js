@@ -1,8 +1,8 @@
 window.onload = function() {
     $('html').removeClass('html-hidden');
-    $('[ajax-selector="dropdown"]').each(function () {
-        if ($(this).find('[ajax-selector="dropdown-menu"]').length) {
-            var elm = $(this).find('[ajax-selector="dropdown-menu"]');
+    $('[js~="dropdown"]').each(function () {
+        if ($(this).find('[js="dropdown-menu"]').length) {
+            var elm = $(this).find('[js="dropdown-menu"]');
             var off = elm.offset();
             var l = off.left;
             var w = elm.width();

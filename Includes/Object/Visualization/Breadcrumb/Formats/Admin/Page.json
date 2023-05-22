@@ -2,14 +2,14 @@
     "body": {
         "index": {
             "data": {
-                "href": "$/admin/",
-                "title": "L_ADMIN"
+                "href": "/admin/",
+                "title": "L_BREADCRUMB.L_ADMIN"
             }
         },
-        "page": {
+        "pages": {
             "data": {
-                "href": "$/admin/page/",
-                "title": "L_PAGE"
+                "href": "/admin/page/",
+                "title": "L_BREADCRUMB.L_PAGE"
             }
         }
     }

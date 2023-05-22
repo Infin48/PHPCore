@@ -42,7 +42,7 @@ class HTMLPurifier_AttrTransform_SafeParam extends HTMLPurifier_AttrTransform
         // transforms.
         switch ($attr['name']) {
             // application/x-shockwave-flash
-            // Keep this synchronized with Injector/SafeObject.php
+            // Keep this synchronized with injector/safeobject.php
             case 'allowScriptAccess':
                 $attr['value'] = 'never';
                 break;
@@ -65,8 +65,8 @@ class HTMLPurifier_AttrTransform_SafeParam extends HTMLPurifier_AttrTransform
                 $attr['value'] = $this->uri->validate($attr['value'], $config, $context);
                 break;
             case 'flashvars':
-                // we're going to allow arbitrary inputs to the SWF, on
-                // the reasoning that it could only hack the SWF, not us.
+                // we're going to allow arbitrary inputs to the swf, on
+                // the reasoning that it could only hack the swf, not us.
                 break;
             // add other cases to support other param name/value pairs
             default:

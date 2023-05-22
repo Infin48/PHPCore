@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page;
+namespace App\Page;
 
 /**
  * Error
@@ -18,16 +18,14 @@ namespace Page;
 class Error extends Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Error'
-    ];
+    protected string $template = 'Root/Style:/Templates/Error.phtml';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body() {}
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db ) {}
 }

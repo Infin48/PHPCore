@@ -1,6 +1,6 @@
 <?php
 
-// VERY RELAXED! Shouldn't cause problems, not even Firefox checks if the
+// Very relaxed! shouldn't cause problems, not even firefox checks if the
 // email is valid, but be careful!
 
 /**
@@ -32,7 +32,7 @@ class HTMLPurifier_URIScheme_mailto extends HTMLPurifier_URIScheme
         $uri->userinfo = null;
         $uri->host     = null;
         $uri->port     = null;
-        // we need to validate path against RFC 2368's addr-spec
+        // we need to validate path against rfc 2368's addr-spec
         return true;
     }
 }

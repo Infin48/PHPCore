@@ -1,12 +1,17 @@
 {
+    "data": {
+        "html": {
+            "ajax-item": "conversation"
+        }
+    },
     "body": {
         "tools": {
             "options": {
                 "type": "dropdown"
             },
             "data": {
-                "icon": "fas fa-cogs",
-                "title": "L_OPTIONS"
+                "icon": "fa-solid fa-cogs",
+                "title": "L_BTN.L_TOOLS"
             },
             "body":{
                 "edit": {
@@ -14,20 +19,20 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_EDIT",
-                        "href": "/edit/"
+                        "title": "L_BTN.L_EDIT",
+                        "href": "~/edit/"
                     }
                 },
                 "leave":{
                     "data": {
-                        "title": "L_LEAVE_CONVERSATION",
-                        "href": "/leave/"
+                        "title": "L_BTN.L_LEAVE_CONVERSATION",
+                        "ajax-action": "leave"
                     }
                 },
                 "mark":{
                     "data": {
-                        "title": "L_MARK_AS_UNREAD",
-                        "href": "/mark/"
+                        "title": "L_BTN.L_MARK_AS_UNREAD",
+                        "ajax-action": "mark-as-unread"
                     }
                 }
             }
@@ -38,8 +43,8 @@
             },
             "data": {
                 "href": "#new",
-                "icon": "fas fa-reply",
-                "title": "L_SEND_MESSAGE"
+                "icon": "fa-solid fa-reply",
+                "title": "L_BTN.L_SEND_MESSAGE"
             }
         }
     }

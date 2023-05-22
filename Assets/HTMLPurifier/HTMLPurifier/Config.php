@@ -179,7 +179,7 @@ class HTMLPurifier_Config
             $this->autoFinalize();
         }
         if (!isset($this->def->info[$key])) {
-            // can't add % due to SimpleTest bug
+            // can't add % due to simpletest bug
             $this->triggerError(
                 'Cannot retrieve value of undefined directive ' . htmlspecialchars($key),
                 E_USER_WARNING
@@ -333,7 +333,7 @@ class HTMLPurifier_Config
         }
 
         // Raw type might be negative when using the fully optimized form
-        // of stdClass, which indicates allow_null == true
+        // of stdclass, which indicates allow_null == true
         $rtype = is_int($def) ? $def : $def->type;
         if ($rtype < 0) {
             $type = -$rtype;
@@ -525,7 +525,7 @@ class HTMLPurifier_Config
             $def = null;
             if ($optimized) {
                 if (is_null($this->get($type . '.DefinitionID'))) {
-                    // fatally error out if definition ID not set
+                    // fatally error out if definition id not set
                     throw new HTMLPurifier_Exception(
                         "Cannot retrieve raw version without specifying %$type.DefinitionID"
                     );
@@ -569,7 +569,7 @@ class HTMLPurifier_Config
             }
             // if optimized, check if definition was in cache
             // (because we do the memory check first, this formulation
-            // is prone to cache slamming, but I think
+            // is prone to cache slamming, but i think
             // guaranteeing that either /all/ of the raw
             // setup code or /none/ of it is run is more important.)
             if ($optimized) {
@@ -887,9 +887,9 @@ class HTMLPurifier_Config
         $extra = '';
         if ($this->chatty) {
             $trace = debug_backtrace();
-            // zip(tail(trace), trace) -- but PHP is not Haskell har har
+            // zip(tail(trace), trace) -- but php is not haskell har har
             for ($i = 0, $c = count($trace); $i < $c - 1; $i++) {
-                // XXX this is not correct on some versions of HTML Purifier
+                // Xxx this is not correct on some versions of html purifier
                 if (isset($trace[$i + 1]['class']) && $trace[$i + 1]['class'] === 'HTMLPurifier_Config') {
                     continue;
                 }

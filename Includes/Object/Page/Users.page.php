@@ -10,14 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page;
-
-use Block\User;
-
-use Model\Pagination;
-
-use Visualization\Lists\Lists;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page;
 
 /**
  * Users
@@ -25,36 +18,64 @@ use Visualization\Breadcrumb\Breadcrumb;
 class Users extends Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Users',
-    ];
+    protected string $template = 'Root/Style:/Templates/Users.phtml';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // BLOCK
-        $user = new User();
+        // System
+        $system = $data->get('inst.system');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Index');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // If profiles are disabled
+        if ($system->get('site.mode.blog.profiles') == 0)
+        {
+            // Show 404 error page
+            $this->error404();
+        }
 
-        // PAGINATION
-        $pagination = new Pagination();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Users.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(MAX_USERS);
         $pagination->url($this->url->getURL());
-        $pagination->total($user->getAllCount());
-        $user->pagination = $this->data->pagination = $pagination->getData();
+        $pagination->total($db->select('app.user.count()'));
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $list = new Lists('/Users');
-        $list->object('users')->fill(data: $user->getAll());
-        $this->data->list = $list->getData();
+        // List
+        $list = new \App\Visualization\Lists\Lists('Root/Lists:/Formats/Users.json');
+
+        // Fill list with registered users
+        $list->elm1('users')->fill(data: $db->select('app.user.all()'), function: function ( \App\Visualization\Lists\Lists $list ) use ($system)
+        {
+            // Define variables
+            $list
+                // data.user = Link to user
+                ->set('data.user', $this->build->user->link(data: $list->get('data')))
+                // date.group = User's group label
+                ->set('data.group', $this->build->user->group(data: $list->get('data')))
+                // data.date = Date of user registered
+                ->set('data.date', $this->build->date->short($list->get('data.user_registered')))
+                // date.user_image = User's profile image
+                ->set('data.user_image', $this->build->user->image(data: $list->get('data'), role: true));
+
+            // If blog mode is disabled
+            if ($system->get('site.mode') != 'blog')
+            {
+                // data.reputation - User's reputation label
+                $list->set('data.reputation', $this->build->user->reputation($list->get('data.user_reputation')));
+            }
+        });
+
+        // Save list and get ready to generate
+        $data->list = $list->getDataToGenerate();
     }
 }

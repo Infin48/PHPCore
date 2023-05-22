@@ -1,12 +1,11 @@
-<div class="block block-clear" ajax-selector="block block-form" ajax-process-id="<?= $cache['data']['profile_post_id'] ?>" ajax-process-type="/ProfilePostComment">
+<div class="block block-clear" js="block block-form" ajax-id="<?= $this->data->get('data.profile_post_id') ?: $block->get('data.profile_post_id') ?>" ajax-item="profile-post-comment">
     <form method="post">
         <div class="block-body">
-            <a class="button d-none" ajax="create" ajax-process="/Create" ajax-selector="button">
-                <i class="fas fa-check"></i>
+            <a class="button" ajax-action="create" js="button">
+                <i class="fa-solid fa-check"></i>
             </a>
-            <?= $this->build->user->image($this->user->get()) ?>
-            <textarea ajax="textarea" name="profile_post_comment_text" placeholder="<?= $L_PROFILE_ANSWER ?>"></textarea>
-            <input type="hidden" value="<?= $cache['data']['profile_post_id'] ?>" name="profile_post_id">
+            <?= $this->build->user->image($this->data->get('inst.user')->get()) ?>
+            <textarea ajax="textarea" name="profile_post_comment_text" placeholder="<?= $this->language->get('L_PROFILE_POST.L_ANSWER') ?>"></textarea>
             <input type="hidden" value="<?= SESSION_ID ?>" name="key">
         </div>
     </form>

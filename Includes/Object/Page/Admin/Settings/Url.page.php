@@ -10,55 +10,177 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Settings;
-
-use Block\Settings;
-
-use Visualization\Field\Field;
-use Visualization\Admin\Lists\Lists;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Settings;
 
 /**
  * Url
  */
-class Url extends \Page\Page
+class Url extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.settings'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.url';
+
+    /**
+     * Run ajax according to received item and action
+     *
+     * @param  string $ajax Received ajax
+     * 
+     * @return string Name of method
+     */
+    protected function ajax( string $ajax )
+    {
+        return match($ajax)
+        {
+            'run/url/delete' => 'deleteTranslateForURL',
+
+            default => ''
+        };
+    }
+
+    /**
+     * Load data according to received ajax
+     *
+     * @param  string $ajax Received ajax
+     * 
+     * @return array Data
+     */
+    public function ajaxData( string $ajax )
+    {
+        return match($ajax)
+        {
+            'run/url/delete' => [
+                'id' => STRING
+            ],
+
+            default => []
+        };
+    }
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('settings')->active()->option('url')->active();
+        // Navbar
+        $this->navbar->elm1('settings')->elm2('settings')->active()->elm3('url')->active();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Settings/URL.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // BLOCK
-        $settings = new Settings();
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Settings/URL.json');
+        $list->elm1('defaults')->fill(data: $db->select('app.settings.URLDefault()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list )
+        {
+            $list->set('data.html.ajax-id', $list->get('data.settings_url_id'));
+        });
+        
+        $list->elm1('hidden')->fill(data: $db->select('app.settings.URLHidden()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list )
+        {
+            $list->set('data.html.ajax-id', $list->get('data.settings_url_id'));
+        });
+        $data->list = $list->getDataToGenerate();
 
-        // LIST
-        $list = new Lists('/Settings/URL');
-        $list->object('defaults')->fill(data: $settings->getURLDefault());
-        $list->object('hidden')->fill(data: $settings->getURLHidden());
-        $this->data->list = $list->getData();
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Settings/URL.json');
+        $form
+            ->form('url')
+                ->callOnSuccess($this, 'newTranslateForURL');
+        $data->form = $form->getDataToGenerate();
+    }
 
-        // FIELD
-        $field = new Field('/Admin/Settings/URL');
-        $this->data->field = $field->getData();
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function newTranslateForURL( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // If entered urls doesn't start or end with slash
+        if (
+            !str_starts_with($post->get('settings_url_from'), '/') or
+            !str_starts_with($post->get('settings_url_to'), '/') or
+            (
+                !str_ends_with($post->get('settings_url_from'), '/') and
+                !str_ends_with($post->get('settings_url_from'), '-')
+            ) or
+            (
+                !str_ends_with($post->get('settings_url_to'), '/') and
+                !str_ends_with($post->get('settings_url_to'), '-')
+            )
+        ) {
+            throw new \App\Exception\Notice('settings_url_error');
+        }
 
-        // NEW LABEL
-        $this->process->form(type: '/Admin/Settings/URL/Create');
+        // If entered url doesnt end with same cgaracter
+        if (str_ends_with($post->get('settings_url_from'), '/'))
+        {
+            if (!str_ends_with($post->get('settings_url_to'), '/'))
+            {
+                throw new \App\Exception\Notice('settings_url_end_same');
+            }
+        }
+
+        // If entered url doesnt end with same cgaracter
+        if (str_ends_with($post->get('settings_url_from'), '-'))
+        {
+            if (!str_ends_with($post->get('settings_url_to'), '-'))
+            {
+                throw new \App\Exception\Notice('settings_url_end_same');
+            }
+        }
+
+        // Add translate
+        $db->insert(TABLE_SETTINGS_URL, [
+            'settings_url_from'         => $post->get('settings_url_from'),
+            'settings_url_to'           => $post->get('settings_url_to'),
+            'settings_url_hidden'       => (int)$post->get('settings_url_hidden')
+        ]);
+
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__ );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function deleteTranslateForURL( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Delete url
+        $db->delete(
+            table: TABLE_SETTINGS_URL,
+            id: $post->get('id')
+        );
+
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__ );
+        
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Refresh page
+        $data->set('options.refresh', true);
     }
 }

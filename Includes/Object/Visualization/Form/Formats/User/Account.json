@@ -1,0 +1,71 @@
+{
+    "body": {
+        "account": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "account": {
+                    "body": {
+                        "user_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_USERNAME.L_DESC",
+                                "title": "L_USERNAME.L_USERNAME",
+                                "placeholder": "L_PLACEHOLDER.L_USERNAME"
+                            }
+                        },
+                        "user_email": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_EMAIL.L_EMAIL",
+                                "placeholder": "L_PLACEHOLDER.L_EMAIL"
+                            }
+                        },
+                        "user_password_new": {
+                            "options": {
+                                "type": "password"
+                            },
+                            "data": {
+                                "title":"L_PASSWORD.L_NEW.L_NEW",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD_NEW"
+                            }
+                        },
+                        "user_password_new_confirm": {
+                            "options": {
+                                "type": "password"
+                            },
+                            "data": {
+                                "title": "L_PASSWORD.L_NEW.L_CONFIRM",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD_NEW_CONFIRM"
+                            }
+                        },
+                        "user_password": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_PASSWORD.L_CURRENT.L_DESC",
+                                "title": "L_PASSWORD.L_CURRENT.L_CURRENT",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

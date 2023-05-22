@@ -1,16 +1,16 @@
 {
     "body": {
         "conversation": {
-            "options": {
-                "empty": "L_USER_CONVERSATION_NO"
+            "data": {
+                "empty": "L_USER.L_CONVERSATION.L_NO"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "big": "/Conversation/Big.phtml",
-                            "small": "/Conversation/Small.phtml",
-                            "medium": "/Conversation/Medium.phtml"
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Conversation/Big.phtml",
+                            "small": "Root/Style:/Templates/Blocks/Visualization/Lists/Conversation/Small.phtml",
+                            "medium": "Root/Style:/Templates/Blocks/Visualization/Lists/Conversation/Medium.phtml"
                         }
                     },
                     "data": {}

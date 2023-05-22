@@ -2,7 +2,7 @@
     "body": {
         "info": {
             "data":{
-                "title":"L_USER_CONVERSATION_INFO"
+                "title":"L_INFO"
             },
             "body": {
                 "table": {
@@ -12,13 +12,13 @@
                     "body": {
                         "messages": {
                             "data": {
-                                "title":"L_USER_CONVERSATION_MESSAGE_COUNT",
+                                "title":"L_USER.L_CONVERSATION.L_MESSAGE.L_COUNT",
                                 "value": ""
                             }
                         },
                         "recipients": {
                             "data": {
-                                "title":"L_USER_CONVERSATION_RECIPIENT_COUNT",
+                                "title":"L_USER.L_CONVERSATION.L_RECIPIENT.L_COUNT",
                                 "value": ""
                             }
                         }
@@ -29,20 +29,20 @@
         "recipients": {
             "data":{
                 "type": "default",
-                "title":"L_USER_CONVERSATION_RECIPIENT_LIST"
+                "title":"L_USER.L_CONVERSATION.L_RECIPIENT.L_LIST"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "body": "%/Conversation/Recipients/Recipient.phtml"
+                            "body": "/Includes/Object/Visualization/Sidebar/Templates/Conversation/Recipients/Recipient.phtml"
                         }
                     }
                 },
                 "bottom": {
                     "options": {
                         "template": {
-                            "body": "%/Conversation/Recipients/AddRecipient.phtml"
+                            "body": "/Includes/Object/Visualization/Sidebar/Templates/Conversation/Recipients/AddRecipient.phtml"
                         }
                     }
                 }

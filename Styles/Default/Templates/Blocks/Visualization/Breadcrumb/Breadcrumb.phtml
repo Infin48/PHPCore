@@ -1,0 +1,9 @@
+<?php if ($this->data->breadcrumb->get('body')) : ?>
+    <div class="breadcrumb">
+        <div class="breadcrumb-container container">
+            <?php $i = 1; $this->data->breadcrumb->each('body', function ($breadcrumb) use (&$i, $url) { ?>
+                <a href="<?= $breadcrumb->get('data.href') ?>"><?= $breadcrumb->get('data.title') ?></a> <?php if ( count($this->data->breadcrumb->get('body')) != $i) : ?>><?php endif; ?>
+            <?php $i++; }); ?>
+        </div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,11 @@
+<div class="checkbox">
+    <label class="label label--<?= $checkbox->get('data.label_class') ?>">
+        <input id="<?= $checkbox->get('data.label_id') ?>" type="checkbox" name="<?= $input->getCurrentPositionName() ?>[]" value="<?= $checkbox->get('data.label_id') ?>" <?php if ($checkbox->get('options.checked')) : ?>checked<?php endif; ?>>
+        <label for="<?= $checkbox->get('data.label_id') ?>">
+            <span class="checkbox-icon">
+                <i class="fa-solid fa-check"></i>
+            </span>
+            <?= $checkbox->get('data.label_name') ?>
+        </label>
+    </label>
+</div>

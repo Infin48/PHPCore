@@ -1,0 +1,22 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/",
+                "title": "L_BREADCRUMB.L_TITLE_PAGE"
+            }
+        },
+        "user": {
+            "data": {
+                "href": "/user/",
+                "title": "L_BREADCRUMB.L_USER_SETTINGS"
+            }
+        },
+        "conversations": {
+            "data": {
+                "href": "/user/conversation/",
+                "title": "L_BREADCRUMB.L_USER_CONVERSATION"
+            }
+        }
+    }
+}

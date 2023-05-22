@@ -1,0 +1,116 @@
+{
+    "body": {
+        "registration": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "settings": {
+                    "data": {
+                        "title": "L_SETTINGS.L_REGISTER.L_REGISTER"
+                    },
+                    "body": {
+                        "site.allow_forgot_password": {
+                            "options": {
+                                "type": "checkbox",
+                                "on": {
+                                    "show": "registration.enabled:0"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_ALLOW_FORGOT_PASSWORD.L_DESC",
+                                "title": "L_SETTINGS.L_ALLOW_FORGOT_PASSWORD.L_ALLOW_FORGOT_PASSWORD"
+                            },
+                            "body": {
+                                "site.allow_forgot_password": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "registration.enabled": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_REGISTER.L_ALLOW"
+                            },
+                            "body": {
+                                "registration.enabled": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "registration.verify": {
+                            "options": {
+                                "type": "checkbox",
+                                "on": {
+                                    "show": "registration.enabled:1"
+                                }
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_REGISTER.L_VERIFY.L_VERIFY",
+                                "desc": "L_SETTINGS.L_REGISTER.L_VERIFY.L_DESC"
+                            },
+                            "body": {
+                                "registration.verify": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "registration.key_site": {
+                            "options": {
+                                "type": "text",
+                                "on": {
+                                    "show": "registration.enabled:1"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_REGISTER.L_RECAPTCHA.L_DESC",
+                                "title": "L_SETTINGS.L_REGISTER.L_RECAPTCHA.L_SITE",
+                                "placeholder": "L_PLACEHOLDER.L_KEY"
+                            }
+                        },
+                        "registration.key_secret": {
+                            "options": {
+                                "type": "text",
+                                "on": {
+                                    "show": "registration.enabled:1"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_REGISTER.L_RECAPTCHA.L_DESC",
+                                "title": "L_SETTINGS.L_REGISTER.L_RECAPTCHA.L_SECRET",
+                                "placeholder": "L_PLACEHOLDER.L_KEY"
+                            }
+                        },
+                        "registration.terms": {
+                            "options": {
+                                "type": "textarea",
+                                "on": {
+                                    "show": "registration.enabled:1"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_REGISTER.L_TERMS.L_DESC",
+                                "title": "L_SETTINGS.L_REGISTER.L_TERMS.L_TERMS",
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

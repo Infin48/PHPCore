@@ -10,13 +10,50 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Visualization\Sidebar;
+namespace App\Visualization\Sidebar;
 
 /**
  * Sidebar
  */
-class Sidebar extends \Visualization\Visualization
+class Sidebar extends \App\Visualization\Visualization
 {
+    /**
+     * @var array $translate List of keys which will be translated to language
+     */
+    protected array $translate = [
+        'body.?.data.title',
+        'body.?.data.empty',
+        'body.?.body.?.data.empty',
+        'body.?.body.?.data.title',
+        'body.?.body.?.data.button',
+        'body.?.body.?.body.?.data.title',
+        'body.?.body.?.body.?.data.value'
+    ];
+
+    /**
+     * @var array $defaultValues List of keys and their default values
+     */
+    protected array $defaultValues = [];
+
+    /**
+     * @var array $parseToPath List of keys which their values will be parsed to path
+     */
+    protected array $parseToPath = [
+        'body.?.options.template.root',
+        'body.?.options.template.body',
+        'body.?.body.?.options.template.body',
+        'body.?.body.?.options.template.root',
+        'body.?.body.?.body.?.options.template.body'
+    ];
+
+    /**
+     * @var array $parseToURL List of keys which their values will be parsed to URLs
+     */
+    protected array $parseToURL = [
+        'body.?.body.?.data.href',
+        'body.?.body.?.body.?.data.href',
+    ];
+
     /**
      * @var string $side Side of page where sidebar will be displayed
      */
@@ -30,33 +67,25 @@ class Sidebar extends \Visualization\Visualization
     /**
      * Shows sidebar on left side
      *
-     * @return void
+     * @return $this
      */
     public function left()
     {
         $this->side = 'left';
+
+        return $this;
     }
 
     /**
      * Changes sidebar type to small
      *
-     * @return void
+     * @return $this
      */
     public function small()
     {
         $this->type = 'small';
-    }
 
-    protected function each_clb( \Visualization\Visualization $visual )
-    {
-        if ($visual->obj->get->options('type') === 'table' and !$visual->obj->get->body()) {
-            $visual->obj->set->body(mt_rand(), [
-                'data' => [
-                    'title' => $visual->obj->get->data('title'),
-                    'value' => $visual->obj->get->data('value'),
-                ]
-            ]);
-        }
+        return $this;
     }
     
     /**
@@ -66,7 +95,7 @@ class Sidebar extends \Visualization\Visualization
      */
     protected function clb_getData()
     {   
-        $this->obj->set->set('side', $this->side);
-        $this->obj->set->set('type', $this->type);
+        $this->set('options.side', $this->side);
+        $this->set('options.type', $this->type);
     }
 }

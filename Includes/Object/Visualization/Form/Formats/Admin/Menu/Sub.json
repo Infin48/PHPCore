@@ -1,0 +1,44 @@
+{
+    "body": {
+        "button": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "button": {
+                    "data": {
+                        "title": ""
+                    },
+                    "body": {
+                        "button_sub_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_BUTTON.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "button_sub_link": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_LINK",
+                                "placeholder": "L_PLACEHOLDER.L_LINK"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

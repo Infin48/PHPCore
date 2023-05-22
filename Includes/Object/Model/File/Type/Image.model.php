@@ -10,17 +10,17 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\File\Type;
+namespace App\Model\File\Type;
 
 /**
  * Image
  */
-class Image extends \Model\File\Form
+class Image extends \App\Model\File\Form
 {
     /**
      * @var array $formats Allowed image formats
      */
-    public array $formats = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png', 'image/svg+xml'];
+    public array $formats = ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
 
     /**
      * @var int $size Max image size
@@ -34,7 +34,37 @@ class Image extends \Model\File\Form
      */
     public function ini()
     {
-        $this->size = (int)$this->system->get('image.max_size');
+        $this->size = (int)$this->file::$system->get('image.max_size');
+    }
+    
+    /**
+     * Allows GIFs
+     *
+     * @return void
+     */
+    public function allowGIF()
+    {
+        $this->formats[] = 'image/gif';
+    }
+
+    /**
+     * Returns image width
+     *
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->uploadedFile['width'];
+    }
+
+    /**
+     * Returns image height
+     *
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->uploadedFile['height'];
     }
 
     /**
@@ -48,10 +78,11 @@ class Image extends \Model\File\Form
      */
     function resize( int $width, int $height )
     {
-        if ($this->uploadedFile['type'] === 'image/gif' or $this->uploadedFile['type'] === 'image/svg+xml') {
-
+        if ($this->uploadedFile['type'] === 'image/gif' or $this->uploadedFile['type'] === 'image/svg+xml')
+        {
             $type = 'image_gif_size';
-            if ($this->uploadedFile['type'] === 'image/svg+xml') {
+            if ($this->uploadedFile['type'] === 'image/svg+xml')
+            {
                 $type = 'image_svg_size';
 
                 $xml = simplexml_load_file($this->uploadedFile['tmp_name']);
@@ -64,8 +95,9 @@ class Image extends \Model\File\Form
                 $info = getimagesize($this->uploadedFile['tmp_name']);
             }
 
-            if ($info[0] != $width or $info[1] != $height) {
-                throw new \Exception\Notice($type, [
+            if ($info[0] != $width or $info[1] != $height)
+            {
+                throw new \App\Exception\Notice($type, [
                     'width' => $width,
                     'height' => $height
                 ]);

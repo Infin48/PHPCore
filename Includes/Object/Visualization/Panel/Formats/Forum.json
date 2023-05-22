@@ -6,9 +6,9 @@
                 "hide": true
             },
             "data": {
-                "href": "/add/",
-                "icon": "fas fa-plus",
-                "title": "L_NEW_TOPIC"
+                "href": "~/add/",
+                "icon": "fa-solid fa-plus",
+                "title": "L_BTN.L_NEW_TOPIC"
             }
         }
     }

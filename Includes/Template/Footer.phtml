@@ -1,36 +1,77 @@
-<script src="/Assets/jQuery/jQuery.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-<script defer src="/Assets/cAjax/cAjax.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-<?php if ($this->user->isLogged()) : ?>
-    <?php if (isset($this->data->data['editor'])) : ?>
-        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-        <?php if ($this->system->get('site.language_editor') != 'en') : ?>
-            <script src="/Assets/Trumbowyg/langs/<?= $this->system->get('site.language_editor') ?>.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<?php if ($this->data->get('options.adminAccess')) : ?>
+    <a class="setup setup-admin" href="<?= $this->url->build('/admin/') ?>">
+        <span class="setup-text"><?= $this->language->get('L_ADMIN') ?></span>
+        <span class="setup-icon">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        </span>
+    </a>
+<?php endif; ?>
+<?php if ($this->data->get('options.setupTemplate')) : ?>
+    <a class="setup setup-template" href="<?= $this->url->build('/admin/template/setup/name-' . $this->template->get('template') . '/') ?>">
+        <span class="setup-text"><?= $this->language->get('L_BTN.L_MANAGE_TEMPLATE') ?></span>
+        <span class="setup-icon">
+            <i class="fa-solid fa-paint-brush"></i>
+        </span>
+    </a>
+<?php endif; ?>
+<?php if ($this->data->get('data.preview')) : ?>
+    <div class="preview">
+        <div class="preview-body">
+            <span><?= $language->get('L_PREVIEW_TEMPLATE') ?>: <span class="preview-name"><?= $this->data->d->get('data.preview') ?></span></span>
+            <a ajax-action="close-preview"><?= $language->get('L_PREVIEW_CLOSE') ?></a>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if ($this->system->get('cookie.enabled') == 1) : ?>
+    <?php require $path->build('Root/Style:/Templates/Blocks/Cookie.phtml'); ?>
+<?php endif; ?>
+<script src="/Assets/jQuery/jQuery.min.js?<?= $system->get('session.scripts') ?>"></script>
+<script defer src="/Assets/cAjax/cAjax.min.js?<?= $system->get('session.scripts') ?>"></script>
+<script>var mentionUserList=<?= $this->data->d->get('data.mentionUserList') ?>;</script>
+<?php if ( $this->user->isLogged() ) : ?>
+    <?php if ( $this->data->get('options.editor') ) : ?>
+        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <?php if ( $this->system->get('site.language_editor') != 'en' ) : ?>
+            <script src="/Assets/Trumbowyg/langs/<?= $system->get('site.language_editor') ?>.min.js?<?= $system->get('session.scripts') ?>"></script>
         <?php endif; ?>
-        <script defer src="/Includes/Template/js/Editor/<?= $this->data->data['editor'] ?>.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/upload/trumbowyg.upload.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/noembed/trumbowyg.noembed.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>
+        <?php if ( $this->system->get('site.mode.blog.profiles') ) : ?>
+            <script src="/Assets/Trumbowyg/plugins/mention/trumbowyg.mention.min.js"></script>
+        <?php endif; ?>
     <?php endif; ?>
 <?php endif; ?>
-<script defer src="/Includes/Template/js/Others.min.js?<?= $this->system->get('session.scripts') ?>"></script>
-<script defer src="/Includes/Template/js/Ajax.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<script defer src="/Includes/Template/js/js.min.js?<?= $system->get('session.scripts') ?>"></script>
 <?php if ($this->system->get('cookie.enabled') == 1) : ?>
-    <script src="/Assets/Cookie/Cookie.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+    <script defer src="/Assets/Cookie/Cookie.min.js?<?= $system->get('session.scripts') ?>"></script>
 <?php endif; ?>
 
-<?php if ($this->data->data['pageName'] == 'register') : ?>
-    <script src="https://www.google.com/recaptcha/api.js?render=<?= $this->system->get('registration.key_site') ?>"></script>
-    <script src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $this->system->get('session.scripts') ?>"></script>
+<?php if ($this->data->d->get('data.page') == 'Register') : ?>
+    <script defer src="https://www.google.com/recaptcha/api.js?render=<?= $system->get('registration.key_site') ?>"></script>
+    <script defer src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $system->get('session.scripts') ?>"></script>
 <?php endif; ?>
 
-<?php foreach ($this->data->data['plugins'] ?? [] as $plugin) : ?>
-    <?php if (file_exists($path = (ROOT . '/Plugins/' . $plugin . '/Styles/Themes/Addons.min.js'))) : ?>
-        <script defer src="<?= str_replace(ROOT, '', $path) ?>?<?= $this->system->get('session.scripts') ?>"></script>
+<?php
+    if (file_exists($bottom = ( ROOT . $template->get('path') . '/' . $template->get('template') . '/Templates/Blocks/Bottom.phtml'))) {
+        require $bottom;
+    }
+?>
+
+<?php foreach (LIST_OF_INSTALLED_PLUGINS as $plugin) : ?>
+    <?php if (file_exists($bottom = (ROOT . '/Plugins/' . $plugin . '/Styles/' . $this->plugin->get($plugin . '.template') . '/Templates/Blocks/Bottom.phtml'))) : ?>
+        <?php require $bottom; ?>
     <?php endif; ?>
 <?php endforeach; ?>
 
-<?php
+<?php if ( $this->data->get('options.editor') ) : ?>
+    <!-- Trumbowyg configuration -->
+    <script>jQuery.trumbowyg&&($('[trumbowyg="big"]').trumbowyg(<?= json_encode($this->data->get('data.trumbowyg.big')) ?>),$('[trumbowyg="small"]').trumbowyg(<?= json_encode($this->data->get('data.trumbowyg.small')) ?>),$("body").on("click",'[ajax="textarea"]',(function(){var o=$(this).closest('[js="block block-form"]');o.addClass("block-opened"),$(this).trumbowyg(<?= json_encode($this->data->get('data.trumbowyg.small')) ?>),o.find(".trumbowyg-editor").focus()})));</script>
+<?php endif; ?>
 
-    if (file_exists($path = ( ROOT . $this->template->get('path') . '/' . $this->template->get('template') . '/Templates/Blocks/Bottom.phtml'))) {
-        require $path;
-    }
-?>
+<?php if ( $this->data->d->get('options.photoSwipe') ) : ?>
+    <!-- PhotoSwipe configuration -->
+    <script type="module">import PhotoSwipeLightbox from"/Assets/PhotoSwipe/dist/photoswipe-lightbox.esm.min.js";const lightbox=new PhotoSwipeLightbox({gallery:".pswp-images",children:"a.image",pswpModule:()=>import("/Assets/PhotoSwipe/dist/photoswipe.esm.min.js")});lightbox.on("uiRegister",(function(){lightbox.pswp.ui.registerElement({name:"custom-caption",order:9,isButton:!1,appendTo:"root",html:"Caption text",onInit:(t,e)=>{lightbox.pswp.on("change",(()=>{const e=lightbox.pswp.currSlide.data.element;let o="";if(e){const t=e.querySelector(".hidden-caption-content");o=t?t.innerHTML:e.querySelector("img").getAttribute("alt")}t.innerHTML=o||""}))}})})),lightbox.init();</script>
+<?php endif; ?>

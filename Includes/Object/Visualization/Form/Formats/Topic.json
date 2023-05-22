@@ -1,0 +1,109 @@
+{
+    "body": {
+        "topic": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "topic": {
+                    "body": {
+                        "topic_name": {
+                            "options": {
+                                "type": "text",
+                                "max-length": "150",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_TOPIC.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "topic_text": {
+                            "options": {
+                                "type": "html",
+                                "required": true
+                            },
+                            "data": {
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        },
+                        "topic_label": {
+                            "options": {
+                                "type": "checkbox",
+                                "max-length": "5",
+                                "hide": true
+                            },
+                            "data": {
+                                "empty": "L_LABEL.L_NO",
+                                "desc": "L_LABEL.L_DESC",
+                                "title": "L_LABEL.L_LIST"
+                            },
+                            "body": {
+                                "default": {
+                                    "options": {
+                                        "template": {
+                                            "option": "/Includes/Object/Visualization/Form/Templates/Label.phtml"
+                                        }
+                                    },
+                                    "data": {}
+                                }
+                            }
+                        },
+                        "topic_image": {
+                            "options": {
+                                "type": "file/image",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_TOPIC.L_IMAGE.L_IMAGE"
+                            }
+                        },
+                        "delete_topic_image": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_TOPIC.L_IMAGE.L_DELETE"
+                            },
+                            "body": {
+                                "delete_topic_image": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "topic_images": {
+                            "options": {
+                                "type": "file/image[]"
+                            },
+                            "data": {
+                                "title": "L_IMAGES"
+                            }
+                        },
+                        "topic_attachments": {
+                            "options": {
+                                "type": "file/misc[]"
+                            },
+                            "data": {
+                                "title": "L_ATTACHMENTS"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

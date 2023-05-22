@@ -1,0 +1,19 @@
+<?php if ($this->data->get('data.message.text')) : ?>
+    <div class="alert alert-type-<?= $this->data->get('data.message.type') ?>" js="alert">
+        <div class="alert-icon">
+            <?php if ($this->data->get('data.message.type') == 'success') : ?>
+                <i class="fa-solid fa-check"></i>
+            <?php else : ?>
+                <i class="fa-solid fa-exclamation"></i>
+            <?php endif; ?>
+        </div>  
+        <div class="alert-body">
+            <div class="alert-content alert-content-clear">
+                <span class="alert-title"><?= $this->data->get('data.message.text') ?></span>
+            </div>
+            <span class="alert-close" ajax="close">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+        </div>
+    </div>
+<?php endif; ?>

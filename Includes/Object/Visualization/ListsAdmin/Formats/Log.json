@@ -1,0 +1,20 @@
+{
+    "body": {
+        "log": {
+            "data": {
+                "empty": "L_LOG.L_NO",
+                "title": "L_LOG.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Log.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

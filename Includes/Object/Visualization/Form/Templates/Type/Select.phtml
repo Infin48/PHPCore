@@ -1,0 +1,13 @@
+<?php if ( $input->get('body') ) : ?>
+    <select name="<?= $input->getCurrentPositionName() ?><?php if ( str_ends_with($input->get('options.type'), '[]') ) : ?>[]<?php endif; ?>"<?php if ( str_ends_with($input->get('options.type'), '[]') ) : ?> multiple<?php endif; ?>>
+        <?php $input->each('body', function ($input) { ?>
+            <option value="<?= $input->get('data.value') ?>"<?php if (($this->post->get($input->getCurrentPositionName()) == $input->get('data.value') or (is_array($this->post->get($input->getCurrentPositionName())) and in_array($input->get('data.value'), $input->get($input->getCurrentPositionName())))) or ( $input->get('options.checked')) ) : ?> selected<?php endif; ?>>
+                <?= $input->get('data.label') ?>
+            </option>
+        <?php }); ?>
+    </select>
+<?php else : ?>
+    <?php if ( $input->get('data.empty') ) : ?>
+        <?= $input->get('data.empty') ?>
+    <?php endif; ?>
+<?php endif;?>

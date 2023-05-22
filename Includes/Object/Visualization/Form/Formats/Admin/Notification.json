@@ -1,0 +1,89 @@
+{
+    "body": {
+        "notification": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "notification": {
+                    "data": {
+                        "title": "L_NOTIFICATION.L_NEW"
+                    },
+                    "body": {
+                        "notification_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_NOTIFICATION.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "notification_text": {
+                            "options": {
+                                "type": "textarea",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_NOTIFICATION.L_BODY",
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        },
+                        "notification_type": {
+                            "options": {
+                                "type": "radio",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_NOTIFICATION.L_TYPE.L_TYPE"
+                            },
+                            "body": {
+                                "info": {
+                                    "data": {
+                                        "label": "L_NOTIFICATION.L_TYPE.info",
+                                        "value": "info"
+                                    }
+                                },
+                                "notification": {
+                                    "data": {
+                                        "label": "L_NOTIFICATION.L_TYPE.notice",
+                                        "value": "notice"
+                                    }
+                                },
+                                "warning": {
+                                    "data": {
+                                        "label": "L_NOTIFICATION.L_TYPE.warning",
+                                        "value": "warning"
+                                    }
+                                }
+                            }
+                        },
+                        "notification_hidden": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "desc": "L_NOTIFICATION.L_HIDE.L_DESC",
+                                "title": "L_NOTIFICATION.L_HIDE.L_HIDE"
+                            },
+                            "body": {
+                                "notification_hidden": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

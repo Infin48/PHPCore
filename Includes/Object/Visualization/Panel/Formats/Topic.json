@@ -1,6 +1,11 @@
 {
+    "data": {
+        "html": {
+            "ajax-item": "topic"
+        }
+    },
     "options": {
-        "type": "/Topic"
+        "hide": true
     },
     "body": {
         "move": {
@@ -9,13 +14,13 @@
                 "type": "form"
             },
             "data": {
-                "title": "L_MOVE",
-                "icon": "fas fa-arrows-alt",
+                "title": "L_BTN.L_MOVE",
+                "icon": "fa-solid fa-arrows-alt",
                 "form": {
                     "title": "L_FORUM_LIST",
                     "button": {
-                        "name": "confirm-forum",
-                        "value": "L_CONFIRM"
+                        "ajax-action": "move",
+                        "title": "L_BTN.L_CONFIRM"
                     }
                 }
             },
@@ -23,7 +28,7 @@
                 "default": {
                     "options": {
                         "template": {
-                            "body": "%/Topic/Forum.phtml"
+                            "body": "/Includes/Object/Visualization/Panel/Templates/Topic/Forum.phtml"
                         }
                     },
                     "data": {}
@@ -36,12 +41,12 @@
                 "type": "form"
             },
             "data": {
-                "icon": "fas fa-tags",
+                "icon": "fa-solid fa-tags",
                 "form": {
-                    "title": "L_LABEL_LIST",
+                    "title": "L_LABEL.L_LIST",
                     "button": {
-                        "name": "confirm-label",
-                        "value": "L_CONFIRM"
+                        "ajax-action": "label",
+                        "title": "L_BTN.L_CONFIRM"
                     }
                 }
             },
@@ -49,10 +54,12 @@
                 "default": {
                     "options": {
                         "template": {
-                            "body": "%/Topic/Label.phtml"
+                            "body": "/Includes/Object/Visualization/Panel/Templates/Label.phtml"
                         }
                     },
-                    "data": {}
+                    "data": {
+                        "name": "topic_label"
+                    }
                 }
             }
         },
@@ -61,8 +68,8 @@
                 "type": "dropdown"
             },
             "data": {
-                "icon": "fas fa-wrench",
-                "title": "L_TOOLS"
+                "icon": "fa-solid fa-wrench",
+                "title": "L_BTN.L_TOOLS"
             },
             "body":{
                 "edit":{
@@ -70,8 +77,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_EDIT",
-                        "href": "/edit/"
+                        "title": "L_BTN.L_EDIT",
+                        "href": "~/edit/"
                     }
                 },
                 "delete":{
@@ -79,8 +86,9 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_DELETE",
-                        "ajax": "process"
+                        "title": "L_BTN.L_DELETE",
+                        "ajax-action": "delete",
+                        "ajax-window": true
                     }
                 },
                 "lock":{
@@ -88,8 +96,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_LOCK",
-                        "ajax": "process"
+                        "title": "L_BTN.L_LOCK",
+                        "ajax-action": "lock"
                     }
                 },
                 "unlock":{
@@ -97,8 +105,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_UNLOCK",
-                        "ajax": "process"
+                        "title": "L_BTN.L_UNLOCK",
+                        "ajax-action": "unlock"
                     }
                 },
                 "stick":{
@@ -106,8 +114,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_STICK",
-                        "ajax": "process"
+                        "title": "L_BTN.L_STICK",
+                        "ajax-action": "stick"
                     }
                 },
                 "unstick":{
@@ -115,8 +123,8 @@
                         "hide": true
                     },
                     "data": {
-                        "title": "L_UNSTICK",
-                        "ajax": "process"
+                        "title": "L_BTN.L_UNSTICK",
+                        "ajax-action": "unstick"
                     }
                 }
             }
@@ -128,8 +136,8 @@
             },
             "data": {
                 "href": "$#new",
-                "icon": "fas fa-reply",
-                "title": "L_POST"
+                "icon": "fa-solid fa-reply",
+                "title": "L_BTN.L_POST"
             }
         }
     }

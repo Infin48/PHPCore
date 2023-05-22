@@ -1,0 +1,58 @@
+{
+    "body": {
+        "admin": {
+            "data": {
+                "title": "L_GROUP.L_ADMIN"
+            },
+            "body": {
+                "admin": {
+                    "options": {  
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Group.phtml"
+                        }
+                    },
+                    "data": {
+                        "id": 1,
+                        "group_id": 1,
+                        "button": {
+                            "edit": {}
+                        }
+                    }
+                }
+            }
+        },
+        "group": {
+            "data": {
+                "icon": "fa-solid fa-users",
+                "title": "L_GROUP.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {  
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Group.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "group"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "permission": {},
+                            "edit": {},
+                            "delete": {
+                                "hide": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

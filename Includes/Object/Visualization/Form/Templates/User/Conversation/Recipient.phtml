@@ -1,0 +1,29 @@
+<div class="form-row" js="form-row form-row-recipients">
+    <div class="form-row-body">
+        <div class="form-text vertical-align">
+            <span><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_LIST') ?></span>
+        </div>
+        <div class="form-option">
+            <div class="recipient-list" js="recipient-list">
+                <?php if ($this->data->get('data.recipient')) : ?>
+                    <?php $this->data->each('data.recipient', function ($recipient) { ?>
+                    <div class="recipient" js="recipient" data-id="<?= $recipient->get('user_id') ?>">
+                        <?= $this->build->user->linkImg(data: $recipient->get(), size: '25x25') ?>
+                        <a ajax="remove-recipient"><i class="fa-solid fa-xmark"></i></a>
+                    </div>
+                    <?php }); ?>
+                    <span js="no-recipients" style="display: none;"><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_NO') ?></span>
+                <?php else : ?>
+                    <span js="no-recipients"><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_NO') ?></span>
+                <?php endif; ?>
+                <select class="d-none" multiple name="to[]" js="select">
+                    <?php if ($this->data->get('data.recipient')) : ?>
+                        <?php $this->data->each('data.recipient', function ($recipient) { ?>
+                            <option value="<?= $recipient->get('user_id') ?>" selected><?= $recipient->get('user_id') ?></option>
+                        <?php }); ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

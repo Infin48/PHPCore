@@ -51,8 +51,8 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
         $el = '[#a-zA-Z0-9_.-]+';
         $reg = $raw;
 
-        // COMPLICATED! AND MIGHT BE BUGGY! I HAVE NO CLUE WHAT I'M
-        // DOING! Seriously: if there's problems, please report them.
+        // Complicated! and might be buggy! i have no clue what i'm
+        // Doing! seriously: if there's problems, please report them.
 
         // collect all elements into the $elements array
         preg_match_all("/$el/", $reg, $matches);

@@ -13,7 +13,7 @@ class HTMLPurifier_AttrTransform_Textarea extends HTMLPurifier_AttrTransform
      */
     public function transform($attr, $config, $context)
     {
-        // Calculated from Firefox
+        // Calculated from firefox
         if (!isset($attr['cols'])) {
             $attr['cols'] = '22';
         }

@@ -10,7 +10,12 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-$language = array_merge($language, [
-    'L_MAIL_TEST_SUBJECT' => 'Testovací e-mail',
-    'L_MAIL_TEST_BODY' => 'Toto je testovací e-mail.'
-]);
+$language = [
+    'L_EMAIL' => [
+        'L_EMAIL' => 'E-mail',
+        'L_TEST' => [
+            'L_SUBJECT' => 'Testovací e-mail',
+            'L_BODY' => 'Toto je testovací e-mail.'
+        ]
+    ]
+];

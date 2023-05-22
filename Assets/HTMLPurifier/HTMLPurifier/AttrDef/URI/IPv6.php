@@ -37,7 +37,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
             }
         }
 
-        //      IPv4-compatiblity check
+        //      ipv4-compatiblity check
         if (preg_match('#(?<=:' . ')' . $this->ip4 . '$#s', $aIP, $find)) {
             $aIP = substr($aIP, 0, 0 - strlen($find[0]));
             $ip = explode('.', $find[0]);
@@ -76,7 +76,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
             return false;
         }
 
-        //      All the pieces should be 16-bit hex strings. Are they?
+        //      all the pieces should be 16-bit hex strings. are they?
         foreach ($aIP as $piece) {
             if (!preg_match('#^[0-9a-fA-F]{4}$#s', sprintf('%04s', $piece))) {
                 return false;

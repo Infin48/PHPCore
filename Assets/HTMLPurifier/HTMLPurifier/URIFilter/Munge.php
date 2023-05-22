@@ -74,7 +74,7 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
         } // ignore non-browseable schemes, since we can't munge those in a reasonable way
         if ($uri->isBenign($config, $context)) {
             return true;
-        } // don't redirect if a benign URL
+        } // don't redirect if a benign url
 
         $this->makeReplace($uri, $config, $context);
         $this->replace = array_map('rawurlencode', $this->replace);

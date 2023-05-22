@@ -253,7 +253,7 @@ class HTMLPurifier_Printer_ConfigForm_NullDecorator extends HTMLPurifier_Printer
             'class' => 'null-toggle',
             'name' => "$name" . "[Null_$ns.$directive]",
             'id' => "$name:Null_$ns.$directive",
-            'onclick' => "toggleWriteability('$name:$ns.$directive',checked)" // INLINE JAVASCRIPT!!!!
+            'onclick' => "toggleWriteability('$name:$ns.$directive',checked)" // Inline javascript!!!!
         );
         if ($this->obj instanceof HTMLPurifier_Printer_ConfigForm_bool) {
             // modify inline javascript slightly
@@ -328,7 +328,7 @@ class HTMLPurifier_Printer_ConfigForm_default extends HTMLPurifier_Printer
                     $nvalue = '';
                     foreach ($value as $i => $v) {
                         if (is_array($v)) {
-                            // HACK
+                            // Hack
                             $v = implode(";", $v);
                         }
                         $nvalue .= "$i:$v" . PHP_EOL;

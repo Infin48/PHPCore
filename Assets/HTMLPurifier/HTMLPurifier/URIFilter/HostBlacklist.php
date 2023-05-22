@@ -1,9 +1,9 @@
 <?php
 
-// It's not clear to me whether or not Punycode means that hostnames
-// do not have canonical forms anymore. As far as I can tell, it's
-// not a problem (punycoding should be identity when no Unicode
-// points are involved), but I'm not 100% sure
+// It's not clear to me whether or not punycode means that hostnames
+// do not have canonical forms anymore. as far as i can tell, it's
+// not a problem (punycoding should be identity when no unicode
+// points are involved), but i'm not 100% sure
 class HTMLPurifier_URIFilter_HostBlacklist extends HTMLPurifier_URIFilter
 {
     /**

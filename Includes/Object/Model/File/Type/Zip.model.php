@@ -10,20 +10,20 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\File\Type;
+namespace App\Model\File\Type;
 
 /**
  * Zip
  */
-class Zip extends \Model\File\Form
+class Zip extends \App\Model\File\Form
 {
     /**
-     * @var array $formats Allowed image formats
+     * @var array $formats Allowed formats
      */
-    public array $formats = ['application/x-zip-compressed', 'application/zip', 'application/x-zip'];
+    public array $formats = ['application/x-zip-compressed', 'application/zip', 'application/x-zip', 'application/x-rar-compressed'];
 
     /**
-     * @var int $size Max image size
+     * @var int $size Max file size
      */
-    public int $size = 50000;
+    public int $size = 500000;
 }

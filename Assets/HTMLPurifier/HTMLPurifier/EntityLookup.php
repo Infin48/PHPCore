@@ -33,7 +33,7 @@ class HTMLPurifier_EntityLookup
      */
     public static function instance($prototype = false)
     {
-        // no references, since PHP doesn't copy unless modified
+        // no references, since php doesn't copy unless modified
         static $instance = null;
         if ($prototype) {
             $instance = $prototype;

@@ -1,22 +1,22 @@
-<div id="c<?= $row['data']['profile_post_comment_id'] ?>" class="block block-mini<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block" ajax-process-id="<?= $row['data']['id'] ?>" ajax-process-id="<?= $row['data']['id'] ?>" ajax-process-type="<?= $row['options']['type'] ?>">
-    <?php require $this->template->template('/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
-    <div class="block-body" ajax-selector="block-body">
-        <?= $this->build->user->image($row['data']) ?>
+<div id="c<?= $block->get('data.profile_post_comment_id') ?>" class="block block-mini<?php if ( $block->get('options.selected') ) : ?> block-selected<?php endif; ?><?php if ( $block->get('options.closed') ) : ?> block-closed<?php endif; ?><?php if ( $block->get('options.disabled') ) : ?> block-disabled<?php endif; ?>"<?php if ( $block->get('options.selected') ) : ?> ajax-selected<?php endif; ?> js="block" ajax-id="<?= $block->get('data.html.ajax-id') ?>" ajax-item="<?= $block->get('data.html.ajax-item') ?>">
+    <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
+    <div class="block-body" js="block-body">
+        <?= $block->get('data.user_image') ?>
         <div class="block-body-inner">
             <div class="block-head">
-                <?= $this->build->user->link($row['data'], true) ?>
+                <?= $block->get('data.user') ?>
                 <span class="block-description">
-                    <span ajax="title" data-title="<?= $L_CREATED ?>">
-                        <?= $this->build->date->long($row['data']['created']) ?>
+                    <span ajax="title" ajax-title="<?= $this->language->get('L_CREATED') ?>">
+                        <?= $block->get('data.date') ?>
                     </span>
                 </span>
             </div>
-            <div class="block-content" ajax-selector="block-content">
-                <?= $row['data']['text'] ?>
+            <div class="block-content" js="block-content">
+                <?= $block->get('data.text') ?>
             </div>
-            <?php if (!empty($row['data']['button'])) : ?>
-                <div class="block-bottom" ajax-selector="block-bottom">
-                    <?php foreach ($row['data']['button'] as $btn) : ?>
+            <?php if ($block->get('data.button')) : ?>
+                <div class="block-bottom" js="block-bottom">
+                    <?php foreach ($block->get('data.button') as $btn) : ?>
                         <?php require $btn; ?>
                     <?php endforeach; ?>
                 </div>

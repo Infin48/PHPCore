@@ -1,0 +1,74 @@
+{
+    "body": {
+        "update": {
+            "body": {
+                "available": {
+                    "data": {
+                        "title": "L_UPDATE.L_AVAILABLE"
+                    },
+                    "body": {
+                        "tag_name": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_UPDATE.L_VERSION"
+                            }
+                        },
+                        "name": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_UPDATE.L_NAME"
+                            }
+                        },
+                        "published_at": {
+                            "options": {
+                                "type": "date"
+                            },
+                            "data": {
+                                "title": "L_UPDATE.L_PUBLISHED"
+                            }
+                        },
+                        "details": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-circle-info",
+                                "desc": "L_UPDATE.L_DETAILS.L_DESC",
+                                "title": "L_UPDATE.L_DETAILS.L_DETAILS",
+                                "button": "L_BTN.L_DETAILS"
+                            }
+                        },
+                        "download": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-download",
+                                "title": "L_UPDATE.L_DOWNLOAD",
+                                "button": "L_BTN.L_DOWNLOAD"
+                            }
+                        },
+                        "instructions": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-book",
+                                "href": "$http://doc.phpcore.cz/general/update/",
+                                "title": "L_UPDATE.L_INSTRUCTIONS",
+                                "button": "L_BTN.L_DOCUMENTATION"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

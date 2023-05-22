@@ -1,0 +1,33 @@
+{
+    "body": {
+        "page": {
+            "data": {
+                "empty": "L_PAGE.L_NO",
+                "title": "L_PAGE.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Page.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "page"
+                        },
+                        "button": {
+                            "show": {
+                                "target": "_blank",
+                                "icon": "fa fa-eye",
+                                "title": "L_BTN.L_SHOW"
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

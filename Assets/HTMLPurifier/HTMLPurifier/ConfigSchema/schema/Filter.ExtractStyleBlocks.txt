@@ -39,7 +39,7 @@ EXTERNAL: CSSTidy
     // This implementation writes the stylesheets to the styles/ directory.
     // You can also echo the styles inside the document, but it's a bit
     // more difficult to make sure they get interpreted properly by
-    // browsers; try the usual CSS armoring techniques.
+    // browsers; try the usual css armoring techniques.
     $styles = $purifier->context->get('StyleBlocks');
     $dir = 'styles/';
     if (!is_dir($dir)) mkdir($dir);

@@ -97,9 +97,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
         }
         $dir = $this->generateDirectoryPath($config);
         $dh = opendir($dir);
-        // Apparently, on some versions of PHP, readdir will return
+        // Apparently, on some versions of php, readdir will return
         // an empty string if you pass an invalid argument to readdir.
-        // So you need this test.  See #49.
+        // So you need this test.  see #49.
         if (false === $dh) {
             return false;
         }
@@ -277,7 +277,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
             return false;
         }
         if (function_exists('posix_getuid') && $chmod !== null) {
-            // POSIX system, we can give more specific advice
+            // Posix system, we can give more specific advice
             if (fileowner($dir) === posix_getuid()) {
                 // we can chmod it ourselves
                 $chmod = $chmod | 0700;
@@ -287,7 +287,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
             } elseif (filegroup($dir) === posix_getgid()) {
                 $chmod = $chmod | 0070;
             } else {
-                // PHP's probably running as nobody, so we'll
+                // Php's probably running as nobody, so we'll
                 // need to give global permissions
                 $chmod = $chmod | 0777;
             }

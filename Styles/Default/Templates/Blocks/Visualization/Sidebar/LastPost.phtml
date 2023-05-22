@@ -1,12 +1,11 @@
-<?= $this->build->user->image($row['data']) ?>
+<?= $sidebar->get('data.user_image') ?>
 <div class="inner">
-    <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
-    <a class="fw-700" href="<?= $this->build->url->topic($row['data']) ?>"><?= truncate($row['data']['topic_name'], 30) ?></a>
+    <div class="label-list">
+        <?php require $this->path->build('Root/Style:/Templates/Blocks/Labels.phtml'); ?>
+        <?= $sidebar->get('data.link') ?>
+    </div>
     <br>
-    <span class="grey">
-        <span class="grey"><?= $L_BY ?> </span>
-        <?= $this->build->user->link($row['data'], true) ?>
-        <br>
-        <?= $this->build->date->long($row['data']['created'], true) ?>
-    </span>
+    <?= $this->language->get('L_BY') ?> <?= $sidebar->get('data.user') ?>
+    <br>
+    <span class="date"><?= $sidebar->get('data.date') ?></span>
 </div>

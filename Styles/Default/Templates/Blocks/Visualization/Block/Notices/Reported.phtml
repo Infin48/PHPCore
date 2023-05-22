@@ -1,1 +1,1 @@
-<div class="block-alert" ajax-selector="block-alert"><?= $L_CONTENT_REPORTED ?> <a ajax-selector="details" class="a-reverse" href="<?= $this->url->build('/admin/report/show/' . ($row['data']['report_id'] ?? '')) ?>"><?= $L_DETAILS ?></a></div>
+<div class="block-alert" js="block-alert"><?= $this->language->get('L_CONTENT.L_REPORTED') ?> <a js="details" class="a-reverse" href="<?= $block->get('data.href') ?>"><?= $this->language->get('L_DETAILS') ?></a></div>

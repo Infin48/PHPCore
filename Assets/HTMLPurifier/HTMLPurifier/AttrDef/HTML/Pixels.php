@@ -49,7 +49,7 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
 
         // upper-bound value, extremely high values can
         // crash operating systems, see <http://ha.ckers.org/imagecrash.html>
-        // WARNING, above link WILL crash you if you're using Windows
+        // Warning, above link will crash you if you're using windows
 
         if ($this->max !== null && $int > $this->max) {
             return (string)$this->max;

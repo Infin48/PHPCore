@@ -1,0 +1,24 @@
+{
+    "body": {
+        "permission": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "permission": {
+                    "options": {
+                        "template": {
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Form/Group/Permission.phtml"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

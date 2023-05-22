@@ -1,1 +1,0 @@
-<textarea name="<?= $rowName ?>"<?php if ($row['options']['type'] === 'html') : ?> textarea-to-editor<?php endif; ?><?php if ($row['data']['placeholder'] ?? false) : ?> placeholder="<?= ${$row['data']['placeholder']} ?>"<?php endif; ?>><?= $this->form->get($rowName) ?: $row['data']['value'] ?? '' ?></textarea>

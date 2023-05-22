@@ -1,0 +1,65 @@
+
+<div class="page-column page-column-big">
+    <div class="page-column-icon"><i class="fa-solid fa-pen"></i></div>
+    <div class="page-column-title"><?= $language->get('L_PERMISSION.L_PERMISSION') ?></div>
+    <form method="post">
+        <div class="page-column-body">
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Includes/.htdata.json') and is_writable(ROOT . '/Includes/.htdata.json')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/.htdata.json" value="/Includes/.htdata.json">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Install/Includes/Settings.json') and is_writable(ROOT . '/Install/Includes/Settings.json')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Install/Includes/Settings.json" value="/Install/Includes/Settings.json">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Includes/Template/css/Group.min.css') and is_writable(ROOT . '/Includes/Template/css/Group.min.css')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/Template/css/Group.min.css" value="/Includes/Template/css/Group.min.css">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Includes/Template/css/Label.min.css') and is_writable(ROOT . '/Includes/Template/css/Label.min.css')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/Template/css/Label.min.css" value="/Includes/Template/css/Label.min.css">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Includes/Template/css/Role.min.css') and is_writable(ROOT . '/Includes/Template/css/Role.min.css')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Includes/Template/css/Role.min.css" value="/Includes/Template/css/Role.min.css">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Uploads') and is_writable(ROOT . '/Uploads') and is_executable(ROOT . '/Uploads')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Uploads" value="/Uploads">
+            </div>
+            <div class="page-column-input">
+                <?php if (is_readable(ROOT . '/Assets/reCAPTCHA/reCAPTCHA.min.js') and is_writable(ROOT . '/Assets/reCAPTCHA/reCAPTCHA.min.js')) : ?>
+                    <i class="fa-solid fa-check"></i>
+                <?php else : ?>
+                    <i class="fa-solid fa-red fa-times"></i>
+                <?php endif; ?>
+                <input type="text" placeholder="/Assets/reCAPTCHA/reCAPTCHA.min.js" value="/Assets/reCAPTCHA/reCAPTCHA.min.js">
+            </div>
+        </div>
+    </form>
+</div>

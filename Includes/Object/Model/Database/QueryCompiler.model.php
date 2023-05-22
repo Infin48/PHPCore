@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\Database;
+namespace App\Model\Database;
 
 /**
  * QueryCompiler
@@ -20,25 +20,26 @@ class QueryCompiler
     /**
      * @var array $tableKeys List of table keys
      */
-    private static array $tableKeys = [
+    public static array $tableKeys = [
+        TABLE_ARTICLES => 'article_id',
         TABLE_BUTTONS => 'button_id',
         TABLE_BUTTONS_SUB => 'button_sub_id',
         TABLE_CATEGORIES => 'category_id',
-        TABLE_CATEGORIES_PERMISSION_SEE => 'category_id',
+        TABLE_CATEGORIES_PERMISSION => 'category_id',
         TABLE_FORGOT => 'user_id',
         TABLE_FORUMS => 'forum_id',
-        TABLE_FORUM_ICONS => 'icon_id',
-        TABLE_FORUMS_PERMISSION_SEE => 'forum_id',
-        TABLE_FORUMS_PERMISSION_POST => 'forum_id',
-        TABLE_FORUMS_PERMISSION_TOPIC => 'forum_id',
+        TABLE_FORUMS_PERMISSION => 'forum_id',
         TABLE_GROUPS => 'group_id',
         TABLE_LABELS => 'label_id',
         TABLE_LOG => 'log_id',
+        TABLE_SIDEBAR => 'sidebar_id',
+        TABLE_SETTINGS_URL => 'settings_url_id',
         TABLE_CONVERSATIONS => 'conversation_id',
         TABLE_CONVERSATIONS_MESSAGES => 'conversation_message_id',
         TABLE_PAGES => 'page_id',
         TABLE_PLUGINS => 'plugin_id',
         TABLE_POSTS => 'post_id',
+        TABLE_ROLES => 'role_id',
         TABLE_POSTS_LIKES => 'post_id',
         TABLE_PROFILE_POSTS => 'profile_post_id',
         TABLE_PROFILE_POSTS_COMMENTS => 'profile_post_comment_id',
@@ -65,6 +66,11 @@ class QueryCompiler
     private string $table = '';
 
     /**
+     * @var string $table Table alias
+     */
+    private string $alias = '';
+
+    /**
      * @var string $where Where statement
      */
     private string $where = '';
@@ -75,23 +81,52 @@ class QueryCompiler
     private string $set = '';
 
     /**
-     * Constructor
+     * @var int $flag Additional flag
+     */
+    private int $flag = 0;
+
+    /**
+     * Compiles query
      *
      * @param string $table Table name
-     * @param array $query Array query
+     * @param array|string $query Array query
      * @param string $type Type of query
-     * @param int $id Item ID, only for update query
+     * @param int|string $id Item ID, only for update query
+     * @param int $flag Additional flag
+     * 
+     * @return null
      */
-    public function __construct( string $table, array $query, string $type, int $id = null )
+    public function compile( string $table, string $type, array|string $query = null, int|string $id = null, int $flag = null )
     {
-        $this->table = $table;
+        list($this->table, $this->alias) = explode(' ', $table);
+        $this->flag = $flag ?? 0;
         $this->type = $type;
+        $this->set = '';
+        $this->where = '';
+        $this->params = [];
 
         switch ($type) {
 
+            case 'delete':
+            
+                if ($id)
+                {
+                    $key = self::$tableKeys[$table];
+                    if ($query)
+                    {
+                        $key = $query;
+                    }
+
+                    $this->where = 'WHERE ' . $key . ' = ?';
+                    $this->params = [$id];
+                }
+            
+            break;
+
             case 'insert':
+
                 
-                $this->column =  implode(',', array_keys($query));
+                $this->column =  '`' . implode('`,`', array_keys($query)) . '`';
                 $this->data = implode(',', array_fill(0, count($query), '?'));
                 $this->params = array_values($query);
 
@@ -130,14 +165,24 @@ class QueryCompiler
     }
 
     /**
-     * Adds key
+     * Retnrs keys according to table
+     * 
+     * @return array
+     */
+    public function getKeys()
+    {
+        return self::$tableKeys;
+    }
+
+    /**
+     * Adds table and key
      *
      * @param string $table Table name
      * @param string $table primary key
      * 
-     * @return string
+     * @return null
      */
-    public static function addKey( string $table, string $key )
+    public static function addTable( string $table, string $key )
     {
         self::$tableKeys[$table] = $key;
     }
@@ -153,8 +198,13 @@ class QueryCompiler
             case 'update':
                 return 'UPDATE ' . $this->table . ' SET '. $this->set . ' ' . $this->where;
             break;
+
             case 'insert':
-                return 'INSERT INTO ' . explode(' ', $this->table)[0] . ' (' . $this->column . ') VALUES (' . $this->data . ')';
+                return 'INSERT ' . ($this->flag & Q_IGNORE ? 'IGNORE ' : '' ) . 'INTO ' . $this->table . ' (' . $this->column . ') VALUES (' . $this->data . ')' . ($this->flag & Q_DUPLICATE ? ' ON DUPLICATE KEY UPDATE `key` = ?' : '' );
+            break;
+
+            case 'delete':
+                return 'DELETE FROM ' . $this->table . ' ' . $this->where;
             break;
         }
     }

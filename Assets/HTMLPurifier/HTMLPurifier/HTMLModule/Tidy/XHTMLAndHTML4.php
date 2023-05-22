@@ -26,14 +26,14 @@ class HTMLPurifier_HTMLModule_Tidy_XHTMLAndHTML4 extends HTMLPurifier_HTMLModule
             new HTMLPurifier_AttrTransform_EnumToCSS(
                 'align',
                 array(
-                    // we're following IE's behavior, not Firefox's, due
+                    // we're following ie's behavior, not firefox's, due
                     // to the fact that no one supports caption-side:right,
-                    // W3C included (with CSS 2.1). This is a slightly
+                    // W3c included (with css 2.1). this is a slightly
                     // unreasonable attribute!
                     'left' => 'text-align:left;',
                     'right' => 'text-align:right;',
                     'top' => 'caption-side:top;',
-                    'bottom' => 'caption-side:bottom;' // not supported by IE
+                    'bottom' => 'caption-side:bottom;' // not supported by ie
                 )
             );
 
@@ -67,7 +67,7 @@ class HTMLPurifier_HTMLModule_Tidy_XHTMLAndHTML4 extends HTMLPurifier_HTMLModule
                 'align',
                 array(
                     // we use both text-align and margin because these work
-                    // for different browsers (IE and Firefox, respectively)
+                    // for different browsers (ie and firefox, respectively)
                     // and the melange makes for a pretty cross-compatible
                     // solution
                     'left' => 'margin-left:0;margin-right:auto;text-align:left;',

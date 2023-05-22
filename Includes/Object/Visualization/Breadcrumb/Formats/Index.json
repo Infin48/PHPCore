@@ -2,8 +2,8 @@
     "body": {
         "index": {
             "data": {
-                "href": "$/",
-                "title": "L_TITLE_PAGE"
+                "href": "/",
+                "title": "L_BREADCRUMB.L_TITLE_PAGE"
             }
         }
     }

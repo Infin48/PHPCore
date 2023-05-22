@@ -17,11 +17,11 @@ class HTMLPurifier_AttrTypes
      */
     public function __construct()
     {
-        // XXX This is kind of poor, since we don't actually /clone/
-        // instances; instead, we use the supplied make() attribute. So,
+        // Xxx this is kind of poor, since we don't actually /clone/
+        // instances; instead, we use the supplied make() attribute. so,
         // the underlying class must know how to deal with arguments.
-        // With the old implementation of Enum, that ignored its
-        // arguments when handling a make dispatch, the IAlign
+        // With the old implementation of enum, that ignored its
+        // arguments when handling a make dispatch, the ialign
         // definition wouldn't work.
 
         // pseudo-types, must be instantiated via shorthand
@@ -52,7 +52,7 @@ class HTMLPurifier_AttrTypes
         $this->info['Class'] = new HTMLPurifier_AttrDef_HTML_Class();
 
         // number is really a positive integer (one or more digits)
-        // FIXME: ^^ not always, see start and value of list items
+        // Fixme: ^^ not always, see start and value of list items
         $this->info['Number']   = new HTMLPurifier_AttrDef_Integer(false, false, true);
     }
 

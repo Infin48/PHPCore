@@ -10,141 +10,217 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Report;
-
-use Block\Report;
-use Block\Admin\Post;
-use Block\Admin\Topic;
-use Block\Admin\ProfilePost;
-use Block\Admin\ProfilePostComment;
-
-use Model\Pagination;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Field\Field;
-use Visualization\Admin\Block\Block;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Report;
 
 /**
  * Show
  */
-class Show extends \Page\Page
+class Show extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Overall',
-        'permission' => 'admin.forum'
-    ];
+    protected bool $ID = true;
+
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.forum';
     
+    /**
+     * Run ajax according to received item and action
+     *
+     * @param  string $ajax Received ajax
+     * 
+     * @return string Name of method
+     */
+    protected function ajax( string $ajax )
+    {
+        return match($ajax)
+        {
+            'run/report/close' => 'markReportedContentAsClosed',
+
+            default => ''
+        };
+    }
+
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // BLOCK
-        $report = new Report();
+        // System
+        $system = $data->get('inst.system');
 
-        // REPORT DATA
-        $data = $report->get($this->url->getID()) or $this->error();
+        // Language
+        $language = $data->get('inst.language');
+        
+        // If forum is not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show error page
+			$this->error404();
+		}
 
-        // PAGINATION
-        $pagination = new Pagination();
+        // Report data
+        $row = $db->select('app.report.get()', $this->url->getID()) or $this->error404();
+
+        // Save data about reported content
+        $data->set('data.content', $row);
+
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(MAX_REPORTED_TOPIC);
-        $pagination->total($report->getAllReasonsCount($this->url->getID()));
+        $pagination->total($db->select('app.report-reason.countWithLog()', $this->url->getID()));
         $pagination->url($this->url->getURL());
-        $report->pagination = $this->data->pagination = $pagination->getData();
+        $data->pagination = $pagination->getData();
 
-        // FIELD
-        $field = new Field('/Admin/Report');
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Report.json');
+        $form
+            ->form('report')
+                ->callOnSuccess($this, 'markReportedContentAsClosed')
+                ->disButtons();
 
-        // ASSIGN DATA BASED ON TYPE
-        switch ($data['report_type']) {
+        // Assign data based on type
+        switch ($data->get('data.content.report_type'))
+        {
+            // Post
             case 'Post': 
-                $content = (new Post)->get($data['report_type_id']);
-
-                $field->object('show')->row('post_id')->show();
+                $type = 'post';
+                $elm3 = 'post_id';
             break;
+
+            // Topic
             case 'Topic': 
-                $content = (new Topic)->get($data['report_type_id']);
-
-                $field->object('show')->row('topic_id')->show();
+                $type = 'topic';
+                $elm3 = 'topic_id';
             break;
+
+            // Profile post
             case 'ProfilePost': 
-                $content = (new ProfilePost)->get($data['report_type_id']);
-
-                $field->object('show')->row('profile_post_id')->show();
+                $type = 'profile-post';
+                $elm3 = 'profile_post_id';
             break;
+
+            // Comment under profile post
             case 'ProfilePostComment': 
-                $content = (new ProfilePostComment)->get($data['report_type_id']);
-                
-                $field->object('show')->row('profile_post_comment_id')->show();
+                $type = 'profile-post-comment';
+                $elm3 = 'profile_post_comment_id';
             break;
         }
 
-        if (empty($content)) {
+        // Get data about reported content from database
+        $content = $db->select('app.' . $type . '.get()', $data->get('data.content.report_type_id'), true);
+
+        // Save content data
+        $data->set('data.content', array_merge($data->get('data.content'), $content));
+
+        // If deleted content doesn't exist
+        if (empty($content))
+        {
             redirect('/admin/report/');
         }
 
-        // NAVBAR
-        $this->navbar->object('forum')->row('reported')->active()->option(strtolower($data['report_type']))->active();
-
-        $data = array_merge($content, $data);
-        
-        // URL TO REPORTED CONTENT
-        $field->object('show')->row('show')->setData('href', '$' . $this->build->url->{lcfirst($data['report_type'])}(array_merge($data, [
-            'user_id' => $data['profile_user_id'] ?? '',
-            'user_name' => $data['profile_user_name'] ?? ''
-        ])));
-
-        $field->data($data);
-
-        if ($data['report_status'] == 0) {
-            $field->object('show')->row('submit')->show();
-        }
-
-        $field->disButtons();
-        $this->data->field = $field->getData();
-
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Report/' . $data['report_type']);
-        $this->data->breadcrumb = $breadcrumb->getData();
-
-        // BLOCK
-        $block = new Block('/Report/Show');
-        $block
-            ->object('type')->value($this->language->get('L_CONTENT_LIST')[$data['report_type']])
-            ->object('reasons')->value($report->getReasonsCount($this->url->getID()))
-            ->object('first_report')->value($this->build->date->long($data['report_created']))
-            ->object('status')->value($data['report_status'] == 1 ? $this->language->get('L_REPORT_STATUS_CLOSED') : $this->language->get('L_REPORT_STATUS_PENDING'));
-        $this->data->block = $block->getData();
-
-        // LIST
-        $list = new Lists('/Report/Show');
-        $list->object('reasons')->fill(data: $report->getAllReasons($this->url->getID()));
-        $this->data->list = $list->getData();
-
-
-        $url = '/admin/report/' . match ($data['report_type']) {
-            'Post' => 'post',
-            'Topic' => 'topic',
-            'ProfilePost' => 'profile',
-            'ProfilePostComment' => 'comment'
-        } . '/';
-
-        // IF REPORT IS NOT CLOSED
-        if ($data['report_status'] == 0) {
+        $form
+            // Fill form with all data
+            ->data(array_merge($content, $data->get('data.content')))
+            ->frame('show')
+                // Show correct content ID
+                ->elm3($elm3)
+                    ->show()
+                    ->set('data.value', $data->get('data.content.' . $elm3))
+                // Url to reported content
+                ->elm3('show')->set('data.href', '$' . $this->build->url->{lcfirst($data->get('data.content.report_type'))}($content));
             
-            // CLOSE REPORT
-            $this->process->form(type: '/Admin/Report/Close', url: $url, data: [
-                'report_id' => $this->url->getID(),
-                'report_type' => $data['report_type'],
-                'report_type_id' => $data['report_type_id']
-            ]);
+        // Navbar
+        $this->navbar->elm1('forum')->elm2('reported')->active()->elm3(strtolower($data->get('data.content.report_type')))->active();
+
+        // Set default status language to closed
+        $status = $language->get('L_REPORT.L_STATUS.L_CLOSED');
+
+        // If report is not closed
+        if ($data->get('data.content.report_status') == 0)
+        {
+            // Show button to close report
+            $form->input('close')->show();
+
+            // change status to pending
+            $status = $language->get('L_REPORT.L_STATUS.L_PENDING');
         }
+
+        // Save form and get ready to generate
+        $data->form = $form->getDataToGenerate();
+
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Report/' . $data->get('data.content.report_type') . '.json');
+        $breadcrumb->create()->jumpTo()->title($language->get('L_CONTENT_LIST.' . $data->get('data.content.report_type')))->href('/admin/report/show/' . $data->get('data.content.report_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+
+        // Block
+        $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Report/Show.json');
+        $block
+            // Set type of content
+            ->elm1('type')->value($language->get('L_CONTENT_LIST.' . $data->get('data.content.report_type')))
+            // Set number of reports
+            ->elm1('reasons')->value($db->select('app.report-reason.count()', $this->url->getID()))
+            // Set date of first report
+            ->elm1('first_report')->value($this->build->date->long($data->get('data.content.report_created')))
+            // Set report status
+            ->elm1('status')->value($status);
+
+        // Save block and get ready to generate
+        $data->block = $block->getDataToGenerate();
+
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Report/Show.json');
+
+        // Fill list with all reports
+        $list->elm1('reasons')->fill(data: $db->select('app.report-reason.all()', $this->url->getID()));
+
+        // Save list and get ready to generate
+        $data->list = $list->getDataToGenerate();
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function markReportedContentAsClosed( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Close report
+        $db->query('
+            UPDATE ' . TABLE_REPORTS . '
+            SET report_status = 1
+            WHERE report_id = ?
+        ', [$data->get('data.content.report_id')]);
+        
+        // Add close information to report reasons
+        $db->insert(TABLE_REPORTS_REASONS, [
+            'user_id' => LOGGED_USER_ID,
+            'report_id' => $data->get('data.content.report_id'),
+            'report_reason_type' => (int)1
+        ]);
+        
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__ );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Refresh
+        $data->set('options.refresh', true);
     }
 }

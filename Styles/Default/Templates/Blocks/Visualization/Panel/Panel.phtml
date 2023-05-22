@@ -1,49 +1,48 @@
-<?php if ($this->data->panel['body'] ?? [] or ($this->data->pagination['enabled'] ?? false) === true) : ?>
-    <div class="panel panel-top" ajax-selector="panel" ajax-process-id="<?= $this->data->panel['options']['id'] ?? '' ?>" ajax-process-type="<?= $this->data->panel['options']['type'] ?? '' ?>">
-        <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
-        <?php if ($this->data->panel['body'] ?? []) : ?>
+<?php if ($this->data->panel->get('body') or ($this->data->pagination['enabled'] ?? false) === true) : ?>
+    <div class="panel panel-top" js="panel" ajax-id="<?= $this->data->panel->get('data.html.ajax-id') ?>" ajax-item="<?= $this->data->panel->get('data.html.ajax-item') ?>">
+        <?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>
+        <?php if ( $this->data->panel->get('body') ) : ?>
             <div class="panel-right">
-                <?php foreach ((array)$this->data->panel['body'] as $objName => $object) : ?>
-                    <?php if ($object['options']['type'] === 'form' or $object['options']['type'] === 'dropdown') : ?>
-                        <div class="dropdown dropdown-type-<?= $object['options']['type'] ?? 'default' ?> dropdown-name-<?= $objName ?>" ajax-selector="dropdown">
-                            <?php if (isset($object['options']['template']['body'])) : ?>
-                                <?php require $object['options']['template']['body']; ?>
+                <?php $this->data->panel->each('body', function ($panel) { ?>
+                    <?php if ( in_array($panel->get('options.type'), ['form', 'dropdown']) ) : ?>
+                        <div class="dropdown dropdown-type-<?= $panel->get('options.type') ?> dropdown-name-<?= $panel->getCurrentPositionName() ?>" js="dropdown">
+                            <?php if ( $panel->get('options.template.body') ) : ?>
+                                <?php require $panel->get('options.template.body'); ?>
                             <?php else : ?>
                                 <a>
                                     <div class="dropdown-text">
-                                        <i class="<?= $object['data']['icon'] ?>"></i>
-                                        <?php if (isset($object['data']['title'])) : ?>
-                                            <span><?= $L_BUTTON[$object['data']['title']] ?></span>
+                                        <i class="<?= $panel->get('data.icon') ?>"></i>
+                                        <?php if ( $panel->get('data.title') ) : ?>
+                                            <span><?= $panel->get('data.title') ?></span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="dropdown-arrow">
-                                        <i class="fas fa-caret-down"></i>
+                                        <i class="fa-solid fa-caret-down"></i>
                                     </div>
                                 </a>
                             <?php endif; ?>
-                            <div class="dropdown-menu" ajax-selector="dropdown-menu">
+                            <div class="dropdown-menu" js="dropdown-menu">
                                 <div class="dropdown-content">
-                                    <?php if ($object['options']['type'] === 'form') : ?>
+                                    <?php if ($panel->get('options.type') === 'form') : ?>
                                         <form method="post">
-                                        <div class="dropdown-head"><?= ${$object['data']['form']['title']} ?></div>
+                                        <div class="dropdown-head"><?= $panel->get('data.form.title') ?></div>
                                     <?php endif; ?>
                                     <div class="dropdown-body">
-                                        <?php foreach ((array)$object['body'] as $rowName => $row) : ?>
+                                        <?php $panel->each('body', function ($panel) { ?>
                                             <div class="dropdown-row">
-                                                <?php if (isset($row['options']['template']['body'])) : ?>
-                                                    <?php require $row['options']['template']['body']; ?>
+                                                <?php if ( $panel->get('options.template.body') ) : ?>
+                                                    <?php require $panel->get('options.template.body'); ?>
                                                 <?php else : ?>
-                                                    <a <?php if ($row['data']['href'] ?? false) : ?>href="<?= $row['data']['href'] ?>"<?php endif; ?><?php if ($row['data']['ajax'] ?? false) : ?>ajax="<?= $row['data']['ajax'] ?>" ajax-process="<?= $row['data']['ajaxProcess'] ?? '/' . ucfirst($rowName) ?>"<?php endif; ?>>
-                                                        <?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'], 1) : $L_BUTTON[$row['data']['title']] ?>
+                                                    <a <?php if ( $panel->get('data.href') ) : ?>href="<?= $panel->get('data.href') ?>"<?php endif; ?><?php if ( $panel->get('data.ajax-action') ) : ?> ajax-action="<?= $panel->get('data.ajax-action') ?>"<?php endif; ?><?php if ( $panel->get('data.ajax-window') ) : ?> ajax-window<?php endif; ?>>
+                                                        <?= $panel->get('data.title') ?>
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
-                                        <?php endforeach; ?>
+                                        <?php }); ?>
                                     </div>
-                                    <?php if ($object['options']['type'] === 'form') : ?>
+                                    <?php if ($panel->get('options.type') === 'form') : ?>
                                         <div class="dropdown-bottom">
-                                            <input type="hidden" value="<?= SESSION_ID ?>" name="key">
-                                            <input type="submit" name="<?= $object['data']['form']['button']['name'] ?>" class="button" value="<?= $L_BUTTON[$object['data']['form']['button']['value']] ?>">
+                                            <a class="button" ajax-action="<?= $panel->get('data.form.button.ajax-action') ?>"><?= $panel->get('data.form.button.title') ?></a>
                                         </div>
                                         </form>
                                     <?php endif; ?>
@@ -51,13 +50,13 @@
                             </div>
                         </div>
                     <?php else : ?>
-                        <?php if (isset($object['options']['template']['body'])) : ?>
-                            <?php require $object['options']['template']['body']; ?>
+                        <?php if ( $panel->get('options.template.body') ) : ?>
+                            <?php require $panel->get('options.template.body'); ?>
                         <?php else : ?>
-                            <a class="button" href="<?= $this->url->build($object['data']['href']) ?>"><i class="<?= $object['data']['icon'] ?>"></i><span><?= $L_BUTTON[$object['data']['title']] ?></span></a>
+                            <a class="button" <?php if ( $panel->get('data.href') ) : ?>href="<?= $panel->get('data.href') ?>"<?php endif; ?><?php if ( $panel->get('data.ajax-action') ) : ?> ajax-action="<?= $panel->get('data.ajax-action') ?>"<?php endif; ?><?php if ( $panel->get('data.ajax-window') ) : ?> ajax-window<?php endif; ?>><i class="<?= $panel->get('data.icon') ?>"></i><span><?= $panel->get('data.title') ?></span></a>
                         <?php endif; ?>
                     <?php endif; ?>
-                <?php endforeach; ?>
+                <?php }); ?>
             </div>
         <?php endif; ?>
     </div>

@@ -135,10 +135,10 @@ class HTMLPurifier_HTMLModuleManager
         $this->doctypes->register(
             'XHTML 1.1',
             true,
-            // Iframe is a real XHTML 1.1 module, despite being
+            // Iframe is a real xhtml 1.1 module, despite being
             // "transitional"!
             array_merge($common, $xml, array('Ruby', 'Iframe')),
-            array('Tidy_Strict', 'Tidy_XHTML', 'Tidy_Proprietary', 'Tidy_Strict', 'Tidy_Name'), // Tidy_XHTML1_1
+            array('Tidy_Strict', 'Tidy_XHTML', 'Tidy_Proprietary', 'Tidy_Strict', 'Tidy_Name'), // Tidy_xhtml1_1
             array(),
             '-//W3C//DTD XHTML 1.1//EN',
             'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'
@@ -271,7 +271,7 @@ class HTMLPurifier_HTMLModuleManager
         if ($config->get('HTML.TargetBlank')) {
             $modules[] = 'TargetBlank';
         }
-        // NB: HTML.TargetNoreferrer and HTML.TargetNoopener must be AFTER HTML.TargetBlank
+        // Nb: html.targetnoreferrer and html.targetnoopener must be after html.targetblank
         // so that its post-attr-transform gets run afterwards.
         if ($config->get('HTML.TargetNoreferrer')) {
             $modules[] = 'TargetNoreferrer';
@@ -325,7 +325,7 @@ class HTMLPurifier_HTMLModuleManager
         $this->attrCollections = new HTMLPurifier_AttrCollections(
             $this->attrTypes,
             // there is no way to directly disable a global attribute,
-            // but using AllowedAttributes or simply not including
+            // but using allowedattributes or simply not including
             // the module in your custom doctype should be sufficient
             $this->modules
         );
@@ -408,26 +408,26 @@ class HTMLPurifier_HTMLModuleManager
             }
 
             // clone is used because, ideally speaking, the original
-            // definition should not be modified. Usually, this will
+            // definition should not be modified. usually, this will
             // make no difference, but for consistency's sake
             $new_def = clone $module->info[$name];
 
             if (!$def && $new_def->standalone) {
                 $def = $new_def;
             } elseif ($def) {
-                // This will occur even if $new_def is standalone. In practice,
+                // This will occur even if $new_def is standalone. in practice,
                 // this will usually result in a full replacement.
                 $def->mergeIn($new_def);
             } else {
-                // :TODO:
+                // :todo:
                 // non-standalone definitions that don't have a standalone
                 // to merge into could be deferred to the end
-                // HOWEVER, it is perfectly valid for a non-standalone
+                // However, it is perfectly valid for a non-standalone
                 // definition to lack a standalone definition, even
                 // after all processing: this allows us to safely
                 // specify extra attributes for elements that may not be
-                // enabled all in one place.  In particular, this might
-                // be the case for trusted elements.  WARNING: care must
+                // enabled all in one place.  in particular, this might
+                // be the case for trusted elements.  warning: care must
                 // be taken that the /extra/ definitions are all safe.
                 continue;
             }
@@ -436,7 +436,7 @@ class HTMLPurifier_HTMLModuleManager
             $this->attrCollections->performInclusions($def->attr);
             $this->attrCollections->expandIdentifiers($def->attr, $this->attrTypes);
 
-            // descendants_are_inline, for ChildDef_Chameleon
+            // descendants_are_inline, for childdef_chameleon
             if (is_string($def->content_model) &&
                 strpos($def->content_model, 'Inline') !== false) {
                 if ($name != 'del' && $name != 'ins') {

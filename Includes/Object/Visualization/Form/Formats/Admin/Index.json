@@ -1,0 +1,51 @@
+{
+    "body": {
+        "info": {
+            "body": {
+                "info": {
+                    "data": {
+                        "title": "L_INFO"
+                    },
+                    "body": {
+                        "version": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_PHPCORE_VERSION",
+                                "value": ""
+                            }
+                        },
+                        "php": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_PHP_VERSION",
+                                "value": ""
+                            }
+                        },
+                        "database": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_SQL_VERSION",
+                                "value": ""
+                            }
+                        },
+                        "started": {
+                            "options": {
+                                "type": "date"
+                            },
+                            "data": {
+                                "title": "L_STARTED",
+                                "value": ""
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

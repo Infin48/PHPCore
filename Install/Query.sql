@@ -1,18 +1,17 @@
 SET NAMES utf8;
 
+DROP TABLE IF EXISTS `phpcore_articles`;
 DROP TABLE IF EXISTS `phpcore_buttons`;
 DROP TABLE IF EXISTS `phpcore_buttons_sub`;
 DROP TABLE IF EXISTS `phpcore_categories`;
-DROP TABLE IF EXISTS `phpcore_categories_permission_see`;
+DROP TABLE IF EXISTS `phpcore_categories_permission`;
 DROP TABLE IF EXISTS `phpcore_conversations`;
 DROP TABLE IF EXISTS `phpcore_conversations_messages`;
 DROP TABLE IF EXISTS `phpcore_conversations_recipients`;
 DROP TABLE IF EXISTS `phpcore_deleted_content`;
 DROP TABLE IF EXISTS `phpcore_forgot_password`;
 DROP TABLE IF EXISTS `phpcore_forums`;
-DROP TABLE IF EXISTS `phpcore_forums_permission_post`;
-DROP TABLE IF EXISTS `phpcore_forums_permission_see`;
-DROP TABLE IF EXISTS `phpcore_forums_permission_topic`;
+DROP TABLE IF EXISTS `phpcore_forums_permission`;
 DROP TABLE IF EXISTS `phpcore_groups`;
 DROP TABLE IF EXISTS `phpcore_labels`;
 DROP TABLE IF EXISTS `phpcore_logs`;
@@ -25,10 +24,12 @@ DROP TABLE IF EXISTS `phpcore_profile_posts`;
 DROP TABLE IF EXISTS `phpcore_profile_posts_comments`;
 DROP TABLE IF EXISTS `phpcore_reports`;
 DROP TABLE IF EXISTS `phpcore_reports_reasons`;
+DROP TABLE IF EXISTS `phpcore_roles`;
 DROP TABLE IF EXISTS `phpcore_settings`;
 DROP TABLE IF EXISTS `phpcore_settings_url`;
+DROP TABLE IF EXISTS `phpcore_sidebar`;
 DROP TABLE IF EXISTS `phpcore_statistics`;
-DROP TABLE IF EXISTS `phpcore_topics`;
+DROP TABLE IF EXISTS `phpcore_topics_labels`;
 DROP TABLE IF EXISTS `phpcore_topics_labels`;
 DROP TABLE IF EXISTS `phpcore_topics_likes`;
 DROP TABLE IF EXISTS `phpcore_users`;
@@ -39,6 +40,38 @@ DROP TABLE IF EXISTS `phpcore_verify_email`;
 
 
 --
+-- phpcore_articles
+--
+
+CREATE TABLE IF NOT EXISTS `phpcore_articles` (
+    `article_id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `article_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `article_text` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `article_url` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `article_image` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `article_views` INT NOT NULL DEFAULT '0',
+    `article_sticked` TINYINT(1) NOT NULL DEFAULT '0',
+    `article_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `article_edited` TINYINT(1) NOT NULL DEFAULT '0',
+    `article_edited_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`article_id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- phpcore_articles_labels
+--
+
+CREATE TABLE IF NOT EXISTS `phpcore_articles_labels` (
+    `article_id` INT NOT NULL,
+    `label_id` INT NOT NULL
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- phpcore_buttons
 --
 
@@ -47,16 +80,14 @@ CREATE TABLE IF NOT EXISTS `phpcore_buttons` (
     `button_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `button_link` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `button_icon` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `button_icon_style` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `button_link_type` TINYINT(1) NOT NULL DEFAULT '1',
     `button_dropdown` TINYINT(1) NOT NULL DEFAULT '0',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`button_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `phpcore_buttons` (`button_name`, `button_link`, `button_icon`, `button_icon_style`, `position_index`) VALUES 
-    ('Domů', '/', 'home', 'fas', 1),
-    ('Fórum', '/forum/', 'comments', 'fas', 2);
+INSERT INTO `phpcore_buttons` (`button_name`, `button_link`, `button_icon`, `position_index`) VALUES 
+    ('Domů', '/', 'fa-solid fa-home', 2),
+    ('Fórum', '/forum/', 'fa-solid fa-comments', 1);
 
 -- --------------------------------------------------------
 
@@ -69,8 +100,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_buttons_sub` (
     `button_id` INT NOT NULL,
     `button_sub_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `button_sub_link` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `button_sub_link_type` TINYINT(1) NOT NULL DEFAULT '1',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`button_sub_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -84,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_categories` (
     `category_id` INT NOT NULL AUTO_INCREMENT,
     `category_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `category_description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`category_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -93,15 +123,17 @@ INSERT INTO `phpcore_categories` (`category_name`, `category_description`) VALUE
 -- --------------------------------------------------------
 
 --
--- phpcore_categories_permission_see
+-- phpcore_categories_permission
 --
 
-CREATE TABLE IF NOT EXISTS `phpcore_categories_permission_see` (
+CREATE TABLE IF NOT EXISTS `phpcore_categories_permission` (
     `category_id` INT NOT NULL,
-    `group_id` INT NOT NULL
+    `inherit_id` INT NULL,
+    `permission_see` TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (`category_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `phpcore_categories_permission_see` (`category_id`, `group_id`) VALUES (1, 0), (1, 1), (1, 2);
+INSERT INTO `phpcore_categories_permission` (`category_id`, `permission_see`) VALUES (1, '*');
 
 -- --------------------------------------------------------
 
@@ -175,6 +207,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_deleted_content` (
 CREATE TABLE IF NOT EXISTS `phpcore_forgot_password` (
     `user_id` INT NOT NULL,
     `forgot_code` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `forgot_code_sent` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -192,55 +225,32 @@ CREATE TABLE IF NOT EXISTS `phpcore_forums` (
     `forum_url` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `forum_link` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `forum_icon` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `forum_icon_style` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `forum_topics` INT NOT NULL DEFAULT '0',
     `forum_posts` INT NOT NULL DEFAULT '0',
     `forum_main` TINYINT(1) NOT NULL DEFAULT '0',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`forum_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `phpcore_forums` (`category_id`, `forum_name`, `forum_description`, `forum_url`, `forum_icon`, `forum_icon_style`, `forum_main`, `forum_topics`) VALUES
-    (1, 'První fórum', 'Popis prvního fóra', 'prvni-forum',  'comments', 'fas', 1, 1);
+INSERT INTO `phpcore_forums` (`category_id`, `forum_id`, `forum_name`, `forum_description`, `forum_url`, `forum_icon`, `forum_main`, `forum_topics`) VALUES
+    (1, 1, 'První fórum', 'Popis prvního fóra', 'prvni-forum',  'fa-solid fa-comments', 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- phpcore_forums_permission_post
+-- phpcore_forums_permission
 --
 
-CREATE TABLE IF NOT EXISTS `phpcore_forums_permission_post` (
+CREATE TABLE IF NOT EXISTS `phpcore_forums_permission` (
     `forum_id` INT NOT NULL,
-    `group_id` INT NOT NULL
+    `inherit_id` INT NULL,
+    `permission_see` TEXT NOT NULL DEFAULT '',
+    `permission_post` TEXT NOT NULL DEFAULT '',
+    `permission_topic` TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (`forum_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `phpcore_forums_permission_post` (`forum_id`, `group_id`) VALUES (1, 1), (1, 2);
-
--- --------------------------------------------------------
-
---
--- phpcore_forums_permission_see
---
-
-CREATE TABLE IF NOT EXISTS `phpcore_forums_permission_see` (
-    `forum_id` INT NOT NULL,
-    `group_id` INT NOT NULL
-) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-INSERT INTO `phpcore_forums_permission_see` (`forum_id`, `group_id`) VALUES (1, 0), (1, 1), (1, 2);
-
--- --------------------------------------------------------
-
---
--- phpcore_forums_permission_topic
---
-
-CREATE TABLE IF NOT EXISTS `phpcore_forums_permission_topic` (
-    `forum_id` INT NOT NULL,
-    `group_id` INT NOT NULL
-) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-INSERT INTO `phpcore_forums_permission_topic` (`forum_id`, `group_id`) VALUES (1, 1), (1, 2);
+INSERT INTO `phpcore_forums_permission` (`forum_id`, `permission_see`, `permission_post`, `permission_topic`) VALUES (1, '*', '1,2', '1,2');
 
 -- --------------------------------------------------------
 
@@ -251,16 +261,16 @@ INSERT INTO `phpcore_forums_permission_topic` (`forum_id`, `group_id`) VALUES (1
 CREATE TABLE IF NOT EXISTS `phpcore_groups` (
     `group_id` INT NOT NULL AUTO_INCREMENT,
     `group_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-    `group_class_name` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `group_class` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `group_color` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `group_permission` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `group_index` TINYINT NOT NULL DEFAULT '1',
+    `group_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`group_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `phpcore_groups` (`group_name`, `group_class_name`, `group_color`, `group_permission`, `group_index`) VALUES
-    ('Uživatel', 'uzivatel1', '#555555', 'post.create,topic.create,profilepost.create', 1),
-    ('Administrátor', 'administrator2', '#3174d7', '*', 2);
+INSERT INTO `phpcore_groups` (`group_id`, `group_name`, `group_class`, `group_color`, `group_permission`, `group_index`) VALUES
+    (1, 'Administrátor', 'administrator1', '#de4b4b', '*', 999999),
+    (2, 'Uživatel', 'uzivatel2', '#555555', 'post.create,topic.create,profilepost.create', 1);
 
 -- --------------------------------------------------------
 
@@ -271,9 +281,9 @@ INSERT INTO `phpcore_groups` (`group_name`, `group_class_name`, `group_color`, `
 CREATE TABLE IF NOT EXISTS `phpcore_labels` (
     `label_id` INT NOT NULL AUTO_INCREMENT,
     `label_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-    `label_class_name` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `label_class` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `label_color` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`label_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -302,9 +312,9 @@ CREATE TABLE IF NOT EXISTS `phpcore_notifications` (
     `notification_id` INT NOT NULL AUTO_INCREMENT,
     `notification_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `notification_text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-    `notification_type` TINYINT(1) NOT NULL,
+    `notification_type` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `notification_hidden` TINYINT(1) NOT NULL DEFAULT '1',
-    `position_index` TINYINT NOT NULL DEFAULT '1',
+    `position_index` INT NOT NULL DEFAULT '1',
     PRIMARY KEY (`notification_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -330,6 +340,9 @@ CREATE TABLE IF NOT EXISTS `phpcore_pages` (
 CREATE TABLE IF NOT EXISTS `phpcore_plugins` (
     `plugin_id` INT NOT NULL AUTO_INCREMENT,
     `plugin_name_folder` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `plugin_template` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT 'Default',
+    `plugin_language` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT 'cs',
+    `plugin_settings` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     PRIMARY KEY (`plugin_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -423,13 +436,29 @@ CREATE TABLE IF NOT EXISTS `phpcore_reports` (
 --
 
 CREATE TABLE IF NOT EXISTS `phpcore_reports_reasons` (
- `report_reason_id` INT NOT NULL AUTO_INCREMENT,
- `report_id` INT NOT NULL,
- `user_id` INT NOT NULL,
- `report_reason_text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
- `report_reason_type` TINYINT(1) NOT NULL DEFAULT '0',
- `report_reason_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
- PRIMARY KEY (`report_reason_id`)
+    `report_reason_id` INT NOT NULL AUTO_INCREMENT,
+    `report_id` INT NOT NULL,
+    `user_id` INT NOT NULL,
+    `report_reason_text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `report_reason_type` TINYINT(1) NOT NULL DEFAULT '0',
+    `report_reason_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`report_reason_id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- phpcore_roles
+--
+
+CREATE TABLE IF NOT EXISTS `phpcore_roles` (
+    `role_id` INT NOT NULL AUTO_INCREMENT,
+    `role_class` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `role_color` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `role_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `role_icon` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `position_index` INT NOT NULL DEFAULT '1',
+    PRIMARY KEY (`role_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -442,12 +471,12 @@ CREATE TABLE IF NOT EXISTS `phpcore_settings` (
     `key` VARCHAR(225) NOT NULL,
     `value` TEXT NOT NULL,
     PRIMARY KEY(`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO `phpcore_settings` (`key`, `value`) VALUES
     ('site.name', ''),
     ('site.locale', 'cs_CZ'),
-    ('site.version', '1.1.1'),
+    ('site.version', '1.2.0'),
     ('site.favicon', ''),
     ('site.updated', ''),
     ('site.started', ''),
@@ -457,27 +486,34 @@ INSERT INTO `phpcore_settings` (`key`, `value`) VALUES
     ('site.template', 'Default'),
     ('site.description', ''),
     ('site.language_editor', 'cs'),
-    ('site.background_image', ''),
-    ('site.background_image_position', 'center'),
+    ('site.allow_forgot_password', 1),
+    ('site.mode', 'forum'),
+    ('site.mode.blog.profiles', 1),
+    ('site.mode.blog.editing', 0),
+    ('site.mode.static.index', ''),
     ('registration.terms', ''),
-    ('registration.enabled', '0'),
+    ('registration.verify', 1),
+    ('registration.enabled', 0),
     ('registration.key_site', ''),
     ('registration.key_secret', ''),
     ('email.prefix', 'noreply'),
-    ('email.smtp_host', ''),
-    ('email.smtp_port', ''),
-    ('email.smtp_username', ''),
-    ('email.smtp_password', ''),
-    ('email.smtp_enabled', '0'),
+    ('email.smtp.host', ''),
+    ('email.smtp.port', ''),
+    ('email.smtp.username', ''),
+    ('email.smtp.password', ''),
+    ('email.smtp.enabled', 0),
     ('image.max_size', '10400'),
-    ('cookie.enabled', '0'),
+    ('image.gif', 0),
+    ('cookie.enabled', 0),
     ('cookie.text', ''),
     ('session', '16186128454'),
     ('session.scripts', '07618949407'),
     ('session.styles', '35129845609'),
     ('session.groups', '98763184788'),
     ('session.labels', '12896512965'),
-    ('default_group', '1');
+    ('session.roles', '84275931080'),
+    ('session.template', '85426984753'),
+    ('default_group', '2');
 
 -- --------------------------------------------------------
 
@@ -491,7 +527,26 @@ CREATE TABLE IF NOT EXISTS `phpcore_settings_url` (
     `settings_url_to` TEXT NOT NULL,
     `settings_url_hidden` TINYINT(1) NOT NULL DEFAULT 0,
     PRIMARY KEY(`settings_url_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- phpcore_categories
+--
+
+CREATE TABLE IF NOT EXISTS `phpcore_sidebar` (
+    `sidebar_id` INT NOT NULL AUTO_INCREMENT,
+    `sidebar_object` TEXT NOT NULL DEFAULT '',
+    `position_index` INT NOT NULL DEFAULT '1',
+    PRIMARY KEY (`sidebar_id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO `phpcore_sidebar` (`sidebar_object`, `position_index`) VALUES
+    ('onlineusers', 4),
+    ('posts', 3),
+    ('profileposts', 2),
+    ('stats', 1);
 
 -- --------------------------------------------------------
 
@@ -529,6 +584,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_topics` (
     `topic_text` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `topic_url` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `topic_image` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `topic_attachments` INT NOT NULL DEFAULT '0',
     `topic_views` INT NOT NULL DEFAULT '0',
     `topic_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `topic_posts` INT NOT NULL DEFAULT '0',
@@ -540,7 +596,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_topics` (
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO `phpcore_topics` (`user_id`, `forum_id`, `category_id`, `topic_name`, `topic_text`, `topic_url`) VALUES
-    (1, 1, 1, 'První téma', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque pretium lectus id turpis. Etiam commodo dui eget wisi. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Curabitur sagittis hendrerit ante. Proin mattis lacinia justo. Phasellus et lorem id felis nonummy placerat.', 'prvni-tema');
+    (1, 1, 1, 'První téma', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque pretium lectus id turpis. Etiam commodo dui eget wisi. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Curabitur sagittis hendrerit ante. Proin mattis lacinia justo. Phasellus et lorem id felis nonummy placerat.', '1.prvni-tema');
 
 -- --------------------------------------------------------
 
@@ -580,17 +636,22 @@ CREATE TABLE IF NOT EXISTS `phpcore_users` (
     `user_registered` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_email` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `user_text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `user_roles` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `user_profile_image` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `user_header_image` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     `user_last_activity` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_signature` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `user_about` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `user_location` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-    `user_age` TINYINT NOT NULL DEFAULT '0',
+    `user_discord` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `user_facebook` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `user_instagram` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+    `user_age` TEXT NOT NULL DEFAULT '',
     `user_gender` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT 'undefined',
     `user_posts` INT NOT NULL DEFAULT '0',
     `user_topics` INT NOT NULL DEFAULT '0',
+    `user_articles` INT NOT NULL DEFAULT '0',
     `user_reputation` INT NOT NULL DEFAULT '0',
-    `user_admin` TINYINT(1) NOT NULL DEFAULT '0',
     `user_deleted` TINYINT(1) NOT NULL DEFAULT '0',
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -605,8 +666,8 @@ CREATE TABLE IF NOT EXISTS `phpcore_users_notifications` (
     `user_notification_id` INT NOT NULL AUTO_INCREMENT,
     `to_user_id` INT NOT NULL,
     `user_id` INT NOT NULL,
-    `user_notification_type` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `user_notification_type_id` INT NOT NULL,
+    `user_notification_item` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `user_notification_item_id` INT NOT NULL,
     `user_notification_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`user_notification_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -632,6 +693,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_users_unread` (
 CREATE TABLE IF NOT EXISTS `phpcore_verify_account` (
     `user_id` INT NOT NULL,
     `account_code` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `account_code_sent` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -645,6 +707,7 @@ CREATE TABLE IF NOT EXISTS `phpcore_verify_account` (
 CREATE TABLE IF NOT EXISTS `phpcore_verify_email` (
     `user_id` INT NOT NULL,
     `email_code` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `email_code_sent` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_email` TEXT COLLATE utf8_general_ci NOT NULL DEFAULT '',
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

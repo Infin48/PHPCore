@@ -1,3 +1,8 @@
-<span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
-<br>
-<?= ${'L_NOTIFICATION_TYPE_' . strtoupper(NOTIFICATION[$row['data']['notification_type']])} ?>
+<div class="list-row-align">
+    <span class="list-row-icon"><?php if ($list->get('data.notification_hidden')) : ?><i class="fa-solid fa-eye-slash"></i><?php else : ?><i class="fa-solid fa-eye"></i><?php endif; ?></span>
+    <div>
+        <span class="list-title"><?= $list->get('data.notification_name') ?></span>
+        <br>
+        <?= $language->get('L_NOTIFICATION.L_TYPE.' . $list->get('data.notification_type')) ?>
+    </div>
+</div>

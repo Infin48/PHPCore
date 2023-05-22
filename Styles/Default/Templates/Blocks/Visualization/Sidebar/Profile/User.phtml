@@ -1,10 +1,26 @@
-<span class="username user--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['user_name'] ?></span>
-<br>
-<span><?= $this->data->data['user_text'] ?></span>
-<div class="statue statue--<?= $this->data->data['group_class_name'] ?>"><?= $this->data->data['group_name'] ?></div>
-<div class="statue<?php if ($this->data->data['user_reputation'] > 0) : ?> statue-green<?php else :?> statue-grey<?php endif; ?>">
-    <?php if ($this->data->data['user_reputation'] > 0) : ?>    
-        <i class="fas fa-thumbs-up"></i>
+<h1 class="username user--<?= $this->data->get('data.profile.group_class') ?>"><?= $this->data->get('data.profile.user_name') ?></h1>
+<span><?= $this->data->get('data.profile.user_text') ?></span>
+<div class="statue statue--<?= $this->data->get('data.profile.group_class') ?>"><?= $this->data->get('data.profile.group_name') ?></div>
+<?php if ($this->system->get('site.mode') != 'blog') : ?>
+    <div class="statue<?php if ($this->data->get('data.profile.user_reputation') > 0) : ?> statue-green<?php else :?> statue-grey<?php endif; ?>" ajax="title" ajax-title="<?= $this->language->get('L_USER.L_REPUTATION') ?>" ajax-class="reputation">
+        <?php if ($this->data->get('data.profile.user_reputation') > 0) : ?>    
+            <i class="fa-solid fa-thumbs-up"></i>
+        <?php endif; ?>
+        <?= $this->data->get('data.profile.user_reputation') ?>
+    </div>
+<?php endif; ?>
+<div class="statue statue-<?php if ($this->data->get('data.profile.online')) : ?>green<?php else : ?>red<?php endif; ?>">
+    <?php if ($this->data->get('data.profile.online')) : ?>
+        <?= strtoupper($this->language->get('L_ONLINE')) ?>
+    <?php else : ?>
+        <?= strtoupper($this->language->get('L_OFFLINE')) ?>
     <?php endif; ?>
-    <?= $this->data->data['user_reputation'] ?>
 </div>
+<?php $this->data->each('data.profile.roles', function ($role) { ?>
+    <div class="role role--<?= $role->get('role_class') ?>">
+        <?php if ( $role->get('role_icon') ) : ?>
+            <i class="<?= $role->get('role_icon') ?>"></i>
+        <?php endif; ?>
+        <?= $role->get('role_name') ?>
+    </div>
+<?php }); ?>

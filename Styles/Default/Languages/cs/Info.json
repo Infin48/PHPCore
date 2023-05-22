@@ -1,0 +1,8 @@
+{
+    "name": "Česky",
+    "tree": {
+        "admin": [
+            "/Load.language.php"
+        ]
+    }
+}

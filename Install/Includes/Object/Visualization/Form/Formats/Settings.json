@@ -1,0 +1,16 @@
+{
+    "body": {
+        "name": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "description": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        }
+    }
+}

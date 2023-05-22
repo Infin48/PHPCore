@@ -1,0 +1,38 @@
+/* ===========================================================
+ * trumbowyg.mention.js v0.3
+ * Mention plugin for Trumbowyg
+ * http://alex-d.github.com/Trumbowyg
+ * ===========================================================
+ * Author : Infin48 && Rooseboom
+ * Infin48: https://github.com/Infin48
+ * This plugin was created by Rooseboom, but was reworked by Infin48
+ */
+
+ .mention-list
+ {
+     position: absolute;
+     display:none;
+     z-index: 1000000;
+     padding: 0.33rem;
+     background: #FFFFFF;
+     width: 13.33rem;
+     border: 2px solid #f0f0f0;
+     max-height: 13rem;
+     overflow-y: auto;
+ }
+ .mention-list a
+ {
+     padding: 0.33rem;
+     transition: background-color 0.3s ease;
+     width: 100%;
+     display: block;
+ }
+ .mention-list a.mention-empty
+ {
+     font-weight: 600;
+     color: inherit !important;
+ }
+ .mention-list a:not(.mention-empty):hover
+ {
+     background-color: #f4f4f4;
+ }

@@ -1,0 +1,45 @@
+{
+    "body": {
+        "forgot": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "forgot": {
+                    "data": {
+                        "icon": "fa-solid fa-key",
+                        "title": "L_FORGOT.L_FORGOT"
+                    },
+                    "body": {
+                        "user_password_new": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-lock",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD_NEW"
+                            }
+                        },
+                        "user_password_new_confirm": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-lock",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD_NEW_CONFIRM"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div class="navbar-button dropdown dropdown-type-menu dropdown-name-notification" js="dropdown dropdown-notification">
+    <a <?php if ( $navbar->get('data.notifiCount') ) : ?> data-count="<?= $navbar->get('data.notifiCount') ?>"<?php endif; ?>>
+        <i class="fa-solid fa-bell"></i>
+        <i class="fa fa-caret-down"></i>
+    </a>
+    <div class="dropdown-menu" js="dropdown-menu">
+        <div class="dropdown-content">
+            <div class="dropdown-head"><?= $this->language->get('L_NAVBAR.L_NOTIFICATION.L_NAME') ?></div>
+            <div class="dropdown-body" js="dropdown-body">
+                <?php if ( $navbar->get('body') ) : ?>
+                    <?php $navbar->each('body', function ($navbar) { ?>
+                        <div class="dropdown-row" js="dropdown-row">
+                            <?= $navbar->get('data.body') ?>
+                        </div>
+                    <?php }); ?>
+                <?php else : ?>
+                    <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Navbar/Notification/NotificationEmpty.phtml') ?>
+                <?php endif; ?>
+            </div>
+            <?php if ($navbar->get('body')) : ?>
+                <div class="dropdown-bottom" js="dropdown-bottom">
+                    <a class="button" ajax-action="mark-user-notifications-as-read"><?= $this->language->get('L_NAVBAR.L_NOTIFICATION.L_MARK_AS_READ') ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

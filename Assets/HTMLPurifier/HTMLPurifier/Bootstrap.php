@@ -6,7 +6,7 @@ if (!defined('HTMLPURIFIER_PREFIX')) {
 }
 
 // accomodations for versions earlier than 5.0.2
-// borrowed from PHP_Compat, LGPL licensed, by Aidan Lister <aidan@php.net>
+// borrowed from php_compat, lgpl licensed, by aidan lister <aidan@php.net>
 if (!defined('PHP_EOL')) {
     switch (strtoupper(substr(PHP_OS, 0, 3))) {
         case 'WIN':
@@ -42,9 +42,9 @@ class HTMLPurifier_Bootstrap
             return false;
         }
         // Technically speaking, it should be ok and more efficient to
-        // just do 'require', but Antonio Parraga reports that with
-        // Zend extensions such as Zend debugger and APC, this invariant
-        // may be broken.  Since we have efficient alternatives, pay
+        // just do 'require', but antonio parraga reports that with
+        // Zend extensions such as zend debugger and apc, this invariant
+        // may be broken.  since we have efficient alternatives, pay
         // the cost here and avoid the bug.
         require_once HTMLPURIFIER_PREFIX . '/' . $file;
         return true;
@@ -91,7 +91,7 @@ class HTMLPurifier_Bootstrap
                           version_compare(PHP_VERSION, '5.1.0', '>=');
                 foreach ($funcs as $func) {
                     if ($buggy && is_array($func)) {
-                        // :TRICKY: There are some compatibility issues and some
+                        // :tricky: there are some compatibility issues and some
                         // places where we need to error out
                         $reflector = new ReflectionMethod($func[0], $func[1]);
                         if (!$reflector->isStatic()) {
@@ -105,7 +105,7 @@ class HTMLPurifier_Bootstrap
                             );
                         }
                         // Suprisingly, spl_autoload_register supports the
-                        // Class::staticMethod callback format, although call_user_func doesn't
+                        // Class::staticmethod callback format, although call_user_func doesn't
                         if ($compat) {
                             $func = implode('::', $func);
                         }

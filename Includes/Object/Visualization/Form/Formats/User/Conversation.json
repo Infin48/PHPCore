@@ -1,0 +1,59 @@
+{
+    "body": {
+        "conversation": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "conversation": {
+                    "body": {
+                        "conversation_name": {
+                            "options": {
+                                "type": "text",
+                                "max-length": "150",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_USER.L_CONVERSATION.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "add_recipient": {
+                            "options": {
+                                "hide": true,
+                                "template": {
+                                    "root": "/Includes/Object/Visualization/Form/Templates/User/Conversation/AddRecipient.phtml"
+                                }
+                            }
+                        },
+                        "to": {
+                            "options": {
+                                "hide": true,
+                                "type": "select[]",
+                                "required": true,
+                                "template": {
+                                    "root": "/Includes/Object/Visualization/Form/Templates/User/Conversation/Recipient.phtml"
+                                }
+                            }
+                        },
+                        "conversation_text": {
+                            "options": {
+                                "type": "html",
+                                "required": true
+                            },
+                            "data": {
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

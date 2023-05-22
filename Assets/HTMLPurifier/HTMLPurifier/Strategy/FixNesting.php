@@ -48,12 +48,12 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         // refer to substrings
         $top_node = HTMLPurifier_Arborize::arborize($tokens, $config, $context);
 
-        // get a copy of the HTML definition
+        // get a copy of the html definition
         $definition = $config->getHTMLDefinition();
 
         $excludes_enabled = !$config->get('Core.DisableExcludes');
 
-        // setup the context variable 'IsInline', for chameleon processing
+        // setup the context variable 'isinline', for chameleon processing
         // is 'false' when we are not inline, 'true' when it must always
         // be inline, and an integer when it is inline for a certain
         // branch of the document tree
@@ -73,7 +73,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         $exclude_stack = array($definition->info_parent_def->excludes);
 
         // variable that contains the start token while we are processing
-        // nodes. This enables error reporting to do its job
+        // nodes. this enables error reporting to do its job
         $node = $top_node;
         // dummy token
         list($token, $d) = $node->toTokenPair();
@@ -84,7 +84,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         // Loop
 
         // We need to implement a post-order traversal iteratively, to
-        // avoid running into stack space limits.  This is pretty tricky
+        // avoid running into stack space limits.  this is pretty tricky
         // to reason about, so we just manually stack-ify the recursive
         // variant:
         //
@@ -119,7 +119,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                     $go = true;
                     $stack[] = array($node, $is_inline, $excludes, $ix);
                     $stack[] = array($child,
-                        // ToDo: I don't think it matters if it's def or
+                        // Todo: i don't think it matters if it's def or
                         // child_def, but double check this...
                         $is_inline || $def->descendants_are_inline,
                         empty($def->excludes) ? $excludes
@@ -135,7 +135,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 $node->dead = true;
                 if ($e) $e->send(E_ERROR, 'Strategy_FixNesting: Node excluded');
             } else {
-                // XXX I suppose it would be slightly more efficient to
+                // Xxx i suppose it would be slightly more efficient to
                 // avoid the allocation here and have children
                 // strategies handle it
                 $children = array();
@@ -152,7 +152,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 } else {
                     $node->children = $result;
                     if ($e) {
-                        // XXX This will miss mutations of internal nodes. Perhaps defer to the child validators
+                        // Xxx this will miss mutations of internal nodes. perhaps defer to the child validators
                         if (empty($result) && !empty($children)) {
                             $e->send(E_ERROR, 'Strategy_FixNesting: Node contents removed');
                         } else if ($result != $children) {

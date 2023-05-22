@@ -2,7 +2,7 @@
     "body": {
         "basic": {
             "data": {
-                "title":"L_BAR_USER_SETTINGS"
+                "title":"L_USER.L_BAR.L_SETTINGS"
             },
             "body": {
                 "about": {
@@ -10,9 +10,9 @@
                         "type":"button"
                     },
                     "data": {
-                        "href":"$/user/",
-                        "icon":"fas fa-info",
-                        "title":"L_BAR_ABOUT"
+                        "href":"/user/",
+                        "icon":"fa-solid fa-info",
+                        "title":"L_USER.L_BAR.L_ABOUT"
                     }
                 },
                 "settings": {
@@ -20,9 +20,9 @@
                         "type":"button"
                     },
                     "data": {
-                        "href":"$/user/settings/",
-                        "icon":"fas fa-cogs",
-                        "title":"L_BAR_PROFILE"
+                        "href":"/user/settings/",
+                        "icon":"fa-solid fa-cogs",
+                        "title":"L_USER.L_BAR.L_PROFILE"
                     }   
                 },
                 "account": {
@@ -30,26 +30,30 @@
                         "type":"button"
                     },
                     "data": {
-                        "href":"$/user/account/",
-                        "icon":"fas fa-user",
-                        "title":"L_BAR_OPTIONS"
+                        "href":"/user/account/",
+                        "icon":"fa-solid fa-user",
+                        "title":"L_USER.L_BAR.L_OPTIONS"
                     }
                 },
                 "signature": {
                     "options": {
-                        "type":"button"
+                        "type":"button",
+                        "hide": true
                     },
                     "data": {
-                        "href":"$/user/signature/",
-                        "icon":"fas fa-signature",
-                        "title":"L_BAR_SIGNATURE"
+                        "href":"/user/signature/",
+                        "icon":"fa-solid fa-signature",
+                        "title":"L_USER.L_BAR.L_SIGNATURE"
                     }
                 }
             }
         },
         "conversation": {
+            "options": {
+                "hide": true
+            },
             "data": {
-                "title":"L_BAR_CONVERSATION"
+                "title":"L_USER.L_BAR.L_CONVERSATION.L_CONVERSATION"
             },
             "body": {
                 "about": {
@@ -57,9 +61,9 @@
                         "type":"button"
                     },
                     "data": {
-                        "href":"$/user/conversation/",
-                        "icon":"fas fa-inbox",
-                        "title":"L_BAR_CONVERSATION_LIST"
+                        "href":"/user/conversation/",
+                        "icon":"fa-solid fa-inbox",
+                        "title":"L_USER.L_BAR.L_CONVERSATION.L_LIST"
                     }
                 },
                 "settings": {
@@ -67,9 +71,9 @@
                         "type":"button"
                     },
                     "data": {
-                        "href":"$/user/conversation/add/",
-                        "icon":"fas fa-pen",
-                        "title":"L_USER_CONVERSATION_NEW"
+                        "href":"/user/conversation/add/",
+                        "icon":"fa-solid fa-pen",
+                        "title":"L_USER.L_BAR.L_CONVERSATION.L_NEW"
                     }
                 }
             }

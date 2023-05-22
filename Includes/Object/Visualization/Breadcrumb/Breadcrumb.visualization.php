@@ -10,22 +10,53 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Visualization\Breadcrumb;
+namespace App\Visualization\Breadcrumb;
 
 /**
  * Breadcrumb
  */
-class Breadcrumb extends \Visualization\Visualization 
-{    
+class Breadcrumb extends \App\Visualization\Visualization 
+{
+    /**
+     * @var array $translate List of keys which will be translated to default language
+     */
+    protected array $translate = [
+        'body.?.data.title'
+    ];
+
+    /**
+     * @var array $defaultValues List of keys and their default values
+     */
+    protected array $defaultValues = [];
+
+    /**
+     * @var array $parseToPath List of keys which their values will be parsed to path
+     */
+    protected array $parseToPath = [];
+
+    /**
+     * @var array $parseToURL List of keys which their values will be parsed to URLs
+     */
+    protected array $parseToURL = [
+        'body.?.data.href'
+    ];
+
+    /**
+     * @var string $languagePrefix Default language prefix
+     */
+    protected string $languagePrefix = 'L_BREADCRUMB';
+
     /**
      * Adds href value to data
      *
      * @param  string $href
      * 
-     * @return void
+     * @return $this
      */
     public function href( string $href )
     {
-        $this->obj->set->data('href', '$' . $href);
+        $this->set('data.href', $href);
+
+        return $this;
     }
 }

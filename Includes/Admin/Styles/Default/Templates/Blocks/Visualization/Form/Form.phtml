@@ -1,0 +1,109 @@
+<?php $this->data->form->each('body', function ($form) { ?>
+    <form method="post" enctype="multipart/form-data">
+        <?php $form->each('body', function ($frame) { ?>
+            <?php if ( $frame->get('options.template.body') ) : ?>
+                <?php require $frame->get('options.template.body'); ?>
+            <?php else : ?>
+                <div class="form" js="form"<?php if ($frame->get('data.html.ajax-id')) : ?> ajax-id="<?= $frame->get('data.html.ajax-id') ?>"<?php endif; ?> <?php if ( $frame->get('data.html.ajax-item') ) : ?>ajax-item="<?= $frame->get('data.html.ajax-item') ?>"<?php endif; ?>
+                    <?php if ( $frame->get('options.on') ) : ?>
+                        <?php foreach ((array)$frame->get('options.on') as $on => $_fieldName) : ?>
+                            <?= $on . '-on="' . $_fieldName . '"' ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>    
+                >
+                    <?php if ( $frame->get('data.title') ) : ?>
+                        <div class="form-head">
+                            <span><?= $frame->get('data.title') ?></span>
+                            <?php if ( $frame->get('data.desc') ) : ?>
+                                <br>
+                                <span class="form-head-description"><?= $frame->get('data.desc') ?></span>
+                            <?php endif; ?>  
+                        </div>
+                    <?php endif; ?>  
+                    <div class="form-body">
+                        <?php if ( $frame->get('body') ) : ?>
+                            <?php $frame->each('body', function ($input) { ?>
+                                <?php if ( $input->get('options.template.root') ) : ?>
+                                    <?php require $input->get('options.template.root'); return; ?>
+                                <?php endif; ?>
+                                <div class="form-row form-row-type-<?= $input->get('options.type') ?><?php if ( in_array($input->get('options.type'), ['html', 'textarea']) ) : ?> form-row-grid<?php endif; ?><?php if ( $input->get('options.type') == 'icon' ) : ?> form-row-icon<?php endif; ?><?php if ( $input->get('data.class') ) : ?> <?= $input->get('data.class') ?><?php endif; ?>" js="form-row"
+                                    <?php if ($input->get('options.on')) : ?>
+                                        <?php foreach ((array)$input->get('options.on') as $on => $_rowName) : ?>
+                                            <?= $on . '-on="' . $_rowName . '"' ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                >
+                                    <?php if ( $input->get('options.template.body') ) : ?>
+                                        <?php require $input->get('options.template.body'); ?>
+                                    <?php else : ?>
+                                        <div class="form-row-body">
+                                            <?php if ( $input->get('data.title') or $input->get('options.template.text') ) : ?>
+                                                <div class="form-text<?php if ( !$input->get('data.desc') ) : ?> vertical-align<?php endif; ?>">
+                                                    <?php if ( $input->get('options.template.text') ) : ?>
+                                                        <?php require $input->get('options.template.text'); ?>
+                                                    <?php else : ?>
+                                                        <span><?= $input->get('data.title') ?>:</span><?php if ($input->get('data.desc')) : ?><br><?= $input->get('data.desc') ?><?php endif; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            <div class="form-option">
+                                                <?php if ( $input->get('options.template.option') ) : ?>
+                                                    <?php require $input->get('options.template.option'); ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <?php if (str_starts_with($input->get('options.type'), 'file/')) : ?>
+                                            <?php if ($input->get('body')) : ?>
+                                                <div class="attachment-list<?php if (in_array($input->get('options.type'), ['file/image', 'file/image[]'])) : ?> attachment-list-images pswp-images<?php endif; ?>">
+                                                    <?php $input->each('body', function ($file) use ($input) { ?>
+                                                        <?php if (in_array($input->get('options.type'), ['file/image', 'file/image[]'])) : ?>
+                                                            <div class="attachment">
+                                                                <span class="delete" ajax-action="delete-attachment" ajax-window ajax-id="<?= $file->get('data.path') ?>"><i class="fa-solid fa-xmark"></i> <?= $this->language->get('L_BTN.L_DELETE') ?></span>
+                                                                <a class="image" href="<?= $file->get('data.path') ?>" target="_blank" data-pswp-width="<?= $file->get('data.width') ?>" data-pswp-height="<?= $file->get('data.height') ?>">
+                                                                    <img src="<?= $file->get('data.path') ?>" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <?php return; ?>
+                                                        <?php endif; ?>
+                                                        <div class="attachment">
+                                                            <div class="attachment-left">
+                                                                <span class="attachment-name"><?= $file->get('data.name') ?></span>
+                                                            </div>
+                                                            <div class="attachment-right">
+                                                                <a class="button button-delete" ajax-action="delete-attachment" ajax-window ajax-id="<?= $file->get('data.path') ?>">
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                    <span><?= $this->language->get('L_BTN.L_DELETE') ?></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    <?php }); ?>    
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php }); ?>
+                        <?php else : ?>
+                            <?php if ( $frame->get('data.empty') ) : ?>
+                                <div class="form-row">
+                                    <div class="form-text">
+                                        <span class="form-title"><?= $frame->get('data.empty') ?></span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php }); ?>
+
+        <?php if ( $form->get('data.button') ) : ?>
+            <div class="form-submit" js="form-submit">
+                <?php $form->each('data.button', function ($button) { ?>
+                    <input class="button" type="<?= $button->get('type')  ?>" name="<?= $button->get('name') ?>" value="<?= $button->get('value') ?>">
+                <?php }); ?>
+            </div>
+        <?php endif; ?>
+        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+    </form>
+<?php }); ?>

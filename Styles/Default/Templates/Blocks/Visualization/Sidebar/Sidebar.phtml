@@ -1,75 +1,78 @@
-<?php foreach ((array)$this->data->sidebar['body'] as $objectName => $object) : ?>
-    
-    <?php $row = $object; ?>
-    <?php if ($object['options']['template'] ?? false and is_string($object['options']['template'])) : ?>
-        <?php require $object['options']['template']; ?>
-        <?php continue; ?>
+<?php $this->data->sidebar->each('body', function ($sidebar) { ?>    
+    <?php if ( $sidebar->get('options.template.root') ) : ?>
+        <?php require $sidebar->get('options.template.root'); return; ?>
     <?php endif; ?>
-    
-    <div class="list list-small list-name-<?= $objectName ?>">
-        <?php if (isset($object['data']['title'])) : ?>
-            <div class="list-head">
-                <span><?= ${$object['data']['title']} ?></span>
-            </div>
-        <?php endif; ?>
-        <div class="list-body">
-
-            <?php if (!empty($object['body'] )) : ?>
-                <?php foreach ($object['body'] as $rowName => $row) : ?>
-                    
-                    <?php if (isset($row['options']['template']) and is_string($row['options']['template'])) : ?>
-                        <?php require $row['options']['template']; ?>
-                    <?php else : ?>
-                    
-                        <div class="list-row list-row-name-<?= $rowName ?> list-row-type-<?= $row['options']['type'] ?? 'default' ?><?php if (($row['options']['selected'] ?? false) == true) : ?> list-row-selected<?php endif; ?>" ajax-selector="list-row">
-                            <?php if (isset($row['options']['template']['body'])) : ?>
-                                <?php require $row['options']['template']['body']; ?>
+    <div class="list list-small list-name-<?= $sidebar->getCurrentPositionName() ?>">
+        <?php if ( $sidebar->get('options.template.body') ) : ?>
+            <?php require $sidebar->get('options.template.body'); ?>
+        <?php else : ?>
+            <?php if ( $sidebar->get('data.title') ) : ?>
+                <div class="list-head">
+                    <span><?= $sidebar->get('data.title') ?></span>
+                </div>
+            <?php endif; ?>
+            <div class="list-body">
+                <?php if ( $sidebar->get('body') ) : ?>
+                    <?php $sidebar->each('body', function ($sidebar) { ?>
+                        <?php if ( $sidebar->get('options.template.root') ) : ?>
+                            <?php require $sidebar->get('options.template.root'); return; ?>
+                        <?php endif; ?>
+                        <div class="list-row<?php if ( $sidebar->get('options.selected') ) : ?> list-row-selected<?php endif; ?><?php if ( $sidebar->get('options.disabled') ) : ?> list-row-disabled<?php endif; ?> list-row-name-<?= $sidebar->getCurrentPositionName() ?> list-row-type-<?= $sidebar->get('options.type') ?>" js="list-row">
+                            <?php if ( $sidebar->get('options.template.body') ) : ?>
+                                <?php require $sidebar->get('options.template.body'); ?>
                             <?php else : ?>
 
-                                <?php if ($row['options']['type'] === 'button') : ?>
-                                    <a href="<?= $row['data']['href'] ? $this->url->build($row['data']['href']) : '' ?>"><i class="<?= $row['data']['icon'] ?>"></i> <?= ${$row['data']['title']} ?></a>
+                                <?php if ( $sidebar->get('options.type') === 'button' ) : ?>
+                                    <a href="<?php if ( $sidebar->get('data.href') ) : ?><?= $sidebar->get('data.href') ?><?php endif; ?>"><i class="<?= $sidebar->get('data.icon') ?>"></i> <?= $sidebar->get('data.title') ?></a>
                                 <?php endif; ?>
 
-                                <?php if ($row['options']['type'] === 'table') : ?>
-                                    <?php foreach ($row['body'] as $option) : ?>
+                                <?php if ( $sidebar->get('options.type') === 'link' ) : ?>
+                                    <div class="table">
+                                        <div class="table-left"><?= $sidebar->get('data.title') ?>:</div>
+                                        <div class="table-right">
+                                            <a class="button" href="<?= $sidebar->get('data.href') ?>"><?php if ($sidebar->get('data.icon')) : ?><i class="<?= $sidebar->get('data.icon') ?>"></i> <?php endif; ?><?= $sidebar->get('data.button') ?></a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ( $sidebar->get('options.type') === 'table' ) : ?>
+                                    <?php $sidebar->each('body', function ($sidebar) { ?>
                                         <div class="table">
-                                            <div class="table-left"><?= ${$option['data']['title']} ?>:</div>
+                                            <div class="table-left"><?= $sidebar->get('data.title') ?>:</div>
                                             <div class="table-right">
-                                                <?php if (isset($option['options']['template']['body'])) : ?>
-                                                    <?php require $option['options']['template']['body']; ?>
+                                                <?php if ( $sidebar->get('options.template.body') ) : ?>
+                                                    <?php require $sidebar->get('options.template.body'); ?>
                                                 <?php else : ?>
-                                                    <?= $option['data']['value'] ?>
+                                                    <?= $sidebar->get('data.value') ?>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
-                                    <?php endforeach; ?>
+                                    <?php }); ?>
                                 <?php endif; ?>
 
-                                <?php if ($row['options']['type'] === 'list') : ?>
-                                    
-                                    <?php if (!empty($row['body'] )) : ?>
-                                        <?php foreach ($row['body'] as $option) : ?>
-                                            <?php require $option['options']['template']['body']; ?>
-                                        <?php endforeach; ?>
+                                <?php if ( $sidebar->get('options.type') === 'list' ) : ?>
+                                    <?php if ( $sidebar->get('body') ) : ?>
+                                        <?php $sidebar->each('body', function ($sidebar) { ?>
+                                            <?php require $sidebar->get('options.template.body'); ?>
+                                        <?php }); ?>
                                     <?php else : ?>
-                                        <?php if (isset($row['options']['empty'])) : ?>
-                                            <?= ${$row['options']['empty']} ?>
+                                        <?php if ( $sidebar->get('data.empty') ) : ?>
+                                            <?= $sidebar->get('data.empty') ?>
                                         <?php endif; ?>
                                     <?php endif; ?>
 
                                 <?php endif; ?>
                             <?php endif; ?>
                         </div>
+                    <?php }); ?>
+                <?php else : ?>
+                    <?php if ( $sidebar->get('data.empty') ) : ?>
+                        <div class="list-row">
+                            <?= $sidebar->get('data.empty') ?>
+                        </div>
                     <?php endif; ?>
-                <?php endforeach; ?>
-                <?php $row = $object; ?>
-            <?php else : ?>
-                <?php if (isset($object['options']['empty'])) : ?>
-                    <div class="list-row">
-                        <?= ${$object['options']['empty']} ?>
-                    </div>
                 <?php endif; ?>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
-<?php endforeach; ?>
+<?php }); ?>

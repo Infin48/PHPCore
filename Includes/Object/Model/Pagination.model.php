@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model;
+namespace App\Model;
 
 /**
  * Pagination
@@ -135,11 +135,6 @@ class Pagination
                 }
             }
         }
-
-        $tab = '';
-        if (TAB) {
-            $tab = 'tab-' . TAB . '/';
-        }
         
         if ($this->page > $ceil or $this->page < 1) {
             if ($this->page < 1) redirect($this->pagination['url'] . 'page-' . $_url . $this->label . '1/');
@@ -165,18 +160,17 @@ class Pagination
 
             $paginationData[] = [
                 'page' => $page,
-                'url' => $this->pagination['url'] . 'page-' . $_url . $this->label . $url . '/' . $tab,
+                'url' => $this->pagination['url'] . 'page-' . $_url . $this->label . $url . '/',
                 'active' => $this->page == $url ? true : false
             ];
         }
 
-
         return [
             'data' => $paginationData,
 
-            'url' => $this->pagination['url'] . '/' . $tab,
-            'urlNext' => $this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page + 1) . '/' . $tab,
-            'urlPrevious' => $this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page - 1) . '/' . $tab,
+            'url' => \App\Model\Url::build($this->pagination['url'] . '/'),
+            'urlNext' => \App\Model\Url::build($this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page + 1) . '/'),
+            'urlPrevious' => \App\Model\Url::build($this->pagination['url'] . '/page-' . $_url . $this->label . ($this->page - 1) . '/'),
 
             'next' => $this->page != ceil($this->pagination['total'] / $this->pagination['max']) ? true : false,
             'previous' => $this->page != 1 ? true : false,

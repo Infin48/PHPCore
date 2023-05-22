@@ -1,0 +1,22 @@
+{
+    "body": {
+        "user_name": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "user_email": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "user_password": {
+            "options": {
+                "type": "password",
+                "required": true
+            }
+        }
+    }
+}

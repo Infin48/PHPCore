@@ -49,13 +49,13 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                     // This is a degenerate case
                 } else {
                     if (!$token->is_whitespace || $this->_isInline($current)) {
-                        // State 1.2: PAR1
+                        // State 1.2: par1
                         //            ----
 
-                        // State 1.3: PAR1\n\nPAR2
+                        // State 1.3: par1\n\npar2
                         //            ------------
 
-                        // State 1.4: <div>PAR1\n\nPAR2 (see State 2)
+                        // State 1.4: <div>par1\n\npar2 (see state 2)
                         //                 ------------
                         $token = array($this->_pStart());
                         $this->_splitText($text, $token);
@@ -65,43 +65,43 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                     }
                 }
             } else {
-                // State 2:   <div>PAR1... (similar to 1.4)
+                // State 2:   <div>par1... (similar to 1.4)
                 //                 ----
 
                 // We're in an element that allows paragraph tags, but we're not
                 // sure if we're going to need them.
                 if ($this->_pLookAhead()) {
-                    // State 2.1: <div>PAR1<b>PAR1\n\nPAR2
+                    // State 2.1: <div>par1<b>par1\n\npar2
                     //                 ----
-                    // Note: This will always be the first child, since any
+                    // Note: this will always be the first child, since any
                     // previous inline element would have triggered this very
-                    // same routine, and found the double newline. One possible
+                    // same routine, and found the double newline. one possible
                     // exception would be a comment.
                     $token = array($this->_pStart(), $token);
                 } else {
-                    // State 2.2.1: <div>PAR1<div>
+                    // State 2.2.1: <div>par1<div>
                     //                   ----
 
-                    // State 2.2.2: <div>PAR1<b>PAR1</b></div>
+                    // State 2.2.2: <div>par1<b>par1</b></div>
                     //                   ----
                 }
             }
             // Is the current parent a <p> tag?
         } elseif (!empty($this->currentNesting) &&
             $this->currentNesting[count($this->currentNesting) - 1]->name == 'p') {
-            // State 3.1: ...<p>PAR1
+            // State 3.1: ...<p>par1
             //                  ----
 
-            // State 3.2: ...<p>PAR1\n\nPAR2
+            // State 3.2: ...<p>par1\n\npar2
             //                  ------------
             $token = array();
             $this->_splitText($text, $token);
             // Abort!
         } else {
-            // State 4.1: ...<b>PAR1
+            // State 4.1: ...<b>par1
             //                  ----
 
-            // State 4.2: ...<b>PAR1\n\nPAR2
+            // State 4.2: ...<b>par1\n\npar2
             //                  ------------
         }
     }
@@ -112,7 +112,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     public function handleElement(&$token)
     {
         // We don't have to check if we're already in a <p> tag for block
-        // tokens, because the tag would have been autoclosed by MakeWellFormed.
+        // tokens, because the tag would have been autoclosed by makewellformed.
         if ($this->allowsElement('p')) {
             if (!empty($this->currentNesting)) {
                 if ($this->_isInline($token)) {
@@ -128,16 +128,16 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                         if ($prev instanceof HTMLPurifier_Token_Text &&
                             substr($prev->data, -2) === "\n\n"
                         ) {
-                            // State 1.1.4: <div><p>PAR1</p>\n\n<b>
+                            // State 1.1.4: <div><p>par1</p>\n\n<b>
                             //                                  ---
-                            // Quite frankly, this should be handled by splitText
+                            // Quite frankly, this should be handled by splittext
                             $token = array($this->_pStart(), $token);
                         } else {
-                            // State 1.1.1: <div><p>PAR1</p><b>
+                            // State 1.1.1: <div><p>par1</p><b>
                             //                              ---
                             // State 1.1.2: <div><br /><b>
                             //                         ---
-                            // State 1.1.3: <div>PAR<b>
+                            // State 1.1.3: <div>par<b>
                             //                      ---
                         }
                     } else {
@@ -145,14 +145,14 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                         //                   ---
                         // Lookahead to see if <p> is needed.
                         if ($this->_pLookAhead()) {
-                            // State 1.3.1: <div><b>PAR1\n\nPAR2
+                            // State 1.3.1: <div><b>par1\n\npar2
                             //                   ---
                             $token = array($this->_pStart(), $token);
                         } else {
-                            // State 1.3.2: <div><b>PAR1</b></div>
+                            // State 1.3.2: <div><b>par1</b></div>
                             //                   ---
 
-                            // State 1.3.3: <div><b>PAR1</b><div></div>\n\n</div>
+                            // State 1.3.3: <div><b>par1</b><div></div>\n\n</div>
                             //                   ---
                         }
                     }
@@ -165,7 +165,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                     // State 3.1: <b>
                     //            ---
                     // This is where the {p} tag is inserted, not reflected in
-                    // inputTokens yet, however.
+                    // inputtokens yet, however.
                     $token = array($this->_pStart(), $token);
                 } else {
                     // State 3.2: <div>
@@ -188,7 +188,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                         //                            ---
                         // State 3.2.2: ...</p>\n\n<div>
                         //                         -----
-                        // Note: PAR<ELEM> cannot occur because PAR would have been
+                        // Note: par<elem> cannot occur because par would have been
                         // wrapped in <p> tags.
                     }
                 }
@@ -218,7 +218,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
 
         $c = count($raw_paragraphs);
         if ($c == 1) {
-            // There were no double-newlines, abort quickly. In theory this
+            // There were no double-newlines, abort quickly. in theory this
             // should never happen.
             $result[] = new HTMLPurifier_Token_Text($data);
             return;
@@ -231,7 +231,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                 if ($i == 0) {
                     // Double newline at the front
                     if (empty($result)) {
-                        // The empty result indicates that the AutoParagraph
+                        // The empty result indicates that the autoparagraph
                         // injector did not add any start paragraph tokens.
                         // This means that we have been in a paragraph for
                         // a while, and the newline means we should start a new one.
@@ -239,7 +239,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                         $result[] = new HTMLPurifier_Token_Text("\n\n");
                         // However, the start token should only be added if
                         // there is more processing to be done (i.e. there are
-                        // real paragraphs in here). If there are none, the
+                        // real paragraphs in here). if there are none, the
                         // next start paragraph tag will be handled by the
                         // next call to the injector
                         $needs_start = true;
@@ -257,7 +257,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
             }
         }
 
-        // Check if this was just a giant blob of whitespace. Move this earlier,
+        // Check if this was just a giant blob of whitespace. move this earlier,
         // perhaps?
         if (empty($paragraphs)) {
             return;
@@ -276,13 +276,13 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
             $result[] = $this->_pStart();
         }
 
-        // Remove trailing start token; Injector will handle this later if
-        // it was indeed needed. This prevents from needing to do a lookahead,
+        // Remove trailing start token; injector will handle this later if
+        // it was indeed needed. this prevents from needing to do a lookahead,
         // at the cost of a lookbehind later.
         array_pop($result);
 
         // If there is no need for an end tag, remove all of it and let
-        // MakeWellFormed close it later.
+        // Makewellformed close it later.
         if (!$needs_end) {
             array_pop($result); // removes \n\n
             array_pop($result); // removes </p>
@@ -334,18 +334,18 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     {
         if ($current instanceof HTMLPurifier_Token_Start) {
             if (!$this->_isInline($current)) {
-                // <div>PAR1<div>
+                // <div>par1<div>
                 //      ----
                 // Terminate early, since we hit a block element
                 return false;
             }
         } elseif ($current instanceof HTMLPurifier_Token_Text) {
             if (strpos($current->data, "\n\n") !== false) {
-                // <div>PAR1<b>PAR1\n\nPAR2
+                // <div>par1<b>par1\n\npar2
                 //      ----
                 return true;
             } else {
-                // <div>PAR1<b>PAR1...
+                // <div>par1<b>par1...
                 //      ----
             }
         }

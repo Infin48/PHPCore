@@ -98,7 +98,7 @@ abstract class HTMLPurifier_Injector
     {
         $this->htmlDefinition = $config->getHTMLDefinition();
         // Even though this might fail, some unit tests ignore this and
-        // still test checkNeeded, so be careful. Maybe get rid of that
+        // still test checkneeded, so be careful. maybe get rid of that
         // dependency.
         $result = $this->checkNeeded($config);
         if ($result !== false) {

@@ -1,10 +1,10 @@
-<?php if (!empty($row['data']['post_id'])) : ?>
+<?php if ( $list->get('data.post_id') ) : ?>
     <div class="inner">
-        <?= $this->build->user->link($row['data'], true, 'last_') ?>
+        <?= $list->get('data.lastpost.user') ?>
         <br>
-        <?= $this->build->date->long($row['data']['last_post_created'], true) ?>
+        <span class="date"><?= $list->get('data.lastpost.date') ?></span>
     </div>
-    <?= $this->build->user->image($row['data'], false, 'last_') ?>
+    <?= $list->get('data.lastpost.user_image') ?>
 <?php else : ?>
-    <span class="fw-600"><?= $L_POST_NO ?></span>
+    <span class="fw-600"><?= $this->language->get('L_POST.L_NO') ?></span>
 <?php endif; ?>

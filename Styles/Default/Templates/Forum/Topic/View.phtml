@@ -1,47 +1,6 @@
-<?php if ($this->data->data['deleted_id']) : ?>
-    <div class="page-alert page-alert-type-warning">
-        <div class="page-alert-icon">
-            <i class="fas fa-trash"></i>
-        </div>
-        <div class="page-alert-body">
-            <div class="page-alert-content">
-                <span class="page-alert-title"><?= $L_TOPIC_DELETED ?></span>
-            </div>
-            <a class="page-alert-button" href="<?= $this->url->build('/admin/deleted/show/' . $this->data->data['deleted_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
-        </div>
-    </div>
-<?php endif; ?>
-
-<?php if ($this->data->data['report_id'] and $this->data->data['report_status'] == 0 and $this->user->perm->has('admin.forum')) : ?>
-<div class="page-alert page-alert-type-notification">
-        <div class="page-alert-icon">
-            <i class="fas fa-exclamation"></i>
-        </div>
-        <div class="page-alert-body">
-            <div class="page-alert-content">
-                <span class="page-alert-title"><?= $L_TOPIC_REPORTED ?></span>
-            </div>
-            <a class="page-alert-button" href="<?= $this->url->build('/admin/report/show/' . $this->data->data['report_id']) ?>"><i class="fas fa-info-circle"></i> <?= $L_DETAILS ?></a>
-        </div>
-    </div>
-<?php endif; ?>
-
-<?php if ($this->data->data['topic_locked'] == 1) : ?>
-    <div class="page-alert page-alert-type-warning">
-        <div class="page-alert-icon">
-            <i class="fas fa-lock"></i>
-        </div>
-        <div class="page-alert-body">
-            <div class="page-alert-content page-alert-content-clear">
-                <span class="page-alert-title"><?= $L_TOPIC_LOCKED_ALERT ?></span>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-
-<?php require $this->template->template('/Blocks/Visualization/Panel/Panel.phtml'); ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Panel/Panel.phtml'); ?>
 <div class="block-list">
-    <?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Block.phtml'); ?>
 </div>
 
-<?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>

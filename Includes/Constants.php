@@ -10,24 +10,24 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-// DEFAULT INDEX PAGE
+// Default index page
 define('INDEX', '/');
 
-// PHPCORE VERSION
-define('PHPCORE_VERSION', '1.1.0');
+// Phpcore version
+define('PHPCORE_VERSION', '2.0.0');
 
-// TABLES
+// Tables
+define('TABLE_ARTICLES', 'phpcore_articles a');
+define('TABLE_ARTICLES_LABELS', 'phpcore_articles_labels alb');
 define('TABLE_BUTTONS', 'phpcore_buttons b');
 define('TABLE_BUTTONS_SUB', 'phpcore_buttons_sub bs');
 define('TABLE_CATEGORIES', 'phpcore_categories c');
-define('TABLE_CATEGORIES_PERMISSION_SEE', 'phpcore_categories_permission_see cps');
+define('TABLE_CATEGORIES_PERMISSION', 'phpcore_categories_permission cp');
 define('TABLE_DELETED_CONTENT', 'phpcore_deleted_content dc');
 define('TABLE_FORGOT', 'phpcore_forgot_password fp');
 define('TABLE_FORUMS', 'phpcore_forums f');
 define('TABLE_FORUM_ICONS', 'phpcore_forums_icons fi');
-define('TABLE_FORUMS_PERMISSION_POST', 'phpcore_forums_permission_post fpp');
-define('TABLE_FORUMS_PERMISSION_SEE', 'phpcore_forums_permission_see fps');
-define('TABLE_FORUMS_PERMISSION_TOPIC', 'phpcore_forums_permission_topic fpt');
+define('TABLE_FORUMS_PERMISSION', 'phpcore_forums_permission fp');
 define('TABLE_GROUPS', 'phpcore_groups g');
 define('TABLE_LABELS', 'phpcore_labels l');
 define('TABLE_LOG', 'phpcore_logs lg');
@@ -45,8 +45,10 @@ define('TABLE_PROFILE_POSTS_REPORTS', 'phpcore_profile_post_reports ppr');
 define('TABLE_PROFILE_POSTS_COMMENTS', 'phpcore_profile_posts_comments ppc');
 define('TABLE_REPORTS', 'phpcore_reports r');
 define('TABLE_REPORTS_REASONS', 'phpcore_reports_reasons rr');
+define('TABLE_ROLES', 'phpcore_roles ro');
 define('TABLE_SETTINGS', 'phpcore_settings s');
 define('TABLE_SETTINGS_URL', 'phpcore_settings_url su');
+define('TABLE_SIDEBAR', 'phpcore_sidebar s');
 define('TABLE_STATISTICS', 'phpcore_statistics s');
 define('TABLE_TOPICS', 'phpcore_topics t');
 define('TABLE_TOPICS_DELETED', 'phpcore_topics_deleted td');
@@ -69,8 +71,9 @@ define('MINUS', '88t-Dqq_@');
 define('SINGLE', (int)28);
 define('ROWS', (int)66);
 
-define('int', 'int');
-define('string', 'string');
+define('ARR', 'array');
+define('STRING', 'string');
+define('INTEGER', 'integer');
 
 define ('NOTIFICATION', [
     1 => 'info',
@@ -82,12 +85,16 @@ define('PROFILE_IMAGES_COLORS', [
     'red', 'blue', 'purple', 'grey', 'brown', 'green', 'orange'
 ]);
 
+define('Q_IGNORE', 2);
+define('Q_DUPLICATE', 4);
+
 define('MAX_NEWS', 10);
 define('MAX_USERS', 20);
-define('MAX_POSTS', 10);
-define('MAX_TOPICS', 10);
+define('MAX_POSTS', 15);
+define('MAX_TOPICS', 20);
 define('MAX_MESSAGES', 10);
-define('MAX_PROFILE_POSTS', 10);
+define('MAX_ACTIVITY', 20);
+define('MAX_PROFILE_POSTS', 15);
 define('MAX_PRIVATE_MESSAGES', 20);
 
 define('MAX_REPORTED_POST', 20);
@@ -95,18 +102,23 @@ define('MAX_REPORTED_TOPIC', 20);
 define('MAX_REPORTED_COMMENTS', 20);
 define('MAX_REPORTED_PROFILE_POSTS', 20);
 
-define('REQUIRE_LOGIN', 1152);
-define('REQUIRE_LOGOUT', 3489);
-define('OPTIONAL_LOGIN', 5927);
-
 define('EDITOR_BIG', 'Big');
 define('EDITOR_MEDIUM', 'Medium');
 define('EDITOR_SMALL', 'Small');
 
 define('CONTEXT', stream_context_create(['http' => ['method' => 'GET','header' => ['User-Agent: PHP']]]));
 
-define('SUCCESS_SESSION', 'SUCCESS_SESSION');
-define('SUCCESS_RETURN', 'SUCCESS_RETURN');
-
 define('FILE_TYPE_IMAGE', 'image');
 define('FILE_TYPE_ZIP', 'zip');
+define('FILE_TYPE_MISC', 'misc');
+define('FILE_TYPE_FOLDER', 'folder');
+define('FILE_TYPE_FILE', 'file');
+
+
+$protocol = 'http';
+if (str_contains($_SERVER['SERVER_PROTOCOL'], 'HTTPS'))
+{
+    $protocol = 'https';
+}
+
+define('SITE_URL', $protocol . '://' . $_SERVER['HTTP_HOST']);

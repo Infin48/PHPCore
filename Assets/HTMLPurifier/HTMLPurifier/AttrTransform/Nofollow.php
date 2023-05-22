@@ -1,6 +1,6 @@
 <?php
 
-// must be called POST validation
+// must be called post validation
 
 /**
  * Adds rel="nofollow" to all outbound links.  This transform is
@@ -30,7 +30,7 @@ class HTMLPurifier_AttrTransform_Nofollow extends HTMLPurifier_AttrTransform
             return $attr;
         }
 
-        // XXX Kind of inefficient
+        // Xxx kind of inefficient
         $url = $this->parser->parse($attr['href']);
         $scheme = $url->getSchemeObj($config, $context);
 

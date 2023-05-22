@@ -48,7 +48,7 @@ class HTMLPurifier_Lexer
      */
     public $tracksLineNumbers = false;
 
-    // -- STATIC ----------------------------------------------------------
+    // -- static ----------------------------------------------------------
 
     /**
      * Retrieves or sets the default Lexer as a Prototype Factory.
@@ -100,9 +100,9 @@ class HTMLPurifier_Lexer
                         method_exists('DOMDocument', 'loadHTML') &&
                         !extension_loaded('domxml')
                     ) {
-                        // check for DOM support, because while it's part of the
-                        // core, it can be disabled compile time. Also, the PECL
-                        // domxml extension overrides the default DOM, and is evil
+                        // check for dom support, because while it's part of the
+                        // core, it can be disabled compile time. also, the pecl
+                        // domxml extension overrides the default dom, and is evil
                         // and nasty and we shan't bother to support it
                         $lexer = 'DOMLex';
                     } else {
@@ -134,8 +134,8 @@ class HTMLPurifier_Lexer
             throw new HTMLPurifier_Exception('No lexer was instantiated');
         }
 
-        // once PHP DOM implements native line numbers, or we
-        // hack out something using XSLT, remove this stipulation
+        // once php dom implements native line numbers, or we
+        // hack out something using xslt, remove this stipulation
         if ($needs_tracking && !$inst->tracksLineNumbers) {
             throw new HTMLPurifier_Exception(
                 'Cannot use lexer that does not support line numbers with ' .
@@ -147,7 +147,7 @@ class HTMLPurifier_Lexer
 
     }
 
-    // -- CONVENIENCE MEMBERS ---------------------------------------------
+    // -- convenience members ---------------------------------------------
 
     public function __construct()
     {
@@ -211,7 +211,7 @@ class HTMLPurifier_Lexer
             return $string;
         }
 
-        // hmm... now we have some uncommon entities. Use the callback.
+        // hmm... now we have some uncommon entities. use the callback.
         if ($config->get('Core.LegacyEntityDecoder')) {
             $string = $this->_entity_parser->substituteSpecialEntities($string);
         } else {
@@ -311,11 +311,11 @@ class HTMLPurifier_Lexer
         }
 
         if ($config->get('HTML.Trusted')) {
-            // escape convoluted CDATA
+            // escape convoluted cdata
             $html = $this->escapeCommentedCDATA($html);
         }
 
-        // escape CDATA
+        // escape cdata
         $html = $this->escapeCDATA($html);
 
         $html = $this->removeIEConditional($html);
@@ -338,9 +338,9 @@ class HTMLPurifier_Lexer
             $html = $this->_entity_parser->substituteNonSpecialEntities($html);
         }
 
-        // clean into wellformed UTF-8 string for an SGML context: this has
+        // clean into wellformed utf-8 string for an sgml context: this has
         // to be done after entity expansion because the entities sometimes
-        // represent non-SGML characters (horror, horror!)
+        // represent non-sgml characters (horror, horror!)
         $html = HTMLPurifier_Encoder::cleanUTF8($html);
 
         // if processing instructions are to removed, remove them now

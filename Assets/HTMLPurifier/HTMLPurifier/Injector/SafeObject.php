@@ -79,9 +79,9 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
                     return;
                 }
                 $n = $token->attr['name'];
-                // We need this fix because YouTube doesn't supply a data
-                // attribute, which we need if a type is specified. This is
-                // *very* Flash specific.
+                // We need this fix because youtube doesn't supply a data
+                // attribute, which we need if a type is specified. this is
+                // *very* flash specific.
                 if (!isset($this->objectStack[$i]->attr['data']) &&
                     ($token->attr['name'] == 'movie' || $token->attr['name'] == 'src')
                 ) {
@@ -97,13 +97,13 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
                 } elseif (isset($this->allowedParam[strtolower($n)])) {
                     // keep token, don't do anything to it
                     // (could possibly check for duplicates here)
-                    // Note: In principle, parameters should be case sensitive.
+                    // Note: in principle, parameters should be case sensitive.
                     // But it seems they are not really; so accept any case.
                 } else {
                     $token = false;
                 }
             } else {
-                // not directly inside an object, DENY!
+                // not directly inside an object, deny!
                 $token = false;
             }
         }
@@ -111,7 +111,7 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
 
     public function handleEnd(&$token)
     {
-        // This is the WRONG way of handling the object and param stacks;
+        // This is the wrong way of handling the object and param stacks;
         // we should be inserting them directly on the relevant object tokens
         // so that the global stack handling handles it.
         if ($token->name == 'object') {

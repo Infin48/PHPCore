@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Exception;
+namespace App\Exception;
 
 /**
  * Notice
@@ -26,7 +26,7 @@ class Notice extends \Exception
     public function __construct( string $notice, array $assign = [] )
     {
         global $router;
-        $router->notice($notice, $assign);
+        $router->end($notice, $assign);
         exit();
     }
 }

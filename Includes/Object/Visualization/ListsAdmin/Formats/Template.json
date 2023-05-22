@@ -1,0 +1,36 @@
+{
+    "body": {
+        "templates": {
+            "options": {
+                "type": "grid"
+            },
+            "data": {
+                "title": "L_TEMPLATE.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "template"
+                        },
+                        "button": {
+                            "delete": {},
+                            "activate": {},
+                            "preview": {
+                                "icon": "fa-solid fa-eye",
+                                "ajax-action": "preview",
+                                "title": "L_BTN.L_PREVIEW"
+                            },
+                            "setup": {
+                                "hide": true,
+                                "icon": "fa-solid fa-cogs",
+                                "href": "~/setup/name-{id}/",
+                                "title": "L_BTN.L_MANAGE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

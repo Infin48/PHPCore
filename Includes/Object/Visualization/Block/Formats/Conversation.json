@@ -6,17 +6,10 @@
             },
             "body": {
                 "default": {
-                    "options": {
-                        "type": "/Conversation"
-                    },
                     "data": {
-                        "convert": {
-                            "id": "conversation_id",
-                            "text": "conversation_text",
-                            "name": "conversation_name",
-                            "edited": "conversation_edited",
-                            "edited_at": "conversation_edited_at",
-                            "created": "conversation_created"
+                        "html": {
+                            "name": "conversation",
+                            "js-type": "\\Conversation"
                         }
                     }
                 }
@@ -25,30 +18,23 @@
         "conversationmessage": {
             "body": {
                 "default": {
-                    "options": {
-                        "type": "/ConversationMessage"
-                    },
                     "data": {
-                        "convert": {
-                            "id": "conversation_message_id",
-                            "text": "conversation_message_text",
-                            "name": "conversation_name",
-                            "edited": "conversation_message_edited",
-                            "edited_at": "conversation_message_edited_at",
-                            "created": "conversation_message_created"
+                        "html": {
+                            "name": "message",
+                            "ajax-item": "message"
                         },
                         "button": {
                             "quote": {},
-                            "edit": {}
+                            "edit": {
+                                "hide": true
+                            }
                         }
                     }
                 },
                 "bottom": {
                     "options": {
                         "hide": true,
-                        "template": {
-                            "body": "%/ConversationMessageNew.phtml"
-                        }
+                        "template": "/Includes/Object/Visualization/Block/Templates/ConversationMessageNew.phtml"
                     }
                 }
             }

@@ -1,0 +1,66 @@
+<?php $this->data->form->each('body', function ($form) { ?>
+    <form method="post" enctype="multipart/form-data">
+        <?php $form->each('body', function ($frame) { ?>
+            <div class="form form-name-<?= $frame->getCurrentPositionName() ?>" js="form">
+                <?php $frame->each('body', function ($input) { ?>
+                    <?php if ($input->get('options.template.root')) : ?>
+                        <?php require $input->get('options.template.root'); return; ?>
+                    <?php endif; ?>
+                    <div class="form-row form-row-name-<?= $input->getCurrentPositionName() ?> <?php if ( in_array($input->get('options.type'), ['textarea', 'html']) ) : ?> form-row-grid<?php endif; ?> form-row-type-<?= $input->get('options.type') ?>" js="form-row">
+                        <div class="form-row-body">
+                            <?php if ($input->get('data.title') or $input->get('options.template.text')) : ?>
+                                <div class="form-text<?php if ( !$input->get('data.desc') ) : ?> vertical-align<?php endif; ?>">
+                                    <?php if ($input->get('options.template.text')) : ?>
+                                        <?php require $input->get('options.template.text'); ?>
+                                    <?php else : ?>
+                                        <span><?= $input->get('data.title') ?>:</span><?php if ($input->get('data.desc')) : ?><br><?= $input->get('data.desc') ?><?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="form-option">
+                                <?php if ($input->get('options.template.option')) : ?>
+                                    <?php require $input->get('options.template.option'); ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php if (str_starts_with($input->get('options.type'), 'file')) : ?>
+                            <?php if ($input->get('body')) : ?>
+                                <div class="attachment-list<?php if ($input->get('options.type') == 'file/image[]') : ?> attachment-list-images pswp-images<?php else: ?> attachment-list-files<?php endif; ?>" js="attachment-list">
+                                    <?php $input->each('body', function ($file) use ($input) { ?>
+                                        <?php if ($input->get('options.type') == 'file/image[]') : ?>
+                                            <div class="attachment">
+                                                <span class="delete" ajax-action="delete-attachment" ajax-window ajax-id="<?= $file->get('data.path') ?>"><i class="fa-solid fa-xmark"></i> <?= $this->language->get('L_BTN.L_DELETE') ?></span>
+                                                <a class="image" href="<?= $file->get('data.path') ?>" target="_blank" data-pswp-width="<?= $file->get('data.width') ?>" data-pswp-height="<?= $file->get('data.height') ?>">
+                                                    <img src="<?= $file->get('data.path') ?>" alt="">
+                                                </a>
+                                            </div>
+                                            <?php return; ?>
+                                        <?php endif; ?>
+                                        <div class="attachment">
+                                            <div class="attachment-left">
+                                                <span class="attachment-name"><?= $file->get('data.name') ?></span>
+                                            </div>
+                                            <div class="attachment-right">
+                                                <a class="button button-delete" ajax-action="delete-attachment" ajax-window ajax-id="<?= $file->get('data.path') ?>">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                    <span><?= $this->language->get('L_BTN.L_DELETE') ?></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php }); ?>    
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                <?php }); ?>
+            </div>
+
+        <?php }); ?>
+        <div class="form-submit">
+            <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+            <?php $form->each('data.button', function ($button) { ?>
+                <input class="button" type="<?= $button->get('type') ?>" name="<?= $button->get('name') ?>" value="<?= $button->get('value') ?>">
+            <?php }); ?>
+        </div>
+    </form>
+<?php }); ?>

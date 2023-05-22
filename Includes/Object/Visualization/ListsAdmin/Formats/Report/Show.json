@@ -1,0 +1,19 @@
+{
+    "body": {
+        "reasons": {
+            "data": {
+                "title": "L_REPORT.L_REASON"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Report/Reason.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

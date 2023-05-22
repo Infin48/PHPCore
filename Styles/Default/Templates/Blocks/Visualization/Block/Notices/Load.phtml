@@ -1,7 +1,7 @@
-<?php foreach ($row['data']['notice'] ?? [] as $noticeName => $notice) : ?>
+<?php $block->each('data.notice', function ($notice) use ($block) { ?>
     <?php if (is_string($notice)) : ?>
         <?php require $notice; ?>
     <?php else : ?>
-        <div ajax-place="notice-<?= $noticeName ?>"></div>
+        <div js-place="notice-<?= $notice->getCurrentPositionName() ?>"></div>
     <?php endif; ?>
-<?php endforeach; ?>
+<?php }); ?>

@@ -20,10 +20,10 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
         for ($c = '0'; $c <= '9'; $c++) {
             $this->mask .= $c;
         } // cast-y, but should be fine
-        // special bytes used by UTF-8
+        // special bytes used by utf-8
         for ($i = 0x80; $i <= 0xFF; $i++) {
             // We don't bother excluding invalid bytes in this range,
-            // because the our restriction of well-formed UTF-8 will
+            // because the our restriction of well-formed utf-8 will
             // prevent these from ever occurring.
             $this->mask .= chr($i);
         }
@@ -105,87 +105,87 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
                 continue;
             }
 
-            // bugger out on whitespace.  form feed (0C) really
+            // bugger out on whitespace.  form feed (0c) really
             // shouldn't show up regardless
             $font = str_replace(array("\n", "\t", "\r", "\x0C"), ' ', $font);
 
             // Here, there are various classes of characters which need
             // to be treated differently:
-            //  - Alphanumeric characters are essentially safe.  We
+            //  - alphanumeric characters are essentially safe.  we
             //    handled these above.
-            //  - Spaces require quoting, though most parsers will do
+            //  - spaces require quoting, though most parsers will do
             //    the right thing if there aren't any characters that
             //    can be misinterpreted
-            //  - Dashes rarely occur, but they fairly unproblematic
+            //  - dashes rarely occur, but they fairly unproblematic
             //    for parsing/rendering purposes.
-            //  The above characters cover the majority of Western font
+            //  the above characters cover the majority of western font
             //  names.
-            //  - Arbitrary Unicode characters not in ASCII.  Because
-            //    most parsers give little thought to Unicode, treatment
+            //  - arbitrary unicode characters not in ascii.  because
+            //    most parsers give little thought to unicode, treatment
             //    of these codepoints is basically uniform, even for
-            //    punctuation-like codepoints.  These characters can
-            //    show up in non-Western pages and are supported by most
-            //    major browsers, for example: "ＭＳ 明朝" is a
+            //    punctuation-like codepoints.  these characters can
+            //    show up in non-western pages and are supported by most
+            //    major browsers, for example: "ｍｓ 明朝" is a
             //    legitimate font-name
-            //    <http://ja.wikipedia.org/wiki/MS_明朝>.  See
-            //    the CSS3 spec for more examples:
-            //    <http://www.w3.org/TR/2011/WD-css3-fonts-20110324/localizedfamilynames.png>
-            //    You can see live samples of these on the Internet:
-            //    <http://www.google.co.jp/search?q=font-family+ＭＳ+明朝|ゴシック>
-            //    However, most of these fonts have ASCII equivalents:
-            //    for example, 'MS Mincho', and it's considered
-            //    professional to use ASCII font names instead of
-            //    Unicode font names.  Thanks Takeshi Terada for
+            //    <http://ja.wikipedia.org/wiki/ms_明朝>.  see
+            //    the css3 spec for more examples:
+            //    <http://www.w3.org/tr/2011/wd-css3-fonts-20110324/localizedfamilynames.png>
+            //    you can see live samples of these on the internet:
+            //    <http://www.google.co.jp/search?q=font-family+ｍｓ+明朝|ゴシック>
+            //    however, most of these fonts have ascii equivalents:
+            //    for example, 'ms mincho', and it's considered
+            //    professional to use ascii font names instead of
+            //    unicode font names.  thanks takeshi terada for
             //    providing this information.
-            //  The following characters, to my knowledge, have not been
+            //  the following characters, to my knowledge, have not been
             //  used to name font names.
-            //  - Single quote.  While theoretically you might find a
+            //  - single quote.  while theoretically you might find a
             //    font name that has a single quote in its name (serving
-            //    as an apostrophe, e.g. Dave's Scribble), I haven't
+            //    as an apostrophe, e.g. dave's scribble), i haven't
             //    been able to find any actual examples of this.
-            //    Internet Explorer's cssText translation (which I
-            //    believe is invoked by innerHTML) normalizes any
+            //    internet explorer's csstext translation (which i
+            //    believe is invoked by innerhtml) normalizes any
             //    quoting to single quotes, and fails to escape single
-            //    quotes.  (Note that this is not IE's behavior for all
-            //    CSS properties, just some sort of special casing for
-            //    font-family).  So a single quote *cannot* be used
+            //    quotes.  (note that this is not ie's behavior for all
+            //    css properties, just some sort of special casing for
+            //    font-family).  so a single quote *cannot* be used
             //    safely in the font-family context if there will be an
-            //    innerHTML/cssText translation.  Note that Firefox 3.x
+            //    innerhtml/csstext translation.  note that firefox 3.x
             //    does this too.
-            //  - Double quote.  In IE, these get normalized to
-            //    single-quotes, no matter what the encoding.  (Fun
-            //    fact, in IE8, the 'content' CSS property gained
+            //  - double quote.  in ie, these get normalized to
+            //    single-quotes, no matter what the encoding.  (fun
+            //    fact, in ie8, the 'content' css property gained
             //    support, where they special cased to preserve encoded
             //    double quotes, but still translate unadorned double
-            //    quotes into single quotes.)  So, because their
+            //    quotes into single quotes.)  so, because their
             //    fixpoint behavior is identical to single quotes, they
-            //    cannot be allowed either.  Firefox 3.x displays
+            //    cannot be allowed either.  firefox 3.x displays
             //    single-quote style behavior.
-            //  - Backslashes are reduced by one (so \\ -> \) every
-            //    iteration, so they cannot be used safely.  This shows
-            //    up in IE7, IE8 and FF3
-            //  - Semicolons, commas and backticks are handled properly.
-            //  - The rest of the ASCII punctuation is handled properly.
+            //  - backslashes are reduced by one (so \\ -> \) every
+            //    iteration, so they cannot be used safely.  this shows
+            //    up in ie7, ie8 and ff3
+            //  - semicolons, commas and backticks are handled properly.
+            //  - the rest of the ascii punctuation is handled properly.
             // We haven't checked what browsers do to unadorned
             // versions, but this is not important as long as the
-            // browser doesn't /remove/ surrounding quotes (as IE does
-            // for HTML).
+            // browser doesn't /remove/ surrounding quotes (as ie does
+            // for html).
             //
             // With these results in hand, we conclude that there are
             // various levels of safety:
-            //  - Paranoid: alphanumeric, spaces and dashes(?)
-            //  - International: Paranoid + non-ASCII Unicode
-            //  - Edgy: Everything except quotes, backslashes
-            //  - NoJS: Standards compliance, e.g. sod IE. Note that
+            //  - paranoid: alphanumeric, spaces and dashes(?)
+            //  - international: paranoid + non-ascii unicode
+            //  - edgy: everything except quotes, backslashes
+            //  - nojs: standards compliance, e.g. sod ie. note that
             //    with some judicious character escaping (since certain
             //    types of escaping doesn't work) this is theoretically
-            //    OK as long as innerHTML/cssText is not called.
+            //    ok as long as innerhtml/csstext is not called.
             // We believe that international is a reasonable default
             // (that we will implement now), and once we do more
             // extensive research, we may feel comfortable with dropping
             // it down to edgy.
 
-            // Edgy: alphanumeric, spaces, dashes, underscores and Unicode.  Use of
+            // Edgy: alphanumeric, spaces, dashes, underscores and unicode.  use of
             // str(c)spn assumes that the string was already well formed
             // Unicode (which of course it is).
             if (strspn($font, $this->mask) !== strlen($font)) {
@@ -193,14 +193,14 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             }
 
             // Historical:
-            // In the absence of innerHTML/cssText, these ugly
+            // In the absence of innerhtml/csstext, these ugly
             // transforms don't pose a security risk (as \\ and \"
             // might--these escapes are not supported by most browsers).
             // We could try to be clever and use single-quote wrapping
-            // when there is a double quote present, but I have choosen
-            // not to implement that.  (NOTE: you can reduce the amount
+            // when there is a double quote present, but i have choosen
+            // not to implement that.  (note: you can reduce the amount
             // of escapes by one depending on what quoting style you use)
-            // $font = str_replace('\\', '\\5C ', $font);
+            // $font = str_replace('\\', '\\5c ', $font);
             // $font = str_replace('"',  '\\22 ', $font);
             // $font = str_replace("'",  '\\27 ', $font);
 

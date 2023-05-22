@@ -27,7 +27,7 @@ class HTMLPurifier_DefinitionCache_Decorator extends HTMLPurifier_DefinitionCach
     public function decorate(&$cache)
     {
         $decorator = $this->copy();
-        // reference is necessary for mocks in PHP 4
+        // reference is necessary for mocks in php 4
         $decorator->cache =& $cache;
         $decorator->type = $cache->type;
         return $decorator;

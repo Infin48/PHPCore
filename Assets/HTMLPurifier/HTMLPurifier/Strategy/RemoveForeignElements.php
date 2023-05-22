@@ -65,13 +65,13 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                 }
             }
             if (!empty($token->is_tag)) {
-                // DEFINITION CALL
+                // Definition call
 
                 // before any processing, try to transform the element
                 if (isset($definition->info_tag_transform[$token->name])) {
                     $original_name = $token->name;
                     // there is a transformation for this tag
-                    // DEFINITION CALL
+                    // Definition call
                     $token = $definition->
                         info_tag_transform[$token->name]->transform($token, $config, $context);
                     if ($e) {
@@ -114,7 +114,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     }
 
                 } elseif ($escape_invalid_tags) {
-                    // invalid tag, generate HTML representation and insert in
+                    // invalid tag, generate html representation and insert in
                     if ($e) {
                         $e->send(E_WARNING, 'Strategy_RemoveForeignElements: Foreign element to text');
                     }
@@ -123,7 +123,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     );
                 } else {
                     // check if we need to destroy all of the tag's children
-                    // CAN BE GENERICIZED
+                    // Can be genericized
                     if (isset($hidden_elements[$token->name])) {
                         if ($token instanceof HTMLPurifier_Token_Start) {
                             $remove_until = $token->name;
@@ -164,7 +164,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     }
                     if ($trusted || !empty($comment_lookup[trim($token->data)]) ||
                         ($comment_regexp !== null && preg_match($comment_regexp, trim($token->data)))) {
-                        // OK good
+                        // Ok good
                         if ($e) {
                             if ($trailing_hyphen) {
                                 $e->send(

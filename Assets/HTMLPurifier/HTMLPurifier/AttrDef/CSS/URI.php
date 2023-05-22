@@ -25,7 +25,7 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
      */
     public function validate($uri_string, $config, $context)
     {
-        // parse the URI out of the string and then pass it onto
+        // parse the uri out of the string and then pass it onto
         // the parent object
 
         $uri_string = $this->parseCDATA($uri_string);
@@ -59,7 +59,7 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
             return false;
         }
 
-        // extra sanity check; should have been done by URI
+        // extra sanity check; should have been done by uri
         $result = str_replace(array('"', "\\", "\n", "\x0c", "\r"), "", $result);
 
         // suspicious characters are ()'; we're going to percent encode
@@ -67,8 +67,8 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         $result = str_replace(array('(', ')', "'"), array('%28', '%29', '%27'), $result);
 
         // there's an extra bug where ampersands lose their escaping on
-        // an innerHTML cycle, so a very unlucky query parameter could
-        // then change the meaning of the URL.  Unfortunately, there's
+        // an innerhtml cycle, so a very unlucky query parameter could
+        // then change the meaning of the url.  unfortunately, there's
         // not much we can do about that...
         return "url(\"$result\")";
     }

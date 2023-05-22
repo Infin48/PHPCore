@@ -1,10 +1,10 @@
-<?php foreach ((array)($row ?? $list)['data']['button'] as $btnName => $btn) : ?>
-    <?php if (isset($btn['options']['template'])) : ?>
-        <?php require $btn['options']['template']; ?>
+<?php $list->each('data.button', function ($button) use ($list, $url, $language) { ?>
+    <?php if ( $button->get('template') and is_string($button->get('template'))) : ?>
+        <?php require $button->get('template'); ?>
     <?php else : ?>
-        <a class="button button-<?= $btnName ?><?php if (!isset($btn['data']['title'])) : ?> button-icon<?php endif; ?>" <?php if (isset($btn['data']['href'])) : ?>href="<?= $btn['data']['href'] ?>"<?php else : ?> ajax="<?= $btn['data']['ajax'] ?? $btnName ?>" ajax-process="<?= $btn['data']['ajaxProcess'] ?? '/' . ucfirst($btnName) ?>"<?php endif; ?><?php if (isset($btn['options']['target'])) : ?> target="<?= $btn['options']['target'] ?>"<?php endif; ?>>
-            <?php if (isset($btn['data']['icon'])) : ?><i class="<?= $btn['data']['icon'] ?>"></i><?php endif; ?>
-            <?php if (isset($btn['data']['title'])) : ?><span><?= $L_BUTTON[$btn['data']['title']] ?></span></i><?php endif; ?>
+        <a class="button button-<?= $button->getCurrentPositionName() ?><?php if ( $button->get('disabled') ) : ?> button-disabled<?php endif; ?><?php if ( !$button->get('title') ) : ?> button-icon<?php endif; ?>" <?php if ( $button->get('href') ) : ?>href="<?= $button->get('href') ?>"<?php else : ?> ajax-action="<?= $button->get('ajax-action') ?: $button->getCurrentPositionName() ?>"<?php endif; ?><?php if ( $button->get('target') ) : ?> target="<?= $button->get('target') ?>"<?php endif; ?>>
+            <?php if ( $button->get('icon') ) : ?><i class="<?= $button->get('icon') ?>"></i><?php endif; ?>
+            <?php if ( $button->get('title') ) : ?><span><?= $button->get('title') ?></span></i><?php endif; ?>
         </a>
     <?php endif; ?>
-<?php endforeach; ?>
+<?php }); ?>

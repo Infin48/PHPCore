@@ -22,7 +22,7 @@ class HTMLPurifier_UnitConverter
      */
     protected static $units = array(
         self::ENGLISH => array(
-            'px' => 3, // This is as per CSS 2.1 and Firefox. Your mileage may vary
+            'px' => 3, // This is as per css 2.1 and firefox. your mileage may vary
             'pt' => 4,
             'pc' => 48,
             'in' => 288,
@@ -112,16 +112,16 @@ class HTMLPurifier_UnitConverter
             $sigfigs = $this->outputPrecision;
         }
 
-        // BCMath's internal precision deals only with decimals. Use
+        // Bcmath's internal precision deals only with decimals. use
         // our default if the initial number has no decimals, or increase
         // it by how ever many decimals, thus, the number of guard digits
-        // will always be greater than or equal to internalPrecision.
+        // will always be greater than or equal to internalprecision.
         $log = (int)floor(log(abs($n), 10));
         $cp = ($log < 0) ? $this->internalPrecision - $log : $this->internalPrecision; // internal precision
 
         for ($i = 0; $i < 2; $i++) {
 
-            // Determine what unit IN THIS SYSTEM we need to convert to
+            // Determine what unit in this system we need to convert to
             if ($dest_state === $state) {
                 // Simple conversion
                 $dest_unit = $to_unit;
@@ -137,7 +137,7 @@ class HTMLPurifier_UnitConverter
                 $unit = $dest_unit;
             }
 
-            // Output was zero, so bail out early. Shouldn't ever happen.
+            // Output was zero, so bail out early. shouldn't ever happen.
             if ($n === '') {
                 $n = '0';
                 $unit = $to_unit;
@@ -150,8 +150,8 @@ class HTMLPurifier_UnitConverter
             }
 
             if ($i !== 0) {
-                // Conversion failed! Apparently, the system we forwarded
-                // to didn't have this unit. This should never happen!
+                // Conversion failed! apparently, the system we forwarded
+                // to didn't have this unit. this should never happen!
                 return false;
             }
 
@@ -290,10 +290,10 @@ class HTMLPurifier_UnitConverter
     {
         if ($scale < 0) {
             // The f sprintf type doesn't support negative numbers, so we
-            // need to cludge things manually. First get the string.
+            // need to cludge things manually. first get the string.
             $r = sprintf('%.0f', (float)$r);
             // Due to floating point precision loss, $r will more than likely
-            // look something like 4652999999999.9234. We grab one more digit
+            // look something like 4652999999999.9234. we grab one more digit
             // than we need to precise from $r and then use that to round
             // appropriately.
             $precise = (string)round(substr($r, 0, strlen($r) + $scale), -1);

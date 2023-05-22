@@ -18,7 +18,7 @@
 class HTMLPurifier_HTMLModule
 {
 
-    // -- Overloadable ----------------------------------------------------
+    // -- overloadable ----------------------------------------------------
 
     /**
      * Short unique string identifier of the module.
@@ -125,7 +125,7 @@ class HTMLPurifier_HTMLModule
         return false;
     }
 
-    // -- Convenience -----------------------------------------------------
+    // -- convenience -----------------------------------------------------
 
     /**
      * Convenience function that sets up a new element

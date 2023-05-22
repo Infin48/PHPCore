@@ -2,17 +2,19 @@
     
     <?php require ROOT . '/Includes/Template/Head.phtml' ?>
 
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Regular.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Regular.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Medium.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Medium.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff') ?>" crossorigin>
+    <?php if (!$this->data->get('data.article.article_image') and !$this->data->get('data.topic.topic_image')) : ?>
+        <?php if ($this->template->get('settings.background_image')) : ?>
+            <meta property="og:image" content="<?= SITE_URL ?><?= $this->template->get('settings.background_image') ?>">
+            <meta property="twitter:image:src" content="<?= SITE_URL ?><?= $this->template->get('settings.background_image') ?>">
+        <?php endif; ?>
+    <?php endif; ?>
 
-    <link rel="preload" as="style" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?211158177870">
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Light.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Regular.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Medium.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Bold.woff2') ?>" crossorigin>
 
-    <link async rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?211158177870">
-    <link async rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Quicksand.min.css') ?>?15">
+    <link rel="preload" as="style" href="<?= $path->build('Root/Style:/Themes/Stylesheet.min.css') ?>?<?= $system->get('session.template') ?>">
+
+    <link async rel="stylesheet" type="text/css" href="<?= $path->build('Root/Style:/Themes/Stylesheet.min.css') ?>?<?= $system->get('session.template') ?>">
 </head>

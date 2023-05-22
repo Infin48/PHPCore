@@ -1,0 +1,10 @@
+<?php $block->each('data.attachments', function ($attachment) { ?>
+    <div class="attachment">
+        <div class="attachment-left">
+            <span class="attachment-name"><?= $attachment->get('name') ?></span>
+        </div>
+        <div class="attachment-right">
+            <a download="<?= $attachment->get('name') ?>" href="<?= $attachment->get('path') ?>" class="button"><i class="fa-solid fa-download"></i><span><?= $this->language->get('L_BTN.L_DOWNLOAD') ?></span></a>
+        </div>
+    </div>
+<?php }); ?>

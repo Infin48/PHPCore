@@ -1,0 +1,82 @@
+{
+    "body": {
+        "plugin": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "info": {
+                    "options": {
+                        "hide": true
+                    },
+                    "body": {
+                        "info": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {}
+                        }
+                    }
+                },
+                "plugin": {
+                    "data": {
+                        "empty": "L_PLUGIN.L_SETTINGS"
+                    },
+                    "body": {
+                        "show": {
+                            "options": {
+                                "hide": true,
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-eye",
+                                "title": "L_PLUGIN.L_SHOW_TITLE_IMAGE",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "plugin_template": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_PLUGIN.L_TEMPLATE"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "value": "",
+                                        "label": ""
+                                    }
+                                }
+                            }
+                        },
+                        "plugin_language": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_PLUGIN.L_LANGUAGE"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "value": "",
+                                        "label": ""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

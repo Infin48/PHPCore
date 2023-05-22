@@ -1,0 +1,25 @@
+<?php if ( $input->get('body') ) : ?>
+    <?php $input->each('body', function ($form) { ?>
+        <?php if ( $input->get('data.href') or $input->get('data.ajax-action') ) : ?>
+            <a class="button button-<?= $input->get('data.color') ?: $input->getCurrentPositionName() ?>"<?php if ( $input->get('data.href') ) : ?> href="<?= $input->get('data.href') ?>"<?php else : ?> ajax-action="<?= $input->get('data.ajax-action') ?: $input->getCurrentPositionName() ?>"<?php endif; ?><?php if ( $input->get('options.target') ) : ?> target="<?= $input->get('options.target') ?>"<?php endif; ?>>
+                <?php if ( $input->get('data.icon') ) : ?>
+                    <i class="<?= $input->get('data.icon') ?>"></i>
+                <?php endif; ?>
+                <span><?= $input->get('data.button') ?></span>
+            </a>
+        <?php else : ?>
+            <input class="button button-<?= $input->get('data.color') ?: 'blue' ?>" type="submit" name="<?= $input->get('data.name') ?: $input->getCurrentPositionName() ?>" value="<?php if ( $input->get('data.icon') ) : ?>&#x<?= $input->get('data.icon') ?><?php endif; ?><?= $input->get('data.button') ?>">
+        <?php endif; ?>
+    <?php }); ?>
+<?php else : ?>
+    <?php if ( $input->get('data.href') or $input->get('data.ajax-action') ) : ?>
+        <a class="button button-<?= $input->get('data.color') ?: $input->getCurrentPositionName() ?>"<?php if ( $input->get('data.href') ) : ?> href="<?= $input->get('data.href') ?>"<?php else : ?> ajax-action="<?= $input->get('data.ajax-action') ?: $input->getCurrentPositionName() ?>"<?php endif; ?><?php if ($input->get('data.ajax-window')) : ?> ajax-window<?php endif; ?><?php if ( $input->get('options.target') ) : ?> target="<?= $input->get('options.target') ?>"<?php endif; ?>>
+            <?php if ( $input->get('data.icon') ) : ?>
+                <i class="<?= $input->get('data.icon') ?>"></i>
+            <?php endif; ?>
+            <span><?= $input->get('data.button') ?></span>
+        </a>
+    <?php else : ?>
+        <input class="button button-<?= $input->get('data.color') ?: 'blue' ?>" type="submit" name="<?= $input->get('data.name') ?: $input->getCurrentPositionName() ?>" value="<?= $input->get('data.icon') ? '&#x' . $input->get('data.icon') . ' ' : '' ?><?= $input->get('data.button') ?>">
+    <?php endif; ?>
+<?php endif; ?>

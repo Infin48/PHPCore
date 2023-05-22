@@ -10,52 +10,105 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Forgot;
-
-use Block\User;
-
-use Visualization\Field\Field;
+namespace App\Page\Forgot;
 
 /**
  * Reset
  */
-class Reset extends \Page\Page
+class Reset extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => string,
-        'template' => '/Forgot/Change',
-        'loggedOut' => true
-    ];
+    protected bool $ID = true;
+
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Forgot/Change.phtml';
+
+    /**
+     * @var int $logged If 1 - page will be require user to be logged in, 2 - page will be require user to be logged out, 3 - it does not matter
+     */
+    protected int $logged = 2;
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // BLOCK
-        $user = new user();
+        // System
+        $system = $data->get('inst.system');
 
-        $data = $user->getByForgotCode((string)$this->url->getID());
-
-        if (!$data) {
-            redirect('/');
+        // Language
+        $language = $data->get('inst.language');
+        
+        // If is not allowed to reset forgot password
+        if (!$system->get('site.allow_forgot_password') and !$system->get('registration.enabled'))
+        {
+            // Show 404 error page
+            $this->error404();
         }
 
-        // FIELD
-        $field = new Field('/User/Forgot/Change');
-        $this->data->field = $field->getData();
+        // Get user by code
+        $row = $db->select('app.user.byForgotCode()', $this->url->get('key')) or $this->error404();
 
-        // RESET PROCESS
-        $this->process->form(type: '/Forgot/Reset', data: [
-            'user_id'   => $data['user_id'],
-            'options'   => [
-                'url'   => '/'
-            ]
-        ]);
+        // Save data about user
+        $data->set('data.forgot', $row);
+
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/User/Forgot/Change.json');
+        $form
+            ->form('forgot')
+                ->callOnSuccess($this, 'resetForgottenPassword');
+        $data->form = $form->getDataToGenerate();
+
+        $data->set('data.link.login', '<a href="' . $this->url->build('/login/') . '">' . $language->get('L_FORGOT.L_BACK_TO_LOGIN') . '</a>');
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function resetForgottenPassword( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Check
+        $check = new \App\Model\Check();
+
+        // If passwords match
+        if (!$check->passwordMatch($post->get('user_password_new'), $post->get('user_password_new_confirm')))
+        {
+            return;
+        }
+
+        // If password is valid
+        if (!$check->password($post->get('user_password_new')))
+        {
+            return;
+        }
+
+        // Update password in database
+        $db->update(TABLE_USERS, [
+            'user_password' => password_hash($post->get('user_password_new'), PASSWORD_DEFAULT),
+        ], $data->get('data.forgot.user_id'));
+
+        // Delete record from "forgot password" table
+        $db->delete(
+            table: TABLE_FORGOT,
+            id: $data->get('data.forgot.user_id')
+        );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+
+        // Redirect user
+        $data->set('data.redirect', INDEX);
     }
 }

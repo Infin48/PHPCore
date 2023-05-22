@@ -1,1 +1,0 @@
-<input type="text"<?php if (isset($row['data']['placeholder'])) : ?> placeholder="<?= ${$row['data']['placeholder']} ?>"<?php endif; ?> name="<?= $rowName ?>" value="<?=$this->form->get($rowName) ?: $row['data']['value'] ?? '' ?>">

@@ -70,10 +70,10 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
 
         // whether or not parsed character data is allowed
         // this controls whether or not we silently drop a tag
-        // or generate escaped HTML from it
+        // or generate escaped html from it
         $pcdata_allowed = isset($this->elements['#PCDATA']);
 
-        // a little sanity check to make sure it's not ALL whitespace
+        // a little sanity check to make sure it's not all whitespace
         $all_whitespace = true;
 
         $stack = array_reverse($children);
@@ -87,13 +87,13 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
 
             if (!isset($this->elements[$node->name])) {
                 // special case text
-                // XXX One of these ought to be redundant or something
+                // Xxx one of these ought to be redundant or something
                 if ($pcdata_allowed && $node instanceof HTMLPurifier_Node_Text) {
                     $result[] = $node;
                     continue;
                 }
                 // spill the child contents in
-                // ToDo: Make configurable
+                // Todo: make configurable
                 if ($node instanceof HTMLPurifier_Node_Element) {
                     for ($i = count($node->children) - 1; $i >= 0; $i--) {
                         $stack[] = $node->children[$i];

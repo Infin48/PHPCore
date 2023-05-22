@@ -1,0 +1,42 @@
+{
+    "body": {
+        "forgot": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "forgot": {
+                    "data": {
+                        "icon": "fa-solid fa-key",
+                        "desc": "L_FORGOT.L_DESC",
+                        "title": "L_FORGOT.L_FORGOT",
+                        "links": {
+                            "login": {
+                                "href": "/login/",
+                                "title": "L_LOGIN_BUTTON_BACK"
+                            }
+                        }
+                    },
+                    "body": {
+                        "user_email": {
+                            "options": {
+                                "type": "email",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-envelope",
+                                "placeholder": "L_PLACEHOLDER.L_EMAIL"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

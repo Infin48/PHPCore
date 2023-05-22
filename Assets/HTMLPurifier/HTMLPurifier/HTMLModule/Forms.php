@@ -42,7 +42,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
                 'accept-charset' => 'Charsets',
                 'action*' => 'URI',
                 'method' => 'Enum#get,post',
-                // really ContentType, but these two are the only ones used today
+                // really contenttype, but these two are the only ones used today
                 'enctype' => 'Enum#application/x-www-form-urlencoded,multipart/form-data',
             )
         );
@@ -98,7 +98,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
             )
         );
         // It's illegal for there to be more than one selected, but not
-        // be multiple. Also, no selected means undefined behavior. This might
+        // be multiple. also, no selected means undefined behavior. this might
         // be difficult to implement; perhaps an injector, or a context variable.
 
         $textarea = $this->addElement(
@@ -142,7 +142,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
             'textarea',
             'label',
             'button', // Formctrl
-            'a', // as per HTML 4.01 spec, this is omitted by modularization
+            'a', // as per html 4.01 spec, this is omitted by modularization
             'isindex',
             'iframe' // legacy items
         );
@@ -151,7 +151,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
         // We'll omit this for now, since we don't have any good way of
         // indicating it yet.
 
-        // This is HIGHLY user-unfriendly; we need a custom child-def for this
+        // This is highly user-unfriendly; we need a custom child-def for this
         $this->addElement('fieldset', 'Form', 'Custom: (#WS?,legend,(Flow|#PCDATA)*)', 'Common');
 
         $label = $this->addElement(
@@ -161,7 +161,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
             'Common',
             array(
                 'accesskey' => 'Character',
-                // 'for' => 'IDREF', // IDREF not implemented, cannot allow
+                // 'for' => 'idref', // idref not implemented, cannot allow
             )
         );
         $label->excludes = array('label' => true);
@@ -186,7 +186,7 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
                 'label*' => 'Text',
             )
         );
-        // Don't forget an injector for <isindex>. This one's a little complex
+        // Don't forget an injector for <isindex>. this one's a little complex
         // because it maps to multiple elements.
     }
 }

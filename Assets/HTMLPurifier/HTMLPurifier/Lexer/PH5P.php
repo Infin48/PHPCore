@@ -26,10 +26,10 @@ class HTMLPurifier_Lexer_PH5P extends HTMLPurifier_Lexer_DOMLex
             $parser = new HTML5($new_html);
             $doc = $parser->save();
         } catch (DOMException $e) {
-            // Uh oh, it failed. Punt to DirectLex.
+            // Uh oh, it failed. punt to directlex.
             $lexer = new HTMLPurifier_Lexer_DirectLex();
             $context->register('PH5PError', $e); // save the error, so we can detect it
-            return $lexer->tokenizeHTML($html, $config, $context); // use original HTML
+            return $lexer->tokenizeHTML($html, $config, $context); // use original html
         }
         $tokens = array();
         $this->tokenizeDOM(
@@ -618,7 +618,7 @@ class HTML5
         // Attempt to consume an entity.
         $entity = $this->entity();
 
-        // If nothing is returned, emit a U+0026 AMPERSAND character token.
+        // If nothing is returned, emit a u+0026 ampersand character token.
         // Otherwise, emit the character token that was returned.
         $char = (!$entity) ? '&' : $entity;
         $this->emitToken(
@@ -659,7 +659,7 @@ class HTML5
                 break;
 
             case self::PCDATA:
-                // If the content model flag is set to the PCDATA state
+                // If the content model flag is set to the pcdata state
                 // Consume the next input character:
                 $this->char++;
                 $char = $this->char();
@@ -1170,8 +1170,8 @@ class HTML5
         // Attempt to consume an entity.
         $entity = $this->entity();
 
-        // If nothing is returned, append a U+0026 AMPERSAND character to the
-        // current attribute's value. Otherwise, emit the character token that
+        // If nothing is returned, append a u+0026 ampersand character to the
+        // current attribute's value. otherwise, emit the character token that
         // was returned.
         $char = (!$entity)
             ? '&'
@@ -1340,7 +1340,7 @@ class HTML5
         $char = $this->char();
 
         if (preg_match('/^[\t\n\x0b\x0c ]$/', $char)) {
-            // Stay in the before DOCTYPE name state.
+            // Stay in the before doctype name state.
 
         } elseif (preg_match('/^[a-z]$/', $char)) {
             $this->token = array(
@@ -1422,7 +1422,7 @@ class HTML5
         $char = $this->char();
 
         if (preg_match('/^[\t\n\x0b\x0c ]$/', $char)) {
-            // Stay in the DOCTYPE name state.
+            // Stay in the doctype name state.
 
         } elseif ($char === '>') {
             $this->emitToken($this->token);
@@ -1455,7 +1455,7 @@ class HTML5
             $this->state = 'data';
 
         } else {
-            // Stay in the bogus DOCTYPE state.
+            // Stay in the bogus doctype state.
         }
     }
 
@@ -1463,29 +1463,29 @@ class HTML5
     {
         $start = $this->char;
 
-        // This section defines how to consume an entity. This definition is
+        // This section defines how to consume an entity. this definition is
         // used when parsing entities in text and in attributes.
 
         // The behaviour depends on the identity of the next character (the
-        // one immediately after the U+0026 AMPERSAND character):
+        // one immediately after the u+0026 ampersand character):
 
         switch ($this->character($this->char + 1)) {
-            // U+0023 NUMBER SIGN (#)
+            // U+0023 number sign (#)
             case '#':
 
                 // The behaviour further depends on the character after the
-                // U+0023 NUMBER SIGN:
+                // U+0023 number sign:
                 switch ($this->character($this->char + 1)) {
-                    // U+0078 LATIN SMALL LETTER X
-                    // U+0058 LATIN CAPITAL LETTER X
+                    // U+0078 latin small letter x
+                    // U+0058 latin capital letter x
                     case 'x':
                     case 'X':
                         // Follow the steps below, but using the range of
-                        // characters U+0030 DIGIT ZERO through to U+0039 DIGIT
-                        // NINE, U+0061 LATIN SMALL LETTER A through to U+0066
-                        // LATIN SMALL LETTER F, and U+0041 LATIN CAPITAL LETTER
-                        // A, through to U+0046 LATIN CAPITAL LETTER F (in other
-                        // words, 0-9, A-F, a-f).
+                        // characters u+0030 digit zero through to u+0039 digit
+                        // Nine, u+0061 latin small letter a through to u+0066
+                        // Latin small letter f, and u+0041 latin capital letter
+                        // A, through to u+0046 latin capital letter f (in other
+                        // words, 0-9, a-f, a-f).
                         $char = 1;
                         $char_class = '0-9A-Fa-f';
                         break;
@@ -1493,8 +1493,8 @@ class HTML5
                     // Anything else
                     default:
                         // Follow the steps below, but using the range of
-                        // characters U+0030 DIGIT ZERO through to U+0039 DIGIT
-                        // NINE (i.e. just 0-9).
+                        // characters u+0030 digit zero through to u+0039 digit
+                        // Nine (i.e. just 0-9).
                         $char = 0;
                         $char_class = '0-9';
                         break;
@@ -1540,7 +1540,7 @@ class HTML5
         }
 
         if (!$cond) {
-            // If no match can be made, then this is a parse error. No
+            // If no match can be made, then this is a parse error. no
             // characters are consumed, and nothing is returned.
             $this->char = $start;
             return false;
@@ -1790,7 +1790,7 @@ class HTML5TreeConstructer
 
         /* A DOCTYPE token */
         if ($token['type'] === HTML5::DOCTYPE) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* A comment token */
         } elseif ($token['type'] === HTML5::COMMENT) {
@@ -1839,7 +1839,7 @@ class HTML5TreeConstructer
 
         /* A DOCTYPE token */
         if ($token['type'] === HTML5::DOCTYPE) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* A start tag token with the tag name "html" */
         } elseif ($token['type'] === HTML5::STARTTAG && $token['name'] === 'html') {
@@ -2076,7 +2076,7 @@ class HTML5TreeConstructer
 
                 /* Otherwise, this is a parse error. */
             } else {
-                // k
+                // k\L
             }
 
             /* Change the insertion mode to "after head". */
@@ -2086,7 +2086,7 @@ class HTML5TreeConstructer
         } elseif (($token['type'] === HTML5::STARTTAG && $token['name'] === 'head') ||
             ($token['type'] === HTML5::ENDTAG && $token['name'] !== 'html')
         ) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* Anything else */
         } else {
@@ -2770,7 +2770,7 @@ class HTML5TreeConstructer
                     case 'th':
                     case 'thead':
                     case 'tr':
-                        // Parse error. Ignore the token.
+                        // Parse error. ignore the token.
                         break;
 
                     /* A start or end tag whose tag name is one of: "event-source",
@@ -2909,7 +2909,7 @@ class HTML5TreeConstructer
 
                             /* If the current node is not a p element, then this is
                             a parse error. */
-                            // k
+                            // k\L
 
                             /* If the stack of open elements has a p element in
                             scope, then pop elements from this stack until the stack
@@ -3222,7 +3222,7 @@ class HTML5TreeConstructer
 
                             /* Now, if the current node is not an element with the same
                             tag name as the token, then this is a parse error. */
-                            // k
+                            // k\L
 
                             /* Now, if the stack of open elements has an element in scope
                             whose tag name matches the tag name of the token, then pop
@@ -3268,7 +3268,7 @@ class HTML5TreeConstructer
                     case 'table':
                     case 'textarea':
                     case 'wbr':
-                        // Parse error. Ignore the token.
+                        // Parse error. ignore the token.
                         break;
 
                     /* An end tag token not covered by the previous entries */
@@ -3287,7 +3287,7 @@ class HTML5TreeConstructer
                                 /* If the tag name of the end tag token does not
                                 match the tag name of the current node, this is a
                                 parse error. */
-                                // k
+                                // k\L
 
                                 /* Pop all the nodes from the current node up to
                                 node, including node, then stop this algorithm. */
@@ -3475,7 +3475,7 @@ class HTML5TreeConstructer
                 )
             )
         ) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* Anything else */
         } else {
@@ -3611,7 +3611,7 @@ class HTML5TreeConstructer
                 )
             )
         ) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* Anything else */
         } else {
@@ -3899,7 +3899,7 @@ class HTML5TreeConstructer
 
                 /* Now, if the current node is not an element with the same tag
                 name as the token, then this is a parse error. */
-                // k
+                // k\L
 
                 /* Pop elements from this stack until an element with the same
                 tag name as the token has been popped from the stack. */
@@ -4355,7 +4355,7 @@ class HTML5TreeConstructer
 
         /* A DOCTYPE token */
         if ($token['type'] === HTML5::DOCTYPE) {
-            // Parse error. Ignore the token.
+            // Parse error. ignore the token.
 
             /* A comment token */
         } elseif ($token['type'] === HTML5::COMMENT) {
@@ -4395,8 +4395,8 @@ class HTML5TreeConstructer
     {
         // Proprietary workaround for libxml2's limitations with tag names
         if ($check) {
-            // Slightly modified HTML5 tag-name modification,
-            // removing anything that's not an ASCII letter, digit, or hyphen
+            // Slightly modified html5 tag-name modification,
+            // removing anything that's not an ascii letter, digit, or hyphen
             $token['name'] = preg_replace('/[^a-z0-9-]/i', '', $token['name']);
             // Remove leading hyphens and numbers
             $token['name'] = ltrim($token['name'], '-0..9');

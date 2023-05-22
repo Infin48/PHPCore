@@ -1,0 +1,21 @@
+{
+    "body": {
+        "template": {
+            "body": {
+                "template": {
+                    "options": {
+                        "hide": true
+                    },
+                    "body": {
+                        "info": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

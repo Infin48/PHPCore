@@ -1,0 +1,101 @@
+{
+    "body": {
+        "deleted": {
+            "body": {
+                "show": {
+                    "data": {
+                        "title": "L_DELETED.L_DETAILS"
+                    },
+                    "body": {
+                        "topic_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_TOPIC.L_ID.L_DESC",
+                                "title": "L_TOPIC.L_ID.L_ID"
+                            }
+                        },
+                        "post_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_POST.L_ID.L_DESC",
+                                "title": "L_POST.L_ID.L_ID"
+                            }
+                        },
+                        "profile_post_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_PROFILE_POST.L_ID.L_DESC",
+                                "title": "L_PROFILE_POST.L_ID.L_ID"
+                            }
+                        },
+                        "profile_post_comment_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_PROFILE_POST_COMMENT.L_ID.L_DESC",
+                                "title": "L_PROFILE_POST_COMMENT.L_ID.L_ID"
+                            }
+                        },
+                        "deleted": {
+                            "options": {
+                                "type": "user"
+                            },
+                            "data": {
+                                "desc": "L_DELETED.L_BY.L_DESC",
+                                "title": "L_DELETED.L_BY.L_BY"
+                            }
+                        },
+                        "show": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-eye",
+                                "desc": "L_SHOW.L_DESC",
+                                "title": "L_SHOW.L_SHOW",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "back": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "move-back",
+                                "desc": "L_DELETED.L_RETURN.L_DESC",
+                                "icon": "fa-solid fa-undo-alt",
+                                "title": "L_DELETED.L_RETURN.L_RETURN",
+                                "button": "L_BTN.L_RETURN"
+                            }
+                        },
+                        "delete": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "delete",
+                                "ajax-window": true,
+                                "desc": "L_DELETED.L_DELETE.L_DESC",
+                                "icon": "fa-solid fa-trash",
+                                "title": "L_DELETED.L_DELETE.L_DELETE",
+                                "button": "L_BTN.L_DELETE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

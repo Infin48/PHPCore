@@ -4,55 +4,92 @@
             "body":{
                 "image": {
                     "options": {
-                        "template": "/Profile/Image.phtml"
+                        "template": {
+                            "root": "Root/Style:/Templates/Blocks/Visualization/Sidebar/Profile/Image.phtml"
+                        }
                     }
                 },
                 "info": {
                     "options": {
                         "type": "table",
                         "template": {
-                            "body": "/Profile/User.phtml"
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Sidebar/Profile/User.phtml"
                         }
                     }
                 },
                 "online": {
                     "options": {
-                        "type": "table"
+                        "type": "table",
+                        "hide": true
                     },
-                    "data": {
-                        "title": "L_USER_LAST_LOGGED_IN"
+                    "body": {
+                        "online": {
+                            "data": {
+                                "title": "L_USER.L_LAST_LOGGED_IN"
+                            }
+                        }
                     }
                 },
                 "registered": {
                     "options": {
                         "type": "table"
                     },
-                    "data": {
-                        "title": "L_REGISTERED"
+                    "body": {
+                        "registered": {
+                            "data": {
+                                "title": "L_REGISTERED"
+                            }
+                        }
                     }
                 },
                 "topics": {
                     "options": {
+                        "hide": true,
                         "type": "table"
                     },
-                    "data": {
-                        "title": "L_TOPICS"
+                    "body": {
+                        "topics": {
+                            "data": {
+                                "title": "L_TOPIC.L_TOTAL"
+                            }
+                        }
                     }
                 },
                 "posts": {
                     "options": {
+                        "hide": true,
                         "type": "table"
                     },
-                    "data": {
-                        "title": "L_POSTS"
+                    "body": {
+                        "posts": {
+                            "data": {
+                                "title": "L_POST.L_TOTAL"
+                            }
+                        }
                     }
                 },
-                "buttons": {
+                "articles": {
                     "options": {
-                        "type": "table",
-                        "template": {
-                            "body": "/Profile/Buttons.phtml"
+                        "hide": true,
+                        "type": "table"
+                    },
+                    "body": {
+                        "articles": {
+                            "data": {
+                                "title": "L_ARTICLE.L_TOTAL"
+                            }
                         }
+                    }
+                },
+                "edit_user": {
+                    "options": {
+                        "type": "link",
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_BTN.L_MANAGE_USER",
+                        "button": "L_BTN.L_MANAGE",
+                        "icon": "fa-solid fa-user-cog"
                     }
                 }
             }
@@ -62,37 +99,105 @@
                 "hide": true
            },
             "data":{
-                "title": "L_INFORMATIONS"
+                "title": "L_INFO"
             },
             "body":{
-                "gender":{
+                "user_gender":{
                     "options": {
                         "type": "table",
                         "hide": true
                     },
-                    "data": {
-                        "title": "L_USER_GENDER"
+                    "body": {
+                        "user_gender": {
+                            "data": {
+                                "title": "L_USER.L_GENDER"
+                            }
+                        }
                     }
                 },
-                "location":{
+                "user_location":{
                     "options": {
                         "type": "table",
                         "hide": true
                     },
-                    "data": {
-                        "title": "L_USER_LOCATION"
+                    "body": {
+                        "user_location": {
+                            "data": {
+                                "title": "L_USER.L_LOCATION"
+                            }
+                        }
                     }
                 },
-                "age":{
+                "user_age":{
                     "options": {
                         "type": "table",
                         "hide": true
                     },
-                    "data": {
-                        "title": "L_USER_AGE"
+                    "body": {
+                        "user_age": {
+                            "data": {
+                                "title": "L_USER.L_AGE"
+                            }
+                        }
                     }
                 }
             }
-       }
+       },
+       "contact":{
+            "options": {
+                "hide": true
+            },
+            "data":{
+                "title": "L_CONTACT"
+            },
+            "body":{
+                "send_pm": {
+                    "options": {
+                        "type": "link",
+                        "hide": true
+                    },
+                    "data": {
+                        "icon": "fa-solid fa-envelope",
+                        "title": "L_BTN.L_SEND_MESSAGE",
+                        "button": "L_BTN.L_SEND"
+                    }
+                },
+                "user_discord":{
+                    "options": {
+                        "type": "table",
+                        "hide": true
+                    },
+                    "body": {
+                        "user_discord": {
+                            "data": {
+                                "title": "L_DISCORD"
+                            }
+                        }
+                    }
+                },
+                "user_facebook":{
+                    "options": {
+                        "type": "link",
+                        "hide": true
+                    },
+                    "data": {
+                        "icon": "fa-brands fa-facebook",
+                        "title": "L_FACEBOOK",
+                        "button": "L_FACEBOOK"
+                    }
+                },
+                "user_instagram":{
+                    "options": {
+                        "type": "link",
+                        "hide": true
+                    },
+                    "data": {
+                        "icon": "fa-brands fa-instagram",
+                        "title": "L_INSTAGRAM",
+                        "button": "L_INSTAGRAM"
+                    }
+                }
+            }
+        }
     }
  }

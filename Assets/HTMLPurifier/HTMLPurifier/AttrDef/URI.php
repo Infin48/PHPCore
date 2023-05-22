@@ -50,7 +50,7 @@ class HTMLPurifier_AttrDef_URI extends HTMLPurifier_AttrDef
 
         $uri = $this->parseCDATA($uri);
 
-        // parse the URI
+        // parse the uri
         $uri = $this->parser->parse($uri);
         if ($uri === false) {
             return false;

@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\File;
+namespace App\Model\File;
 
 /**
  * Text
@@ -28,14 +28,50 @@ class Text
     private string $path;
 
     /**
+     * @var bool $exists True if file exists
+     */
+    private bool $exists = false;
+
+    /**
      * Constructor
      *
      * @param  string $path Path to file
      */
     public function __construct( string $path )
     {
+        if (!str_starts_with($path, 'http://') and !str_starts_with($path, 'https://'))
+        {
+            $path = ROOT . $path;
+        }
+
+        if (!file_exists($path))
+        {
+            return;
+        } 
+        
+        $this->exists = true;
         $this->path = $path;
-        $this->file = file_get_contents(ROOT . $path);
+        $this->file = file_get_contents($path, false, CONTEXT);
+    }
+
+    /**
+     * Returns true if file exists otherwise false
+     * 
+     * @return bool
+     */
+    public function exists()
+    {
+        return $this->exists;
+    }
+
+    /**
+     * Returns content of file
+     * 
+     * @return string
+     */
+    public function get()
+    {
+        return $this->file;
     }
 
     /**

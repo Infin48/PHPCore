@@ -1,8 +1,8 @@
-<div class="vertical-align">
-    <?= $this->build->user->image($row['data']) ?>
+<div class="list-row-align">
+    <?= $this->build->user->image(data: $list->get('data')) ?>
     <div class="inner">
-        <?= $this->build->user->link($row['data'], true) ?>
+        <?= $this->build->user->link(data: $list->get('data')) ?>
         <br>
-        <?= $L_REPORT_USERS_COUNT ?>: <strong><?= $row['data']['count'] ?></strong>
+        <?= $this->language->get('L_REPORT.L_USER.L_COUNT') ?>: <strong><?= $list->get('data.count') ?></strong>
     </div>
 </div>

@@ -1,0 +1,11 @@
+<?= $list->get('data.user_image') ?>
+<div class="inner">
+    <?= $list->get('data.user') ?>
+    <?= $list->get('data.group') ?>
+    <?= $list->get('data.reputation') ?>
+    <br>
+    <span class="date" ajax="title" ajax-title="<?= $this->language->get('L_REGISTERED') ?>">
+        <i class="fa-solid fa-clock"></i> 
+        <?= $list->get('data.date') ?>
+    </span>
+</div>

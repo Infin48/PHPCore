@@ -1,0 +1,50 @@
+{
+    "body": {
+        "installed": {
+            "options": {
+                "type": "grid",
+                "image": false
+            },
+            "data": {
+                "empty": "L_PLUGIN.L_INSTALLED.L_NO",
+                "title": "L_PLUGIN.L_INSTALLED.L_INSTALLED"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "plugin"
+                        },
+                        "button": {
+                            "setup": {},
+                            "uninstall": {}
+                        }
+                    }
+                }
+            }
+        },
+        "available": {
+            "options": {
+                "type": "grid",
+                "image": false
+            },
+            "data": {
+                "empty": "L_PLUGIN.L_NO",
+                "title": "L_PLUGIN.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "plugin"
+                        },
+                        "button": {
+                            "install": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

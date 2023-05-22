@@ -19,7 +19,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier_ChildDef
      * @type array
      */
     // lying a little bit, so that we can handle ul and ol ourselves
-    // XXX: This whole business with 'wrap' is all a bit unsatisfactory
+    // Xxx: this whole business with 'wrap' is all a bit unsatisfactory
     public $elements = array('li' => true, 'ul' => true, 'ol' => true);
 
     /**
@@ -47,7 +47,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier_ChildDef
         // the new set of children
         $result = array();
 
-        // a little sanity check to make sure it's not ALL whitespace
+        // a little sanity check to make sure it's not all whitespace
         $all_whitespace = true;
 
         $current_li = null;
@@ -66,17 +66,17 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier_ChildDef
             } else {
                 // we want to tuck this into the previous li
                 // Invariant: we expect the node to be ol/ul
-                // ToDo: Make this more robust in the case of not ol/ul
+                // Todo: make this more robust in the case of not ol/ul
                 // by distinguishing between existing li and li created
                 // to handle non-list elements; non-list elements should
                 // not be appended to an existing li; only li created
-                // for non-list. This distinction is not currently made.
+                // for non-list. this distinction is not currently made.
                 if ($current_li === null) {
                     $current_li = new HTMLPurifier_Node_Element('li');
                     $result[] = $current_li;
                 }
                 $current_li->children[] = $node;
-                $current_li->empty = false; // XXX fascinating! Check for this error elsewhere ToDo
+                $current_li->empty = false; // Xxx fascinating! check for this error elsewhere todo
             }
         }
         if (empty($result)) {

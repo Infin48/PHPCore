@@ -1,0 +1,82 @@
+{
+    "body": {
+        "page": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "page": {
+                    "data": {
+                        "title": "L_PAGE.L_EDIT"
+                    },
+                    "body": {
+                        "show": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-eye",
+                                "desc": "L_SHOW.L_DESC",
+                                "title": "L_SHOW.L_SHOW",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "page_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_PAGE.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "page_html": {
+                            "options": {
+                                "type": "html"
+                            },
+                            "data": {
+                                "title": "L_PAGE.L_HTML.L_HTML",
+                                "desc": "L_PAGE.L_HTML.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_HTML"
+                            }
+                        },
+                        "page_css": {
+                            "options": {
+                                "type": "textarea"
+                            },
+                            "data": {
+                                "title": "L_PAGE.L_CSS.L_CSS",
+                                "desc": "L_PAGE.L_CSS.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_CSS"
+                            }
+                        },
+                        "page_images": {
+                            "options": {
+                                "type": "file/image[]"
+                            },
+                            "data": {
+                                "title": "L_IMAGES"
+                            }
+                        },
+                        "page_attachments": {
+                            "options": {
+                                "type": "file/misc[]"
+                            },
+                            "data": {
+                                "title": "L_ATTACHMENTS"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "body": {
+        "category": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "category": {
+                    "data": {
+                        "title": ""
+                    },
+                    "body": {
+                        "category_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_CATEGORY.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "category_description": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_CATEGORY.L_DESCRIPTION.L_DESCRIPTION",
+                                "desc": "L_CATEGORY.L_DESCRIPTION.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_DESCRIPTION"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

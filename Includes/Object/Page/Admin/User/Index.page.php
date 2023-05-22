@@ -10,69 +10,96 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\User;
-
-use Block\User;
-
-use Model\Pagination;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\User;
 
 /**
  * Index
  */
-class Index extends \Page\Page
+class Index extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.user'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.user';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('user')->active();
+        // System
+        $system = $data->get('inst.system');
+        
+        // If static mode is enabled
+		if ($system->get('site.mode') == 'static')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('users')->elm2('user')->active();
 
-        // BLOCK
-        $user = new User();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/User.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
-
-        // PAGINATION
-        $pagination = new Pagination();
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(20);
-        $pagination->total($user->getAllCount());
+        $pagination->total($db->select('app.user.count()'));
         $pagination->url($this->url->getURL());
-        $user->pagination = $this->data->pagination = $pagination->getData();
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $field = new Field('/Admin/User/Index');
-        $this->data->field = $field->getData();
+        // List
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/User/Index.json');
+        $form
+            ->form('user')
+                ->callOnSuccess($this, 'searchUser');
+        $data->form = $form->getDataToGenerate();
 
-        // LIST
-        $list = new Lists('/User');
-        $list->object('user')->fill(data: $user->getAll(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
-
-            if ($this->user->perm->compare(index: $list->obj->get->data('group_index'), admin: $list->obj->get->data('user_admin')) === false) {
-
-                $list->delButton('edit');
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/User.json');
+        $list->elm1('user')->fill(data: $db->select('app.user.all()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list )
+        {
+            // If logged user has higher group index then current user
+            // Show button o edit user
+            if ($list->get('data.group_index') < LOGGED_USER_GROUP_INDEX or $list->get('data.user_id') == LOGGED_USER_ID)
+            {
+                $list
+                    ->show('data.button.edit')
+                    ->set('data.button.edit.href', '/admin/user/show/' . $list->get('data.user_id'));
             }
         });
-        $this->data->list = $list->getData();
+        $data->list = $list->getDataToGenerate();
+    }
 
-        // SEARCH USER
-        $this->process->form(type: '/Admin/User/Search');
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function searchUser( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        $user = $db->select('app.user.byName()', $post->get('user_name'));
+
+        if (!$user)
+        {
+            throw new \App\Exception\Notice('user_name_does_not_exist');
+        }
+
+        // Redirect to user page
+        $data->set('data.redirect', '/admin/user/show/' . $user['user_id']);
     }
 }

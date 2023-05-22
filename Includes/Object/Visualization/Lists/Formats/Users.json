@@ -2,14 +2,13 @@
     "body": {
         "users": {
             "data": {
-                "title": "L_USERNAME"
+                "title": "L_USER.L_LIST"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "big": "/Users/Big.phtml",
-                            "medium": "/Users/Medium.phtml"
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Users.phtml"
                         }
                     },
                     "data": {}

@@ -107,7 +107,7 @@ class HTMLPurifier_URI
      */
     public function validate($config, $context)
     {
-        // ABNF definitions from RFC 3986
+        // Abnf definitions from rfc 3986
         $chars_sub_delims = '!$&\'()*+,;=';
         $chars_gen_delims = ':/?#[]@';
         $chars_pchar = $chars_sub_delims . ':@';
@@ -122,9 +122,9 @@ class HTMLPurifier_URI
         }
 
         // validate scheme
-        // NOTE: It's not appropriate to check whether or not this
-        // scheme is in our registry, since a URIFilter may convert a
-        // URI that we don't allow into one we do.  So instead, we just
+        // Note: it's not appropriate to check whether or not this
+        // scheme is in our registry, since a urifilter may convert a
+        // Uri that we don't allow into one we do.  so instead, we just
         // check if the scheme can be dropped because there is no host
         // and it is our default scheme.
         if (!is_null($this->scheme) && is_null($this->host) || $this->host === '') {
@@ -236,7 +236,7 @@ class HTMLPurifier_URI
 
         // Reconstruct the result
         // One might wonder about parsing quirks from browsers after
-        // this reconstruction.  Unfortunately, parsing behavior depends
+        // this reconstruction.  unfortunately, parsing behavior depends
         // on what *scheme* was employed (file:///foo is handled *very*
         // differently than http:///foo), so unfortunately we have to
         // defer to the schemes to do the right thing.

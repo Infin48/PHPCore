@@ -28,9 +28,9 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         $allow_duplicates = $config->get("CSS.AllowDuplicates");
 
 
-        // According to the CSS2.1 spec, the places where a
+        // According to the css2.1 spec, the places where a
         // non-delimiting semicolon can appear are in strings
-        // escape sequences.   So here is some dumb hack to
+        // escape sequences.   so here is some dumb hack to
         // handle quotes.
         $len = strlen($css);
         $accum = "";
@@ -119,9 +119,9 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
 
         $context->destroy('CurrentCSSProperty');
 
-        // procedure does not write the new CSS simultaneously, so it's
+        // procedure does not write the new css simultaneously, so it's
         // slightly inefficient, but it's the only way of getting rid of
-        // duplicates. Perhaps config to optimize it, but not now.
+        // duplicates. perhaps config to optimize it, but not now.
 
         foreach ($propvalues as $prop => $value) {
             $new_declarations .= "$prop:$value;";

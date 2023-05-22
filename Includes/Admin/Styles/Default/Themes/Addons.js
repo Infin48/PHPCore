@@ -1,22 +1,28 @@
-$('.navbar.navbar-default .container > ul').clone().appendTo('.navbar.navbar-mobile');
-
-$('body').on('click', function(event) {
-
-    if (!$(event.target).parents('[ajax-selector="window"]').length) {
-        $('[ajax-selector="window"]').removeClass('window-active');
+$('body').on('click', function(event)
+{
+    if (!$(event.target).parents('[js="window"]').length)
+    {
+        $('[js="window"]').removeClass('window-active');
     }
 
-    if ($(event.target).attr('ajax') == 'close') {
-        $(event.target).closest('[ajax-selector="alert"]').remove();
-        $(event.target).closest('[ajax-selector="window"]').remove();
+    if ($(event.target).attr('ajax') == 'close' || $(event.target).parent().attr('ajax') == 'close')
+    {
+        $(event.target).closest('[js="alert"]').remove();
+        $(event.target).closest('[js="window"]').remove();
     }
 
-    if ($(event.target).parents('[ajax-selector^="navbar"]').length == 0) {
-        $('.navbar-opened').removeClass('navbar-opened');
+    if ($('[js="navbar navbar-side"]').hasClass('navbar-opened'))
+    {
+        if ($(event.target).parents('[js^="navbar"]').length == 0)
+        {
+            $('[js="navbar navbar-side"]').removeClass('navbar-opened');
+            $('[js="opacity"]').addClass('opacity-hide').removeClass('opacity-show');
+        }
     }
 });
 
-$(document).ready(function() {
+$(document).ready(function()
+{
     $('html').removeClass('html-hidden');
 });
 
@@ -24,10 +30,11 @@ window.FontAwesomeConfig = {
     searchPseudoElements: true
 }
 
-// TAB
+// Tab
 $('.' + $('.tab-button.default').attr('id')).show();
 
-$('.tab-button').on('click', function(event) {
+$('.tab-button').on('click', function(event)
+{
     $('.tab-button').removeClass('active');
 
     $('.tabcontent').hide();
@@ -35,11 +42,12 @@ $('.tab-button').on('click', function(event) {
     $('.' + event.target.id + '.tabcontent').css('display', 'block');
 });
 
-// MOBILE DROPDOWN
-$('[ajax="collapse"]').on('click', function() {
-
-    var $navbarMobile = $('[ajax-selector="navbar navbar-side"]');
+// Mobile dropdown
+$('[ajax="collapse-navbar"]').on('click', function()
+{
+    var $navbarMobile = $('[js="navbar navbar-side"]');
     $navbarMobile.toggleClass('navbar-opened', !$navbarMobile.hasClass('navbar-opened'));
+    $('[js="opacity"]').addClass('opacity-show').removeClass('opacity-hide');
 });
 
 $('input.script[type="radio"], input.script[type="checkbox"]').on('click', function() {
@@ -60,46 +68,64 @@ $('input.script[type="radio"], input.script[type="checkbox"]').on('click', funct
     $('[hide-on="' + $(this).attr('name') + ':' + value + '"]').hide();
 });
 
-$('input[type="radio"], input[type="checkbox"]').each(function() {
-    if ($(this).is(':checked')) {
-        $('[show-on="' + $(this).attr('name') + ':' + $(this).attr('value') + '"]').show();
+$('input[type="radio"], input[type="checkbox"]').each(function()
+{
+    if ($(this).is(':checked') == false)
+    {
+        if ($(this).attr('type') == 'radio')
+        {
+            return;
+        }
+    }
+    var value = $(this).attr('value');
+
+    if ($(this).attr('type') == 'checkbox') {
+        if ($(this).is(':checked')) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+    }
+
+    $('[show-on^="' + $(this).attr('name') + '"]').hide();
+    $('[show-on="' + $(this).attr('name') + ':' + value + '"]').show();
+    
+    $('[hide-on^="' + $(this).attr('name') + '"]').show();
+    $('[hide-on="' + $(this).attr('name') + ':' + value + '"]').hide();
+});
+
+$('[js="dropdown"]:not(.navbar-button-disabled) [js="dropdown-content"]').on('click', function() {
+
+    if ($(this).closest('[js="dropdown"]').hasClass('navbar-dropdown-opened')) {
+
+        $(this).closest('[js="dropdown"]').removeClass('navbar-dropdown-opened');
+        $(this).find('[js="arrow-left"]').show();
+        $(this).find('[js="arrow-down"]').hide();
+
+
     } else {
-        $('[show-on="' + $(this).attr('name') + ':' + $(this).attr('value') + '"]').hide();
+        $(this).closest('[js="dropdown"]').addClass('navbar-dropdown-opened');
+        $(this).find('[js="arrow-left"]').hide();
+        $(this).find('[js="arrow-down"]').show();
     }
 });
 
-$('[ajax-selector="dropdown"]').on('click', function() {
-
-    if ($(this).hasClass('navbar-dropdown-opened')) {
-
-        $(this).removeClass('navbar-dropdown-opened');
-        $(this).find('[ajax-selector="arrow-left"]').show();
-        $(this).find('[ajax-selector="arrow-down"]').hide();
-
-
-    } else {
-        $(this).addClass('navbar-dropdown-opened');
-        $(this).find('[ajax-selector="arrow-left"]').hide();
-        $(this).find('[ajax-selector="arrow-down"]').show();
-    }
-});
-
-$('[ajax-selector="title"]').after($('[ajax-selector="title"]').clone().addClass('title-disabled'));
+$('[js="title"]').after($('[js="title"]').clone().addClass('title-disabled'));
 $('[ajax="title"]').on({
     mouseenter: function() {
         
-        if ($('[ajax-selector="title"]:not(.title-disabled)').length) {
+        if ($('[js="title"]:not(.title-disabled)').length) {
 
-            var $title = $('[ajax-selector="title"]:not(.title-disabled)');
+            var $title = $('[js="title"]:not(.title-disabled)');
 
         } else {
-            var $title = $('[ajax-selector="title"]:not(.title-disabled)').clone();
-            $('[ajax-selector="title"]').after($title);
+            var $title = $('[js="title"]:not(.title-disabled)').clone();
+            $('[js="title"]').after($title);
         }
 
         $title.addClass('title-active');
         $title.removeClass('title-disabled');
-        $title.find('[ajax-selector="text"]').text($.trim($(this).data('title')));
+        $title.find('[js="text"]').text($.trim($(this).attr('ajax-title')));
         $title.css({'left': $(this).offset().left, 'top': $(this).offset().top - 40});
 
         if ($title.width() + $(this).offset().left > $('html').width()) {
@@ -108,96 +134,64 @@ $('[ajax="title"]').on({
             $title.removeClass('title-edge');
         }
 
-        $('[ajax-selector="title"]').removeClass('title-disabled');
+        $('[js="title"]').removeClass('title-disabled');
     },
     mouseleave: function() {
-        $('.title-active[ajax-selector="title"]').removeClass('title-active').addClass('title-disabled');
+        $('.title-active[js="title"]').removeClass('title-active').addClass('title-disabled');
         setTimeout(function() {
-            $('.title-disabled[ajax-selector="title"]').css({'left': 0, 'top': 0});
+            $('.title-disabled[js="title"]').css({'left': 0, 'top': 0});
         }, 500);
     }
 });
 
-$.cAjax('up', {
-    ajax: {
-        url: '/admin/ajax/process/',
-        method: 'get',
-        context: {}
-    },
+$.cAjax({
     success: {
-        default: function (settings, $element) {
+        'run/delete-attachment': function ()
+        {
+            $(this).closest('.attachment').remove();
+        },
 
-            $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
-            $listPrevMedium = $element.prev('[ajax-selector="list-row"]').children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
+        'run/?/up': function (settings, $element) {
+
+
+            $listMedium = $element.children('[js="list-row-inner"]').children('[js="list-row-body"]').children('[js="list-row-medium"]');
+            $listPrevMedium = $element.prev('[js="list-row"]').children('[js="list-row-inner"]').children('[js="list-row-body"]').children('[js="list-row-medium"]');
 
             if (!$element.prev().prev(':not(.list-row-disabled)').length) {
-                $listMedium.find('[ajax="up"]').remove();
-                $listPrevMedium.find('[ajax="down"]').before('<a class="button button-icon button-up" ajax="up" ajax-process="/Up"><i class="fas fa-caret-up"></i></a>');
+                $listMedium.find('[ajax-action="up"]').addClass('button-disabled');
+                $listPrevMedium.find('[ajax-action="up"]').removeClass('button-disabled');
             }
 
             if (!$element.next().length) {
-                if ($listMedium.find('[ajax="up"]').length) {
-                    $listMedium.find('[ajax="up"]').after('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+                if ($listMedium.find('[ajax-action="up"]').length) {
+                    $listMedium.find('[ajax-action="down"]').removeClass('button-disabled');
                 } else {
-                    $listMedium.prepend('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+                    $listMedium.find('[ajax-action="down"]').removeClass('button-disabled');
                 }
 
-                $listPrevMedium.find('[ajax="down"]').remove();
+                $listPrevMedium.find('[ajax-action="down"]').addClass('button-disabled');
             }
 
             $element.prev().insertAfter($element);
-        }
-    }
-});
+        },
 
-$.cAjax('down', {
-    ajax: {
-        url: '/admin/ajax/process/',
-        method: 'get',
-        context: {}
-    },
-    success: {
-        default: function (settings, $element) {
+        'run/?/down': function (settings, $element) {
 
-            $listMedium = $element.children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
-            $listNextMedium = $element.next().children('[ajax-selector="list-row-inner"]').children('[ajax-selector="list-row-body"]').children('[ajax-selector="list-row-medium"]');
+            $listMedium = $element.children('[js="list-row-inner"]').children('[js="list-row-body"]').children('[js="list-row-medium"]');
+            $listNextMedium = $element.next().children('[js="list-row-inner"]').children('[js="list-row-body"]').children('[js="list-row-medium"]');
 
-            if (!$element.next().next().length) {
-                $listMedium.find('[ajax="down"]').remove();
-                $listNextMedium.find('[ajax="up"]').after('<a class="button button-icon button-down" ajax="down" ajax-process="/Down"><i class="fas fa-caret-down"></i></a>');
+            if (!$element.next().next().length)
+            {
+                $listMedium.find('[ajax-action="down"]').addClass('button-disabled');
+                $listNextMedium.find('[ajax-action="down"]').removeClass('button-disabled');
             }
             
             if (!$element.prev(':not(.list-row-disabled)').length) {
-                $listMedium.prepend('<a class="button button-icon button-up" ajax="up" ajax-process="/Up"><i class="fas fa-caret-up"></i></a>');
-                $listNextMedium.find('[ajax="up"]').remove();
+                $listMedium.find('[ajax-action="up"]').removeClass('button-disabled');
+                $listNextMedium.find('[ajax-action="up"]').addClass('button-disabled');
             }
 
             $element.next().insertBefore($element);
         }
-    }
-});
-$.cAjax('process-window', {
-    ajax: {
-        url: '/admin/ajax/process/',
-        method: 'get',
-        context: {}
     },
-    window: {
-        url: '/admin/ajax/language/',
-        context: {}
-    }
-});
-$.cAjax('process', {
-    ajax: {
-        url: '/admin/ajax/process/',
-        method: 'get',
-        context: {}
-    }
-});
-$.cAjax('execute', {
-    ajax: {
-        url: '/admin/ajax/execute/',
-        method: 'get',
-        context: {}
-    }
 });

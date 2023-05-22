@@ -1,0 +1,324 @@
+{
+    "body": {
+        "settings": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "settings": {
+                    "data": {
+                        "title": "L_SETTINGS.L_SETTINGS"
+                    },
+                    "body": {
+                        "site.name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_WEBSITE.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "site.description": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_WEBSITE.L_DESCRIPTION.L_DESC",
+                                "title": "L_SETTINGS.L_WEBSITE.L_DESCRIPTION.L_DESCRIPTION",
+                                "placeholder": "L_PLACEHOLDER.L_DESCRIPTION"
+                            }
+                        },
+                        "site.keywords": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_WEBSITE.L_KEYWORDS.L_DESC",
+                                "title": "L_SETTINGS.L_WEBSITE.L_KEYWORDS.L_KEYWORDS",
+                                "placeholder": "L_PLACEHOLDER.L_KEYWORDS"
+                            }
+                        },
+                        "image.max_size": {
+                            "options": {
+                                "type": "number",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_IMAGE_SIZE.L_DESC",
+                                "title": "L_SETTINGS.L_IMAGE_SIZE.L_IMAGE_SIZE",
+                                "placeholder": "L_PLACEHOLDER.L_SIZE"
+                            }
+                        },
+                        "site.favicon": {
+                            "options": {
+                                "type": "file/image"
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_WEBSITE.L_ICON.L_DESC",
+                                "title": "L_SETTINGS.L_WEBSITE.L_ICON.L_ICON"
+                            }
+                        },
+                        "delete_site_favicon": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_WEBSITE.L_ICON.L_DELETE"
+                            },
+                            "body": {
+                                "delete_site_favicon": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "image.gif": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_GIF.L_DESC",
+                                "title": "L_SETTINGS.L_GIF.L_GIF"
+                            },
+                            "body": {
+                                "image.gif": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "site.mode": {
+                            "options": {
+                                "type": "radio",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_MODE.L_DESC",
+                                "title": "L_SETTINGS.L_MODE.L_MODE"
+                            },
+                            "body": {
+                                "forum": {
+                                    "data": {
+                                        "label": "L_SETTINGS.L_MODE.L_FORUM",
+                                        "value": "forum"
+                                    }
+                                },
+                                "blog": {
+                                    "data": {
+                                        "label": "L_SETTINGS.L_MODE.L_BLOG",
+                                        "value": "blog"
+                                    }
+                                },
+                                "static": {
+                                    "data": {
+                                        "label": "L_SETTINGS.L_MODE.L_STATIC",
+                                        "value": "static"
+                                    }
+                                }
+                            }
+                        },
+                        "site.mode.blog.profiles": {
+                            "options": {
+                                "type": "checkbox",
+                                "on": {
+                                    "show": "site.mode:blog"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_PROFILES.L_DESC",
+                                "title": "L_SETTINGS.L_PROFILES.L_PROFILES"
+                            },
+                            "body": {
+                                "site.mode.blog.profiles": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "site.mode.blog.editing": {
+                            "options": {
+                                "type": "checkbox",
+                                "on": {
+                                    "show": "site.mode:blog"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_ALOW_EDITING.L_DESC",
+                                "title": "L_SETTINGS.L_ALOW_EDITING.L_ALOW_EDITING"
+                            },
+                            "body": {
+                                "site.mode.blog.editing": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "site.mode.static.index": {
+                            "options": {
+                                "type": "select",
+                                "on": {
+                                    "show": "site.mode:static"
+                                }
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_INDEX_PAGE",
+                                "empty": "L_SETTINGS.L_INDEX_PAGE_EMPTY"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "convert": {
+                                            "label": "page_name",
+                                            "value": "page_id"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "cookie": {
+                    "data": {
+                        "title": "L_SETTINGS.L_COOKIE.L_COOKIE"
+                    },
+                    "body": {
+                        "cookie.enabled": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_COOKIE.L_ENABLE"
+                            },
+                            "body": {
+                                "cookie.enabled": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "cookie.text": {
+                            "options": {
+                                "type": "textarea",
+                                "on": {
+                                    "show": "cookie.enabled:1"
+                                }
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_COOKIE.L_TEXT",
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        }
+                    }
+                },
+                "language": {
+                    "data": {
+                        "title": "L_SETTINGS.L_LANGUAGE.L_LANGUAGE"
+                    },
+                    "body": {
+                        "site.locale": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_LOCALISATION.L_DESC",
+                                "title": "L_SETTINGS.L_LOCALISATION.L_LOCALISATION"
+                            },
+                            "body": {
+                                "cs": {
+                                    "data": {
+                                        "value": "cs_CZ",
+                                        "label": "$Česko"
+                                    }
+                                },
+                                "en": {
+                                    "data": {
+                                        "value": "en_US",
+                                        "label": "$Amerika"
+                                    }
+                                },
+                                "sk": {
+                                    "data": {
+                                        "value": "sk_SK",
+                                        "label": "$Slovensko"
+                                    }
+                                }
+                            }
+                        },
+                        "site.timezone": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_TIMEZONE"
+                            },
+                            "body": {
+                                "Europe/Berlin": {
+                                    "data": {
+                                        "value": "Europe/Berlin",
+                                        "label": "$Europe/Berlin"
+                                    }
+                                },
+                                "Europe/Bratislava": {
+                                    "data": {
+                                        "value": "Europe/Bratislava",
+                                        "label": "$Europe/Bratislava"
+                                    }
+                                },
+                                "Europe/Prague": {
+                                    "data": {
+                                        "value": "Europe/Prague",
+                                        "label": "$Europe/Prague"
+                                    }
+                                },
+                                "Europe/Vienna": {
+                                    "data": {
+                                        "value": "Europe/Vienna",
+                                        "label": "$Europe/Vienna"
+                                    }
+                                },
+                                "Europe/Warsaw": {
+                                    "data": {
+                                        "value": "Europe/Warsaw",
+                                        "label": "$Europe/Warsaw"
+                                    }
+                                }
+                            }
+                        },
+                        "site.language_editor": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_LANGUAGE.L_EDITOR"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

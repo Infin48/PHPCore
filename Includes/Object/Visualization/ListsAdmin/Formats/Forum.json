@@ -1,0 +1,70 @@
+{
+    "body": {
+        "forum": {
+            "data": {
+                "empty": "L_FORUM.L_NO",
+                "title": "L_FORUM.L_FORUM",
+                "button": {
+                    "add": {
+                        "href": "/admin/category/add/",
+                        "title": "L_BTN.L_NEW_CATEGORY"
+                    }
+                }
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "category"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "add": {
+                                "href": "~/add/{id}/",
+                                "icon": "fa-solid fa-plus",
+                                "title": "L_BTN.L_NEW_FORUM"
+                            },
+                            "permission": {
+                                "href": "/admin/category/permission/{id}/"
+                            },
+                            "edit": {
+                                "href": "/admin/category/show/{id}"
+                            },
+                            "delete": {}
+                        }
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Forum.phtml"
+                                }
+                            },
+                            "data": {
+                                "html": {
+                                    "ajax-item": "forum"
+                                },
+                                "button": {
+                                    "up": {
+                                        "disabled": true
+                                    },
+                                    "down": {
+                                        "disabled": true
+                                    },
+                                    "permission": {},
+                                    "edit": {},
+                                    "delete": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

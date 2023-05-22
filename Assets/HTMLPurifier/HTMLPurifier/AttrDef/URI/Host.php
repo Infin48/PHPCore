@@ -33,10 +33,10 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
     public function validate($string, $config, $context)
     {
         $length = strlen($string);
-        // empty hostname is OK; it's usually semantically equivalent:
-        // the default host as defined by a URI scheme is used:
+        // empty hostname is ok; it's usually semantically equivalent:
+        // the default host as defined by a uri scheme is used:
         //
-        //      If the URI scheme defines a default for host, then that
+        //      if the uri scheme defines a default for host, then that
         //      default applies when the host subcomponent is undefined
         //      or when the registered name is empty (zero length).
         if ($string === '') {
@@ -60,31 +60,31 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
 
         // A regular domain name.
 
-        // This doesn't match I18N domain names, but we don't have proper IRI support,
-        // so force users to insert Punycode.
+        // This doesn't match i18n domain names, but we don't have proper iri support,
+        // so force users to insert punycode.
 
         // There is not a good sense in which underscores should be
-        // allowed, since it's technically not! (And if you go as
-        // far to allow everything as specified by the DNS spec...
+        // allowed, since it's technically not! (and if you go as
+        // far to allow everything as specified by the dns spec...
         // well, that's literally everything, modulo some space limits
         // for the components and the overall name (which, by the way,
-        // we are NOT checking!).  So we (arbitrarily) decide this:
+        // we are not checking!).  so we (arbitrarily) decide this:
         // let's allow underscores wherever we would have allowed
-        // hyphens, if they are enabled.  This is a pretty good match
+        // hyphens, if they are enabled.  this is a pretty good match
         // for browser behavior, for example, a large number of browsers
         // cannot handle foo_.example.com, but foo_bar.example.com is
         // fairly well supported.
         $underscore = $config->get('Core.AllowHostnameUnderscore') ? '_' : '';
 
-        // Based off of RFC 1738, but amended so that
-        // as per RFC 3696, the top label need only not be all numeric.
+        // Based off of rfc 1738, but amended so that
+        // as per rfc 3696, the top label need only not be all numeric.
         // The productions describing this are:
         $a   = '[a-z]';     // alpha
         $an  = '[a-z0-9]';  // alphanum
         $and = "[a-z0-9-$underscore]"; // alphanum | "-"
         // domainlabel = alphanum | alphanum *( alphanum | "-" ) alphanum
         $domainlabel = "$an(?:$and*$an)?";
-        // AMENDED as per RFC 3696
+        // Amended as per rfc 3696
         // toplabel    = alphanum | alphanum *( alphanum | "-" ) alphanum
         //      side condition: not all numeric
         $toplabel = "$an(?:$and*$an)?";
@@ -95,7 +95,7 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
             }
         }
 
-        // PHP 5.3 and later support this functionality natively
+        // Php 5.3 and later support this functionality natively
         if (function_exists('idn_to_ascii')) {
             if (defined('IDNA_NONTRANSITIONAL_TO_ASCII') && defined('INTL_IDNA_VARIANT_UTS46')) {
                 $string = idn_to_ascii($string, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
@@ -103,8 +103,8 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
                 $string = idn_to_ascii($string);
             }
 
-        // If we have Net_IDNA2 support, we can support IRIs by
-        // punycoding them. (This is the most portable thing to do,
+        // If we have net_idna2 support, we can support iris by
+        // punycoding them. (this is the most portable thing to do,
         // since otherwise we have to assume browsers support
         } elseif ($config->get('Core.EnableIDNA')) {
             $idna = new Net_IDNA2(array('encoding' => 'utf8', 'overlong' => false, 'strict' => true));
@@ -128,7 +128,7 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
                 }
                 $string = implode('.', $new_parts);
             } catch (Exception $e) {
-                // XXX error reporting
+                // Xxx error reporting
             }
         }
         // Try again

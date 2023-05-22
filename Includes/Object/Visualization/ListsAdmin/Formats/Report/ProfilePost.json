@@ -1,0 +1,29 @@
+{
+    "body": {
+        "profilepost": {
+            "data": {
+                "empty": "L_REPORT.L_PROFILE_POST.L_NO",
+                "title": "L_REPORT.L_PROFILE_POST.L_PROFILE_POST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Report/Report.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "report_id"
+                        },
+                        "button": {
+                            "info": {
+                                "href": "/admin/report/show/{id}/"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

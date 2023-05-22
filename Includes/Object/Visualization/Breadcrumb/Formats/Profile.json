@@ -2,14 +2,20 @@
     "body": {
         "index": {
             "data": {
-                "href": "$/",
-                "title": "L_TITLE_PAGE"
+                "href": "/",
+                "title": "L_BREADCRUMB.L_TITLE_PAGE"
             }
         },
         "users": {
             "data": {
-                "href": "$/users/",
-                "title": "L_USERS"
+                "href": "/users/",
+                "title": "L_BREADCRUMB.L_USERS"
+            }
+        },
+        "profile": {
+            "data": {
+                "href": "",
+                "title": ""
             }
         }
     }

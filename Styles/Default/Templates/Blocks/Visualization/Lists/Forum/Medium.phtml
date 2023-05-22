@@ -1,19 +1,17 @@
-<?php if (!$row['data']['forum_link']) : ?>
-    <?php if (!empty($row['data']['topic_id'])) : ?>
-        <div class="inner">
-            <?= $this->build->user->image($row['data']) ?>
+<?php if ( $list->get('data.topic_id') ) : ?>
+    <div class="inner">
+        <?= $list->get('data.lastpost.user_image') ?>
+    </div>
+    <div class="inner">
+        <div class="label-list">
+            <?php require $this->path->build('Root/Style:/Templates/Blocks/Labels.phtml'); ?>
+            <?= $list->get('data.lastpost.link') ?>
         </div>
-        <div class="inner">
-            <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
-            <a class="fw-700" href="<?= $this->build->url->topic($row['data']) ?>"><?= truncate($row['data']['topic_name'], 20) ?></a>
-            <br>
-            <span class="grey"><?= $L_BY ?> </span>
-            <?= $this->build->user->link($row['data'], true) ?>
-            <br>
-            <?= $this->build->date->long($row['data']['created'], true) ?>
-            </span>
-        </div>
-    <?php else : ?>
-        <span class="fw-600"><?= $L_POST_NO ?></span>
-    <?php endif; ?>
+        <br>
+        <?= $this->language->get('L_BY') ?> <?= $list->get('data.lastpost.user') ?>
+        <br>
+        <span class="date"><?= $list->get('data.lastpost.date') ?></span>
+    </div>
+<?php else : ?>
+    <span class="fw-600"><?= $this->language->get('L_POST.L_NO') ?></span>
 <?php endif; ?>

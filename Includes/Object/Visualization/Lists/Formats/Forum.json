@@ -6,23 +6,30 @@
                     "title": "category_name",
                     "desc": "category_description"
                 },
+                "html": {
+                    "name": "category"
+                },
                 "small": {
                     "title": "L_STATISTICS"
                 },
                 "medium": {
-                    "title": "L_POST_NEW"
+                    "title": "L_POST.L_LAST"
                 }
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "big": "/Forum/Big.phtml",
-                            "small": "/Forum/Small.phtml",
-                            "medium": "/Forum/Medium.phtml"
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Forum/Big.phtml",
+                            "small": "Root/Style:/Templates/Blocks/Visualization/Lists/Forum/Small.phtml",
+                            "medium": "Root/Style:/Templates/Blocks/Visualization/Lists/Forum/Medium.phtml"
                         }
                     },
-                    "data": {}
+                    "data": {
+                        "html": {
+                            "name": "forum"
+                        }
+                    }
                 }
             }
         }

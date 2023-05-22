@@ -31,15 +31,15 @@ class HTMLPurifier_ElementDef
      */
     public $attr = array();
 
-    // XXX: Design note: currently, it's not possible to override
-    // previously defined AttrTransforms without messing around with
-    // the final generated config. This is by design; a previous version
+    // Xxx: design note: currently, it's not possible to override
+    // previously defined attrtransforms without messing around with
+    // the final generated config. this is by design; a previous version
     // used an associated list of attr_transform, but it was extremely
     // easy to accidentally override other attribute transforms by
-    // forgetting to specify an index (and just using 0.)  While we
+    // forgetting to specify an index (and just using 0.)  while we
     // could check this by checking the index number and complaining,
     // there is a second problem which is that it is not at all easy to
-    // tell when something is getting overridden. Combine this with a
+    // tell when something is getting overridden. combine this with a
     // codebase where this isn't really being used, and it's perfect for
     // nuking.
 

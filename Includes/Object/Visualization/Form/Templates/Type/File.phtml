@@ -1,0 +1,1 @@
+<input type="file" name="<?= $input->getCurrentPositionName() ?><?php if ( str_ends_with($input->get('options.type'), '[]') ) : ?>[]<?php endif; ?>"<?php if ( str_ends_with($input->get('options.type'), '[]') ) : ?> multiple<?php endif; ?>>

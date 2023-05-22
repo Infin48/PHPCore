@@ -1,16 +1,12 @@
-<?php if ($this->user->isLogged()) : ?>
-    <?php if ($this->user->perm->has('profilepost.create')) : ?>
-        <div id="p0" class="block block-clear block-margin" ajax-selector="block block-form" ajax-process-id="<?= $this->url->getID() ?>" ajax-process-type="/ProfilePost">
-            <form method="post" id="form">
-                <div class="block-body ">
-                    <a class="button d-none" ajax="create" ajax-process="/Create" ajax-selector="button">
-                        <i class="fas fa-check"></i>
-                    </a>
-                    <?= $this->build->user->image($this->user->get()) ?>
-                    <textarea ajax="textarea" name="profile_post_text" <?php if ($this->data->data['user_id'] == LOGGED_USER_ID) : ?> placeholder="<?= $L_PROFILE_MESSAGE_TO_MY_PROFILE ?>" <?php else : ?> placeholder="<?= $L_PROFILE_MESSAGE_TO_PROFILE ?>" <?php endif; ?> ></textarea>
-                    <input type="hidden" value="<?= SESSION_ID ?>" name="key">
-                </div>
-            </form>
+<div id="p0" class="block block-clear block-margin" js="block block-form" ajax-id="<?= $this->data->get('data.profile.user_id') ?>" ajax-item="profile-post">
+    <form method="post" id="form">
+        <div class="block-body ">
+            <a class="button" ajax-action="create" js="button">
+                <i class="fa-solid fa-check"></i>
+            </a>
+            <?= $this->build->user->image(data: $this->data->get('inst.user')->get(), size: '25x25') ?>
+            <textarea ajax="textarea" name="profile_post_text" <?php if ($this->data->get('data.profile.user_id') == LOGGED_USER_ID) : ?> placeholder="<?= $this->language->get('L_PROFILE_POST.L_MESSAGE_TO_MY_PROFILE') ?>" <?php else : ?> placeholder="<?= $this->language->get('L_PROFILE_POST.L_MESSAGE_TO_PROFILE') ?>" <?php endif; ?> ></textarea>
+            <input type="hidden" value="<?= SESSION_ID ?>" name="key">
         </div>
-    <?php endif; ?>
-<?php endif; ?>
+    </form>
+</div>

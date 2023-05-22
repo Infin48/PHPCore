@@ -1,64 +1,56 @@
 
 <div class="page-column">
-    <div class="page-column-icon"><i class="fas fa-plus"></i></div>
-    <div class="page-column-title"><?= $L_EXTENSIONS ?></div>
+    <div class="page-column-icon"><i class="fa-solid fa-plus"></i></div>
+    <div class="page-column-title"><?= $language->get('L_EXTENSIONS.L_EXTENSIONS') ?></div>
     <form method="post">
         <div class="page-column-body">
             <div class="page-column-input">
                 <?php if (version_compare(PHP_VERSION, '8.0.0') >= 0) : ?>
-                        <i class="fas fa-check"></i>
+                        <i class="fa-solid fa-check"></i>
                     <?php else : ?>
-                        <i class="fas fa-red fa-times"></i>
+                        <i class="fa-solid fa-red fa-times"></i>
                     <?php endif; ?>
-                    <input type="text" placeholder="<?= $L_PHP_VERSION ?>" value="<?= $L_PHP_VERSION ?>">
+                    <input type="text" placeholder="<?= $language->get('L_EXTENSIONS.L_PHP') ?>" value="<?= $language->get('L_EXTENSIONS.L_PHP') ?>">
                 </div>    
             <div class="page-column-input">
                 <?php if (extension_loaded('GD')) : ?>
-                    <i class="fas fa-check"></i>
+                    <i class="fa-solid fa-check"></i>
                 <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
+                    <i class="fa-solid fa-red fa-times"></i>
                 <?php endif; ?>
                 <input type="text" placeholder="GD" value="GD">
             </div>
             <div class="page-column-input">
                 <?php if (extension_loaded('mbstring')) : ?>
-                    <i class="fas fa-check"></i>
+                    <i class="fa-solid fa-check"></i>
                 <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
+                    <i class="fa-solid fa-red fa-times"></i>
                 <?php endif; ?>
                 <input type="text" placeholder="mbstring" value="mbstring">
             </div>
             <div class="page-column-input">
                 <?php if (extension_loaded('PDO')) : ?>
-                    <i class="fas fa-check"></i>
+                    <i class="fa-solid fa-check"></i>
                 <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
+                    <i class="fa-solid fa-red fa-times"></i>
                 <?php endif; ?>
                 <input type="text" placeholder="PDO" value="PDO">
             </div>
             <div class="page-column-input">
                 <?php if (extension_loaded('PDO_mysql')) : ?>
-                    <i class="fas fa-check"></i>
+                    <i class="fa-solid fa-check"></i>
                 <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
+                    <i class="fa-solid fa-red fa-times"></i>
                 <?php endif; ?>
                 <input type="text" placeholder="PDO_mysql" value="PDO_mysql">
             </div>
             <div class="page-column-input">
                 <?php if (extension_loaded('SPL')) : ?>
-                    <i class="fas fa-check"></i>
+                    <i class="fa-solid fa-check"></i>
                 <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
+                    <i class="fa-solid fa-red fa-times"></i>
                 <?php endif; ?>
                 <input type="text" placeholder="SPL" value="SPL">
-            </div>
-            <div class="page-column-input">
-                <?php if (extension_loaded('zip')) : ?>
-                    <i class="fas fa-check"></i>
-                <?php else : ?>
-                    <i class="fas fa-red fa-times"></i>
-                <?php endif; ?>
-                <input type="text" placeholder="zip" value="zip">
             </div>
         </div>
     </form>

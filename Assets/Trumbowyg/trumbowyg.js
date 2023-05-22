@@ -1,5 +1,5 @@
 /**
- * Trumbowyg v2.23.0 - A lightweight WYSIWYG editor
+ * Trumbowyg v2.25.1 - A lightweight WYSIWYG editor
  * Trumbowyg core file
  * ------------------------
  * @link http://alex-d.github.io/Trumbowyg
@@ -9,7 +9,7 @@
  *         Website : alex-d.fr
  */
 
-jQuery.trumbowyg = {
+ jQuery.trumbowyg = {
     langs: {
         en: {
             viewHTML: 'View HTML',
@@ -70,7 +70,7 @@ jQuery.trumbowyg = {
     // Plugins
     plugins: {},
 
-    // SVG Path globally
+    // Svg path globally
     svgPath: null,
     svgAbsoluteUseHref: false,
 
@@ -80,7 +80,7 @@ jQuery.trumbowyg = {
 // Makes default options read-only
 Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
     value: {
-        lang: '{language}',
+        lang: 'en',
 
         fixedBtnPane: false,
         fixedFullWidth: false,
@@ -94,13 +94,13 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         semantic: true,
         semanticKeepAttributes: false,
         resetCss: false,
-        removeformatPasted: true,
+        removeformatPasted: false,
         tabToIndent: false,
         tagsToRemove: [],
         tagsToKeep: ['hr', 'img', 'embed', 'iframe', 'input'],
         btns: [
             ['viewHTML'],
-            ['undo', 'redo'], // Only supported in Blink browsers
+            ['undo', 'redo'], // Only supported in blink browsers
             ['formatting'],
             ['strong', 'em', 'del'],
             ['superscript', 'subscript'],
@@ -120,7 +120,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
         pasteHandlers: [],
 
-        // imgDblClickHandler: default is defined in constructor
+        // imgdblclickhandler: default is defined in constructor
 
         plugins: {},
 
@@ -194,7 +194,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     case 'empty':
                         return t.empty();
 
-                    // HTML
+                    // Html
                     case 'html':
                         return t.html(params);
                 }
@@ -205,18 +205,18 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         return false;
     };
 
-    // @param: editorElem is the DOM element
+    // @param: editorelem is the dom element
     var Trumbowyg = function (editorElem, options) {
         var t = this,
             trumbowygIconsId = 'trumbowyg-icons',
             $trumbowyg = $.trumbowyg;
 
-        // Get the document of the element. It use to makes the plugin
+        // Get the document of the element. it use to makes the plugin
         // compatible on iframes.
         t.doc = editorElem.ownerDocument || document;
 
-        // jQuery object of the editor
-        t.$ta = $(editorElem); // $ta : Textarea
+        // jquery object of the editor
+        t.$ta = $(editorElem); // $ta : textarea
         t.$c = $(editorElem); // $c : creator
 
         options = options || {};
@@ -230,13 +230,13 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
         t.hideButtonTexts = $trumbowyg.hideButtonTexts != null ? $trumbowyg.hideButtonTexts : options.hideButtonTexts;
 
-        // SVG path
+        // Svg path
         var svgPathOption = $trumbowyg.svgPath != null ? $trumbowyg.svgPath : options.svgPath;
         t.hasSvg = svgPathOption !== false;
 
         if (svgPathOption !== false && ($trumbowyg.svgAbsoluteUseHref || $('#' + trumbowygIconsId, t.doc).length === 0)) {
             if (svgPathOption == null) {
-                // Hack to get svgPathOption based on trumbowyg.js path
+                // Hack to get svgpathoption based on trumbowyg.js path
                 var $scriptElements = $('script[src]');
                 $scriptElements.each(function (i, scriptElement) {
                     var source = scriptElement.src;
@@ -247,7 +247,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 });
             }
 
-            // Do not merge with previous if block: svgPathOption can be redefined in it.
+            // Do not merge with previous if block: svgpathoption can be redefined in it.
             // Here we are checking that we find a match
             if (svgPathOption == null) {
                 console.warn('You must define svgPath: https://goo.gl/CfTY9U'); // jshint ignore:line
@@ -429,7 +429,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             }
         };
 
-        // Default Options
+        // Default options
         t.o = $.extend(true, {}, $trumbowyg.defaultOptions, options);
         if (!t.o.hasOwnProperty('imgDblClickHandler')) {
             t.o.imgDblClickHandler = t.getDefaultImgDblClickHandler();
@@ -462,10 +462,10 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         // Admit multiple paste handlers
         t.pasteHandlers = [].concat(t.o.pasteHandlers);
 
-        // Check if browser is IE
+        // Check if browser is ie
         t.isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') !== -1;
 
-        // Check if we are on macOs
+        // Check if we are on macos
         t.isMac = navigator.platform.toUpperCase().indexOf('MAC') !== -1;
 
         t.init();
@@ -487,7 +487,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             t.initPlugins();
 
             try {
-                // Disable image resize, try-catch for old IE
+                // Disable image resize, try-catch for old ie
                 t.doc.execCommand('enableObjectResizing', false, false);
                 t.doc.execCommand('defaultParagraphSeparator', false, 'p');
             } catch (e) {
@@ -495,10 +495,6 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
             t.buildEditor();
             t.buildBtnPane();
-
-            $('.trumbowyg-dropdown').each( function() {
-                $(this).insertAfter('.trumbowyg-' + $(this).data('trumbowyg-dropdown') + '-button');
-            });
 
             t.fixedBtnPaneEvents();
 
@@ -534,12 +530,11 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 html = '';
 
             t.$box = $('<div/>', {
-                class: prefix + 'box ' + prefix + 'editor-visible ' + prefix + t.o.lang + ' trumbowyg',
-                'ajax-selector': 'trumbowyg-box'
+                class: prefix + 'box ' + prefix + 'editor-visible ' + prefix + t.o.lang + ' trumbowyg'
             });
 
-            // $ta = Textarea
-            // $ed = Editor
+            // $ta = textarea
+            // $ed = editor
             t.isTextarea = t.$ta.is('textarea');
             if (t.isTextarea) {
                 html = t.$ta.val();
@@ -611,7 +606,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             t.$ed
                 .on('dblclick', 'img', t.o.imgDblClickHandler)
                 .on('keydown', function (e) {
-                    // append flags to differentiate Chrome spans
+                    // append flags to differentiate chrome spans
                     var keyCode = e.which;
                     if (keyCode === 8 || keyCode === 13 || keyCode === 46) {
                         t.toggleSpan(true);
@@ -655,7 +650,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                         return;
                     }
 
-                    // remove Chrome generated span tags
+                    // remove chrome generated span tags
                     if (keyCode === 8 || keyCode === 13 || keyCode === 46) {
                         t.toggleSpan();
                     }
@@ -728,24 +723,24 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                         }
 
                         try {
-                            // IE
+                            // Ie
                             var text = window.clipboardData.getData('Text');
 
                             try {
-                                // <= IE10
+                                // <= ie10
                                 t.doc.selection.createRange().pasteHTML(text);
                             } catch (c) {
-                                // IE 11
+                                // Ie 11
                                 t.doc.getSelection().getRangeAt(0).insertNode(t.doc.createTextNode(text));
                             }
                             t.$c.trigger('tbwchange', e);
                         } catch (d) {
-                            // Not IE
+                            // Not ie
                             t.execCmd('insertText', (e.originalEvent || e).clipboardData.getData('text/plain'));
                         }
                     }
 
-                    // Call pasteHandlers
+                    // Call pastehandlers
                     $.each(t.pasteHandlers, function (i, pasteHandler) {
                         pasteHandler(e);
                     });
@@ -811,7 +806,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     class: prefix + 'button-group ' + ((btnGrp.indexOf('fullscreen') >= 0) ? prefix + 'right' : '')
                 });
                 $.each(btnGrp, function (i, btn) {
-                    try { // Prevent buildBtn error
+                    try { // Prevent buildbtn error
                         if (t.isSupportedBtn(btn)) { // It's a supported button
                             $btnGroup.append(t.buildBtn(btn));
                         }
@@ -829,7 +824,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
 
         // Build a button and his action
-        buildBtn: function (btnName) { // btnName is name of the button
+        buildBtn: function (btnName) { // btnname is name of the button
             var t = this,
                 prefix = t.o.prefix,
                 btn = t.btnsDef[btnName],
@@ -1070,7 +1065,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         },
 
 
-        // Function call when click on viewHTML button
+        // Function call when click on viewhtml button
         toggle: function () {
             var t = this,
                 prefix = t.o.prefix;
@@ -1099,7 +1094,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             }, 0);
         },
 
-        // Remove or add flags to span tags to remove Chrome generated spans
+        // Remove or add flags to span tags to remove chrome generated spans
         toggleSpan: function (addFlag) {
             var t = this;
             t.$ed.find('span').each(function () {
@@ -1149,7 +1144,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         },
 
 
-        // HTML Code management
+        // Html code management
         html: function (html) {
             var t = this;
 
@@ -1199,7 +1194,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         // Analyse and update to semantic code
         // @param force : force to sync code from textarea
         // @param full  : wrap text nodes in <p>
-        // @param keepRange  : leave selection range as it is
+        // @param keeprange  : leave selection range as it is
         semanticCode: function (force, full, keepRange) {
             var t = this;
             t.saveRange();
@@ -1228,6 +1223,9 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     // Wrap groups of inline elements in paragraphs (recursive)
                     var wrapInlinesInParagraphsFrom = function ($from) {
                         if ($from.length !== 0) {
+
+                            console.log('asdasd');
+
                             var $finalParagraph = $from.nextUntil(blockElementsSelector).addBack().wrapAll('<p/>').parent(),
                                 $nextElement = $finalParagraph.nextAll(inlineElementsSelector).first();
                             $finalParagraph.next('br').remove();
@@ -1277,7 +1275,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     return false;
                 }
 
-                if(t.range.startContainer.parentNode && t.range.startContainer.parentNode === this) {
+                if (t.range && t.range.startContainer.parentNode === this) {
                     resetRange = true;
                 }
                 var $newTag = $('<' + newTag + '/>');
@@ -1296,7 +1294,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             });
         },
 
-        // Function call when user click on "Insert Link"
+        // Function call when user click on "insert link"
         createLink: function () {
             var t = this,
                 documentSelection = t.doc.getSelection(),
@@ -1553,10 +1551,10 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             t.saveRange();
             t.showOverlay();
 
-            // Disable all btnPane btns
+            // Disable all btnpane btns
             t.$btnPane.addClass(prefix + 'disable');
 
-            // Build out of ModalBox, it's the mask for animations
+            // Build out of modalbox, it's the mask for animations
             var $modal = $('<div/>', {
                 class: prefix + 'modal ' + prefix + 'fixed-top'
             }).css({
@@ -1595,7 +1593,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             }
 
 
-            // Build ModalBox and animate to show them
+            // Build modalbox and animate to show them
             var $box = $('<div/>', {
                 class: prefix + 'modal-box',
                 html: formOrContent
@@ -1622,9 +1620,9 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
             if (buildForm) {
                 // Focus in modal box
-                $('input:first', $box).focus();
+                $(':input:first', $box).focus();
 
-                // Append Confirm and Cancel buttons
+                // Append confirm and cancel buttons
                 t.buildModalBtn('submit', $box);
                 t.buildModalBtn('reset', $box);
 
@@ -1673,22 +1671,31 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             var t = this,
                 prefix = t.o.prefix,
                 lg = t.lang,
-                html = '';
+                html = '',
+                idPrefix = prefix + 'form-' + Date.now() + '-';
 
             $.each(fields, function (fieldName, field) {
                 var l = field.label || fieldName,
                     n = field.name || fieldName,
-                    a = field.attributes || {};
+                    a = field.attributes || {},
+                    fieldId = idPrefix + fieldName;
 
                 var attr = Object.keys(a).map(function (prop) {
                     return prop + '="' + a[prop] + '"';
                 }).join(' ');
 
-                html += '<label><input type="' + (field.type || 'text') + '" name="' + n + '"' +
-                    (field.type === 'checkbox' && field.value ? ' checked="checked"' : ' value="' + (field.value || '').replace(/"/g, '&quot;')) +
-                    '"' + attr + '><span class="' + prefix + 'input-infos"><span>' +
-                    (lg[l] ? lg[l] : l) +
-                    '</span></span></label>';
+                if (typeof field.type === 'function') {
+                  if (!field.name) {
+                    field.name = n;
+                  }
+                  html += field.type(field, fieldId, prefix, lg);
+                } else {
+                  html += '<div class="' + prefix + 'input-row">' +
+                    '<div class="' + prefix + 'input-infos"><label for="' + fieldId + '"><span>' + (lg[l] ? lg[l] : l) + '</span></label></div>' +
+                    '<div class="' + prefix + 'input-html"><input id="' + fieldId + '" type="' + (field.type || 'text') + '" name="' + n + '" ' + attr;
+                    html += (field.type === 'checkbox' && field.value ? ' checked="checked"' : '') + ' value="' + (field.value || '').replace(/"/g, '&quot;') + '"></div>';
+                  html += '</div>';
+                }
             });
 
             return t.openModal(title, html)
@@ -1700,8 +1707,8 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     $.each(fields, function (fieldName, field) {
                         var n = field.name || fieldName;
 
-                        var $field = $('input[name="' + n + '"]', $form),
-                            inputType = $field.attr('type');
+                        var $field = $(':input[name="' + n + '"]', $form),
+                            inputType = $field[0].type;
 
                         switch (inputType.toLowerCase()) {
                             case 'checkbox':
@@ -1743,23 +1750,24 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         addErrorOnModalField: function ($field, err) {
             var prefix = this.o.prefix,
                 spanErrorClass = prefix + 'msg-error',
-                $label = $field.parent();
+                $row = $field.closest('.' + prefix + 'input-row');
 
             $field
                 .on('change keyup', function () {
-                    $label.removeClass(prefix + 'input-error');
+                    $row.removeClass(prefix + 'input-error');
                     setTimeout(function () {
-                        $label.find('.' + spanErrorClass).remove();
+                        $row.find('.' + spanErrorClass).remove();
                     }, 150);
                 });
 
-            $label
+            $row
                 .addClass(prefix + 'input-error')
-                .find('input+span')
+                .find('.' + prefix + 'input-infos label')
                 .append(
                     $('<span/>', {
                         class: spanErrorClass,
-                        text: err
+                        text: err,
+                        title: err
                     })
                 );
         },
@@ -1853,7 +1861,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 return;
             }
 
-            if (metaRange && metaRange.start !== metaRange.end) { // Algorithm from http://jsfiddle.net/WeWy7/3/
+            if (metaRange && metaRange.start !== metaRange.end) { // Algorithm from http://jsfiddle.net/wewy7/3/
                 var charIndex = 0,
                     nodeStack = [t.$ed[0]],
                     node,
@@ -1886,7 +1894,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 }
             }
 
-            // Fix IE11 Error 'Could not complete the operation due to error 800a025e'.
+            // Fix ie11 error 'could not complete the operation due to error 800a025e'.
             // https://stackoverflow.com/questions/16160996/could-not-complete-the-operation-due-to-error-800a025e
             try {
                 documentSelection.removeAllRanges();

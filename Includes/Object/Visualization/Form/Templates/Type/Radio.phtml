@@ -1,0 +1,14 @@
+
+<?php $input->each('body', function ($radio) use ($input) { ?>
+    <?php if ( $radio->get('options.template.option') ) : ?>
+        <?php require $radio->get('options.template.option'); ?>
+    <?php else : ?>
+        <div class="radio">
+            <input class="script" type="radio" name="<?= $input->getCurrentPositionName() ?>" id="<?= $id = mt_rand() ?>" value="<?= $radio->get('data.value') ?>"<?php if ( $radio->get('options.checked') ) : ?> checked<?php endif; ?>>
+            <label for="<?= $id?>">
+                <div></div>
+                <span><?= $radio->get('data.label') ?></span>
+            </label>
+        </div>
+    <?php endif; ?>
+<?php }); ?>

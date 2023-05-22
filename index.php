@@ -10,21 +10,23 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-// ROOT
-define('ROOT', rtrim($_SERVER['DOCUMENT_ROOT'] . dirname($_SERVER['PHP_SELF']), '/'));
+$start = microtime(true);
 
-if (is_dir(ROOT . '/Install/')) {
-    header('Location: ' . '/Install/');
-    exit();
+// Root
+define('ROOT', rtrim($_SERVER['DOCUMENT_ROOT'] . dirname($_SERVER['PHP_SELF']), '/'));
+mb_internal_encoding('UTF-8');
+ob_start();
+
+if (isset($_COOKIE['PHPSESSID']))
+{
+    session_write_close();
+    session_id($_COOKIE['PHPSESSID']);
+    session_start();
+} else {
+    session_start();
 }
 
-mb_internal_encoding('UTF-8');
-
-ob_start();
-session_start();
-
-error_reporting(E_ALL ^ E_NOTICE);
-
+error_reporting(E_ERROR | E_PARSE);
 ini_set('memory_limit', '256M');
 
 ini_set('display_errors', 1);
@@ -39,73 +41,152 @@ ini_set('opcache.enable_cli', 0);
 @ini_set('session.use_trans_sid ', 0);
 @ini_set('session.cookie_httponly', 1);
 @ini_set('session.use_cookies ', 1);
-@ini_set('session.cookie_domain ', $_SERVER['SERVER_NAME']);
 
 require ROOT . '/Includes/Function.php';
 
-spl_autoload_register(function ($class) {
+if (is_dir(ROOT . '/Install/'))
+{
+    define('INCLUDES', '/Install/Includes/Object');
+} else
+{
+    define('INCLUDES', '/Includes/Object');
+}
 
+spl_autoload_register(function ($class)
+{
     $_path = explode('\\', $class);
-    $path = ROOT . '/Includes/Object/' . implode('/', $_path) . '.';
-
-    if ($_path[1] === 'Plugin' and isset($_path[2])) {
-
-        $_path = array_values($_path);
-
-        $path = ROOT . '/Plugins/' . $_path[2] . '/Object/' . $_path[0] . '/' . implode('/' , array_slice($_path, 3)) . '.';
-
-        $path .= match ($_path[0]) {
-            'Page' => 'page.php',
-            'Model' => 'model.php',
-            'Block' => 'block.php',
-            'Process' => 'process.php'
-        };
-
-    } else {
-
-        $path .= match ($_path[0]) {
-            'Page' => 'page.php',
-            'Style' => 'style.php',
-            'Model' => 'model.php',
-            'Block' => 'block.php',
-            'Plugin' => 'plugin.php',
-            'Process' => 'process.php',
-            'Exception' => 'exception.php',
-            'Visualization' => 'visualization.php'
-        };
+    if (count($_path) <= 1)
+    {
+        return;
     }
 
-    if (file_exists($path) === false) {
+    switch ($_path[0])
+    {
+        case 'App':
+            array_shift($_path);
+            $path = INCLUDES;
+        break;
 
-        match ($_path[0]) {
-            'Page' => throw new \Exception\System('Hledaná stránka \'' . $path . '\' neexistuje!'),
-            'Style' => throw new \Exception\System('Hledaná styl \'' . $path . '\' neexistuje!'),
-            'Model' => throw new \Exception\System('Hledaný model \'' . $path . '\' neexistuje!'),
-            'Block' => throw new \Exception\System('Hledaný blok \'' . $path . '\' neexistuje!'),
-            'Plugin' => throw new \Exception\System('Hledaný plugin \'' . $path . '\' neexistuje!'),
-            'Process' => throw new \Exception\System('Hledaný proces \'' . $path . '\' neexistuje!'),
-            'Exception' => throw new \Exception\System('Hledaná vyjímka \'' . $path . '\' neexistuje!'),
-            'Visualization' => throw new \Exception\System('Hledaný vizualizátor \'' . $path . '\' neexistuje!')
-        };
+        case 'Plugin':
+            array_shift($_path);
+            $path = '/Plugins/' . array_shift($_path) . '/Object';
+        break;
+
+        case 'Style':
+            array_shift($_path);
+            $path = '/Styles/' . array_shift($_path) . '/Object';
+        break;
+
+        default:
+            throw new \App\Exception\System('Class "' . $class . '" does not exist!');
     }
 
-    require_once($path);
+    if ($_path[0] == 'Table')
+    {
+        $path .= '/Model/Database';
+    }
+
+    $path .= '/' . implode('/', $_path) . '.';
+
+
+    $path .= match ($_path[0])
+    {
+        'Page' => 'page.php',
+        'Table' => 'table.php',
+        'Style' => 'style.php',
+        'Model' => 'model.php',
+        'Plugin' => 'plugin.php',
+        'Exception' => 'exception.php',
+        'Visualization' => 'visualization.php',
+        default => throw new \App\Exception\Exception('Class "' . $class . '" has unsupported format!')
+    };
+    
+    if (file_exists(ROOT . $path) === false)
+    {
+        match ($_path[0])
+        {
+            'Page' => throw new \App\Exception\System('Hledaná stránka \'' . $path . '\' neexistuje!'),
+            'Table' => throw new \App\Exception\System('Hledaná tabulka \'' . $path . '\' neexistuje!'),
+            'Style' => throw new \App\Exception\System('Hledaná styl \'' . $path . '\' neexistuje!'),
+            'Model' => throw new \App\Exception\System('Hledaný model \'' . $path . '\' neexistuje!'),
+            'Plugin' => throw new \App\Exception\System('Hledaný plugin \'' . $path . '\' neexistuje!'),
+            'Exception' => throw new \App\Exception\System('Hledaná vyjímka \'' . $path . '\' neexistuje!'),
+            'Visualization' => throw new \App\Exception\System('Hledaný vizualizátor \'' . $path . '\' neexistuje!')
+        };
+    }
+    
+
+    require_once(ROOT . $path);
 });
 
-set_exception_handler(function ($exception) {
-    throw new \Exception\System($exception);
+set_exception_handler(function ($exception)
+{
+    throw new \App\Exception\System($exception);
 });
 
 require ROOT . '/Includes/Constants.php';
 
-$url = urldecode($_SERVER['REQUEST_URI']);
+if (is_dir(ROOT . '/Install/'))
+{
+    if (!is_writeable(ROOT . '/Install/Includes/Settings.json') or !is_readable(ROOT . '/Install/Includes/Settings.json'))
+    {
+        throw new \App\Exception\System('Apliakce vyžaduje oprávnění číst a zapisovat do souboru "/Install/Includes/Settings.json"!');
+    }
 
-if (str_starts_with(strtolower($url), '/admin/')) {
-    $router = new Page\Admin\Router();
-} else {
-    $router = new Page\Router();
+    $db = new \App\Model\Database();
+    $data = new \App\Model\Data();
+
+    $router = new \App\Page\Router(
+        db: $db,
+        data: $data
+    );
+    $router->body( $data, $db );
+    
+    exit();
 }
-$router->body();
-Model\Database\Database::destroy();
+
+$url = urldecode($_SERVER['REQUEST_URI']);
+if (str_starts_with(strtolower($url), '/ajax/') or str_starts_with(strtolower($url), '/admin/ajax/') or preg_match('#^/plugin/(.*?)/ajax/#', strtolower($url)))
+{
+    define('AJAX', true);
+}
+$data = new \App\Model\Data();
+$db = new \App\Model\Database\Query( $data );
+
+// And buildes
+$build                = new \stdClass();
+$build->url           = new \App\Model\Build\Url();
+$build->date          = new \App\Model\Build\Date( language: $data->get('inst.language') );
+$build->user          = new \App\Model\Build\User( language: $data->get('inst.language'), system: $data->get('inst.system'));
+
+// Inicialise URL
+$_url = new \App\Model\Url( $db->select('app.settings.URLDefault()'), $db->select('app.settings.URLHidden()') );
+$_url->parseURL();
+
+if (str_starts_with(strtolower($url), '/admin/'))
+{
+
+    $router = new \App\Page\Admin\Router(
+        db: $db,
+        url: $_url,
+        data: $data,
+        build: $build
+    );
+    $router->body( $data, $db );
+
+    \App\Model\Database\Database::destroy();
+
+    exit();
+}
+
+$router = new \App\Page\Router(
+    db: $db,
+    url: $_url,
+    data: $data,
+    build: $build
+);
+$router->body( $data, $db );
+
+\App\Model\Database\Database::destroy();
 
 exit();

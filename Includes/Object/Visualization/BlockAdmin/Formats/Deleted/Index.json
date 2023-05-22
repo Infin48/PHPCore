@@ -1,0 +1,36 @@
+{
+    "body": {
+        "post": {
+            "data": {
+                "icon": "fa-solid fa-trash",
+                "title": "L_POST.L_DELETED",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fa-solid fa-trash",
+                "title": "L_TOPIC.L_DELETED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "profile_post": {
+            "data": {
+                "icon": "fa-solid fa-trash",
+                "title": "L_PROFILE_POST.L_DELETED",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "profile_post_comment": {
+            "data": {
+                "icon": "fa-solid fa-trash",
+                "title": "L_PROFILE_POST_COMMENT.L_DELETED",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

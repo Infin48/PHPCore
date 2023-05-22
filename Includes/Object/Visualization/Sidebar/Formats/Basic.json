@@ -2,19 +2,21 @@
     "body": {
         "onlineusers": {
             "data": {
-                "title": "L_ONLINE_USERS"
+                "title": "L_USER.L_ONLINE.L_ONLINE"
             },
             "body": {
                 "users": {
                     "options": {
-                        "type": "list",
-                        "empty": "L_ONLINE_USERS_NO"
+                        "type": "list"
+                    },
+                    "data": {
+                        "empty": "L_USER.L_ONLINE.L_NO"
                     },
                     "body": {
                         "default": {
                             "options": {
                                 "template": {
-                                    "body": "\/OnlineUser\/OnlineUser.phtml"
+                                    "body": "Root/Style:/Templates/Blocks/Visualization/Sidebar/OnlineUser/OnlineUser.phtml"
                                 }
                             },
                             "data": []
@@ -24,7 +26,7 @@
                 "bottom": {
                     "options": {
                         "template": {
-                            "body": "\/OnlineUser\/Bottom.phtml"
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Sidebar/OnlineUser/Bottom.phtml"
                         }
                     },
                     "data": []
@@ -33,16 +35,16 @@
         },
         "posts": {
             "options": {
-                "empty": "L_POST_NO"
             },
             "data": {
-                "title": "L_POST_RECENT"
+                "empty": "L_POST.L_NO",
+                "title": "L_POST.L_RECENT"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "body": "\/LastPost.phtml"
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Sidebar/LastPost.phtml"
                         }
                     },
                     "data": []
@@ -50,17 +52,15 @@
             }
         },
         "profileposts": {
-            "options": {
-                "empty": "L_LAST_PROFILE_POSTS_NO"
-            },
             "data": {
-                "title": "L_LAST_PROFILE_POSTS"
+                "empty": "L_PROFILE_POST.L_LASTEST_NO",
+                "title": "L_PROFILE_POST.L_RECENT"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "body": "\/ProfilePost.phtml"
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Sidebar/ProfilePost.phtml"
                         }
                     },
                     "data": []
@@ -79,19 +79,19 @@
                     "body": {
                         "topics": {
                             "data": {
-                                "title": "L_TOTAL_TOPICS",
+                                "title": "L_TOPIC.L_TOTAL",
                                 "value": ""
                             }
                         },
                         "posts": {
                             "data": {
-                                "title": "L_TOTAL_POSTS",
+                                "title": "L_POST.L_TOTAL",
                                 "value": ""
                             }
                         },
                         "users": {
                             "data": {
-                                "title": "L_TOTAL_REGISTERED_USERS",
+                                "title": "L_USER.L_TOTAL",
                                 "value": ""
                             }
                         }

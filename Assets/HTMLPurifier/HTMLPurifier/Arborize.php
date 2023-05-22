@@ -14,10 +14,10 @@ class HTMLPurifier_Arborize
         $parent = new HTMLPurifier_Token_Start($definition->info_parent);
         $stack = array($parent->toNode());
         foreach ($tokens as $token) {
-            $token->skip = null; // [MUT]
-            $token->carryover = null; // [MUT]
+            $token->skip = null; // [mut]
+            $token->carryover = null; // [mut]
             if ($token instanceof HTMLPurifier_Token_End) {
-                $token->start = null; // [MUT]
+                $token->start = null; // [mut]
                 $r = array_pop($stack);
                 //assert($r->name === $token->name);
                 //assert(empty($token->attr));
@@ -43,7 +43,7 @@ class HTMLPurifier_Arborize
         $tokens = array();
         do {
             while (!$nodes[$level]->isEmpty()) {
-                $node = $nodes[$level]->shift(); // FIFO
+                $node = $nodes[$level]->shift(); // Fifo
                 list($start, $end) = $node->toTokenPair();
                 if ($level > 0) {
                     $tokens[] = $start;

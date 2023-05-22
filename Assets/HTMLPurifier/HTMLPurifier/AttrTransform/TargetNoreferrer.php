@@ -1,6 +1,6 @@
 <?php
 
-// must be called POST validation
+// must be called post validation
 
 /**
  * Adds rel="noreferrer" to any links which target a different window

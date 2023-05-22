@@ -1,6 +1,6 @@
 <?php
 
-// Enum = Enumerated
+// Enum = enumerated
 /**
  * Validates a keyword against a list of valid values.
  * @warning The case-insensitive compare of this function uses PHP's
@@ -21,7 +21,7 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
      * Bool indicating whether or not enumeration is case sensitive.
      * @note In general this is always case insensitive.
      */
-    protected $case_sensitive = false; // values according to W3C spec
+    protected $case_sensitive = false; // values according to w3c spec
 
     /**
      * @param array $valid_values List of valid values

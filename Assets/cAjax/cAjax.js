@@ -1,253 +1,345 @@
 /**
- * This file is part of the  forum software
+ * This file is part of the PHPCore forum software
  * 
  * Made by InfinCZ 
  * @link https://github.com/Infin48
  *
- * @copyright (c)  Limited https://.cz
+ * @copyright (c) PHPCore Limited https://phpcore.cz
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
- (function($) {
+(function($) {
 
-    // WINDOW
-    var $window = $('[ajax-selector="window"]');
+    // Enabled
+    var enabled = true;
 
-    // LOADING ICON
-    var $loading = $('[ajax-selector="loading"]');
+    // Window
+    var $window = $('[js="window"]');
 
-    // WINDOW ALERT
-    var $alert = $('[ajax-selector="window-alert"]');
+    // Opacity
+    var $opacity = $('[js="opacity"]');
 
-    jQuery.cAjax = function (process, settings) {
+    // Loading icon
+    var $loading = $('[js="loading"]');
 
-        $('body').on('click', '[ajax="' + process + '"]', function (event) {
+    // Window alert
+    var $alert = $('[js="window-alert"]');
 
+    // Settings
+    var settings = {};
+
+    var popup = {
+
+        show: function()
+        {
+            $window.addClass('window-show').removeClass('window-hide');
+            $opacity.addClass('opacity-show').removeClass('opacity-hide');
+        },
+
+        hide: function()
+        {
+            if ($window.hasClass('window-show'))
+            {
+                $window.addClass('window-hide').removeClass('window-show');
+            }
+            if ($opacity.hasClass('opacity-show'))
+            {
+                $opacity.addClass('opacity-hide').removeClass('opacity-show');
+            }
+        }
+    }
+
+    function end( alertText, alertType )
+    {
+        if ($alert.length && alertText && alertType)
+        {
+            t = 'error';
+            if (alertType == 'error')
+            {
+                t = 'success';
+            }
+
+            $alert.addClass('window-show').removeClass('window-hide');
+            $alert.find('[js^="window-alert-icon"]').hide();
+            $alert.find('[js="window-alert-icon-' + alertType + '"]').show();
+            $alert.removeClass('window-alert-' + t).addClass('window-alert-' + alertType);
+            $alert.find('[js="window-alert-body"]').text(alertText);
+            setTimeout(function()
+            {
+                $alert.addClass('window-hide').removeClass('window-show');
+                setTimeout(function()
+                {
+                    enabled = true;
+                }, 250);
+            }, 1750);
+        } else enabled = true;
+
+        $loading.removeClass('loading-show');
+
+        return false;
+    }
+
+    function run()
+    {
+        settings = self.settings;
+        explode = self.settings.context.ajax.split('/');
+        explode[0] = 'run';
+        settings.context.ajax = explode.join('/');
+
+        self.settings = settings;
+
+        if (settings.submit)
+        {
+            $.each(settings.submit, function (name, method)
+            {
+                if (name === settings.context.ajax)
+                {
+                    settings.submit[name].call($button, settings, $element);
+                    return false;
+                }
+                
+                explode = settings.context.ajax.split('/');
+                explode[1] = '?';
+                
+                if (explode.length != 3)
+                {
+                    return;
+                }
+
+                if (name === explode.join('/'))
+                {
+                    settings.submit[name].call($button, settings, $element);
+                    return false;
+                }
+            });
+        }
+
+        $.post(window.location.origin + window.location.pathname + 'action-ajax/', self.settings.context, function (data)
+        {
+            $loading.addClass('loading-show');
+
+            if (!data)
+            {
+                return end();
+            }
+
+
+
+            try {
+                settings.data = $.parseJSON(data);
+            } catch (error) {
+
+                return end(data, 'error');
+            }
+
+            if (!settings.data.data)
+            {
+                settings.data.data = {};
+            }
+
+            if (settings.data.status != 'ok')
+            {
+                if (settings.failure)
+                {
+                    settings.failure.call($button, settings, $element);
+                }
+
+                return end(settings.data.message, 'error');
+            }
+
+            if (settings.data.redirect)
+            {
+                window.location.href = settings.data.redirect;
+                return true;
+            }
+
+            if (settings.data.refresh)
+            {
+                location.reload();
+                return true;
+            }
+
+            if (settings.success)
+            {
+                $.each(settings.success, function (name, method)
+                {
+                    if (name === settings.context.ajax)
+                    {
+                        settings.success[name].call($button, settings, $element);
+                        return false;
+                    }
+                    
+                    explode = settings.context.ajax.split('/');
+                    explode[1] = '?';
+                    
+                    if (explode.length != 3)
+                    {
+                        return;
+                    }
+
+                    if (name === explode.join('/'))
+                    {
+                        settings.success[name].call($button, settings, $element);
+                        return false;
+                    }
+                });
+            }
+
+            popup.hide();
+            return end(settings.data.message ? settings.data.message : '', 'success');
+        });
+    }
+
+    jQuery.cAjax = function (settings)
+    {
+        $(document).on('click', '[ajax-action]', function (event)
+        {
             event.preventDefault();
-            event.stopImmediatePropagation()
+            event.stopPropagation();
+            event.stopImmediatePropagation();
 
-            $loading.show();
-
-            var $element = '';
+            if (enabled == false)
+            {
+                return;
+            }
+            enabled = false;
+            
+            $loading.addClass('loading-show');
 
             var $button = $element = $(this);
 
-            if (!$element.data('id')) {
-                $.each(['block block-form', 'block', 'field', 'list-row', 'panel'], function (key, selector) {
-                    if ($button.closest('[ajax-selector="'+selector+'"]').length) {
-                        $element = $button.closest('[ajax-selector="'+selector+'"]').first();
+            if (!$element.attr('js-id'))
+            {
+                $.each(['block block-form', 'block', 'form', 'list-row', 'panel'], function (key, selector)
+                {
+                    if ($button.closest('[js="'+selector+'"]').length)
+                    {
+                        $element = $button.closest('[js="'+selector+'"]').first();
                         return false;
                     }
                 });
             }
-            var ajaxProcess = $(this).attr('ajax-process') ? $(this).attr('ajax-process') : $(this).attr('ajax');
-            settings.id = $element.attr('ajax-process-id');
-            settings.type = $element.attr('ajax-process-type');
-            settings.process = $element.attr('ajax-process-type') ? $element.attr('ajax-process-type') + ajaxProcess : ajaxProcess;
 
-            if (settings.ajax) {
+            settings.context = {};
 
-                if (settings.ajax.method == 'post') {
-                    delete settings.ajax.context.id;
-                    delete settings.ajax.context.method;
-                    delete settings.ajax.context.process;
-
-                } else {
-                    settings.ajax.context.id = settings.id;
-                    settings.ajax.context.method = settings.ajax.method;
-
-                    if (settings.process) {
-                        settings.ajax.context.process = settings.process
-                    }
-                }
+            settings.context.ajax = 'window/';
+            if (typeof $(this).attr('ajax-window') == 'undefined')
+            {
+                settings.context.ajax = 'run/';
             }
 
-            if (settings.onload) {
-                if (settings.process in settings.onload) {
-                            
-                    settings.onload[settings.process].call($button, settings, $element);
-                } else {
-
-                    if ('default' in settings.onload) {
-
-                        settings.onload.default.call($button, settings, $element);
-                    }
-                }
+            settings.context.id = $element.attr('ajax-id') ? $element.attr('ajax-id') : $(this).attr('ajax-id');
+            settings.context.ajax += $element.attr('ajax-item') ? $element.attr('ajax-item') + '/' + $(this).attr('ajax-action') : $(this).attr('ajax-action');
+            settings.context.selected = 0;
+            if ($element.is('[ajax-selected]'))
+            {
+                settings.context.selected = 1;
             }
-            
-            methods = {
-                ajax: {
+            self.settings = settings;
 
-                    get: function () {
+            self.$button = $(this);
 
-                        $.get(settings.ajax.url, settings.ajax.context, function (data) {
-                            methods.finish(data)
-                        });
-                    },
-
-                    post: function () {
-
-                        $.post(settings.ajax.url + '?id=' + settings.id + (settings.process ? '&process=' + settings.process : '') + '&method=post', settings.ajax.context, function (data) {
-                            methods.finish(data)
-                        });
+            if (settings.context.ajax.startsWith('window'))
+            {
+                $.post(window.location.origin + window.location.pathname + 'action-ajax/', settings.context, function (data)
+                {
+                    if (!data)
+                    {
+                        return end();
                     }
-                },
-
-                finish: function (data) {
-
-                    $loading.hide();
 
                     try {
-                        settings.data = $.parseJSON(data);
+                        self.settings.data = $.parseJSON(data);
                     } catch (error) {
-                        if (data) {
-                            $alert.removeClass('window-hide').addClass('window-active').removeClass('window-alert-success');
-                            $alert.find('[ajax-selector="window-alert-body"]').text(data);
-                            setTimeout(function() {
-                                $alert.addClass('window-hide').removeClass('window-active');
-                            }, 1500);
-                        }
-                        return false;
-                    }
 
-                    if (settings.data.status != 'ok') {
-
-                        if (settings.data.status == 'error') {
-                            $alert.removeClass('window-hide').addClass('window-active').removeClass('window-alert-success');
-                            $alert.find('[ajax-selector="window-alert-body"]').text(settings.data.error);
-                            setTimeout(function() {
-                                $alert.addClass('window-hide').removeClass('window-active');
-                            }, 1500);
-                        }
-
-                        return false;
-                    }
-
-                    if (settings.data.redirect) {
-                        window.location.href = settings.data.redirect;
-                        return true;
-                    }
-
-                    if (settings.data.refresh) {
-                        location.reload();
-                        return true;
-                    }
-
-                    if (settings.data.message) {
-                        $alert.removeClass('window-hide').addClass('window-active').addClass('window-alert-success');
-                        $alert.find('[ajax-selector="window-alert-body"]').text(settings.data.message);
-                        setTimeout(function() {
-                            $alert.addClass('window-hide').removeClass('window-active');
-                        }, 1500);
-                    }
-
-                    if (settings.refresh == true) {
-                        location.reload();
-                    }
-                    
-                    if (settings.success) {
-                        if (settings.process in settings.success) {
-                            
-                            settings.success[settings.process].call($button, settings, $element);
-                        } else {
-
-                            if ('default' in settings.success) {
-
-                                settings.success.default.call($button, settings, $element);
-                            }
-                        }
-                    }
-
-                    $window.removeClass('window-active');
-                }
-            }
-
-            if (settings.window) {
-
-                settings.window.context.id = settings.id;
-                settings.window.context.process = settings.process;
-
-                $.get(settings.window.url, settings.window.context, function (data) {
-
-                    $loading.hide();
-
-                    try {
-                        settings.data = $.parseJSON(data);
-                    } catch (error) {
-                        if (data) {
-                            $alert.removeClass('window-hide').addClass('window-active').removeClass('window-alert-success');
-                            $alert.find('[ajax-selector="window-alert-body"]').text(data);
-                            setTimeout(function() {
-                                $alert.addClass('window-hide').removeClass('window-active');
-                            }, 1500);
-                        }
-
-                        return false;
+                        return end(data, 'error');
                     }
                     
                     if (settings.data.status != 'ok') {
-                        return false;
+                        return end(settings.data.message, 'error');
                     }
 
-                    $window.addClass('window-active');
-                    $window.find('[ajax-selector="window-title"]').text(settings.data.windowTitle);
-                    $window.find('[ajax-selector="window-body"]').html(settings.data.windowContent);
+                    popup.show();
+                    $window.find('[js="window-title"]').text(settings.data.data.title);
+                    $window.find('[js="window-body"]').html(settings.data.data.content);
 
-                    if (settings.data.windowSubmit) {
-                        $window.find('[ajax-selector="window-bottom"]').show();
-                        $window.find('[ajax-selector="window-submit"]').text(settings.data.windowSubmit);
-                        $window.find('[ajax-selector="window-cancel"]').text(settings.data.windowClose);
+                    if (settings.data.data.submit) {
+                        $window.find('[js="window-bottom"]').show();
+                        $window.find('[js="window-submit"]').text(settings.data.data.submit);
+                        $window.find('[js="window-cancel"]').text(settings.data.data.close);
                     } else {
-                        $window.find('[ajax-selector="window-bottom"]').hide();
+                        $window.find('[js="window-bottom"]').hide();
                     }
 
-                    if (settings.window.onload) {
-                        settings.window.onload.call($window, settings);
+                    enabled = true;
+                    $loading.removeClass('loading-show');
+                });
+
+                $(document).on('click', '[ajax="confirm"]', function (event)
+                {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    if (enabled == false)
+                    {
+                        return;
+                    }
+
+                    enabled = false;
+
+                    $loading.addClass('loading-show');
+
+                    run();
+
+                    return;
+                });
+
+                $(document).on('click', function(event)
+                {
+
+                    if (!$(event.target).parents('[js="window"]').length)
+                    {
+                        $('[ajax="confirm"]').off('click');
+                        popup.hide();
+                    }
+                
+                    if ($(event.target).attr('ajax') == 'window-close')
+                    {
+                        $('[ajax="confirm"]').off('click');
+                        popup.hide();
                     }
                 });
-            }
 
-            if (settings.ajax) {
 
-                if (settings.window) {
-
-                    $('[ajax="confirm"]').on('click', function (event) {
-
-                        event.preventDefault();
-
-                        $loading.show();
-
-                        if (settings.window.submit) {
-                            settings.window.submit.call($window, settings);
+            } else {
+                
+                if (settings.submit)
+                {
+                    $.each(settings.submit, function (name, method)
+                    {
+                        if (name === settings.context.ajax)
+                        {
+                            settings.submit[name].call($button, settings, $element);
+                            return false;
+                        }
+                        
+                        explode = settings.context.ajax.split('/');
+                        explode[1] = '?';
+                        
+                        if (explode.length != 3)
+                        {
+                            return;
                         }
 
-                        if (settings.ajax.method == 'post') {
-                            methods.ajax.post();
-                        } else {
-                            methods.ajax.get();
-                        }
-                    });
-
-                    $('body').on('click', function(event) {
-
-                        if (!$(event.target).parents('[ajax-selector="window"]').length) {
-                            $('[ajax="confirm"]').off('click');
-                            $window.removeClass('window-active');
-                        }
-                    
-                        if ($(event.target).attr('ajax') == 'window-close') {
-                            $('[ajax="confirm"]').off('click');
-                            $window.removeClass('window-active');
+                        if (name === explode.join('/'))
+                        {
+                            settings.submit[name].call($button, settings, $element);
+                            return false;
                         }
                     });
-
-                } else {
-
-                    if (settings.ajax.method == 'post') {
-                        methods.ajax.post();
-                    } else {
-                        methods.ajax.get();
-                    }
                 }
+                
+                run();
             }
         });
     };

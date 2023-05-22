@@ -10,68 +10,158 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Group;
-
-use Block\Group;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Group;
 
 /**
  * Show
  */
-class Show extends \Page\Page
+class Show extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Overall',
-        'redirect' => '/admin/group/',
-        'permission' => 'admin.group'
-    ];
+    protected bool $ID = true;
+    
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.group';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('group')->active();
+        // System
+        $system = $data->get('inst.system');
+
+        // Language
+        $language = $data->get('inst.language');
         
-        // BLOCK
-        $group = new Group();
+        // If static mode is enabled
+		if ($system->get('site.mode') == 'static')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('users')->elm2('group')->active();
+        
+        // Group
+        $row = $db->select('app.group.get()', $this->url->getID()) or $this->error404();
 
-        // GROUP
-        $group = $group->get($this->url->getID()) or $this->error();
+        // Save group data
+        $data->set('data.group', $row);
 
-        $this->user->perm->index($group['group_index']) or $this->redirect();
-
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Group');
-        $this->data->breadcrumb = $breadcrumb->getData();
-
-        // FIELD
-        $field = new Field('/Admin/Group/Group');
-        $field->data($group);
-
-
-        if ($this->system->get('default_group') != $group['group_id']) {
-
-            $field->object('group')->row('group_default')->show();
+        if ($data->get('data.group.group_id') == 1)
+        {
+            if (LOGGED_USER_GROUP_ID != 1)
+            {
+                $this->error404();
+            }
+        } else
+        {
+            // If logged user doensn't have permisison to edit this group 
+            if ($data->get('data.group.group_index') >= LOGGED_USER_GROUP_INDEX)
+            {
+                $this->error404();
+            }
         }
 
-        $this->data->field = $field->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Group.json');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.group.group_name'))->href('/admin/group/show/' . $data->get('data.group.group_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // EDIT GROUP
-        $this->process->form(type: '/Admin/Group/Edit', data: [
-            'group_id' => $group['group_id']
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Group/Group.json');
+        $form
+            ->form('group')
+                ->callOnSuccess($this, 'editGroup')
+                ->data($data->get('data.group'))
+                ->frame('group')
+                    ->input('group_default', function ( \App\Visualization\Form\Form $form ) use ($data, $system)
+                    {
+                        if ($data->get('data.group.group_id') == 1)
+                        {
+                            $form->hide();
+                            return;
+                        }
+
+                        if ($system->get('default_group') != $data->get('data.group.group_id'))
+                        {
+                            $form->show();
+                        }
+                    });
+        $data->form = $form->getDataToGenerate();
+
+        // Page title
+        $data->set('data.head.title', $language->get('L_GROUP.L_GROUP') . ' - ' . $data->get('data.group.group_name'));
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function editGroup( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // System
+        $system = $data->get('inst.system');
+        
+        if ($post->get('group_default'))
+        {       
+            $db->query('
+                UPDATE ' . TABLE_USERS . '
+                SET group_id = ?
+                WHERE group_id = ?
+            ', [$data->get('data.group.group_id'), $system->get('default_group')]);
+
+            $db->table(TABLE_SETTINGS, [
+                'default_group' => $data->get('data.group.group_id')
+            ]);
+        }
+
+        $db->update(TABLE_GROUPS, [
+            'group_name'        => $post->get('group_name'),
+            'group_color'       => $post->get('group_color'),
+            'group_class'  => parse($post->get('group_name')) . $data->get('data.group.group_id')
+        ], $data->get('data.group.group_id'));
+
+        // Synchronize groups
+        $groups = $db->select('app.group.all()');
+
+        $css = '';
+        foreach ($groups as $group)
+        {
+            $css .= '.username.user--' . $group['group_class'] . '{color:' . $group['group_color'] . '}.statue.statue--' . $group['group_class'] . '{background-color:' . $group['group_color'] . '}.group--' . $group['group_class'] . ' input[type="checkbox"] + label span{border-color:' . $group['group_color'] . '}.group--' . $group['group_class'] . ' input[type="checkbox"]:checked + label span{background-color:' . $group['group_color'] . '}';
+        }
+        file_put_contents(ROOT . '/Includes/Template/css/Group.min.css', $css);
+
+        // Update group session
+        $db->table(TABLE_SETTINGS, [
+            'session.groups' => RAND
         ]);
+        
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__, text: $post->get('group_name') );
 
-        // PAGE TITLE
-        $this->data->head['title'] = $this->language->get('L_GROUP') . ' - ' . $group['group_name'];
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Redirect user
+        $data->set('data.redirect', '/admin/group/');
     }
 }

@@ -98,10 +98,10 @@ class HTMLPurifier_LanguageFactory
             $code = $this->validator->validate($code, $config, $context);
         }
         if ($code === false) {
-            $code = 'en'; // malformed code becomes English
+            $code = 'en'; // malformed code becomes english
         }
 
-        $pcode = str_replace('-', '_', $code); // make valid PHP classname
+        $pcode = str_replace('-', '_', $code); // make valid php classname
         static $depth = 0; // recursion protection
 
         if ($code == 'en') {

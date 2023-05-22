@@ -10,102 +10,113 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Block\User;
-use Block\Chart;
-use Block\Report;
-use Block\Statistics as StatisticsBlock;
-use Block\Admin\Forum;
-
-use Visualization\Admin\Block\Block;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin;
 
 /**
  * Statistics
  */
-class Statistics extends \Page\Page
+class Statistics extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Statistics',
-        'permission' => 'admin.?'
-    ];
+    protected string $template = 'Root/Style:/Templates/Statistics.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.?';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('other')->row('stats')->active();
+        // System
+        $system = $data->get('inst.system');
+        
+        // If forum is not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show 404 error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('other')->elm2('stats')->active();
 
-        // BLOCK
-        $user = new User();
-        $stats = new StatisticsBlock();
-        $forum = new Forum();
-        $report = new Report();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Statistics.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Save forum stats and unite with others
+        $data->set('data.forum-stats', $db->select('app.forum.stats()'));
 
-        // FORUM STATS
-        $statsForum = $forum->getStats();
+        // Save report stats and unite with others
+        $data->set('data.report-stats', $db->select('app.report.stats()'));
 
-        // REPORT STATS
-        $statsReport = $report->getStats();
+        // Save other stats and unite with others
+        $data->set('data.deleted-stats', $db->select('app.deleted.stats()'));
 
-        // STATISTICS DATA
-        $statistics = $stats->getAll();
+        // Block
+        $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Statistics.json');
 
-        // BLOCK
-        $block = new Block('/Statistics');
-        $block->object('user')->value($statsForum['user'])
-            ->object('users')->value($user->getRecentCount())
-            ->object('user_deleted')->value($statistics['user_deleted'])
-            ->object('topic')->value($statsForum['topic'])
-            ->object('topic_reported')->value($statsReport['topic'])
-            ->object('topic_deleted')->value($statistics['topic_deleted'])
-            ->object('post')->value($statsForum['post'])
-            ->object('post_reported')->value($statsReport['post'])
-            ->object('post_deleted')->value($statistics['post_deleted']);
-        $this->data->block = $block->getData();
+        $block
+            // Set number of registered users
+            ->elm1('user')->value($data->get('data.forum-stats.user'))
+            // Set number of recent registered users
+            ->elm1('users')->value($db->select('app.user.recentCount()'))
+            // Set number of deleted users
+            ->elm1('user_deleted')->value($data->get('data.deleted-stats.user_deleted'))
+            // Set number of created topics
+            ->elm1('topic')->value($data->get('data.forum-stats.topic'))
+            // Set number of reported topics
+            ->elm1('topic_reported')->value($data->get('data.report-stats.topic'))
+            // Set number of deleted topics
+            ->elm1('topic_deleted')->value($data->get('data.deleted-stats.topic_deleted'))
+            // Set number of created posts
+            ->elm1('post')->value($data->get('data.forum-stats.post'))
+            // Set number of reported posts
+            ->elm1('post_reported')->value($data->get('data.report-stats.post'))
+            // Set number of deleted posts
+            ->elm1('post_deleted')->value($data->get('data.deleted-stats.post_deleted'));
 
-        // CHART BLOCK
-        $chart = new Chart();
+        // Split block
+        $block->split(3, 3, 3);
 
-        $statsMonth = $chart->getMonth();
-        $statsDay = $chart->getDay();
+        // Save block and get ready to generate
+        $data->block = $block->getDataToGenerate();
 
-        // GENERATE ARRAY OF LAST 30 DAYS
+        $statsMonth = $db->select('app.chart.month()');
+        $statsDay = $db->select('app.chart.day()');
+
+        // Generate array of last 30 days
         $dayDate = $dayDateTranslated = [];
-        for ($i = 30; $i >= 0; $i--) {
-
-            array_push($dayDate, date('Y-m-d', strtotime('-' . $i . ' days')));
-            array_push($dayDateTranslated, mb_convert_case(strftime('%B %e, %Y', strtotime('-' . $i . ' days')), MB_CASE_TITLE));
+        for ($i = 30; $i >= 0; $i--)
+        {
+            $dayDate[] =  date('Y-m-d', strtotime('-' . $i . ' days'));
+            $dayDateTranslated[] = mb_convert_case(strftime('%B %e, %Y', strtotime('-' . $i . ' days')), MB_CASE_TITLE);
         }
 
-        // GENERATE ARRAY OF LAST 12 MONTH
+        // Generate array of last 12 month
         $monthDate = $monthDateTranslated = [];
-        for ($i = 12; $i >= 0; $i--) {
-
-            array_push($monthDate, date('Y-m', strtotime('-' . $i . ' month')));
-            array_push($monthDateTranslated, mb_convert_case(strftime('%B %Y', strtotime('-' . $i . ' month')), MB_CASE_TITLE));
+        for ($i = 11; $i >= 0; $i--)
+        {
+            $monthDate[] = $date = date('Y-m', strtotime(date('Y-m-01') . '-' . $i . ' months'));
+            $monthDateTranslated[] = mb_convert_case(strftime('%B %Y', strtotime($date)), MB_CASE_TITLE);
         }
 
         $dayUsers = $dayPosts = $dayTopics = array_combine($dayDate, array_fill(0, count($dayDate), 0));
         $monthUsers = $monthPosts = $monthTopics = array_combine($monthDate, array_fill(0, count($monthDate), 0));
-        
-        foreach ($statsDay as $value) {
 
-            foreach ($dayDate as $_date) {
-
-                if ($value['day'] == $_date) {
+        foreach ($statsDay as $value)
+        {
+            foreach ($dayDate as $_date)
+            {
+                if ($value['day'] == $_date)
+                {
                     $dayUsers[$_date] = $value['users'];
                     $dayPosts[$_date] = $value['posts'];
                     $dayTopics[$_date] = $value['topics'];
@@ -113,12 +124,13 @@ class Statistics extends \Page\Page
                 }
             }
         }
-
-        foreach ($statsMonth as $value) {
-
-            foreach ($monthDate as $_date) {
-
-                if ($value['month'] == $_date) {
+        
+        foreach ($statsMonth as $value)
+        {
+            foreach ($monthDate as $_date)
+            {
+                if ($value['month'] == $_date)
+                {
                     $monthUsers[$_date] = $value['users'];
                     $monthPosts[$_date] = $value['posts'];
                     $monthTopics[$_date] = $value['topics'];
@@ -126,9 +138,9 @@ class Statistics extends \Page\Page
                 }
             }
         }
-
-        // CHART
-        $this->data->chart = json_encode([
+        
+        // Chart
+        $data->chart = json_encode([
             'day' => [
                 'date' => $dayDateTranslated,
                 'users' => array_values($dayUsers),
@@ -141,6 +153,6 @@ class Statistics extends \Page\Page
                 'posts' => array_values($monthPosts),
                 'topics' => array_values($monthTopics)
             ]
-        ], JSON_UNESCAPED_UNICODE);    
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

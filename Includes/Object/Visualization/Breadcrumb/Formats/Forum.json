@@ -1,0 +1,16 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/forum/",
+                "title": "L_BREADCRUMB.L_FORUM"
+            }
+        },
+        "category": {
+            "data": {
+                "href": "/forum/",
+                "title": ""
+            }
+        }
+    }
+}

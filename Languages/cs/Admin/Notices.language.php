@@ -10,154 +10,182 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-$language['L_NOTICE'] = [
+$language = [
+    'L_NOTICE' => [
+        'L_FAILURE_MESSAGE' => 'Vyskytla se chyba!',
 
-    'L_FAILURE_MESSAGE' => 'Vyskytla se chyba!',
+        'L_FAILURE' => [
 
-    'L_FAILURE' => [
+            'user_name' => 'Zadejte uživatelské jméno.',
+            'user_name_exist' => 'Uživatel s tímto uživatelským jménem již existuje.',
+            'user_name_does_not_exist' => 'Uživatel s tímto uživatelským jménem neexistuje.',
+            'user_name_characters' => 'Uživatelské jméno obsahuje nepovolené znaky.',
+            'user_name_length_max' => 'Uživatelské jméno je příliš dlouhé.',
+            'user_name_length_min' => 'Uživatelské jméno je příliš krátké.',
+            
+            'user_password' => 'Zadejte heslo.',
+            'user_password_characters' => 'Heslo obsahuje nepovolené znaky.',
+            'user_password_length_max' => 'Heslo je příliš dlouhé.',
+            'user_password_length_min' => 'Heslo je příliš krátké.',
+            
+            'user_email' => 'Zadejte e-mail.',
+            'user_email_wrong' => 'Zadaný e-mail není platný.',
+            'user_email_exist' => 'Uživatel s tímto e-mailem již existuje.',
+            'user_email_length_max' => 'E-mail je příliš dlouhý.',
+            'user_email_length_min' => 'E-mail je příliš krátký.',
 
-        'user_name' => 'Zadejte uživatelské jméno.',
-        'user_name_exist' => 'Uživatel s tímto uživatelským jménem již existuje.',
-        'user_name_characters' => 'Uživatelské jméno obsahuje nepovolené znaky.',
-        'user_name_length_max' => 'Uživatelské jméno je příliš dlouhé.',
-        'user_name_length_min' => 'Uživatelské jméno je příliš krátké.',
-        
-        'user_password' => 'Zadejte heslo.',
-        'user_password_characters' => 'Heslo obsahuje nepovolené znaky.',
-        'user_password_length_max' => 'Heslo je příliš dlouhé.',
-        'user_password_length_min' => 'Heslo je příliš krátké.',
-        
-        'user_email' => 'Zadejte e-mail.',
-        'user_email_wrong' => 'Zadaný e-mail není platný.',
-        'user_email_exist' => 'Uživatel s tímto e-mailem již existuje.',
-        'user_email_length_max' => 'E-mail je příliš dlouhý.',
-        'user_email_length_min' => 'E-mail je příliš krátký.',
+            'notification_name' => 'Zadejte název oznámení.',
+            'notification_text' => 'Zadejte text oznámení.',
 
-        'notification_name' => 'Zadejte název oznámení.',
-        'notification_text' => 'Zadejte text oznámení.',
+            'button_link' => 'Zadejte platný odkaz.',
+            'button_name' => 'Zadejte název tlačítka.',
+            'button_name_length_max' => 'Název tlačítka je příliš dlouhý.',
 
-        'button_name' => 'Zadejte název tlačítka.',
-        'button_sub_name' => 'Zadejte název tlačítka.',
+            'button_sub_link' => 'Zadejte platný odkaz.',
+            'button_sub_name' => 'Zadejte název tlačítka.',
+            'button_sub_name_length_max' => 'Název tlačítka je příliš dlouhý.',
 
-        'category_name' => 'Zadejte název kategorie.',
-        'category_description' => 'Zadejte popis kategorie.',
 
-        'forum_name' => 'Zadejte název fóra.',
-        'forum_description' => 'Zadejte popis fóra.',
+            'category_name' => 'Zadejte název kategorie.',
+            'category_name_length_max' => 'Název kategorie je příliš dlouhý.',
+            'category_description' => 'Zadejte popis kategorie.',
+            'category_description_length_max' => 'Popis kategorie je příliš dlouhý.',
 
-        'label_name' => 'Zadejte název štítku.',
-        'label_color' => 'Zadejte barvu štítku.',
+            'role_name' => 'Zadejte název role.',
+            'role_name_length_max' => 'Název role je příliš dlouhý.',
 
-        'group_name' => 'Zadejte název skupiny.',
-        'group_color' => 'Zadejte barvu skupiny.',
-        
-        'email' => 'Zadejte e-mail.',
-        'email_prefix' => 'Zadejte prefix emailu.',
+            'forum_name' => 'Zadejte název fóra.',
+            'forum_name_length_max' => 'Název fóra je příliš dlouhý.',
+            'forum_description' => 'Zadejte popis fóra.',
+            'forum_description_length_max' => 'Popis fóra je příliš dlouhý.',
 
-        'page_name' => 'Zadejte název stránky.',
 
-        'file_size' => 'Nahraný soubor je příliš velký.',
-        'file_format' => 'Formát nahraného souboru není podporován.',
+            'label_name' => 'Zadejte název štítku.',
+            'label_name_length_max' => 'Název štítku je příliš dlouhý.',
 
-        'site_name' => 'Zadejte název webových stránek.',
-        'site_description' => 'Zadejte popis webových stránek.',
+            'group_name' => 'Zadejte název skupiny.',
+            'group_name_length_max' => 'Název skupiny je příliš dlouhý.',
+            
+            'email' => 'Zadejte e-mail.',
+            'email_prefix' => 'Zadejte prefix emailu.',
 
-        'site_keywords' => 'Zadejte klíčová slova.',
+            'page_name' => 'Zadejte název stránky.',
+            'page_name_length_max' => 'Název stránky je příliš dlouhý.',
 
-        'settings_url_from' => 'Zadejte URL adresu.',
-        'settings_url_to' => 'Zadejte překlad URL adresy.',
-        'settings_url_start_with_slash' => 'URL adresa i její překlad musejí začínat a končit lomítkem.',
+            'file_size' => 'Nahraný obrázek je příliš velký.',
+            'file_format' => 'Formát nahraného obrázku není podporován.',
 
-        'image_max_size' => 'Zadejte maximální velikost nahrávání obrázků.',
-        'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
-        'image_svg_size' => 'Nahraný vektorový obrázek musí mít velikost {width}x{height}.',
+            'site_name' => 'Zadejte název webových stránek.',
+            'site_description' => 'Zadejte popis webových stránek.',
 
-        'button_link' => 'Zadejte platný odkaz.',
-        'button_sub_link' => 'Zadejte platný odkaz.',
-        
-        '/Admin/User/Search' => 'Uživatel s tímto uživatelským jménem neexistuje.'
-    ],
+            'site_keywords' => 'Zadejte klíčová slova.',
 
-    'L_SUCCESS' => [
+            'settings_url_from' => 'Zadejte URL.',
+            'settings_url_to' => 'Zadejte překlad URL.',
+            'settings_url_error' => 'Obě URL musí začínat lomítkem a končit pomlčkou nebo lomítkem.',
+            'settings_url_end_same' => 'Obě URL musí končit stejným znakem.',
 
-        '/Admin/Optimize' => 'Tabulky byly úspěšně optimalizovány.',
+            'image_max_size' => 'Zadejte maximální velikost nahrávání obrázků.',
+            'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
+            'image_svg_size' => 'Nahraný vektorový obrázek musí mít velikost {width}x{height}.',
+            
+            'searchUser' => 'Uživatel s tímto uživatelským jménem neexistuje.'
+        ],
 
-        '/Admin/Plugin/Setup' => 'Plugin byl úspěšně upraven.',
-        '/Admin/Plugin/Delete' => 'Plugin byl úspěšně smazán',
-        '/Admin/Plugin/Install' => 'Plugin byl úspěšně nainstalován.',
-        '/Admin/Plugin/Uninstall' => 'Plugin byl úspěšně odinstalován.',
-        
-        '/Admin/Deleted/Post/Back' => 'Příspěvek byl úspěšně vracen zpět do fóra.',
-        '/Admin/Deleted/Post/Delete' => 'Příspěvek byl úspěšně smazán.',
+        'L_SUCCESS' => [
 
-        '/Admin/Deleted/Topic/Back' => 'Téma bylo úspěšně vraceno zpět do fóra.',
-        '/Admin/Deleted/Topic/Delete' => 'Téma bylo úspěšně smazáno.',
+            'optimizeTables' => 'Tabulky byly úspěšně optimalizovány.',
 
-        '/Admin/Deleted/ProfilePost/Back' => 'Profilový příspěvek byl úspěšně vracen zpět na profil.',
-        '/Admin/Deleted/ProfilePost/Delete' => 'Profilový příspěvek byl úspěšně smazán.',
+            'deletePlugin' => 'Plugin byl úspěšně smazán',
+            'installPlugin' => 'Plugin byl úspěšně nainstalován.',
+            'uninstallPlugin' => 'Plugin byl úspěšně odinstalován.',
+            'editPluginSettings' => 'Plugin byl úspěšně upraven.',
+            
+            'movePostBack' => 'Příspěvek byl úspěšně vracen zpět do fóra.',
+            'deleteDeletedPost' => 'Příspěvek byl úspěšně smazán.',
 
-        '/Admin/Deleted/ProfilePostComment/Back' => 'Profilový komentář byl úspěšně vracen zpět pod profilový příspěvek.',
-        '/Admin/Deleted/ProfilePostComment/Delete' => 'Profilový komentář byl úspěšně smazán.',
+            'moveTopicBack' => 'Téma bylo úspěšně vraceno zpět do fóra.',
+            'deleteDeletedTopic' => 'Téma bylo úspěšně smazáno.',
 
-        '/Admin/Report/Close' => 'Hlášení bylo úspěšně uzavřeno.',
+            'moveProfilePostBack' => 'Profilový příspěvek byl úspěšně vracen zpět na profil.',
+            'deleteDeletedProfilePost' => 'Profilový příspěvek byl úspěšně smazán.',
 
-        '/Admin/Settings/Index' => 'Nastavení webových stránek bylo úspěšně změněno.',
-        '/Admin/Settings/Other' => 'Nastavení webových stránek bylo úspěšně změněno.',
-        '/Admin/Settings/Registration' => 'Nastavení registrace bylo úspěšně změněno.',
-        '/Admin/Settings/Email' => 'Nastavení e-mailů bylo úspěšně změněno.',
-        '/Admin/Settings/EmailSend' => 'Testovací e-mail byl úspěšně odeslán.',
-        '/Admin/Settings/Language/Activate' => 'Výchozí jazyk byl úspěšně změněn.',
-        '/Admin/Settings/Language/Delete' => 'Jazyk byl úspěšně smazán.',
+            'moveProfilePostCommentBack' => 'Profilový komentář byl úspěšně vracen zpět pod profilový příspěvek.',
+            'deleteDeletedProfilePostComment' => 'Profilový komentář byl úspěšně smazán.',
 
-        '/Admin/Settings/URL/Create' => 'Překlad URL adresy byl úspěšně vytvořen.',
-        '/Admin/Settings/URL/Delete' => 'Překlad URL adresy byl úspěšně smazán.',
+            'markReportedContentAsClosed' => 'Hlášení bylo úspěšně uzavřeno.',
 
-        '/Admin/Synchronize/Scripts' => 'Skripty byly úspěšně synchronizovány.',
-        '/Admin/Synchronize/Styles' => 'Styly byly úspěšně synchronizovány.',
+            'editWebsiteSettings' => 'Nastavení webových stránek bylo úspěšně změněno.',
+            'editRegistrationSettings' => 'Nastavení registrace bylo úspěšně změněno.',
+            'editEmailSettings' => 'Nastavení e-mailů bylo úspěšně změněno.',
+            'sendTestEmail' => 'Testovací e-mail byl úspěšně odeslán.',
 
-        '/Admin/User/Edit' => 'Nastavení uživatele bylo úspěšně změněno.',
-        '/Admin/User/Delete' => 'Uživatel byl úspěšně smazán.',
-        '/Admin/User/Promote' => 'Oprávnění bylo úspěšně převedeno.',
-        '/Admin/User/Activate' => 'Učet byl úspěšně aktivován.',
+            'activeLanguage' => 'Výchozí jazyk byl úspěšně změněn.',
+            'deleteLanguage' => 'Jazyk byl úspěšně smazán.',
 
-        '/Admin/Page/Delete' => 'Stránka byla úspěšně smazána.',
-        '/Admin/Page/Edit' => 'Stránka byla úspěšně upravena.',
+            'newTranslateForURL' => 'Překlad URL adresy byl úspěšně vytvořen.',
+            'deleteTranslateForURL' => 'Překlad URL adresy byl úspěšně smazán.',
 
-        '/Admin/Label/Create' => 'Štítek byl úspěšně vytvořen.',
-        '/Admin/Label/Edit' => 'Štítek byl úspěšně upraven.',
-        '/Admin/Label/Delete' => 'Štítek byl úspěšně smazán.',
-        
-        '/Admin/Group/Edit' => 'Skupina byla úspěšně upravena.',
-        '/Admin/Group/Create' => 'Skupina byla úspěšně vytvořena.',
-        '/Admin/Group/Delete' => 'Skupina byla úspěšně smazána.',
-        '/Admin/Group/Permission' => 'Opravnění skupiny bylo úspěšně změněno.',
+            'newSidebarObject' => 'Prvek byl úspěšně přidán.',
+            'deleteSidebarObject' => 'Prvek byl úspěšně smazán.',
 
-        '/Admin/Template/Activate' => 'Výchozí šablona byla úspěšně změněna.',
-        '/Admin/Template/Delete' => 'Šablona byla úspěšně smazána.',
+            'synchronizeRoles' => 'Role byly úspěšně synchronizovány.',
+            'synchronizeGroups' => 'Skupiny byly úspěšně synchronizovány.',
+            'synchronizeLabels' => 'Štítky byly úspěšně synchronizovány.',
+            'synchronizeScripts' => 'Skripty byly úspěšně synchronizovány.',
+            'synchronizeStyles' => 'Styly byly úspěšně synchronizovány.',
+            'synchronizeTemplate' => 'Šablona byla úspěšně synchronizována.',
 
-        '/Admin/Forum/Edit' => 'Fórum bylo úspěšně upraveno.',
-        '/Admin/Forum/Create' => 'Fórum bylo úspěšně vytvořeno.',
-        '/Admin/Forum/Delete' => 'Fórum bylo úspěšně smazáno.',
-        '/Admin/Forum/Permission' => 'Opravnění fóra bylo úspěšně změněno.',
+            'editUser' => 'Nastavení uživatele bylo úspěšně změněno.',
+            'deleteUser' => 'Uživatel byl úspěšně smazán.',
+            'promoteUser' => 'Oprávnění bylo úspěšně převedeno.',
+            'activateUser' => 'Učet byl úspěšně aktivován.',
 
-        '/Admin/Category/Edit' => 'Kategorie byla úspěšně upravena.',
-        '/Admin/Category/Create' => 'Kategorie byla úspěšně vytvořena.',
-        '/Admin/Category/Delete' => 'Kategorie bylo úspěšně smazána.',
-        '/Admin/Category/Permission' => 'Opravnění kategorie bylo úspěšně změněno.',
+            'newCustomPage' => 'Stránka byla úspěšně vytvořena.',
+            'deleteCustomPage' => 'Stránka byla úspěšně smazána.',
+            'editCustomPageThroughAdminPanel' => 'Stránka byla úspěšně upravena.',
 
-        '/Admin/Notification/Edit' => 'Fórum bylo úspěšně upraveno.',
-        '/Admin/Notification/Create' => 'Oznámení bylo úspěšně vytvořeno.',
-        '/Admin/Notification/Delete' => 'Oznámení bylo úspěšně smazána.',
+            'newLabel' => 'Štítek byl úspěšně vytvořen.',
+            'editLabel' => 'Štítek byl úspěšně upraven.',
+            'deleteLabel' => 'Štítek byl úspěšně smazán.',
 
-        '/Admin/Menu/Dropdown/Edit' => 'Rozbalovací seznam byl úspěšně upraven.',
-        '/Admin/Menu/Dropdown/Create' => 'Rozbalovací seznam byl úspěšně vytvořen.',
+            'newRole' => 'Role byla úspěšně vytvořena.',
+            'editRole' => 'Role byla úspěšně upravena.',
+            'deleteRole' => 'Role byla úspěšně smazána.',
+            
+            'editGroup' => 'Skupina byla úspěšně upravena.',
+            'newGroup' => 'Skupina byla úspěšně vytvořena.',
+            'deleteGroup' => 'Skupina byla úspěšně smazána.',
+            'editGroupPermission' => 'Opravnění skupiny bylo úspěšně změněno.',
 
-        '/Admin/Menu/Button/Edit' => 'Tlačítko bylo úspěšně upraveno.',
-        '/Admin/Menu/Button/Create' => 'Tlačítko bylo úspěšně vytvořeno.',
-        '/Admin/Menu/Button/Delete' => 'Tlačítko bylo úspěšně smazáno.',
+            'deleteTemplate' => 'Šablona byla úspěšně smazána.',
+            'activateTemplate' => 'Výchozí šablona byla úspěšně změněna.',
+            'editTemplateSettings' => 'Nastavení šablony bylo úspěšně změněno.',
 
-        '/Admin/Menu/ButtonSub/Edit' => 'Tlačítko bylo úspěšně upraveno.',
-        '/Admin/Menu/ButtonSub/Create' => 'Tlačítko bylo úspěšně vytvořeno.',
-        '/Admin/Menu/ButtonSub/Delete' => 'Tlačítko bylo úspěšně smazáno.'
+            'editForum' => 'Fórum bylo úspěšně upraveno.',
+            'newForum' => 'Fórum bylo úspěšně vytvořeno.',
+            'deleteForum' => 'Fórum bylo úspěšně smazáno.',
+            'editForumPermission' => 'Opravnění fóra bylo úspěšně změněno.',
+
+            'editCategory' => 'Kategorie byla úspěšně upravena.',
+            'newCategory' => 'Kategorie byla úspěšně vytvořena.',
+            'deleteCategory' => 'Kategorie byla úspěšně smazána.',
+            'editCategoryPermission' => 'Opravnění kategorie bylo úspěšně změněno.',
+
+            'editNotification' => 'Oznámení bylo úspěšně upraveno.',
+            'newNotification' => 'Oznámení bylo úspěšně vytvořeno.',
+            'deleteNotification' => 'Oznámení bylo úspěšně smazána.',
+
+            'editDropdown' => 'Rozbalovací seznam byl úspěšně upraven.',
+            'newDropdown' => 'Rozbalovací seznam byl úspěšně vytvořen.',
+
+            'editButton' => 'Tlačítko bylo úspěšně upraveno.',
+            'newButton' => 'Tlačítko bylo úspěšně vytvořeno.',
+            'deleteButton' => 'Tlačítko bylo úspěšně smazáno.',
+
+            'editSubButton' => 'Tlačítko bylo úspěšně upraveno.',
+            'newSubButton' => 'Tlačítko bylo úspěšně vytvořeno.',
+            'deleteSubButton' => 'Tlačítko bylo úspěšně smazáno.'
+        ]
     ]
 ];

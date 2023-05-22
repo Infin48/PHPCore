@@ -1,0 +1,50 @@
+{
+    "body": {
+        "defaults": {
+            "data": {
+                "empty": "L_SETTINGS.L_URL.L_DEFAULT.L_NO",
+                "title": "L_SETTINGS.L_URL.L_DEFAULT.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "url"
+                        },
+                        "convert": {
+                            "id": "settings_url_id",
+                            "title": "settings_url_to",
+                            "desc": "settings_url_from"
+                        },
+                        "button": {
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        },
+        "hidden": {
+            "data": {
+                "empty": "L_SETTINGS.L_URL.L_HIDDEN.L_NO",
+                "title": "L_SETTINGS.L_URL.L_HIDDEN.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "url"
+                        },
+                        "convert": {
+                            "id": "settings_url_id",
+                            "title": "settings_url_to",
+                            "desc": "settings_url_from"
+                        },
+                        "button": {
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

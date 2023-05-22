@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html id="html" lang="cs-cz" class="html-full html-hidden <?= $this->data->data['pageName'] ?>">
+<html id="html" lang="cs-cz" class="html-full html-hidden html-<?= $this->data->get('data.page-html') ?>">
 
     <head>
-        <?php require $this->template->template('/Blocks/Head.phtml'); ?>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Head.phtml'); ?>
     </head>
 
     <body>
@@ -11,7 +11,6 @@
 
             <?php $this->show(); ?>
         </div>
-        <?php require $this->template->template('/Blocks/Cookie.phtml'); ?>
         <?php require ROOT . '/Includes/Template/Footer.phtml' ?>
     </body>
     

@@ -1,0 +1,85 @@
+{
+    "body": {
+        "report": {
+            "body": {
+                "show": {
+                    "data": {
+                        "html": {
+                            "ajax-item": "report"
+                        },
+                        "title": "L_REPORT.L_DETAILS"
+                    },
+                    "body": {
+                        "topic_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_TOPIC.L_ID.L_DESC",
+                                "title": "L_TOPIC.L_ID.L_ID"
+                            }
+                        },
+                        "post_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_POST.L_ID.L_DESC",
+                                "title": "L_POST.L_ID.L_ID"
+                            }
+                        },
+                        "profile_post_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_PROFILE_POST.L_ID.L_DESC",
+                                "title": "L_PROFILE_POST.L_ID.L_ID"
+                            }
+                        },
+                        "profile_post_comment_id": {
+                            "options": {
+                                "type": "id",
+                                "hide": true
+                            },
+                            "data": {
+                                "desc": "L_PROFILE_POST_COMMENT.L_ID.L_DESC",
+                                "title": "L_PROFILE_POST_COMMENT.L_ID.L_ID"
+                            }
+                        },
+                        "show": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-eye",
+                                "desc": "L_SHOW.L_DESC",
+                                "href": "",
+                                "title": "L_SHOW.L_SHOW",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "close": {
+                            "options": {
+                                "hide": true,
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "close",
+                                "icon": "fa-solid fa-circle-xmark",
+                                "desc": "L_REPORT.L_CLOSE.L_DESC",
+                                "color": "delete",
+                                "title": "L_REPORT.L_CLOSE.L_CLOSE",
+                                "button": "L_BTN.L_CLOSE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

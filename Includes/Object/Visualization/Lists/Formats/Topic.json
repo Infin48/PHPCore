@@ -1,19 +1,21 @@
 {
     "body": {
         "topic": {
-            "options": {
-                "empty": "L_TOPIC_NO"
+            "data": {
+                "empty": "L_TOPIC.L_NO"
             },
             "body": {
                 "default": {
                     "options": {
                         "template": {
-                            "big": "/Topic/Big.phtml",
-                            "small": "/Topic/Small.phtml",
-                            "medium": "/Topic/Medium.phtml"
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Topic/Big.phtml",
+                            "small": "Root/Style:/Templates/Blocks/Visualization/Lists/Topic/Small.phtml",
+                            "medium": "Root/Style:/Templates/Blocks/Visualization/Lists/Topic/Medium.phtml"
                         }
                     },
-                    "data": {}
+                    "data": {
+                        "name": "topic"
+                    }
                 }
             }
         }

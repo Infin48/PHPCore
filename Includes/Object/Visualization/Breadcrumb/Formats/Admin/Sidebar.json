@@ -1,0 +1,16 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_BREADCRUMB.L_ADMIN"
+            }
+        },
+        "sidebar": {
+            "data": {
+                "href": "/admin/sidebar/",
+                "title": "L_BREADCRUMB.L_SIDEBAR"
+            }
+        }
+    }
+}

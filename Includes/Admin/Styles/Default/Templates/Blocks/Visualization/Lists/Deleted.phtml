@@ -1,8 +1,8 @@
-<div class="vertical-align">
-    <?= $this->build->user->image($row['data']) ?>
+<div class="list-row-align">
+    <?= $this->build->user->image($list->get('data')) ?>
     <div class="inner">
-        <span class="list-title"><?= $L_CONTENT_LIST[$row['data']['deleted_type']] ?></span>
+        <span class="list-title"><?= $language->get('L_CONTENT_LIST.' . $list->get('data.deleted_type')) ?></span>
         <br>
-        <?= $L_BY ?> <?= $this->build->user->link($row['data'], true) ?>
+        <?= $language->get('L_BY') ?> <?= $this->build->user->link(data: $list->get('data')) ?>
     </div>
 </div>

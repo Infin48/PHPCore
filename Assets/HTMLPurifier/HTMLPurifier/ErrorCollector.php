@@ -112,9 +112,9 @@ class HTMLPurifier_ErrorCollector
         );
         $this->_current[] = $error;
 
-        // NEW CODE BELOW ...
+        // New code below ...
         // Top-level errors are either:
-        //  TOKEN type, if $value is set appropriately, or
+        //  token type, if $value is set appropriately, or
         //  "syntax" type, if $value is null
         $new_struct = new HTMLPurifier_ErrorStruct();
         $new_struct->type = HTMLPurifier_ErrorStruct::TOKEN;
@@ -148,7 +148,7 @@ class HTMLPurifier_ErrorCollector
         if (!empty($cssprop)) {
             $struct = $struct->getChild(HTMLPurifier_ErrorStruct::CSSPROP, $cssprop);
             if (!$struct->value) {
-                // if we tokenize CSS this might be a little more difficult to do
+                // if we tokenize css this might be a little more difficult to do
                 $struct->value = array($cssprop, 'PUT VALUE HERE');
             }
         }
@@ -180,9 +180,9 @@ class HTMLPurifier_ErrorCollector
             $errors = $this->errors;
         }
 
-        // 'At line' message needs to be removed
+        // 'at line' message needs to be removed
 
-        // generation code for new structure goes here. It needs to be recursive.
+        // generation code for new structure goes here. it needs to be recursive.
         foreach ($this->lines as $line => $col_array) {
             if ($line == -1) {
                 continue;
@@ -213,7 +213,7 @@ class HTMLPurifier_ErrorCollector
                 list($severity, $msg) = $error;
                 $string = '';
                 $string .= '<div>';
-                // W3C uses an icon to indicate the severity of the error.
+                // W3c uses an icon to indicate the severity of the error.
                 $error = $this->locale->getErrorName($severity);
                 $string .= "<span class=\"error e$severity\"><strong>$error</strong></span> ";
                 if (!is_null($line) && !is_null($col)) {

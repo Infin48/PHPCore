@@ -1,0 +1,249 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "image": {
+                    "data": {
+                        "title": "L_USER.L_EDIT"
+                    },
+                    "body": {
+                        "image": {
+                            "options": {
+                                "template": {
+                                    "root": "Root/Style:/Templates/Blocks/Visualization/Form/User.phtml"
+                                }
+                            }
+                        }
+                    }
+                },
+                "user": {
+                    "data": {
+                        "title": "L_USER.L_NEW",
+                        "html": {
+                            "ajax-item": "user"
+                        }
+                    },
+                    "body": {
+                        "show": {
+                            "options": {
+                                "type": "button",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_LINK_TO_PROFILE.L_LINK_TO_PROFILE",
+                                "desc": "L_LINK_TO_PROFILE.L_DESC",
+                                "icon": "fa-solid fa-eye",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "user_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_USERNAME.L_USERNAME",
+                                "desc": "L_USERNAME.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_USERNAME"
+                            }
+                        },
+                        "user_email": {
+                            "options": {
+                                "type": "email",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_EMAIL.L_EMAIL",
+                                "placeholder": "L_PLACEHOLDER.L_EMAIL"
+                            }
+                        },
+                        "user_password": {
+                            "options": {
+                                "type": "password"
+                            },
+                            "data": {
+                                "title": "L_PASSWORD.L_NEW",
+                                "desc": "L_PASSWORD.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD"
+                            }
+                        },
+                        "group_id": {
+                            "options": {
+                                "hide": true,
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_USER.L_GROUP.L_GROUP",
+                                "desc": "L_USER.L_GROUP.L_DESC"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "convert": {
+                                            "value": "group_id",
+                                            "label": "group_name"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "user_roles": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox[]"
+                            },
+                            "data": {
+                                "empty": "L_ROLE.L_NO",
+                                "title": "L_ROLE.L_ROLE"
+                            },
+                            "body": {
+                                "default": {
+                                    "options": {
+                                        "template": {
+                                            "option": "/Includes/Object/Visualization/Form/Templates/Admin/Role.phtml"
+                                        }
+                                    },
+                                    "data": {
+                                        "convert": {
+                                            "value": "role_id"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "delete_signature": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DELETE.L_SIGNATURE"
+                            },
+                            "body": {
+                                "delete": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "delete_about": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DELETE.L_ABOUT"
+                            },
+                            "body": {
+                                "delete": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "delete_user_text": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DELETE.L_USER_TEXT"
+                            },
+                            "body": {
+                                "delete": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "delete_profile_image": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DELETE.L_PROFILE_IMAGE"
+                            },
+                            "body": {
+                                "delete": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "delete_header_image": {
+                            "options": {
+                                "hide": true,
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_USER.L_DELETE.L_HEADER_IMAGE"
+                            },
+                            "body": {
+                                "delete": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "promote": {
+                            "options": {
+                                "hide": true,
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "promote",
+                                "ajax-window": true,
+                                "desc": "L_USER.L_PROMOTE.L_DESC",
+                                "icon": "fa-solid fa-user-cog",
+                                "title": "L_USER.L_PROMOTE.L_PROMOTE",
+                                "button": "L_BTN.L_TRANSFER_OWNERSHIP"
+                            }
+                        },
+                        "delete": {
+                            "options": {
+                                "hide": true,
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "delete",
+                                "ajax-window": true,
+                                "desc": "L_USER.L_DELETE.L_DESC",
+                                "icon": "fa-solid fa-trash",
+                                "title": "L_USER.L_DELETE.L_DELETE",
+                                "button": "L_DELETE"
+                            }
+                        },
+                        "activate": {
+                            "options": {
+                                "hide": true,
+                                "type": "button"
+                            },
+                            "data": {
+                                "ajax-action": "activate",
+                                "icon": "fa-solid fa-star",
+                                "title": "L_USER.L_ACTIVATE",
+                                "button": "L_BTN.L_ACTIVATE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

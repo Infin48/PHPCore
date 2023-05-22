@@ -1,0 +1,63 @@
+{
+    "body": {
+        "login": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "login": {
+                    "options": {
+                        "template": {
+                            "link": "Root/Style:/Templates/Blocks/Visualization/Form/Links/Login.phtml"
+                        }
+                    },
+                    "data": {
+                        "icon": "fa-solid fa-question",
+                        "title": "L_LOGIN.L_LOGIN"
+                    },
+                    "body": {
+                        "user_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-user",
+                                "placeholder": "L_PLACEHOLDER.L_USERNAME"
+                            }
+                        },
+                        "user_password": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-lock",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD"
+                            }
+                        },
+                        "remember": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "body": {
+                                "remember": {
+                                    "data": {
+                                        "value": 1,
+                                        "label": "L_LOGIN.L_REMEMBER"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

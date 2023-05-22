@@ -145,7 +145,7 @@ class HTMLPurifier
      */
     public function purify($html, $config = null)
     {
-        // :TODO: make the config merge in, instead of replace
+        // :todo: make the config merge in, instead of replace
         $config = $config ? HTMLPurifier_Config::create($config) : $this->config;
 
         // implementation is partially environment dependant, partially
@@ -154,7 +154,7 @@ class HTMLPurifier
 
         $context = new HTMLPurifier_Context();
 
-        // setup HTML generator
+        // setup html generator
         $this->generator = new HTMLPurifier_Generator($config, $context);
         $context->register('Generator', $this->generator);
 
@@ -170,7 +170,7 @@ class HTMLPurifier
         }
 
         // setup id_accumulator context, necessary due to the fact that
-        // AttrValidator can be called from many places
+        // Attrvalidator can be called from many places
         $id_accumulator = HTMLPurifier_IDAccumulator::build($config, $context);
         $context->register('IDAccumulator', $id_accumulator);
 
@@ -192,7 +192,7 @@ class HTMLPurifier
             $filters[] = new $class;
         }
         foreach ($custom_filters as $filter) {
-            // maybe "HTMLPurifier_Filter_$filter", but be consistent with AutoFormat
+            // maybe "htmlpurifier_filter_$filter", but be consistent with autoformat
             $filters[] = $filter;
         }
         $filters = array_merge($filters, $this->filters);
@@ -202,14 +202,14 @@ class HTMLPurifier
             $html = $filters[$i]->preFilter($html, $config, $context);
         }
 
-        // purified HTML
+        // purified html
         $html =
             $this->generator->generateFromTokens(
                 // list of tokens
                 $this->strategy->execute(
                     // list of un-purified tokens
                     $lexer->tokenizeHTML(
-                        // un-purified HTML
+                        // un-purified html
                         $html,
                         $config,
                         $context

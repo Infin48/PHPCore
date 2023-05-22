@@ -1,0 +1,12 @@
+{
+    "body": {
+        "topic": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_TOPIC.L_REPORTED",
+                "value": "",
+                "color": "red"
+            }
+        }
+    }
+}

@@ -10,10 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Exception;
-
-use Model\Language;
-use Model\System as _System;
+namespace App\Exception;
 
 /**
  * System 
@@ -28,31 +25,23 @@ class System extends \Exception
      */
     public function __construct( string $error, array $assign = null )
     {
-        $language = new Language();
-        $system = new _System();
-
-        if (!$language->get()) {
-            
-            // DEFAULT LANGUAGE
-            $this->language             = new Language(
-                language: 'cs'
-            );
-        }
-
-        extract($language->get());
-
-        if (isset($assign)) {
-
-            foreach ($assign as $key => $value) {
+        if (isset($assign))
+        {
+            foreach ($assign as $key => $value)
+            {
                 $assign['{' . $key . '}'] = $value;
             }
 
             $error = $language[$error] ? strtr($language->get($error), $assign) : $error;
         }
 
-        if (defined('AJAX')) {
+        $error .= '<br>Error on line ' . $this->getLine() . ' in '.$this->getFile() . '<br>' . $this->getTraceAsString();
+
+        if (defined('AJAX'))
+        {
             echo json_encode([
-                'error' => $error
+                'status' => 'error',
+                'message' => $error
             ]);
             exit();
         }

@@ -1,0 +1,74 @@
+{
+    "body": {
+        "button": {
+            "options": {
+                "empty": "L_BUTTON.L_LIST.L_NO"
+            },
+            "data": {
+                "title": "L_BUTTON.L_LIST.L_LIST",
+                "button": {
+                    "add": {
+                        "href": "/admin/menu/add/type-dropdown/",
+                        "title": "L_BTN.L_NEW_DROPDOWN"
+                    },
+                    "_add": {
+                        "href": "/admin/menu/add/type-button/",
+                        "title": "L_BTN.L_NEW_BUTTON"
+                    }
+                }
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Menu/Button.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "button"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "add-sub-button": {
+                                "hide": true,
+                                "title": "L_BTN.L_ADD_BUTTON"
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    },
+                    "body": {
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Menu/Button.phtml"
+                                }
+                            },
+                            "data": {
+                                "html": {
+                                    "ajax-item": "sub-button"
+                                },
+                                "button": {
+                                    "up": {
+                                        "disabled": true
+                                    },
+                                    "down": {
+                                        "disabled": true
+                                    },
+                                    "edit": {},
+                                    "delete": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

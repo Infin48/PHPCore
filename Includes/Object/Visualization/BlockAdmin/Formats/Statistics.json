@@ -1,0 +1,76 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "icon": "fa-solid fa-user",
+                "title": "L_USER.L_TOTAL",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "users": {
+            "data": {
+                "icon": "fa-solid fa-users",
+                "title": "L_USER.L_REGISTERED",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "user_deleted": {
+            "data": {
+                "icon": "fa-solid fa-user-slash",
+                "title": "L_USER.L_DELETED",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fa-solid fa-comments",
+                "title": "L_TOPIC.L_TOTAL",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "topic_reported": {
+            "data": {
+                "icon": "fa-solid fa-exclamation-circle",
+                "title": "L_TOPIC.L_REPORTED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "topic_deleted": {
+            "data": {
+                "icon": "fa-solid fa-minus-circle",
+                "title": "L_TOPIC.L_DELETED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "post": {
+            "data": {
+                "icon": "fa-solid fa-comment",
+                "title": "L_POST.L_TOTAL",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "post_reported": {
+            "data": {
+                "icon": "fa-solid fa-exclamation-circle",
+                "title": "L_POST.L_REPORTED",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "post_deleted": {
+            "data": {
+                "icon": "fa-solid fa-minus-circle",
+                "title": "L_POST.L_DELETED",
+                "value": "",
+                "color": "blue"
+            }
+        }
+    }
+}

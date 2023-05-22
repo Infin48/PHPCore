@@ -10,59 +10,100 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Category;
-
-use Block\Admin\Category;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Category;
 
 /**
  * Show
  */
-class Show extends \Page\Page
+class Show extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Overall',
-        'redirect' => '/admin/forum/',
-        'permission' => 'admin.forum'
-    ];
+    protected bool $ID = true;
+    
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.forum';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('forum')->row('forum')->active();
-        
-        // BLOCK
-        $category = new Category();
+        // System
+        $system = $data->get('inst.system');
 
-        // CATEGORY
-        $category = $category->get($this->url->getID()) or $this->error();
+        // Language
+        $language = $data->get('inst.language');
         
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Forum');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // If forum is not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show 404 error page
+			$this->error404();
+		}
         
-        // FIELD
-        $field = new Field('/Admin/Category/Category');
-        $field->data($category);
-        $field->object('category')->title('L_CATEGORY_EDIT');
-        $this->data->field = $field->getData();
+        // Navbar
+        $this->navbar->elm1('forum')->elm2('forum')->active();
 
-        // EDIT CATEGORY
-        $this->process->form(type: '/Admin/Category/Edit', data: [
-            'category_id'   => $category['category_id']
-        ]);
+        // Get category data from database
+        $row = $db->select('app.category.get()', $this->url->getID()) or $this->error404();
+        
+        // Save category data and unite with others
+        $data->set('data.category', $row);
 
-        $this->data->head['title'] = $this->language->get('L_CATEGORY') . ' - ' . $category['category_name'];
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Forum.json');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.category.category_name'))->href('/admin/category/show/' . $data->get('data.category.category_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+        
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Category/Category.json');
+        $form
+            ->form('category')
+                ->callOnSuccess($this, 'editCategory')
+                ->data($data->get('data.category'))
+                ->frame('category')
+                    ->title('L_CATEGORY.L_EDIT');
+        $data->form = $form->getDataToGenerate();
+
+        // Set page title
+        $data->set('data.head.title', $language->get('L_CATEGORY.L_CATEGORY') . ' - ' . $data->get('data.category.category_name'));
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function editCategory( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Update category
+        $db->update(TABLE_CATEGORIES, [
+            'category_name'         => $post->get('category_name'),
+            'category_description'  => $post->get('category_description')
+        ], $data->get('data.category.category_id'));
+
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__, text: $post->get('category_name') );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Redirect user
+        $data->set('data.redirect', '/admin/forum/');
     }
 }

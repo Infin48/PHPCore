@@ -1,0 +1,34 @@
+<div class="align wh-full">
+    <?php if (empty($this->data->get('data.forum.forum_link'))) : ?>
+        <div class="align wh-full checkbox group--<?= $input->get('data.group_class') ?>">
+            <?php if ( $input->get('data.group_id') != 0 ) : ?>
+                <input id="gp<?= $input->get('data.group_id') ?>" type="checkbox" name="forum_permission_post[]" value="<?= $input->get('data.group_id') ?>"<?php if ( in_array($input->get('data.group_id'), $this->data->get('data.forum.permission_post') ?: []) ) : ?> checked<?php endif; ?>>
+                <label for="gp<?= $input->get('data.group_id') ?>">
+                    <span class="checkbox-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </span>
+                </label>
+            <?php endif; ?>
+        </div>
+        <div class="align wh-full checkbox group--<?= $input->get('data.group_class') ?>">
+            <?php if ( $input->get('data.group_id') != 0 ) : ?>
+                <input id="gt<?= $input->get('data.group_id') ?>" type="checkbox" name="forum_permission_topic[]" value="<?= $input->get('data.group_id') ?>"<?php if ( in_array($input->get('data.group_id'), $this->data->get('data.forum.permission_topic') ?: []) ) : ?> checked<?php endif; ?>>
+                <label for="gt<?= $input->get('data.group_id') ?>">
+                    <span class="checkbox-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </span>
+                </label>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <?php if (!$this->data->get('data.forum.forum_main')) : ?>
+        <div class="align wh-full checkbox group--<?= $input->get('data.group_class') ?>">
+            <input id="gs<?= $input->get('data.group_id') ?>" type="checkbox" name="forum_permission_see[]" value="<?= $input->get('data.group_id') ?>"<?php if ( in_array($input->get('data.group_id'), $this->data->get('data.forum.permission_see_forum') ?: []) ) : ?> checked<?php endif; ?>>
+            <label for="gs<?= $input->get('data.group_id') ?>">
+                <span class="checkbox-icon">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+            </label>
+        </div>
+    <?php endif; ?>
+</div>

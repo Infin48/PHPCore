@@ -1,0 +1,29 @@
+{
+    "body": {
+        "page": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "page": {
+                    "body": {
+                        "page_html": {
+                            "options": {
+                                "type": "html"
+                            },
+                            "data": {
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

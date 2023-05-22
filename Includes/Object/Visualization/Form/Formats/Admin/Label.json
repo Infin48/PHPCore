@@ -1,0 +1,56 @@
+{
+    "body": {
+        "label": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "label": {
+                    "data": {
+                        "title": "L_LABEL.L_NEW"
+                    },
+                    "body": {
+                        "show": {
+                            "options": {
+                                "hide": true,
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-eye",
+                                "desc": "L_LABEL.L_SHOW.L_DESC",
+                                "title": "L_LABEL.L_SHOW.L_SHOW",
+                                "button": "L_BTN.L_SHOW"
+                            }
+                        },
+                        "label_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_LABEL.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "label_color": {
+                            "options": {
+                                "type": "color"
+                            },
+                            "data": {
+                                "desc": "L_COLOR.L_DESC",
+                                "title": "L_COLOR.L_COLOR"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

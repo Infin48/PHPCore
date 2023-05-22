@@ -10,9 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\Database;
-
-use Model\Database\QueryCompiler;
+namespace App\Model\Database;
 
 /**
  * Database
@@ -30,6 +28,16 @@ class Database
     protected int $id;
 
     /**
+     * @var \App\Model\Data $data Data
+     */
+    protected \App\Model\Data $data;
+
+    /**
+     * @var \App\Model\Database\QueryCompiler $compiler Query compiler
+     */
+    private static \App\Model\Database\QueryCompiler $compiler;
+
+    /**
      * @var array $options PDO options
      */
     private array $options = [
@@ -41,20 +49,53 @@ class Database
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct( \App\Model\Data $data = null )
     {
-        if (!isset(self::$connect)) {
+        if ($data)
+        {
+            $this->data = $data;
+        }
+
+        if (!isset(self::$connect))
+        {
+            self::$connect = '';
+
+            if (!file_exists(ROOT . '/Includes/.htdata.json'))
+            {
+                return;
+            }
+
             try {
 
                 $access = json_decode(@file_get_contents(ROOT . '/Includes/.htdata.json'), true);
 
-                // CONNECT
+                // Connect
                 self::$connect = @new \PDO('mysql:dbname=' . $access['name'] . ';host=' . $access['host'] . ';port=' . $access['port'] . ';charset=utf8mb4', $access['user'], $access['pass'], $this->options);
 
+                self::$compiler = new \App\Model\Database\QueryCompiler();
+
             } catch (\Exception $e) {
-                throw new \Exception\System('Nepodařilo se připojit k databázi! ' . $e->getMessage());
+                throw new \App\Exception\System('Nepodařilo se připojit k databázi! ' . $e->getMessage());
             }
         }
+    }
+
+    /**
+     * Returns true if application is connected with database
+     *
+     * @return void
+     */
+    public function isConnected()
+    {
+        if (isset(self::$connect))
+        {
+            if (!empty(self::$connect))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     /**
@@ -94,7 +135,7 @@ class Database
             return $row;
 
         } catch ( \Exception $e ) {
-            throw new \Exception\System($e->getMessage() . '<br>' . $query);
+            throw new \App\Exception\System($e->getMessage() . '<br>' . $query);
         }
     }
 
@@ -102,15 +143,16 @@ class Database
      * Compiles query
      *
      * @param  string $tableName
-     * @param  array $query
+     * @param  array|string $query
      * @param  string $type Query type
-     * @param  int $id Item Id
+     * @param  int|string $id Item ID
+     * @param  int $flag Additional flags
      * 
      * @return string Compiled query
      */
-    protected function compile( string $tableName, array $query, string $type, int $id = null )
+    protected function compile( string $table, string $type, array|string $query = null, int|string $id = null, int $flag = null )
     {
-        $compiler = new QueryCompiler($tableName, $query, $type, $id);
-        return $this->execute($compiler->getQuery(), $compiler->getParams());
+        self::$compiler->compile(table: $table, type: $type, query: $query, id: $id, flag: $flag);
+        return $this->execute(self::$compiler->getQuery(), self::$compiler->getParams());
     }
 }

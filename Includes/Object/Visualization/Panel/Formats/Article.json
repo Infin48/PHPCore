@@ -1,0 +1,85 @@
+{
+    "data": {
+        "html": {
+            "ajax-item": "article"
+        }
+    },
+    "body": {
+        "labels": {
+            "options": {
+                "hide": true,
+                "type": "form"
+            },
+            "data": {
+                "icon": "fa-solid fa-tags",
+                "form": {
+                    "title": "L_LABEL.L_LIST",
+                    "button": {
+                        "ajax-action": "label",
+                        "title": "L_BTN.L_CONFIRM"
+                    }
+                }
+            },
+            "body":{
+                "default": {
+                    "options": {
+                        "template": {
+                            "body": "/Includes/Object/Visualization/Panel/Templates/Label.phtml"
+                        }
+                    },
+                    "data": {
+                        "name": "article_label"
+                    }
+                }
+            }
+        },
+        "tools": {
+            "options": {
+                "type": "dropdown"
+            },
+            "data": {
+                "icon": "fa-solid fa-wrench",
+                "title": "L_BTN.L_TOOLS"
+            },
+            "body":{
+                "edit":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_BTN.L_EDIT",
+                        "href": "~/edit/"
+                    }
+                },
+                "delete":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_BTN.L_DELETE",
+                        "ajax-action": "delete",
+                        "ajax-window": true
+                    }
+                },
+                "stick":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_BTN.L_STICK",
+                        "ajax-action": "stick"
+                    }
+                },
+                "unstick":{
+                    "options": {
+                        "hide": true
+                    },
+                    "data": {
+                        "title": "L_BTN.L_UNSTICK",
+                        "ajax-action": "unstick"
+                    }
+                }
+            }
+        }
+    }
+}

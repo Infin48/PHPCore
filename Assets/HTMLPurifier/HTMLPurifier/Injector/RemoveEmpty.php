@@ -48,7 +48,7 @@ class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
         $this->exclude = $config->get('AutoFormat.RemoveEmpty.Predicate');
         foreach ($this->exclude as $key => $attrs) {
             if (!is_array($attrs)) {
-                // HACK, see HTMLPurifier/Printer/ConfigForm.php
+                // Hack, see htmlpurifier/printer/configform.php
                 $this->exclude[$key] = explode(';', $attrs);
             }
         }

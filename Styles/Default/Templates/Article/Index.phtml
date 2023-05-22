@@ -1,0 +1,8 @@
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Panel/Panel.phtml'); ?>
+<div class="block-list">
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Block.phtml'); ?>
+    <?php if ( $this->data->block->get('body.another.body') ) : ?>
+        <h2><?= $language->get('L_ARTICLE.L_ANOTHER') ?></h2>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Article.phtml') ?>
+    <?php endif; ?>
+</div>

@@ -10,70 +10,84 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Deleted;
-
-use Block\Deleted;
-use Block\Statistics;
-
-use Model\Pagination;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Admin\Block\Block;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Deleted;
 
 /**
  * Index
  */
-class Index extends \Page\Page
+class Index extends \App\Page\Page
 {    
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.forum'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.forum';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('forum')->row('deleted')->active();
+        // System
+        $system = $data->get('inst.system');
+        
+        // If forum is not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('forum')->elm2('deleted')->active();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Deleted.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // BLOCK
-        $stats = new Statistics();
-        $deleted = new Deleted();
+        // Block
 
-        // PAGINATION
-        $pagination = new Pagination();
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(20);
-        $pagination->total($deleted->getAllCount());
+        $pagination->total($db->select('app.deleted.count()'));
         $pagination->url($this->url->getURL());
-        $deleted->pagination = $this->data->pagination = $pagination->getData();
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $list = new Lists('/Deleted');
-        $list->object('deleted')->fill(data: $deleted->getAll());
-        $this->data->list = $list->getData();
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Deleted.json');
 
-        // STATISTICS DATA
-        $statistics = $stats->getAll();
+        // Fill list with deleted content
+        $list->elm1('deleted')->fill(data: $db->select('app.deleted.all()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list )
+        {
+            $list->set('data.id', $list->get('data.deleted_id'));
+        });
 
-        // BLOCK
-        $block = new Block('/Deleted/Index');
+        // Save list and get ready to generate
+        $data->list = $list->getDataToGenerate();
+
+        // Save stats data and unite with others
+        $data->set('data.stats', $db->select('app.deleted.stats()'));
+
+        // Block
+        $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Deleted/Index.json');
         $block
-            ->object('post')->value($statistics['post_deleted'])
-            ->object('topic')->value($statistics['topic_deleted'])
-            ->object('profile_post')->value($statistics['profile_post_deleted'])
-            ->object('profile_post_comment')->value($statistics['profile_post_comment_deleted']);
-        $this->data->block = $block->getData();
+            // Set number of deleted posts
+            ->elm1('post')->value($data->get('data.stats.post_deleted'))
+            // Set number of deleted topics
+            ->elm1('topic')->value($data->get('data.stats.topic_deleted'))
+            // Set number of deleted profile posts
+            ->elm1('profile_post')->value($data->get('data.stats.profile_post_deleted'))
+            // Set number of deleted comments under profile posts
+            ->elm1('profile_post_comment')->value($data->get('data.stats.profile_post_comment_deleted'));
+
+        // Save block and get ready to generate
+        $data->block = $block->getDataToGenerate();
     }
 }

@@ -31,7 +31,7 @@ class HTMLPurifier_HTMLModule_Text extends HTMLPurifier_HTMLModule
      */
     public function setup($config)
     {
-        // Inline Phrasal -------------------------------------------------
+        // Inline phrasal -------------------------------------------------
         $this->addElement('abbr', 'Inline', 'Inline', 'Common');
         $this->addElement('acronym', 'Inline', 'Inline', 'Common');
         $this->addElement('cite', 'Inline', 'Inline', 'Common');
@@ -50,11 +50,11 @@ class HTMLPurifier_HTMLModule_Text extends HTMLPurifier_HTMLModule
         $code = $this->addElement('code', 'Inline', 'Inline', 'Common');
         $code->formatting = true;
 
-        // Inline Structural ----------------------------------------------
+        // Inline structural ----------------------------------------------
         $this->addElement('span', 'Inline', 'Inline', 'Common');
         $this->addElement('br', 'Inline', 'Empty', 'Core');
 
-        // Block Phrasal --------------------------------------------------
+        // Block phrasal --------------------------------------------------
         $this->addElement('address', 'Block', 'Inline', 'Common');
         $this->addElement('blockquote', 'Block', 'Optional: Heading | Block | List', 'Common', array('cite' => 'URI'));
         $pre = $this->addElement('pre', 'Block', 'Inline', 'Common');
@@ -74,7 +74,7 @@ class HTMLPurifier_HTMLModule_Text extends HTMLPurifier_HTMLModule
         $this->addElement('h5', 'Heading', 'Inline', 'Common');
         $this->addElement('h6', 'Heading', 'Inline', 'Common');
 
-        // Block Structural -----------------------------------------------
+        // Block structural -----------------------------------------------
         $p = $this->addElement('p', 'Block', 'Inline', 'Common');
         $p->autoclose = array_flip(
             array("address", "blockquote", "center", "dir", "div", "dl", "fieldset", "ol", "p", "ul")

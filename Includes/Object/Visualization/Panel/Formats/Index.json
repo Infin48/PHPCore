@@ -1,0 +1,14 @@
+{
+    "body": {
+        "new":{
+            "options": {
+                "type": "button"
+            },
+            "data": {
+                "href": "/article/add/",
+                "icon": "fa-solid fa-plus",
+                "title": "L_BTN.L_CREATE_ARTICLE"
+            }
+        }
+    }
+}

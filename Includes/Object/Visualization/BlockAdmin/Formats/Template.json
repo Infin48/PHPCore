@@ -1,0 +1,28 @@
+{
+    "body": {
+        "name": {
+            "data": {
+                "icon": "fa-solid fa-font",
+                "title": "L_NAME",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "version": {
+            "data": {
+                "icon": "fa-solid fa-code-branch",
+                "title": "L_VERSION",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "author": {
+            "data": {
+                "icon": "fa-solid fa-user",
+                "title": "L_AUTHOR",
+                "value": "",
+                "color": "blue"
+            }
+        }
+    }
+}

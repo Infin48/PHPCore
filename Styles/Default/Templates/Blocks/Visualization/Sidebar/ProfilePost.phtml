@@ -1,15 +1,11 @@
-<?= $this->build->user->image($row['data']) ?>
+<?= $sidebar->get('data.user_image') ?>
 <div class="inner">
-    <span class="grey">
-        <?= $this->build->user->link($row['data'], true) ?>
-        <?php if ((int)$row['data']['profile_id'] !== (int)$row['data']['user_id']) : ?>
-            <i class="fas fa-caret-right"></i>
-            <?= $this->build->user->link($row['data'], true, 'two_') ?>
-        <?php endif; ?>
-    </span>
+    <?= $sidebar->get('data.user') ?>
+    <?= $sidebar->get('data.user_second') ?>
     <br>
     <span class="trumbowyg">
-        <?= truncate($row['data']['profile_post_text'], 100) ?>
+        <?= $sidebar->get('data.text') ?>
     </span>
-    <span class="grey"><?= $this->build->date->long($row['data']['profile_post_created'], true) ?></span>
+    <br>
+    <span class="date"><?= $sidebar->get('data.date') ?></span>
 </div>

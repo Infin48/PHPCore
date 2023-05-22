@@ -1,0 +1,45 @@
+{
+    "body": {
+        "label": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "label": {
+                    "data": {
+                        "title": "L_LABEL_EDIT"
+                    },
+                    "body": {
+                        "label_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_LABEL_NAME",
+                                "placeholder": "L_NAME"
+                            }
+                        },
+                        "label_color": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_COLOR_INFO",
+                                "title": "L_LABEL_COLOR",
+                                "placeholder": "L_COLOR"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

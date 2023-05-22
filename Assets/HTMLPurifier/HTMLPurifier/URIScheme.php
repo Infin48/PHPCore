@@ -81,8 +81,8 @@ abstract class HTMLPurifier_URIScheme
                         $uri->host = null;
                         break;
                     }
-                    // URI is '////path', so we cannot nullify the
-                    // host to preserve semantics.  Try expanding the
+                    // Uri is '////path', so we cannot nullify the
+                    // host to preserve semantics.  try expanding the
                     // hostname instead (fall through)
                 }
                 // first see if we can manually insert a hostname
@@ -90,7 +90,7 @@ abstract class HTMLPurifier_URIScheme
                 if (!is_null($host)) {
                     $uri->host = $host;
                 } else {
-                    // we can't do anything sensible, reject the URL.
+                    // we can't do anything sensible, reject the url.
                     return false;
                 }
             } while (false);

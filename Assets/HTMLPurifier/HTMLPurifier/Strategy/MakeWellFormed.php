@@ -94,7 +94,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
         $context->register('InputZipper', $zipper);
         $context->register('CurrentToken', $token);
 
-        // -- begin INJECTOR --
+        // -- begin injector --
 
         $this->injectors = array();
 
@@ -103,7 +103,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
         $custom_injectors = $injectors['Custom'];
         unset($injectors['Custom']); // special case
         foreach ($injectors as $injector => $b) {
-            // XXX: Fix with a legitimate lookup table of enabled filters
+            // Xxx: fix with a legitimate lookup table of enabled filters
             if (strpos($injector, '.') !== false) {
                 continue;
             }
@@ -139,13 +139,13 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
             trigger_error("Cannot enable {$injector->name} injector because $error is not allowed", E_USER_WARNING);
         }
 
-        // -- end INJECTOR --
+        // -- end injector --
 
         // a note on reprocessing:
-        //      In order to reduce code duplication, whenever some code needs
-        //      to make HTML changes in order to make things "correct", the
-        //      new HTML gets sent through the purifier, regardless of its
-        //      status. This means that if we add a start token, because it
+        //      in order to reduce code duplication, whenever some code needs
+        //      to make html changes in order to make things "correct", the
+        //      new html gets sent through the purifier, regardless of its
+        //      status. this means that if we add a start token, because it
         //      was totally necessary, we don't have to update nesting; we just
         //      punt ($reprocess = true; continue;) and it does that for us.
 
@@ -157,7 +157,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
             // check for a rewind
             if (is_int($i)) {
                 // possibility: disable rewinding if the current token has a
-                // rewind set on it already. This would offer protection from
+                // rewind set on it already. this would offer protection from
                 // infinite loop, but might hinder some advanced rewinding.
                 $rewind_offset = $this->injectors[$i]->getRewindOffset();
                 if (is_int($rewind_offset)) {
@@ -165,7 +165,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                         if (empty($zipper->front)) break;
                         $token = $zipper->prev($token);
                         // indicate that other injectors should not process this token,
-                        // but we need to reprocess it.  See Note [Injector skips]
+                        // but we need to reprocess it.  see note [injector skips]
                         unset($token->skip[$i]);
                         $token->rewind = $i;
                         if ($token instanceof HTMLPurifier_Token_Start) {
@@ -189,7 +189,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 $top_nesting = array_pop($this->stack);
                 $this->stack[] = $top_nesting;
 
-                // send error [TagClosedSuppress]
+                // send error [tagclosedsuppress]
                 if ($e && !isset($top_nesting->armor['MakeWellFormed_TagClosedError'])) {
                     $e->send(E_NOTICE, 'Strategy_MakeWellFormed: Tag closed by document end', $top_nesting);
                 }
@@ -210,13 +210,13 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 if ($token instanceof HTMLPurifier_Token_Text) {
                     foreach ($this->injectors as $i => $injector) {
                         if (isset($token->skip[$i])) {
-                            // See Note [Injector skips]
+                            // See note [injector skips]
                             continue;
                         }
                         if ($token->rewind !== null && $token->rewind !== $i) {
                             continue;
                         }
-                        // XXX fuckup
+                        // Xxx fuckup
                         $r = $token;
                         $injector->handleText($r);
                         $token = $this->processToken($r, $i);
@@ -248,7 +248,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 $ok = true;
             } elseif ($type && $type !== 'empty' && $token instanceof HTMLPurifier_Token_Empty) {
                 // claims to be empty but really is a start tag
-                // NB: this assignment is required
+                // Nb: this assignment is required
                 $old_token = $token;
                 $token = new HTMLPurifier_Token_End($token->name);
                 $token = $this->insertBefore(
@@ -271,11 +271,11 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                     // for every tag that a token closes (since when we
                     // do an autoclose, we push a new token into the
                     // stream and then /process/ that, before
-                    // re-processing this token.)  But this is
+                    // re-processing this token.)  but this is
                     // necessary, because an injector can make an
                     // arbitrary transformations to the autoclosing
                     // tokens we introduce, so things may have changed
-                    // in the meantime.  Also, doing the inefficient thing is
+                    // in the meantime.  also, doing the inefficient thing is
                     // "easy" to reason about (for certain perverse definitions
                     // of "easy")
 
@@ -337,7 +337,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                             // errors need to be updated
                             $new_token = new HTMLPurifier_Token_End($parent->name);
                             $new_token->start = $parent;
-                            // [TagClosedSuppress]
+                            // [tagclosedsuppress]
                             if ($e && !isset($parent->armor['MakeWellFormed_TagClosedError'])) {
                                 if (!$carryover) {
                                     $e->send(E_NOTICE, 'Strategy_MakeWellFormed: Tag auto closed', $parent);
@@ -347,7 +347,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                             }
                             if ($carryover) {
                                 $element = clone $parent;
-                                // [TagClosedAuto]
+                                // [tagclosedauto]
                                 $element->armor['MakeWellFormed_TagClosedError'] = true;
                                 $element->carryover = true;
                                 $token = $this->processToken(array($new_token, $token, $element));
@@ -368,7 +368,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
             if ($ok) {
                 foreach ($this->injectors as $i => $injector) {
                     if (isset($token->skip[$i])) {
-                        // See Note [Injector skips]
+                        // See note [injector skips]
                         continue;
                     }
                     if ($token->rewind !== null && $token->rewind !== $i) {
@@ -424,7 +424,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 $token->start = $current_parent;
                 foreach ($this->injectors as $i => $injector) {
                     if (isset($token->skip[$i])) {
-                        // See Note [Injector skips]
+                        // See note [injector skips]
                         continue;
                     }
                     if ($token->rewind !== null && $token->rewind !== $i) {
@@ -474,19 +474,19 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 continue;
             }
 
-            // do errors, in REVERSE $j order: a,b,c with </a></b></c>
+            // do errors, in reverse $j order: a,b,c with </a></b></c>
             $c = count($skipped_tags);
             if ($e) {
                 for ($j = $c - 1; $j > 0; $j--) {
                     // notice we exclude $j == 0, i.e. the current ending tag, from
-                    // the errors... [TagClosedSuppress]
+                    // the errors... [tagclosedsuppress]
                     if (!isset($skipped_tags[$j]->armor['MakeWellFormed_TagClosedError'])) {
                         $e->send(E_NOTICE, 'Strategy_MakeWellFormed: Tag closed by element end', $skipped_tags[$j]);
                     }
                 }
             }
 
-            // insert tags, in FORWARD $j order: c,b,a with </a></b></c>
+            // insert tags, in forward $j order: c,b,a with </a></b></c>
             $replace = array($token);
             for ($j = 1; $j < $c; $j++) {
                 // ...as well as from the insertions
@@ -494,7 +494,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 $new_token->start = $skipped_tags[$j];
                 array_unshift($replace, $new_token);
                 if (isset($definition->info[$new_token->name]) && $definition->info[$new_token->name]->formatting) {
-                    // [TagClosedAuto]
+                    // [tagclosedauto]
                     $element = clone $skipped_tags[$j];
                     $element->carryover = true;
                     $element->armor['MakeWellFormed_TagClosedError'] = true;
@@ -537,8 +537,8 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
      */
     protected function processToken($token, $injector = -1)
     {
-        // Zend OpCache miscompiles $token = array($token), so
-        // avoid this pattern.  See: https://github.com/ezyang/htmlpurifier/issues/108
+        // Zend opcache miscompiles $token = array($token), so
+        // avoid this pattern.  see: https://github.com/ezyang/htmlpurifier/issues/108
 
         // normalize forms of token
         if (is_object($token)) {
@@ -569,11 +569,11 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
         list($old, $r) = $this->zipper->splice($this->token, $delete, $token);
 
         if ($injector > -1) {
-            // See Note [Injector skips]
-            // Determine appropriate skips.  Here's what the code does:
-            //  *If* we deleted one or more tokens, copy the skips
+            // See note [injector skips]
+            // Determine appropriate skips.  here's what the code does:
+            //  *if* we deleted one or more tokens, copy the skips
             //  of those tokens into the skips of the new tokens (in $token).
-            //  Also, mark the newly inserted tokens as having come from
+            //  also, mark the newly inserted tokens as having come from
             //  $injector.
             $oldskip = isset($old[0]) ? $old[0]->skip : array();
             foreach ($token as $object) {
@@ -593,7 +593,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
      */
     private function insertBefore($token)
     {
-        // NB not $this->zipper->insertBefore(), due to positioning
+        // Nb not $this->zipper->insertbefore(), due to positioning
         // differences
         $splice = $this->zipper->splice($this->token, 0, array($token));
 
@@ -610,16 +610,16 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
     }
 }
 
-// Note [Injector skips]
+// Note [injector skips]
 // ~~~~~~~~~~~~~~~~~~~~~
-// When I originally designed this class, the idea behind the 'skip'
-// property of HTMLPurifier_Token was to help avoid infinite loops
-// in injector processing.  For example, suppose you wrote an injector
-// that bolded swear words.  Naively, you might write it so that
+// When i originally designed this class, the idea behind the 'skip'
+// property of htmlpurifier_token was to help avoid infinite loops
+// in injector processing.  for example, suppose you wrote an injector
+// that bolded swear words.  naively, you might write it so that
 // whenever you saw ****, you replaced it with <strong>****</strong>.
 //
 // When this happens, we will reprocess all of the tokens with the
-// other injectors.  Now there is an opportunity for infinite loop:
+// other injectors.  now there is an opportunity for infinite loop:
 // if we rerun the swear-word injector on these tokens, we might
 // see **** and then reprocess again to get
 // <strong><strong>****</strong></strong> ad infinitum.
@@ -631,27 +631,27 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
 //
 // There were two more complications, however:
 //
-//  - With HTMLPurifier_Injector_RemoveEmpty, we noticed that if
+//  - with htmlpurifier_injector_removeempty, we noticed that if
 //    you had <b><i></i></b>, after you removed the <i></i>, you
 //    really would like this injector to go back and reprocess
 //    the <b> tag, discovering that it is now empty and can be
-//    removed.  So we reintroduced the possibility of infinite looping
+//    removed.  so we reintroduced the possibility of infinite looping
 //    by adding a "rewind" function, which let you go back to an
 //    earlier point in the token stream and reprocess it with injectors.
-//    Needless to say, we need to UN-skip the token so it gets
+//    needless to say, we need to un-skip the token so it gets
 //    reprocessed.
 //
-//  - Suppose that you successfuly process a token, replace it with
+//  - suppose that you successfuly process a token, replace it with
 //    one with your skip mark, but now another injector wants to
-//    process the skipped token with another token.  Should you continue
-//    to skip that new token, or reprocess it?  If you reprocess,
+//    process the skipped token with another token.  should you continue
+//    to skip that new token, or reprocess it?  if you reprocess,
 //    you can end up with an infinite loop where one injector converts
-//    <a> to <b>, and then another injector converts it back.  So
-//    we inherit the skips, but for some reason, I thought that we
+//    <a> to <b>, and then another injector converts it back.  so
+//    we inherit the skips, but for some reason, i thought that we
 //    should inherit the skip from the first token of the token
-//    that we deleted.  Why?  Well, it seems to work OK.
+//    that we deleted.  why?  well, it seems to work ok.
 //
-// If I were to redesign this functionality, I would absolutely not
+// If i were to redesign this functionality, i would absolutely not
 // go about doing it this way: the semantics are just not very well
 // defined, and in any case you probably wanted to operate on trees,
 // not token streams.

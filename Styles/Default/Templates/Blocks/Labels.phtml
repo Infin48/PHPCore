@@ -1,7 +1,3 @@
-<?php if (isset($row['data']['labels']) and !empty($row['data']['labels'])) : ?>
-    <label class="label-list">
-        <?php foreach ((array)$row['data']['labels'] as $label) : ?>
-            <label class="label label--<?= $label['label_class_name'] ?>"><i class="fas fa-tag"></i><?= $label['label_name'] ?></label>
-        <?php endforeach; ?>
-    </label>
-<?php endif; ?>
+<?php ($block ?? $list ?? $sidebar)->each('data.labels', function ($label) { ?>
+    <label class="label label--<?= $label->get('label_class') ?>"><i class="fa-solid fa-tag"></i><?= $label->get('label_name') ?></label>
+<?php }); ?>

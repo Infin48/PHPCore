@@ -39,7 +39,7 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
             return false;
         }
 
-        // assumes URI doesn't have spaces in it
+        // assumes uri doesn't have spaces in it
         $bits = explode(' ', strtolower($string)); // bits to process
 
         $caught = array();

@@ -1,0 +1,11 @@
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Form/Form.phtml'); ?>
+<?php if ($this->data->get('data.split') == true) : ?>
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Form/Form.phtml'); ?>
+<?php endif; ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
+
+<?php if (isset($this->data->pagination)) : ?>
+    <?php if ($this->data->pagination['enabled'] ?? false === true) : ?>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>
+    <?php endif; ?>
+<?php endif; ?>

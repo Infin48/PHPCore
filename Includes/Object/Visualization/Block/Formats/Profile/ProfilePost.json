@@ -1,0 +1,83 @@
+{
+    "body": {
+        "new": {
+            "options": {
+                "hide": true,
+                "template": "/Includes/Object/Visualization/Block/Templates/ProfilePostNew.phtml"
+            }
+        },
+        "profilepost": {
+            "body": {
+                "default": {
+                    "options": {
+                        "template": "Root/Style:/Templates/Blocks/Visualization/Block/ProfilePost.phtml"
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "profile-post"
+                        },
+                        "notice": {
+                            "reported": {
+                                "hide": true
+                            },
+                            "deleted": {
+                                "hide": true
+                            }
+                        },
+                        "button": {
+                            "report": {
+                                "hide": true
+                            },
+                            "edit": {
+                                "hide": true
+                            },
+                            "delete": {
+                                "hide": true
+                            }
+                        }
+                    },
+                    "body": {
+                        "top": {
+                            "options": {
+                                "hide": true,
+                                "template": "/Includes/Object/Visualization/Block/Templates/ProfilePostCommentPrevious.phtml"
+                            }
+                        },
+                        "default": {
+                            "data": {
+                                "html": {
+                                    "ajax-item": "profile-post-comment"
+                                },
+                                "notice": {
+                                    "reported": {
+                                        "hide": true
+                                    },
+                                    "deleted": {
+                                        "hide": true
+                                    }
+                                },
+                                "button": {
+                                    "report": {
+                                        "hide": true
+                                    },
+                                    "edit": {
+                                        "hide": true
+                                    },
+                                    "delete": {
+                                        "hide": true
+                                    }
+                                }
+                            }
+                        },
+                        "bottom": {
+                            "options": {
+                                "hide": true,
+                                "template": "/Includes/Object/Visualization/Block/Templates/ProfilePostCommentNew.phtml"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

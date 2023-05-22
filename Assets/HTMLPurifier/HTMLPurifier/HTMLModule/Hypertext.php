@@ -22,14 +22,14 @@ class HTMLPurifier_HTMLModule_Hypertext extends HTMLPurifier_HTMLModule
             'Inline',
             'Common',
             array(
-                // 'accesskey' => 'Character',
-                // 'charset' => 'Charset',
+                // 'accesskey' => 'character',
+                // 'charset' => 'charset',
                 'href' => 'URI',
-                // 'hreflang' => 'LanguageCode',
+                // 'hreflang' => 'languagecode',
                 'rel' => new HTMLPurifier_AttrDef_HTML_LinkTypes('rel'),
                 'rev' => new HTMLPurifier_AttrDef_HTML_LinkTypes('rev'),
-                // 'tabindex' => 'Number',
-                // 'type' => 'ContentType',
+                // 'tabindex' => 'number',
+                // 'type' => 'contenttype',
             )
         );
         $a->formatting = true;

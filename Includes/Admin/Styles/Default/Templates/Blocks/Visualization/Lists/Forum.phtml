@@ -1,15 +1,11 @@
-<div class="vertical-align">
-    <?php if ($row['data']['forum_icon']) : ?>
-        <i class="list-icon <?= $row['data']['forum_icon_style'] ?> fa-<?= $row['data']['forum_icon'] ?>"></i>
+<div class="list-row-align">
+    <div class="list-row-icon"><?php if ($list->get('data.forum_main')) : ?><i class="fa-solid fa-star"></i><?php endif; ?></div>
+    <?php if ($list->get('data.forum_icon')) : ?>
+        <div class="list-row-icon"><i class="<?= $list->get('data.forum_icon') ?>"></i></div>
     <?php endif; ?>
-    <div class="inner">
-        <span class="list-title"><?= $row['data']['forum_name'] ?></span>
-        <?php if ((bool)$row['data']['forum_main'] === true) : ?>
-            <span ajax="title" data-title="<?= $L_FORUM_MAIN_LABEL ?>">
-                <i class="fas fa-star"></i>
-            </span>
-        <?php endif; ?>
+    <div>
+        <span class="list-title"><?= $list->get('data.forum_name') ?></span>
         <br>
-        <span class="title-sub"><?= $row['data']['forum_description'] ?></span>
+        <span class="title-sub"><?= $list->get('data.forum_description') ?></span>
     </div>
 </div>

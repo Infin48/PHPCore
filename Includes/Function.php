@@ -17,6 +17,12 @@ function redirect( string $pageName )
     exit(0);
 }
 
+function refresh()
+{
+    header('Refresh:0');
+    exit();
+}
+
 function parse( string $string )
 {
     return strtolower(str_replace(' ', '-', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8','ASCII//TRANSLIT', $string))));
@@ -25,6 +31,20 @@ function parse( string $string )
 function getProfileImageColor()
 {
     return PROFILE_IMAGES_COLORS[mt_rand(0, count(PROFILE_IMAGES_COLORS) - 1)];
+}
+
+function getKeysWithPrefix( array $data, string $prefix )
+{
+    $arr = [];
+    foreach ($data as $key => $value)
+    {
+        if (str_starts_with($key, $prefix))
+        {
+            $arr[str_replace($prefix, '', $key)] = $value;
+        }
+    }
+
+    return $arr;
 }
 
 function truncate( $text, $length = 100, $options = [] ) {
@@ -37,6 +57,7 @@ function truncate( $text, $length = 100, $options = [] ) {
     extract($options);
 
     $text = preg_replace('#<p[^>]*><img[^>]*>(.*?)</p>#is', '', $text);
+    $text = preg_replace('#<video[^>]*>(.*?)</video>#is', '', $text);
 
     if ($html) {
         if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
@@ -118,4 +139,26 @@ function truncate( $text, $length = 100, $options = [] ) {
     }
 
     return $truncate;
+}
+
+/**
+ * Compares two versions
+ *
+ * @param  string $version1 First version
+ * @param  string $version2 Second version
+ * 
+ * @return bool
+ */
+function comapre_version( string $version1, string $version2 )
+{
+    $ex1 = explode('.', $version1);
+    $ex2 = explode('.', $version2);
+
+    if (in_array($ex1[array_key_last($ex1)], ['x', 'X']) or in_array($ex2[array_key_last($ex2)], ['x', 'X']))
+    {
+        $version1 = substr($version1, 0, -2);
+        $version2 = substr($version2, 0, -2);
+    }
+
+    return version_compare($version1, $version2, '==');
 }

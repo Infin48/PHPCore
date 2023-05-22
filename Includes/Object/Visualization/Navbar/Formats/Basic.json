@@ -7,32 +7,24 @@
                         "type": "button"
                     },
                     "data": {
-                        "icon": "fas fa-bars"
+                        "icon": "fa-solid fa-bars",
+                        "ajax": "collapse-navbar"
                     }
                 },
                 "default": {
-                    "options": {
-                        "template": {
-                            "body": "/ButtonCustom.phtml"
-                        }
-                    },
                     "data": {
                         "convert": {
                             "title": "button_name",
-                            "link": "button_link"
+                            "href": "button_link",
+                            "icon": "button_icon"
                         }
                     },
                     "body": {
                         "default": {
-                            "options": {
-                                "template": {
-                                    "body": "/ButtonCustom.phtml"
-                                }
-                            },
                             "data": {
                                 "convert": {
                                     "title": "button_sub_name",
-                                    "link": "button_sub_link"
+                                    "href": "button_sub_link"
                                 }
                             }
                         }
@@ -51,32 +43,18 @@
                     },
                     "data": {
                         "type": "button",
-                        "icon": "fas fa-envelope",
-                        "href": "$/user/conversation/"
+                        "icon": "fa-solid fa-envelope",
+                        "href": "/user/conversation/"
                     }
                 },
                 "notification": {
                     "options": {
-                        "type": "menu",
-                        "empty": "L_NOTIFICATION_NO",
                         "template": {
-                            "bottom": "%/Notification/Bottom.phtml"
-                        }
-                    },
-                    "data": {
-                        "icon": "fas fa-bell",
-                        "selector": "notification",
-                        "menu": {
-                            "title": "L_NOTIFICATION_NAME"
+                            "root": "Root/Style:/Templates/Blocks/Visualization/Navbar/Notification/Notification.phtml"
                         }
                     },
                     "body": {
                         "default": {
-                            "options": {
-                                "template": {
-                                    "body": "%/Notification/Body.phtml"
-                                }
-                            },
                             "data": {}
                         }
                     }
@@ -85,7 +63,7 @@
                     "options": {
                         "type": "dropdown",
                         "template": {
-                            "body": "/User.phtml"
+                            "body": "Root/Style:/Templates/Blocks/Visualization/Navbar/User.phtml"
                         }
                     },
                     "data": {
@@ -95,20 +73,19 @@
                         "profile": {
                             "data": {
                                 "href": "",
-                                "title": "L_PROFILE"
+                                "title": "L_NAVBAR.L_PROFILE"
                             }
                         },
                         "user": {
                             "data": {
-                                "href": "$/user/",
-                                "title": "L_USER_PANEL"
+                                "href": "/user/",
+                                "title": "L_NAVBAR.L_USER_PANEL"
                             }
                         },
                         "logout": {
                             "data": {
-                                "ajax": "execute",
-                                "ajaxProcess": "/User/Logout",
-                                "title": "L_LOG_OUT"
+                                "ajax-action": "logout",
+                                "title": "L_NAVBAR.L_LOG_OUT"
                             }
                         }
                     }
@@ -125,9 +102,9 @@
                         "type": "button"
                     },
                     "data": {
-                        "icon": "fas fa-sign-in-alt",
-                        "href": "$/login/",
-                        "title": "L_LOGIN"
+                        "icon": "fa-solid fa-sign-in-alt",
+                        "href": "/login/",
+                        "title": "L_NAVBAR.L_LOGIN"
                     }
                 },
                 "register": {
@@ -136,9 +113,9 @@
                         "hide": true
                     },
                     "data": {
-                        "icon": "fas fa-user-plus",
-                        "href": "$/register/",
-                        "title": "L_REGISTER"
+                        "icon": "fa-solid fa-user-plus",
+                        "href": "/register/",
+                        "title": "L_NAVBAR.L_REGISTER"
                     }
                 }
             }

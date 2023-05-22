@@ -10,9 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model;
-
-use Block\Settings;
+namespace App\Model;
 
 /**
  * System
@@ -20,20 +18,18 @@ use Block\Settings;
 class System
 {
     /**
-     * @var array $settings List of system settings
+     * @var array $data List of system settings
      */
-    public static array $settings = [];
+    private array $data = [];
         
     /**
      * Constructor
      */
     public function __construct()
     {
-        if (!self::$settings) {
+        $db = new \App\Model\Database\Query();
 
-            $settings = new Settings();
-            self::$settings = $settings->getAll();
-        }
+        $this->data = $db->select('app.settings.all()');
     }
     
     /**
@@ -45,10 +41,11 @@ class System
      */
     public function get( string $key = null )
     {
-        if (is_null($key)) {
-            return self::$settings;
+        if (is_null($key))
+        {
+            return $this->data;
         }
 
-        return self::$settings[$key] ?? '';
+        return $this->data[$key] ?? '';
     }
 }

@@ -1,20 +1,26 @@
 {
     "name": "PHPCore",
     "desc": "PHPCore - Default template",
+    "image": "/Header.png",
+    "info": "Oficiální šablona pro aplikaci PHPCore. Webová stránka šablony <a href=\"https://phpcore.cz/plugin/13/show/2/\" target=\"_blank\">zde</a>.<br><strong>Pokud naleznete chybu nebo šablona nebude správně fungovat, co nejdříve prosím nahlašte tuto skutečnost na <a href=\"https://phpcore.cz/forum/\" target=\"_blank\">fóru</a> nebo našem Discord serveru.</strong>",
+    "language": "cs",
     "version": {
-        "current": "1.1.0",
-        "system":["1.1.0", "1.1.1"]
+        "version": "2.0.0",
+        "system": ["2.0.0"]
     },
     "author": {
         "name": "Infin48",
         "link": "https://github.com/Infin48"
     },
     "body": {
-        "/Terms": "/Body2",
-        "/Login": "/Body2",
-        "/Register": "/Body2",
-        "/Forgot/Change": "/Body2",
-        "/Forgot/Send": "/Body2",
-        "/Error": "/Body2"
+        "Root/Style:/Templates/Terms.phtml": "Root/Style:/Templates/Body2.phtml",
+        "Root/Style:/Templates/Login.phtml": "Root/Style:/Templates/Body2.phtml",
+        "Root/Style:/Templates/Register.phtml": "Root/Style:/Templates/Body2.phtml",
+        "Root/Style:/Templates/Forgot/Change.phtml": "Root/Style:/Templates/Body2.phtml",
+        "Root/Style:/Templates/Forgot/Send.phtml": "Root/Style:/Templates/Body2.phtml",
+        "Root/Style:/Templates/Error.phtml": "Root/Style:/Templates/Body2.phtml"
+    },
+    "settings": {
+        "background_image_position": "center"
     }
 }

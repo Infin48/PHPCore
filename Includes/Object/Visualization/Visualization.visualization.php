@@ -10,11 +10,9 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Visualization;
+namespace App\Visualization;
 
-use Model\Url;
-use Model\Template;
-use Model\System;
+use \App\Model\Url;
 
 /**
  * Visualization
@@ -24,37 +22,52 @@ class Visualization
     /**
      * @var array $list Position
      */
-    protected array $list = [];
-    
+    public array $list = [];
+
     /**
      * @var array $object Object
      */
-    protected array $object;
+    public array $object = [];
+    
+    /**
+     * @var array $cache Stored data in cache
+     */
+    private array $cache;
+
+    /**
+     * @var string $visualization Name of vizualizator
+     */
+    protected string $visualization = '';
+
+    /**
+     * @var string $visualization Name of vizualizator
+     */
+    protected string $templatePath = '';
     
     /**
      * @var string $hideEmpty If true - rows and objects with empty body will be deleted
      */
     protected bool $hideEmpty = false;
-    
-    /**
-     * @var \Model\System $system System
-     */
-    protected \Model\System $system;
-    
-    /**
-     * @var \Model\Template $template Template
-     */
-    protected \Model\Template $template;
 
     /**
-     * @var \Visualization\VisualizationObject $obj VisualizationObject
+     * @var \App\Model\Path $path Path
      */
-    public \Visualization\VisualizationObject $obj;
+    protected \App\Model\Path $path;
+
+    /**
+     * @var \App\Visualization\VisualizationObject $obj VisualizationObject
+     */
+    public \App\Visualization\VisualizationObject $obj;
 
     /**
      * @var string $default Default object
      */
     private string $default = 'default';
+
+    /**
+     * @var \App\Model\Language $language Language instance
+     */
+    public static \App\Model\Language $language;
     
     /**
      * @var array $nest Nesting array
@@ -67,75 +80,145 @@ class Visualization
     protected int $i = 0;
 
     /**
+     * @var bool $empty If true - current row is empty
+     */
+    protected bool $empty = false;
+
+    /**
      * Constructor
      *
      * @param  string|array $format Path to format
      */
-    public function __construct( string|array $format )
+    public function __construct( string|object|array $format = null, bool $includePlugins = true, string $plugin = '' )
     {
-        $this->system = new System();
-        $this->template = new Template();
+        // Models initialization
+        $this->path = new \App\Model\Path();
 
-        $t = array_filter(explode('\\', get_class($this)));
-        $this->visualization = $t[count($t) - 1];
+        // IF format is not entered
+        if (is_null($format))
+        {
+            $this->object = [];
+            $this->obj = new VisualizationObject($this, '');
 
-        $this->templatePath = '/Includes/Object/Visualization/' . $this->visualization . '/Templates';
-        if (is_array($format)) {
-            $this->object = $format;
-        } else {
-            
-            $this->object = $this->getFormat($format);
+            return;
         }
 
-        $this->obj = new VisualizationObject($this->object);
+        $explode = explode('\\', get_class($this));
+
+        $this->visualization = array_pop($explode);
+        $this->templatePath = '/Includes/Object/Visualization/' . $this->visualization . '/Templates';
+
+        // If entered format is object or array
+        if (is_object($format) or is_array($format))
+        {
+            $object = $format;
+            if (is_object($format))
+            {
+                $object = $format->getObject();
+            }
+
+            $this->object = $object;
+            $this->obj = new VisualizationObject($this, '');
+            return;
+        }
+        $path = $this->path->build($format);
+
+        $JSON = new \App\Model\File\JSON($path);
+        if (!$JSON->exists())
+        {
+            throw new \App\Exception\System('Formát ' . $path . ' nebyl nalezen!');
+        }
+        
+        $this->object = $JSON->get();
+        $this->obj = new VisualizationObject($this, '');
+    }
+
+    protected function cache_set( string $key, mixed $value )
+    {
+        $this->cache[$key] = $value;
+    }
+
+    protected function cache_get( string $key )
+    {
+        return $this->cache[$key];
     }
 
     /**
-     * Returns format
+     * Translate
      *
-     * @param string $format Path to format
+     * @param  string $key
      * 
      * @return void
      */
-    private function getFormat( string $format )
+    private function translate( string $key )
     {
-        $_t = explode('\\', get_class($this));
-        array_shift($_t);
-        array_pop($_t);
-
-        $path = ROOT . '/Includes/Object/Visualization/' . implode('/', $_t) . '/Formats' . $format . '.json';
-        if (str_starts_with($format, '$')) {
-                
-            $ex = array_filter(explode('/', mb_substr($format, 1)));
-            $path = ROOT . '/Plugins/' . array_shift($ex) . '/Object/Visualization/' . implode('/', $_t) . '/' . implode('/', $ex) .  '.json';
+        $keys = explode('.', $key);
+        if (in_array('?', $keys))
+        {
+            $position = array_search('?', $keys);
+            
+            foreach ($this->get(implode('.', array_slice($keys, 0, $position))) ?: [] as $_name => $body)
+            {
+                $keys[$position] = str_replace('.', '\.', $_name);
+                $this->translate(implode('.', $keys));
+            }
+            
+            return;
         }
 
-        if (file_exists($path) === false) {
-            throw new \Exception\System('Hledaný formát \'' . $path . '\' nebyl nalezen!');
+        if (is_array($this->get($key)))
+        {
+            return;
+        }
+
+        if (str_starts_with($this->get($key), '$'))
+        {
+            $this->set($key, mb_substr($this->get($key), 1));
         }
         
-        return json_decode(file_get_contents($path), true);
+        if ($trans = self::$language->get($this->get($key) ?: ''))
+        {
+            if (is_string($trans))
+            {
+                $this->set($key, $trans);
+            }
+        }
     }
     
     /**
      * Enables current object
+     * 
+     * @param  string $key The key
      *
      * @return $this
      */
-    public function enable()
+    public function enable( string $key = null )
     {   
-        $this->obj->set->options('disabled', false);
+        if (is_null($key))
+        {
+            $this->set('options.disabled', false);
+        }
+
+        $this->set($key . '.disabled', false);
+
         return $this;
     }
 
     /**
      * Disables current object
+     * 
+     * @param  string $key The key
      *
      * @return $this
      */
-    public function disable()
+    public function disable( string $key = null )
     {   
-        $this->obj->set->options('disabled', true);
+        if (is_null($key))
+        {
+            $this->set('options.disabled', true);
+        }
+
+        $this->set($key . '.disabled', true);
 
         return $this;
     }
@@ -149,7 +232,7 @@ class Visualization
      */
     public function id( int $ID )
     {   
-        $this->obj->set->options('id', $ID);
+        $this->set('data.html.ajax-id', $ID);
 
         return $this;
     }
@@ -163,69 +246,60 @@ class Visualization
      */
     public function type( string $type )
     {   
-        $this->obj->set->options('type', $type);
+        $this->set('options.type', $type);
 
         return $this;
     }
 
     /**
      * Hides current object
+     * 
+     * @param  string $key The key
      *
      * @return $this
      */
-    public function hide()
+    public function hide( string $key = null )
     {   
-        $this->obj->set->options('hide', true);
+        if (is_null($key))
+        {
+            $this->set('options.hide', true);
+        }
+
+        $this->set($key . '.hide', true);
+
         return $this;
     }
 
     /**
-     * Shows current object
+     * Shows current object or key
+     * 
+     * @param  string $key The key
      *
      * @return $this
      */
-    public function show()
-    {   
-        $this->obj->set->options('hide', false);
+    public function show( string $key = null )
+    {
+        if (!is_null($key))
+        {
+            $this->obj->set($key . '.hide', false);
+            return $this;
+        }
+
+        $this->obj->set('options.hide', false);
+
         return $this;
     }
 
     /**
-     * Sets value to current object options
-     *
-     * @param  string $key Option name
-     * @param  string $value Option value
+     * Checks current row
      * 
      * @return $this
      */
-    public function setOptions( string $key, $value )
-    {
-        $this->obj->set->options($key, $value);
-        return $this;
-    }
-
-    /**
-     * Sets value to current object data
-     *
-     * @param  string $key Data name
-     * @param  string $value Data value
-     * 
-     * @return $this
-     */
-    public function setData( string $key, $value )
+    public function check()
     {   
-        $this->obj->set->data($key, $value);
-        return $this;
-    }
+        $this->set('options.checked', true);
 
-    /**
-     * Rows and objects with empty body will be deleted
-     *
-     * @return void
-     */
-    public function hideEmpty()
-    {
-        $this->hideEmpty = true;
+        return $this;
     }
 
     /**
@@ -235,7 +309,22 @@ class Visualization
      */
     public function select()
     {   
-        $this->obj->set->options('selected', true);
+        $this->set('options.selected', true);
+
+        return $this;
+    }
+
+    /**
+     * Sets value to current object data
+     * 
+     * @param string|int $value Value
+     * 
+     * @return $this
+     */
+    public function value( string|int $value )
+    {
+        $this->set('data.value', $value);
+
         return $this;
     }
 
@@ -248,36 +337,278 @@ class Visualization
      */
     public function title( string $title )
     {
-        $this->obj->set->data('title', $title);
+        $this->set('data.title', $title);
 
         return $this;
     }
 
     /**
-     * Sets description to current object
+     * Returns name of object
      *
-     * @param  string $desc Description
+     * @return void
+     */
+    public function getCurrentPositionName()
+    {
+        return $this->list[count($this->list) - 1] ?? '';
+    }
+
+    /**
+     * Sets value to key
+     *
+     * @param  string|array $key Key
+     * @param  mixed $value Value
      * 
      * @return $this
      */
-    public function desc( string $desc )
+    public function set( string|array $key, mixed $value = null )
     {
-        $this->obj->set->data('desc', $desc);
+        $this->obj->set($key, $value);
 
         return $this;
     }
 
     /**
-     * Sets value to current object data
-     * 
-     * @param mixed $value Value
+     * Move selected element after another
+     *
+     * @param  string $name Element name
      * 
      * @return $this
      */
-    public function value( mixed $value )
+    public function moveAfter( string $name )
     {
-        $this->obj->set->data('value', $value);
+        $currentElementName = $this->list[count($this->list) - 1];
+        $currentElementBody = $this->get();
+        $this->up();
+        $this->delete('body.' . $currentElementName);
+
+        $key = array_search($name, array_keys($this->get('body')));
+        $this->set('body',
+            array_slice($this->get('body'), 0, $key + 1) + [$currentElementName => $currentElementBody] + array_slice($this->get('body'), $key + 1)
+        );
+
+        $this->down($currentElementName);
+
         return $this;
+    }
+
+    /**
+     * Returns url
+     *
+     * @param  string $url URL
+     * 
+     * @return string
+     */
+    public function url( string $url )
+    {
+        return '$' . Url::build($url);
+    }
+
+    public function split( int ...$numbers )
+    {
+        $this->root();
+
+        $result = 0;
+        foreach ($numbers as &$number)
+        {
+            $number = $result += $number;
+        }
+        
+        foreach ($numbers as $number)
+        {
+            $i = 1;
+            foreach ($this->obj->get('body') as $name => $data)
+            {
+                $this->elm1($name);
+
+                if ($i == $number)
+                {
+                    $this->obj->set('options.end', true);
+                    $this->up();
+                    break 1;
+                }
+
+                $i++;
+            }
+        }
+    }
+
+    /**
+     * Appends visualization to current element
+     *
+     * @param  string $path Path
+     * 
+     * @return $this
+     */
+    public function append( string $path )
+    {
+        $path = $this->path->build($path);
+        $JSON = new \App\Model\File\JSON($path);
+
+        if (!$JSON->exists())
+        {
+            throw new \App\Exception\System('Formát ' . $path . ' nebyl nalezen!');
+        }
+        
+        $this->set('body', array_merge($this->get('body'), $JSON->get('body')));
+
+        return $this;
+    }
+
+    /**
+     * Prepends object in current session
+     *
+     * @param  string $name Object name
+     * 
+     * @return $this
+     */
+    public function prepend( string $name = null )
+    {
+        $name ??= mt_rand();
+
+        $array = [
+            $name => [
+                'data' => [],
+                'options' => [],
+                'body' => []
+            ]
+        ];
+
+        $this->obj->set('body', $array + $this->obj->get('body'));
+
+        $this->lastInsertName = $name;
+
+        return $this;
+    }
+
+    /**
+     * Creates object in current session
+     *
+     * @param  string $name Object name
+     * 
+     * @return $this
+     */
+    public function create( string $name = null )
+    {
+        $name ??= mt_rand();
+
+        $this->set('body.' . $name, ['data' => [], 'options' => [], 'body' => []]);
+        $this->lastInsertName = $name;
+        
+        return $this;
+    }
+
+    /**
+     * Creates object in current session
+     *
+     * @param  string $name Object name
+     * @param  string $newObjectName Name of new object
+     * 
+     * @return $this
+     */
+    public function createAfter( string $name, string $newObjectName = null )
+    {
+        $newObjectName ??= mt_rand();
+        $this->lastInsertName = $newObjectName;
+        
+        $array = [
+            $newObjectName => [
+                'options' => [],
+                'data' => [],
+                'body' => []
+            ]
+        ];
+
+        $key = array_search($name, array_keys($this->obj->get('body')));
+        $this->set('body',
+            array_slice($this->get('body'), 0, $key + 1) + $array + array_slice($this->get('body'), $key + 1)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Returns searched value from object
+     *
+     * @param  string $key Key
+     * 
+     * @return mixed
+     */
+    public function get( string $key = null, callable $function = null )
+    {
+        $return = $this->obj->get($key);
+        
+        if ($function) {
+            if (is_array($return)) {
+                
+                foreach ($return as $key => $value) {
+                    $function($this, $key, $value);
+                }
+            } else {
+                $ex = explode('.', $key);
+                
+                $function($this, $ex[count($ex) - 1], $return);
+            }
+
+            return $this;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Returns count of elements
+     *
+     * @param  string $key Key
+     * 
+     * @return int
+     */
+    public function count( string $key )
+    {
+        return count($this->obj->get($key));
+    }
+
+    /**
+     * Deletes given key
+     *
+     * @param  string|array $key Key
+     * 
+     * @return $this
+     */
+    public function delete( string|array $key = null )
+    {
+        $this->obj->delete($key);
+
+        return $this;
+    }
+
+    /**
+     * Translates value
+     *
+     * @param  string $value Text ot translate
+     * 
+     * @return string Translated text
+     */
+    public function toLang( string $value )
+    {
+        if (str_starts_with($value, '$')) {
+
+            return substr($value, 1);
+        }
+
+        $keys = explode('.', $value);
+        $return = self::$language;
+
+        foreach ($keys as $key)
+        {
+            if (!isset($return[$key]))
+            {
+                return '';
+            }
+
+            $return = $return[$key];
+        }
+
+        return $return ?: $value;
     }
 
     /**
@@ -287,11 +618,7 @@ class Visualization
      */
     public function jumpTo()
     {
-        match (count($this->list)) {
-            0 => $this->object($this->lastInsertName()),
-            1 => $this->row($this->lastInsertName()),
-            2 => $this->option($this->lastInsertName())
-        };
+        $this->down($this->lastInsertName);
         return $this;
     }
 
@@ -305,53 +632,15 @@ class Visualization
         return (string)$this->lastInsertName;
     }
 
-    /**
-     * Deletes object from body
-     *
-     * @param string $object Object name
-     * 
-     * @return $this
-     */
-    public function delete( string $object )
+    public function assign( array $data, callable $function = null )
     {
-        $this->obj->delete->body($object);
-        return $this;
-    }
-
-    /**
-     * Deletes button/s
-     *
-     * @param  string|array|null $button If null - deletes all buttons
-     * 
-     * @return $this
-     */
-    public function delButton( string|array $button = null )
-    {
-        if (is_array($button)) {
-            foreach($button as $btn) {
-                $this->delButton($btn);
-            }
-            return $this;
-        }
+        $this->obj->set('data', array_merge($this->get('data') ?: [], $data));
+        $this->convert($this->get('data.convert') ?: []);
         
-        if (is_null($button)) {
-            $this->obj->delete->button();
-            return $this;
+        if ($function)
+        {
+            $function($this);
         }
-    
-        $this->obj->delete->button($button);
-
-        return $this;
-    }
-    
-    /**
-     * Deletes default object in current object
-     *
-     * @return $this
-     */
-    public function deleteDefaultObject()
-    {
-        $this->obj->delete->body($this->default);
 
         return $this;
     }
@@ -367,74 +656,83 @@ class Visualization
     {
         if (is_null($convert)) {
 
-            $this->up()->down($this->default);
-            $convert = $this->obj->get->data('convert') ?: [];
-            $this->up()->down($this->lastInsertName());
+            $this->obj->up();
+            $this->obj->down($this->default);
+            $convert = $this->get('data.convert') ?: [];
+            $this->obj->up();
+            $this->obj->down($this->lastInsertName());
         }
 
         foreach ($convert as $to => $from) {
             
-            if (is_array($from)) {
+            if (is_array($from))
+            {
                 continue;
             }
             
-            if (in_array($to, ['title', 'desc'])) {
-                $this->obj->set->data($to, '$' . $this->obj->get->data($from));
-                continue;
-            }
-            $this->obj->set->data($to, $this->obj->get->data($from));
+            $this->set('data.' . $to, $this->get('data.' . $from));
         }
 
-        $this->obj->delete->data('convert');
+        $this->delete('data.convert');
     }
 
     /**
      * Appends another object to current object
      *
      * @param  array $data Object data
+     * @param  string $default Default object name
      * @param  callable $function The function
      * @param  int $i Number of object
      * @param  int $count Number of objects
      * 
      * @return $this
      */
-    public function appTo( array $data, string $default = 'default', callable $function = null, int $i = 1, int $count = 1 )
+    public function appTo( array $data, string &$default = 'default', callable $function = null, int $i = 1, int $count = 1 )
     {
-        $this->default = $default;
+        if ($this->empty == true)
+        {
+            return $this;
+        }
+        
+        $this->lastInsertName = mt_rand();
 
-        if (count($this->list) === 3) {
-            $this->row($this->list[1]);
+        if (!$this->get('body.default'))
+        {
+            $this->set('body.default', ['data' => [], 'options' => []]);
         }
 
-        $this->previousFillName = $this->nest[array_key_last($this->nest)] ?? $default;
+        $this->obj->setAfter($default, $this->lastInsertName, $this->get('body.' . $this->default));
 
-        $this->lastInsertName = mt_rand();
-        $this->obj->set->body->after($this->previousFillName, [$this->lastInsertName => $this->obj->get->body($default)]);
-        
+        $default =  $this->lastInsertName;
         $this->down($this->lastInsertName);
         
-        $this->obj->set->data(array_merge($this->obj->get->data(), $data));
-        $this->convert($this->obj->get->data('convert'));
+        $this->set('data', array_merge($this->get('data') ?: [], $data));
+        $this->convert($this->get('data.convert') ?: []);
         
-
-        if (($data['checked'] ?? false) === true) {
-            $this->obj->set->options('checked', true);
-        }
-
-        if (empty($this->nest) === false) {
-            $this->nest[array_key_last($this->nest)] = $this->lastInsertName;
+        if (($data['checked'] ?? false) === true)
+        {
+            $this->set('options.checked', true);
         }
         
-        $_i = $this->i;
-        if ($function) {
-            $function($this, $this->i, $count);
+        $return = true;
+        if ($function)
+        {
+            $_i = $this->i;
+            $return = $function($this, $this->i, $count);
+            $this->i = $_i;
+            if ($return === false)
+            {
+                $this->delete();
+            }
         }
         
-        $this->i = $_i;
-        $this->i++;
-
+        if ($return !== false)
+        {
+            $this->i++;
+        }
+        
         $this->up();
-
+        
         $this->clb('appTo');
 
         return $this;
@@ -444,22 +742,28 @@ class Visualization
      * Adds to current object body another objects 
      *
      * @param  array $data Objects data
-     * @param string $default Name of object
+     * @param  string $default Name of object
      * @param  callable $function The Function
      * 
      * @return $this
      */
     public function fill( array $data, string $default = 'default', callable $function = null )
     {
+        if ($this->empty == true)
+        {
+            return $this;
+        }
+        
+        $list = $this->list;
+        $this->default = $default;
         $this->i = 1;
 
-        array_push($this->nest, $default);
-        foreach ($data as $row) {
+        foreach ($data as $row)
+        {
             $this->appTo(data: $row, default: $default, function: $function, i: $this->i, count: count($data));
         }
-        array_pop($this->nest);
 
-        $this->obj->delete->body($default);
+        $this->obj->delete('body.' . $this->default);
 
         return $this;
     }
@@ -473,230 +777,220 @@ class Visualization
      */
     private function clb( string $methodName )
     {
-        if (method_exists($this, 'clb_' . $methodName)) {
+        if (method_exists($this, 'clb_' . $methodName))
+        {
             $this->{'clb_' . $methodName}();
         }
     }
-    
+
     /**
      * Executes basic code code for every object
-     *
-     * @param  \Visualization\Visualization $visual
-     * @param  string $name Object name
      * 
      * @return void|false
      */
-    public function each_ini( \Visualization\Visualization $visual, string $name )
+    public function each_ini()
     {
-        // DELETE HIDDEN OBJECTS
-        if ($visual->obj->get->options('hide') === true) {
-            $visual->obj->delete->delete();
+        if ($this->getCurrentPositionName() == 'default')
+        {
+            $this->delete();
             return false;
-        }
-
-        if ($name === 'default') {
-            $visual->obj->delete->delete();
-            return false;
-        }
-
-        // MOVE BOTTOM ROWS FROM BODY TO BOTTOM
-        if ($visual->obj->is->body('bottom')) {
-            $cache = $visual->obj->get->body('bottom');
-            $visual->obj->delete->body('bottom');
-            $visual->obj->set->body('bottom', $cache);
-        }
-
-        if ($string = $visual->obj->get->data('href')) {
-            foreach ($visual->obj->get->data() as $key => $value) {
-                if (!is_array($value)) {
-                    $string = strtr($string, ['{' . $key . '}' => $value]);
-                }
-            }
-
-            switch (substr($string, 0, 1)) {
-            
-                case '$':
-                    $string = substr($string, 1);
-                break;
-
-                case '~':
-                    $string = Url::build(substr($string, 1));
-                break;
-
-                default:
-                    $string = Url::build(Url::getURL() . $string);
-                break;
-            }
-
-
-            $visual->obj->set->data('href', $string);
         }
         
-        foreach (array_filter((array)$visual->obj->get->options('template')) as $name => $template) {
-
-            switch (substr($template, 0, 1)) {
-
-                // LOAD TEMPLATE FROM ROOT
-                case '~':
-                    $path = ROOT . substr($template, 1);
-                break;
-
-                // LOAD TEMPLATE FROM VISUALIZATION TEMPLATE
-                case '%':
-                    $path = ROOT . $visual->templatePath . substr($template, 1);
-                break;
-
-                // LOAD TEMPLATE FROM PLUGIN
-                case '$':
-                    $path = $visual->template->template($template);
-                break;
-
-                // LOAD TEMPLATE FROM DEFAULT STYLE
-                default:
-                    if (str_contains($template, ROOT)) {
-                        $path = $template;
-                        break;
-                    }
-
-                    $path = $visual->template->template('/Blocks/Visualization/' . $visual->visualization . $template);
-                break;
-            }
-
-            if (file_exists($path) === false) {
-                throw new \Exception\System($visual->visualization . ' vyžaduje šablonu ' . $path);
-            }       
-
-            if (is_string($name)) {
-                $visual->obj->set->template($name, $path);
-            } else {
-                $visual->obj->set->options('template', $path);
+        if ($this->visualization !== 'Form')
+        {
+            // Delete hidden objects
+            if ($this->get('options.hide') === true)
+            {
+                $this->delete();
+                return false;
             }
         }
-    }
-    
-    /**
-     * Removes objects with empty body
-     *
-     * @param  \Visualization\Visualization $visual
-     * 
-     * @return void
-     */
-    private function each_empty( \Visualization\Visualization $visual )
-    {
-        // DELETE OBJECT IF BODY IS EMPTY
-        if (!$visual->obj->get->body() and $visual->obj->is->body()) {
-            $visual->obj->delete->delete();
-        }
-    }
-
-    /**
-     * Creates object in current relay
-     *
-     * @param  string $objectName Name of new Object
-     * @param string|int $previousObject Name  of previous object
-     * @param string $pathToFormat
-     * 
-     * @return void
-     */
-    public function createObject( string $objectName, string|int $previousObject = null )
-    {
-        if (is_null($previousObject)) {
-         
-            $this->obj->set->body($objectName, [
-                'options' => [],
-                'data' => []
-            ]);
-        } else if ($previousObject === 1) {
-
-            $this->obj->set->body([
-                $objectName => [
-                    'options' => [],
-                    'data' => []
-                ]
-            ] + $this->obj->get->body());
-
-        } else {
-            
-            $this->obj->set->body->before($previousObject, [
-                $objectName => [
-                    'options' => [],
-                    'data' => []
-                    ]
-                ]
-            );
-        }
-    }
-
-    /**
-     * Imports format before given object
-     *
-     * @param string $pathToFormat Path to format file
-     * @param string $previousObject Name of previous object
-     * 
-     * @return void
-     */
-    public function import( string $pathToFormat, string $previousObject = null )
-    {
-        $object = $this->getFormat($pathToFormat)['body'];
-        if (is_null($previousObject)) {
-            
-            $this->obj->set->body($this->obj->get->body() + $object);
-            
-        } else if ($previousObject == 1) {
-            
-            $this->obj->set->body($object + $this->obj->get->body());
-            
-        } else {
-            
-            $this->obj->set->body->before($previousObject, $object);
-        }
-    }
-
-    /**
-     * Returns position of searched object in current relay
-     *
-     * @param  string $objectName Name of searched Object
-     * 
-     * @return int
-     */
-    public function getPosition( string $objectName )
-    {
-        return $this->obj->get->position($objectName);
     }
 
     /**
      * Returns object
-     *
+     * 
      * @return array
      */
-    public function getData()
+    public function getDataToGenerate()
     {
-        // SYNC OBJECT
-        $this->sync();
-
+        // Sync object
+        $this->root();
+        
         $this->each('ini');
 
-        // SYNC OBJECT
-        $this->sync();
-
-        if ($this->hideEmpty === true) {
-
-            // REMOVE OBJECT WITH EMPTY BODY
-            $this->each('empty');
-        }
-
-        $this->each('clb');
-
-        // SYNC OBJECT
-        $this->sync();
-
-        // CALL CHILD FUNCTION
+        // Sync object
+        $this->root();
+        
+        $this->each_clb();
+        
+        // Sync object
+        $this->root();
+        
+        // Call child function
         $this->clb('getData');
+        
+        // Sync object
+        $this->root();
 
-        // SYNC OBJECT
-        $this->sync();
+        
+        if (isset($this->defaultValues))
+        {
+            foreach ($this->defaultValues as $key => $value)
+            {
+                $this->setDefaultValues($key, $value);
+            }
+        }
+        
+        $this->root();
+        if (isset($this->parseToPath))
+        {
+            foreach ($this->parseToPath as $key )
+            {
+                $this->parseToPath($key);
+            }
+        }
+        
+        $this->root();
 
-        return $this->object;
+        if (isset($this->parseToURL))
+        {
+            foreach ($this->parseToURL as $key )
+            {
+                $this->parseToURL($key);
+            }
+        }
+        
+        $this->root();
+
+        if (isset($this->translate))
+        {
+            foreach ($this->translate as $key)
+            {
+                $this->translate($key);
+            }
+        }
+        
+        // Sync object
+        $this->root();
+        
+        return new \App\Visualization\VisualizationGenerate($this->object);
+    }
+
+    /**
+     * Sets default value to given $key
+     *
+     * @param  string $key Path to key
+     * @param  mixed $value Value to set 
+     * 
+     * @return void
+     */
+    private function setDefaultValues( string $key, mixed $value )
+    {
+        $keys = explode('.', $key);
+        if (in_array('?', $keys))
+        {
+            $position = array_search('?', $keys);
+            
+            foreach ($this->get(implode('.', array_slice($keys, 0, $position))) ?: [] as $_name => $body)
+            {
+                $keys[$position] = str_replace('.', '\.', $_name);
+                $this->setDefaultValues(implode('.', $keys), $value);
+            }
+            
+            return;
+        }
+        if ($this->obj->get($key) == false)
+        {
+            $this->set($key, $value);
+        }
+    }
+
+    /**
+     * Sets default value to given $key
+     *
+     * @param  string $key Path to key
+     * @param  mixed $value Value to set 
+     * 
+     * @return void
+     */
+    private function parseToURL( string $key )
+    {
+        $keys = explode('.', $key);
+        if (in_array('?', $keys))
+        {
+            $position = array_search('?', $keys);
+            
+            foreach ($this->get(implode('.', array_slice($keys, 0, $position))) ?: [] as $_name => $body)
+            {
+                $keys[$position] = str_replace('.', '\.', $_name);
+                $this->parseToURL(implode('.', $keys));
+            }
+            
+            return;
+        }
+        if ($this->obj->get($key))
+        {
+            if (is_string($this->obj->get($key)))
+            {
+                $href = $this->obj->get($key);
+
+                switch (substr($href, 0, 1))
+                {                   
+                    case '$':
+                        $href = substr($href, 1);
+                    break;
+
+                    case '~':
+                        $href = Url::build(Url::getURL() . substr($href, 1));
+                    break;
+
+                    default:
+
+                        if (!str_starts_with($href, 'http://') and !str_starts_with($href, 'https://'))
+                        {
+                            if (!file_exists(ROOT . $href))
+                            {
+                                $href = Url::build($href);
+                            }
+                        }
+                    break;
+                }
+                $this->set($key, $href);
+            }
+        }
+    }
+
+    /**
+     * Sets default value to given $key
+     *
+     * @param  string $key Path to key
+     * @param  mixed $value Value to set 
+     * 
+     * @return void
+     */
+    private function parseToPath( string $key )
+    {
+        $keys = explode('.', $key);
+        if (in_array('?', $keys))
+        {
+            $position = array_search('?', $keys);
+            
+            foreach ($this->get(implode('.', array_slice($keys, 0, $position))) ?: [] as $_name => $body)
+            {
+                $keys[$position] = str_replace('.', '\.', $_name);
+                $this->parseToPath(implode('.', $keys));
+            }
+            
+            return;
+        }
+        if ($this->obj->get($key))
+        {
+            if (is_string($this->obj->get($key)))
+            {
+                $this->set($key, $this->path->build($this->obj->get($key)));
+            }
+        }
     }
     
     /**
@@ -708,194 +1002,265 @@ class Visualization
      */
     protected function each( string $method )
     {
-        $this->sync();
+        $this->root();
 
-        if (method_exists($this, 'each_' . $method)) {
+        if (!method_exists($this, 'each_' . $method))
+        {
+            return;
+        }
+
+        $this->{'each_' . $method}($this, '');
+
+        foreach ($this->get('body') as $object => $data) { $this->elm1($object);
             
-            foreach ($this->obj->get->body() as $object => $data) { $this->object($object);
+            if ($this->{'each_' . $method}($this) === false)
+            {
+                continue;
+            }
+            
+            foreach ($this->get('body') as $row => $data) { $this->elm2($row);
                 
-                if ($this->{'each_' . $method}($this, $object) === false) {
+                if ($this->{'each_' . $method}($this) === false)
+                {
                     continue;
                 }
 
-                foreach ($this->obj->get->body() as $row => $data) { $this->row($row);
-                
-                    if ($this->{'each_' . $method}($this, $row) === false) {
+                foreach ($this->get('body') as $option => $data) { $this->elm3($option);
+                    
+                    if ($this->{'each_' . $method}($this) === false)
+                    {
                         continue;
                     }
 
-                    foreach ($this->obj->get->body() as $option => $data) { $this->option($option);
-                
-                        if ($this->{'each_' . $method}($this, $option) === false) {
+                    foreach ($this->get('body') as $option => $data) { $this->elm4($option);
+                    
+                        if ($this->{'each_' . $method}($this) === false)
+                        {
                             continue;
                         }
                     }
                 }
             }
         }
+
+        $this->root();
     }
 
-    /**
-     * Synchronise object
-     *
-     * @return $this
-     */
-    public function sync()
+    private function each_clb()
     {
-        $this->update();
-
-        $this->list = [];
-
-        $this->obj = new VisualizationObject($this->object);
-
-        return $this;
-    }
-
-    /**
-     * Sets current object
-     *
-     * @param  string $objName Object name
-     * @param callable $function The Function 
-     * 
-     * @return $this
-     */
-    public function object( string $objName, callable $function = null )
-    {
-        $this->update();
+        $this->root();
         
-        $this->list = [0 => $objName];
-
-        $this->obj = new VisualizationObject($this->object['body'][$objName] ?? []);
-
-        if ($function) {
-            $function($this);
+        if (method_exists($this, 'clb_each'))
+        {
+            $this->clb_each();
         }
+        foreach ($this->get('body') as $object => $data) { $this->elm1($object);
+            
+            if (method_exists($this, 'clb_each'))
+            {
+                $this->clb_each();
+            }
+            
+            if (method_exists($this, 'clb_each_elm1'))
+            {
+                $this->clb_each_elm1();
+            }
+            
+            foreach ($this->get('body') as $row => $data) { $this->elm2($row);
 
-        return $this;
-    }
+                if (method_exists($this, 'clb_each'))
+                {
+                    $this->clb_each();
+                }
 
-    /**
-     * Sets current row
-     *
-     * @param  string $rowName Row name
-     * @param callable $function The Function 
-     * 
-     * @return $this
-     */
-    public function row( string $rowName, callable $function = null )
-    {
-        $this->update();
-        $this->list = [
-            0 => $this->list[0],
-            1 => $rowName
-        ];        
-        $this->obj = new VisualizationObject($this->object['body'][$this->list[0]]['body'][$rowName] ?? []);
+                if (method_exists($this, 'clb_each_elm2'))
+                {
+                    $this->clb_each_elm2();
+                }
 
-        if ($function) {
-            $function($this);
+                foreach ($this->get('body') as $option => $data) { $this->elm3($option);
+
+                    if (method_exists($this, 'clb_each'))
+                    {
+                        $this->clb_each();
+                    }
+
+                    if (method_exists($this, 'clb_each_elm3'))
+                    {
+                        $this->clb_each_elm3();
+                    }
+
+                    foreach ($this->get('body') as $option => $data) { $this->elm4($option);
+                    
+                        if (method_exists($this, 'clb_each'))
+                        {
+                            $this->clb_each();
+                        }
+    
+                        if (method_exists($this, 'clb_each_elm4'))
+                        {
+                            $this->clb_each_elm4();
+                        }
+                    }
+                }
+            }
         }
-
-        return $this;
-    }
-
-    /**
-     * Sets current option
-     *
-     * @param  string $optionName Option name
-     * @param callable $function The Function 
-     * 
-     * @return $this
-     */
-    public function option( string $optionName, callable $function = null )
-    {
-        $this->update();
-        $this->list = [
-            0 => $this->list[0],
-            1 => $this->list[1],
-            2 => $optionName
-        ];
-        
-        $this->obj = new VisualizationObject(
-            $this->object['body'][$this->list[0]]['body'][$this->list[1]]['body'][$optionName] ?? []
-        );
-
-        if ($function) {
-            $function($this);
-        }
-
-        return $this;
+        $this->root();
     }
     
     /**
-     * Updates object
+     * Sorts objects by list
      *
-     * @return void
+     * @param  mixed $data Visualization Data
+     * @param  mixed $sortBy List 
+     * 
+     * @return array
      */
-    private function update()
+    public function sort( array $sortBy )
     {
-        if (empty($this->obj->getObject())) {
-            switch (count($this->list)) {
-                case 0:
-                    $this->object = [];
-                break;
-                case 1:
-                    unset($this->object['body'][$this->list[0]]);
-                break;
-                case 2:
-                    unset($this->object['body'][$this->list[0]]['body'][$this->list[1]]);
-                break;
-                case 3:
-                    unset($this->object['body'][$this->list[0]]['body'][$this->list[1]]['body'][$this->list[2]]);
-                break;
-            }
-            return;
-        } 
+        $this->root();
 
-        switch (count($this->list)) {
-            case 0:
-                $this->object = $this->obj->getObject();
-            break;
-            case 1:
-                $this->object['body'][$this->list[0]] = $this->obj->getObject();
-            break;
-            case 2:
-                $this->object['body'][$this->list[0]]['body'][$this->list[1]] = $this->obj->getObject();
-            break;
-            case 3:
-                $this->object['body'][$this->list[0]]['body'][$this->list[1]]['body'][$this->list[2]] = $this->obj->getObject();
-            break;
+        $body = $this->obj->get('body');
+        $newBody = [];
+        foreach ($sortBy as $object)
+        {    
+            if (isset($body[$object]))
+            {
+                $newBody[$object] = $body[$object];
+            }
         }
+
+        $this->obj->set('body', $newBody);
     }
 
     /**
-     * Moves one object up
+     * Moves one object down in hierarchy
      *
+     * @param  string $name Object name
+     * 
+     * @return $this
+     */
+    public function down( string $name )
+    {
+        if (count($this->list) == 4)
+        {
+            return;
+        }
+        array_push($this->list, $name);
+        $this->obj = new \App\Visualization\VisualizationObject($this, 'body.' . implode('.body.', $this->list));
+
+        return $this;
+    }
+
+    /**
+     * Moves one object up in hierarchy
+     * 
      * @return $this
      */
     public function up()
     {
-        if (count($this->list) >= 2) {
-            $key = $this->list[count($this->list) - 2];
-        }
-        return match (count($this->list)) {
-            0 => $this->sync(),
-            1 => $this->sync(),
-            2 => $this->object($key),
-            3 => $this->row($key)
-        };
+        array_pop($this->list);
+        
+        $this->obj = new \App\Visualization\VisualizationObject($this, $this->list ? 'body.' . implode('.body.', $this->list) : '');
+
+        return $this;
     }
 
     /**
-     * Moves one object down
+     * Sets to first element in hierarchy
      *
+     * @param  string $name Element name
+     * @param  callable $function Function 
+     * 
      * @return $this
      */
-    public function down( string $object )
+    public function elm1( string $name, callable $function = null )
     {
-        return match (count($this->list)) {
-            0 => $this->object($object),
-            1 => $this->row($object),
-            2 => $this->option($object)
-        };
+        $this->obj = new \App\Visualization\VisualizationObject($this, 'body.' . str_replace('.', '\.', $name));
+        $this->list = [str_replace('.', '\.', $name)];
+
+        if ($function)
+        {
+            $function($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets to second element in hierarchy
+     *
+     * @param  string $name Element name
+     * @param  callable $function Function 
+     * 
+     * @return $this
+     */
+    public function elm2( string $name, callable $function = null )
+    {
+        $this->list = [$this->list[0], str_replace('.', '\.', $name)];
+        $this->obj = new \App\Visualization\VisualizationObject($this, 'body.' . implode('.body.', $this->list));
+
+        if ($function)
+        {
+            $function($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets to third element in hierarchy
+     *
+     * @param  string $name Element name
+     * @param  callable $function Function 
+     * 
+     * @return $this
+     */
+    public function elm3( string $name, callable $function = null )
+    {
+        $this->list = [$this->list[0], $this->list[1], str_replace('.', '\.', $name)];
+
+        $this->obj = new \App\Visualization\VisualizationObject($this, 'body.' . implode('.body.', $this->list));
+
+        if ($function)
+        {
+            $function($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets to fourth element in hierarchy
+     *
+     * @param  string $name Element name
+     * @param  callable $function Function 
+     * 
+     * @return $this
+     */
+    public function elm4( string $name, callable $function = null )
+    {
+        $this->list = [$this->list[0], $this->list[1], $this->list[2], str_replace('.', '\.', $name)];
+        $this->obj = new \App\Visualization\VisualizationObject($this, 'body.' . implode('.body.', $this->list));
+
+        if ($function)
+        {
+            $function($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Moves to root
+     * 
+     * @return $this
+     */
+    public function root()
+    {
+        $this->list = [];
+        $this->obj = new \App\Visualization\VisualizationObject($this, '');
+        
+        return $this;
     }
 }

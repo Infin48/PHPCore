@@ -21,7 +21,7 @@ class HTMLPurifier_VarParser_Flexible extends HTMLPurifier_VarParser
         }
         switch ($type) {
             // Note: if code "breaks" from the switch, it triggers a generic
-            // exception to be thrown. Specific errors can be specifically
+            // exception to be thrown. specific errors can be specifically
             // done here.
             case self::C_MIXED:
             case self::ISTRING:

@@ -25,10 +25,15 @@
                 noembedError: 'Error'
             },
             cs: {
+                noembed: 'Vložit video',
                 noembedError: 'Chyba'
             },
             da: {
                 noembedError: 'Fejl'
+            },
+            et: {
+                noembed: 'Noembed',
+                noembedError: 'Viga'
             },
             fr: {
                 noembedError: 'Erreur'

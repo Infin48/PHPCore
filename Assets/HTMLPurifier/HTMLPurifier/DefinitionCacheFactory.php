@@ -81,7 +81,7 @@ class HTMLPurifier_DefinitionCacheFactory
         }
         foreach ($this->decorators as $decorator) {
             $new_cache = $decorator->decorate($cache);
-            // prevent infinite recursion in PHP 4
+            // prevent infinite recursion in php 4
             unset($cache);
             $cache = $new_cache;
         }

@@ -1,43 +1,35 @@
-<?php foreach ($this->data->block['body'] as $objectName => $object) : ?>
-    <?php foreach ((array)$object['body'] as $row) : ?>
-        <div id="<?= $row['data']['id'] ?>" class="block block-small<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?>" ajax-selector="block" ajax-process-id="<?= $row['data']['id'] ?>" ajax-process-type="<?= $row['options']['type'] ?? '' ?>">
-            <div class="block-head">
-                <?= $this->build->user->image($row['data']) ?>
-                <div class="inner">
-                    <?php if (!empty($row['data']['name'])) : ?>
-                        <div class="block-title"><span ajax-selector="name"><?= $row['data']['name'] ?></span></div>
-                    <?php endif; ?>
-                    <?= $this->build->user->link($row['data'], true) ?>
-                    <span class="block-description">
-                        <span ajax="title" data-title="<?= $L_CREATED?>">
-                            <i class="fas fa-clock"></i>
-                            <?= $this->build->date->long($row['data']['created']) ?>
-                        </span>
-                    </span>
-                </div>
-            </div>
-            <?php require $this->template->template('/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
-            <div class="block-body" ajax-selector="block-body">
-                <div class="block-content" ajax-selector="block-content"><?= $row['data']['text'] ?></div>
-                <?php if (!empty($row['data']['button'])) : ?>
-                    <div class="block-bottom" ajax-selector="block-bottom">
-                        <?php foreach ((array)$row['data']['button'] as $btn) : ?>
-                            <?php require $btn; ?>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                <?php if (!empty($row['body'])) : ?>
-                    <div class="body-sub" ajax-selector="block-body-sub">
-                        <?php $cache = $row; foreach ($cache['body'] as $row) : ?>
-                            <?php if (isset($row['options']['template']['body'])) : ?>
-                                <?php require $row['options']['template']['body']; ?>
-                            <?php else : ?>
-                                <?php require $this->template->template('/Blocks/Visualization/Block/ProfilePostComment.phtml'); ?>
-                            <?php endif; ?>
-                        <?php endforeach; $row = $cache;?>
-                    </div>
-                <?php endif; ?>
-            </div>
+<div id="<?= $block->get('data.profile_post_id') ?>" class="block block-small<?php if ( $block->get('options.selected') ) : ?> block-selected<?php endif; ?><?php if ( $block->get('options.closed') ) : ?> block-closed<?php endif; ?><?php if ( $block->get('options.disabled') ) : ?> block-disabled<?php endif; ?>"<?php if ( $block->get('options.selected') ) : ?> ajax-selected<?php endif; ?> js="block" ajax-id="<?= $block->get('data.html.ajax-id') ?>" ajax-item="<?= $block->get('data.html.ajax-item') ?>">
+    <div class="block-head">
+        <?= $block->get('data.user_image') ?>
+        <div class="inner">
+            <?= $block->get('data.user') ?>
+            <span class="block-description">
+                <span ajax="title" ajax-title="<?= $this->language->get('L_CREATED') ?>">
+                    <i class="fa-solid fa-clock"></i>
+                    <?= $block->get('data.date') ?>
+                </span>
+            </span>
         </div>
-    <?php endforeach; ?>
-<?php endforeach; ?>
+    </div>
+    <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
+    <div class="block-body" js="block-body">
+        <div class="block-content" js="block-content"><?= $block->get('data.text') ?></div>
+        <?php if ($block->get('data.button')) : ?>
+            <div class="block-bottom" js="block-bottom">
+                <?php $block->each('data.button', function ($btn) { ?>
+                    <?php require $btn; ?>
+                <?php }); ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($block->get('body')) : ?>
+            <div class="body-sub" js="block-body-sub">
+                <?php $block->each('body', function ($block) { ?>
+                    <?php if ($block->get('options.template')) : ?>
+                        <?php require $block->get('options.template'); return; ?>
+                    <?php endif; ?>
+                    <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/ProfilePostComment.phtml'); ?>
+                <?php }); ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

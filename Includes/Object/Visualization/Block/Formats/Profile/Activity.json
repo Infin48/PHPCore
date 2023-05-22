@@ -1,0 +1,14 @@
+{
+    "body": {
+        "activity": {
+            "options": {
+                "small": true
+            },
+            "body": {
+                "default": {
+                    "data": {}
+                }
+            }
+        }
+    }
+}

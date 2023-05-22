@@ -1,17 +1,17 @@
-<div class="navbar navbar-top" ajax-selector="navbar navbar-top">
+<div class="navbar navbar-top" js="navbar navbar-top">
     <div class="navbar-content">
         <div class="navbar-button">
             <a href="<?= INDEX ?>">
-                <i class="fas fa-angle-left"></i>
-                <span><?= $L_NAVBAR['L_BACK'] ?></span>
+                <i class="fa-solid fa-angle-left"></i>
+                <span><?= $language->get('L_NAVBAR.L_BACK') ?></span>
             </a>
         </div>
-        <div class="navbar-button navbar-button-collapse" style="display: none;">
-            <a id="open" ajax="collapse">
-                <i class="fas fa-bars"></i></span>
+        <div class="navbar-button navbar-button-collapse">
+            <a ajax="collapse-navbar">
+                <i class="fa-solid fa-bars"></i></span>
             </a>
         </div>
-        <div class="loading" ajax-selector="loading" style="display: none;">
+        <div class="loading" js="loading">
             <div></div>
             <div></div>
             <div></div>
@@ -19,8 +19,8 @@
         </div>
     </div>
     <div class="breadcrumb">
-        <?php foreach ($this->data->breadcrumb['body'] as $breadcrumb) : ?>
-            <a href="<?= $this->url->build($breadcrumb['data']['href']) ?>"><?= $L_BREADCRUMB[$breadcrumb['data']['title']] ?></a> > 
-        <?php endforeach; ?>
+        <?php $i = 1; $this->data->breadcrumb->each('body', function ($breadcrumb) use (&$i, $url) { ?>
+            <a href="<?= $url->build($breadcrumb->get('data.href')) ?>"><?= $breadcrumb->get('data.title') ?></a> <?php if ( count($this->data->breadcrumb->get('body')) != $i) : ?>><?php endif; ?>
+        <?php $i++; }); ?>
     </div>
 </div>

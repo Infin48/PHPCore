@@ -1,11 +1,38 @@
 {
     "name": "Česky",
     "version": {
-        "current": "1.1.0",
-        "system": ["1.1.0", "1.1.1"]
+        "version": "1.1.0",
+        "system": ["2.0.0"]
     },
     "author": {
         "name": "Infin48",
         "link": "https://github.com/Infin48"
+    },
+    "tree": {
+        "admin": [
+            "/Breadcrumb.language.php",
+            "/Load.language.php",
+            "/Log.language.php",
+            "/Mail.language.php",
+            "/Navbar.language.php",
+            "/Notices.language.php",
+            "/Permission.language.php",
+            "/Titles.language.php",
+            "/Window.language.php"
+        ],
+        "install": [
+            "/Load.language.php",
+            "/Notice.language.php"
+        ],
+        "website": [
+            "/Breadcrumb.language.php",
+            "/Email.language.php",
+            "/Load.language.php",
+            "/Mail.language.php",
+            "/Navbar.language.php",
+            "/Notices.language.php",
+            "/Titles.language.php",
+            "/Window.language.php"
+        ]
     }
 }

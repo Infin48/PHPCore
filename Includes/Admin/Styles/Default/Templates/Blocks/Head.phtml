@@ -1,27 +1,30 @@
 <head>    
     <meta charset="UTF-8" />
-    <title><?= $this->data->head['title'] ?> | <?= $this->system->get('site.name') ?></title>
+    <title><?= $this->data->get('data.head.title') ?> <?php if ($this->data->get('data.page') != 'App\Page\Index') : ?>| <?= $language->get('L_ADMIN') ?><?php endif; ?> | <?= $system->get('site.name') ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="<?= $this->data->head['description'] ?>" />
+    <meta name="description" content="<?= $this->data->get('data.head.description') ?>" />
 
-    <link rel="icon" href="<?= $this->data->head['favicon'] ?>?<?= $this->system->get('session') ?>" type="image/svg+xml">
+    <link rel="icon" href="<?= $this->data->get('data.head.favicon') ?>?<?= $system->get('session') ?>" type="image/svg+xml">
 
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Light.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Regular.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Regular.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Medium.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Medium.woff') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff2') ?>" crossorigin>
-    <link rel="preload" as="font" type="font/woff" href="<?= $this->template->theme('/Fonts/Quicksand-Bold.woff') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Light.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Regular.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Medium.woff2') ?>" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="<?= $path->build('Root/Style:/Themes/Fonts/Quicksand-Bold.woff2') ?>" crossorigin>
 
-    <link rel="preload" as="style" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?<?= $this->system->get('session.styles') ?>">
-    <link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css">
+    <link rel="preload" as="style" href="<?= $path->build('Root/Style:/Themes/Stylesheet.min.css') ?>?<?= $system->get('session.styles') ?>">
+    <link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css?10">
 
-    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $this->system->get('session.groups') ?>">
-    <link rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $this->system->get('session.labels') ?>">
+    <link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $system->get('session.groups') ?>">
+    <link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $system->get('session.labels') ?>">
+    <link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Role.min.css?<?= $system->get('session.roles') ?>">
 
-    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Stylesheet.min.css') ?>?<?= $this->system->get('session.styles') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= $this->template->theme('/Quicksand.min.css') ?>?<?= $this->system->get('session.styles') ?>">
-    <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= $path->build('Root/Style:/Themes/Stylesheet.min.css') ?>?<?= $system->get('session.styles') ?>">
+    <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css?10">
+
+    <?php if ( $this->data->get('options.editor') ) : ?>
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $system->get('session.styles') ?>">
+    <?php endif; ?>
+    <?php if ( $this->data->get('options.photoSwipe') ) : ?>
+        <link rel="stylesheet" href="/Assets/PhotoSwipe/dist/photoswipe.css">
+    <?php endif; ?>
 </head>

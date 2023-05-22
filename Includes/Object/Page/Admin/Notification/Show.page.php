@@ -10,59 +10,102 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Notification;
-
-use Block\Notification;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Notification;
 
 /**
  * Show
  */
-class Show extends \Page\Page
+class Show extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Overall',
-        'redirect' => '/admin/notification/',
-        'permission' => 'admin.notification'
-    ];
+    protected bool $ID = true;
+    
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.notification';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('notification')->active();
+        // System
+        $system = $data->get('inst.system');
         
-        // BLOCK
-        $notification = new Notification();
+        // Language
+        $language = $data->get('inst.language');
+        
+        // If static mode is enabled or profiles are disabled
+		if ($system->get('site.mode') == 'static')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('settings')->elm2('notification')->active();
 
-        // NOTIFICATION
-        $notification = $notification->get($this->url->getID()) or $this->error();
+        // Get notification data from database
+        $row = $db->select('app.notification.get()', $this->url->getID()) or $this->error404();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Notification');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Save notification data
+        $data->set('data.notification', $row);
 
-        // FIELD
-        $field = new Field('/Admin/Notification');
-        $field->data($notification);
-        $field->object('notification')->title('L_NOTIFICATION_EDIT');
-        $this->data->field = $field->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Notification.json');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.notification.notification_name'))->href('/admin/notification/show/' . $data->get('data.notification.notification_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // EDIT NOTIFICATION
-        $this->process->form(type: '/Admin/Notification/Edit', data: [
-            'notification_id' => $notification['notification_id']
-        ]);
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Notification.json');
+        $form
+            ->form('notification')
+                ->data($data->get('data.notification'))
+                ->callOnSuccess($this, 'editNotification')    
+                ->frame('notification')
+                    ->title('L_NOTIFICATION.L_EDIT');
+        $data->form = $form->getDataToGenerate();
 
-        $this->data->head['title'] = $this->language->get('L_NOTIFICATION') . ' - ' . $notification['notification_name'];
+        // Page title
+        $data->set('data.head.title', $language->get('L_NOTIFICATION.L_NOTIFICATION') . ' - ' . $data->get('data.notification.notification_name'));
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function editNotification( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Edit notification
+        $db->update(TABLE_NOTIFICATIONS, [
+            'notification_name'     => $post->get('notification_name'),
+            'notification_text'     => $post->get('notification_text'),
+            'notification_type'     => $post->get('notification_type'),
+            'notification_hidden'   => $post->get('notification_hidden')
+        ], $data->get('data.notification.notification_id'));
+
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__, text: $post->get('notification_name') );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Redirect user
+        $data->set('data.redirect', '/admin/notification/');
     }
 }

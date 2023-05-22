@@ -1,6 +1,6 @@
-<?php if ($row['data']['button_dropdown'] == 1) : ?>
-    <a class="button button-add" href="<?= $this->url->build('/add/buttonsub/' . $row['data']['button_id'], true) ?>"><i class="fas fa-plus"></i><span><?= $L_BUTTON['L_ADD_BUTTON'] ?></span></a>
-    <a class="button button-edit" href="<?= $this->url->build('/show/dropdown/' . $row['data']['button_id'], true) ?>"><i class="fas fa-pencil-alt"></i><span><?= $L_BUTTON['L_EDIT'] ?></span></a>
+<?php if ($list->get('data.button_dropdown') == 1) : ?>
+    <a class="button button-add" href="<?= $url->build('~/add/buttonsub/' . $list->get('data.button_id')) ?>"><i class="fa-solid fa-plus"></i><span><?= $language->get('L_BTN.L_ADD_BUTTON') ?></span></a>
+    <a class="button button-edit" href="<?= $url->build('~/show/dropdown/' . $list->get('data.button_id')) ?>"><i class="fa-solid fa-pencil-alt"></i><span><?= $language->get('L_BTN.L_EDIT') ?></span></a>
 <?php else : ?>
-    <a class="button button-edit" href="<?= $this->url->build('/show/button/' . $row['data']['button_id'], true) ?>"><i class="fas fa-pencil-alt"></i><span><?= $L_BUTTON['L_EDIT'] ?></span></a>
+    <a class="button button-edit" href="<?= $url->build('~/show/button/' . $list->get('data.button_id')) ?>"><i class="fa-solid fa-pencil-alt"></i><span><?= $language->get('L_BTN.L_EDIT') ?></span></a>
 <?php endif; ?>

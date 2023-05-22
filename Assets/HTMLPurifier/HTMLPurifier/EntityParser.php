@@ -38,7 +38,7 @@ class HTMLPurifier_EntityParser
         // http://stackoverflow.com/questions/15532252/why-is-reg-being-rendered-as-without-the-bounding-semicolon
         $semi_optional = "quot|QUOT|lt|LT|gt|GT|amp|AMP|AElig|Aacute|Acirc|Agrave|Aring|Atilde|Auml|COPY|Ccedil|ETH|Eacute|Ecirc|Egrave|Euml|Iacute|Icirc|Igrave|Iuml|Ntilde|Oacute|Ocirc|Ograve|Oslash|Otilde|Ouml|REG|THORN|Uacute|Ucirc|Ugrave|Uuml|Yacute|aacute|acirc|acute|aelig|agrave|aring|atilde|auml|brvbar|ccedil|cedil|cent|copy|curren|deg|divide|eacute|ecirc|egrave|eth|euml|frac12|frac14|frac34|iacute|icirc|iexcl|igrave|iquest|iuml|laquo|macr|micro|middot|nbsp|not|ntilde|oacute|ocirc|ograve|ordf|ordm|oslash|otilde|ouml|para|plusmn|pound|raquo|reg|sect|shy|sup1|sup2|sup3|szlig|thorn|times|uacute|ucirc|ugrave|uml|uuml|yacute|yen|yuml";
 
-        // NB: three empty captures to put the fourth match in the right
+        // Nb: three empty captures to put the fourth match in the right
         // place
         $this->_semiOptionalPrefixRegex = "/&()()()($semi_optional)/";
 
@@ -49,7 +49,7 @@ class HTMLPurifier_EntityParser
             // dec
             '[#]0*(\d+);?|'.
             // string (mandatory semicolon)
-            // NB: order matters: match semicolon preferentially
+            // Nb: order matters: match semicolon preferentially
             '([A-Za-z_:][A-Za-z0-9.\-_:]*);|'.
             // string (optional semicolon)
             "($semi_optional)".
@@ -62,10 +62,10 @@ class HTMLPurifier_EntityParser
             // dec
             '[#]0*(\d+);?|'.
             // string (mandatory semicolon)
-            // NB: order matters: match semicolon preferentially
+            // Nb: order matters: match semicolon preferentially
             '([A-Za-z_:][A-Za-z0-9.\-_:]*);|'.
             // string (optional semicolon)
-            // don't match if trailing is equals or alphanumeric (URL
+            // don't match if trailing is equals or alphanumeric (url
             // like)
             "($semi_optional)(?![=;A-Za-z0-9])".
             ')/';
@@ -132,7 +132,7 @@ class HTMLPurifier_EntityParser
             } else {
                 // exact match didn't match anything, so test if
                 // any of the semicolon optional match the prefix.
-                // Test that this is an EXACT match is important to
+                // Test that this is an exact match is important to
                 // prevent infinite loop
                 if (!empty($matches[3])) {
                     return preg_replace_callback(
@@ -146,7 +146,7 @@ class HTMLPurifier_EntityParser
         }
     }
 
-    // LEGACY CODE BELOW
+    // Legacy code below
 
     /**
      * Callback regex string for parsing entities.
@@ -154,7 +154,7 @@ class HTMLPurifier_EntityParser
      */
     protected $_substituteEntitiesRegex =
         '/&(?:[#]x([a-fA-F0-9]+)|[#]0*(\d+)|([A-Za-z_:][A-Za-z0-9.\-_:]*));?/';
-        //     1. hex             2. dec      3. string (XML style)
+        //     1. hex             2. dec      3. string (xml style)
 
     /**
      * Decimal to parsed string conversion table for special entities.

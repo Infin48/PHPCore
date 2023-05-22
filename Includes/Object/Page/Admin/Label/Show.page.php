@@ -10,59 +10,123 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Label;
-
-use Block\Label;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Label;
 
 /**
  * Show
  */
-class Show extends \Page\Page
+class Show extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '/Overall',
-        'redirect' => '/admin/label/',
-        'permission' => 'admin.label'
-    ];
+    protected bool $ID = true;
+
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.label';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('forum')->row('label')->active();
+        // System
+        $system = $data->get('inst.system');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Label');
-        $this->data->breadcrumb = $breadcrumb->getData();
-
-        // BLOCK
-        $label = new Label();
-
-        $label = $label->get($this->url->getID()) or $this->error();
-
-        // FIELD
-        $field = new Field('/Admin/Label/Label');
-        $field->data($label);
-        $field->object('label')->title('L_LABEL_EDIT');
-        $this->data->field = $field->getData();
+        // Language
+        $language = $data->get('inst.language');
         
-        // EDIT LABEL
-        $this->process->form(type: '/Admin/Label/Edit', data: [
-            'label_id' => $this->url->getID()
-        ]);
+        // If static mode is enabled
+		if ($system->get('site.mode') == 'static')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('forum')->elm2('label')->active();
 
-        // PAGE TITLE
-        $this->data->head['title'] = $this->language->get('L_LABEL') . ' - ' . $label['label_name'];
+        // Get data from database
+        $row = $db->select('app.label.get()', $this->url->getID()) or $this->error404();
+
+        // Save label data and unite with others
+        $data->set('data.label', $row);
+
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Label.json');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.label.label_name'))->href('/admin/label/show/' . $data->get('data.label.label_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Label.json');
+        $form
+            ->form('label')
+                ->callOnSuccess($this, 'editLabel')
+                ->data($data->get('data.label'))
+                // Setup form
+                ->frame('label')
+                    // Set title
+                    ->title('L_LABEL.L_EDIT')
+                    // Setup show button
+                    ->input('show')->show()
+                        // Set link to button
+                        ->set('data.href', $this->url->build('/label/' . $this->url->getID() . '.' . $data->get('data.label.label_class')));
+
+        // Finish form and get ready for generate
+        $data->form = $form->getDataToGenerate();
+        
+        // Page title
+        $data->set('data.head.title', $language->get('L_LABEL.L_LABEL') . ' - ' . $data->get('data.label.label_name'));
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function editLabel( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        $db->update(TABLE_LABELS, [
+            'label_name'        => $post->get('label_name'),
+            'label_color'       => $post->get('label_color'),
+            'label_class'  => parse($post->get('label_name')) . $post->get('label_id'),
+        ], $data->get('data.label.label_id'));
+
+        // Synchronize labels
+        $labels = $db->select('app.label.all()');
+
+        $css = '';
+        foreach ($labels as $label)
+        {
+            $css .= '.label.label--' . $label['label_class'] . '{background-color:' . $label['label_color'] . '}.label-checkbox.label--' . $label['label_class'] . '{color:' . $label['label_color'] . ' !important}.label--' . $label['label_class'] . ' input[type="checkbox"] + label .checkbox-icon{border-color:' . $label['label_color'] . '}.label--' . $label['label_class'] . ' input[type="checkbox"]:checked + label .checkbox-icon{background-color:' . $label['label_color'] . '}';
+        }
+        file_put_contents(ROOT . '/Includes/Template/css/Label.min.css', $css);
+
+        // Update labels session
+        $db->table(TABLE_SETTINGS, [
+            'session.labels' => RAND
+        ]);
+        
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__, text: $post->get('label_name') );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
+        
+        // Redirect user
+        $data->set('data.redirect', '/admin/label/');
     }
 }

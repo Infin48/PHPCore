@@ -74,7 +74,7 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
      */
     public function buildDirective($directive)
     {
-        // Kludge, although I suppose having a notion of a "root namespace"
+        // Kludge, although i suppose having a notion of a "root namespace"
         // certainly makes things look nicer when documentation is built.
         // Depends on things being sorted.
         if (!$this->namespace || $this->namespace !== $directive->id->getRootNamespace()) {

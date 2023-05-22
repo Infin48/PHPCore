@@ -1,79 +1,49 @@
-<?php 
-
-    $cache = $this->data->block['body'];
-    $this->data->block['body'] = [
-        'user' => $cache['user'],
-        'users' => $cache['users'],
-        'user_deleted' => $cache['user_deleted'],
-    ];
-
-?>
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-
-<div class="chart-two">
+<div class="page-layout">
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_USER_MONTH ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_USER.L_MONTH') ?></div>
         <div class="chart-body">
             <div id="userDay" style="height:300px;"></div>
         </div>
     </div>
 
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_USER_YEAR ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_USER.L_YEAR') ?></div>
         <div class="chart-body">
             <div id="userMonth" style="height:300px;"></div>
         </div>
     </div>
 </div>
 
-<?php 
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Block.phtml'); ?>
 
-    $this->data->block['body'] = [
-        'topic' => $cache['topic'],
-        'topic_reported' => $cache['topic_reported'],
-        'topic_deleted' => $cache['topic_deleted'],
-    ];
-
-?>
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-
-<div class="chart-two">
+<div class="page-layout">
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_TOPIC_MONTH ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_TOPIC.L_MONTH') ?></div>
         <div class="chart-body">
             <div id="topicDay" style="height:300px;"></div>
         </div>
     </div>
     
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_TOPIC_YEAR ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_TOPIC.L_YEAR') ?></div>
         <div class="chart-body">
             <div id="topicMonth" style="height:300px;"></div>
         </div>
     </div>
 </div>
 
-<?php 
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Block.phtml'); ?>
 
-    $this->data->block['body'] = [
-        'post' => $cache['post'],
-        'post_reported' => $cache['post_reported'],
-        'post_deleted' => $cache['post_deleted'],
-    ];
-
-?>
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-
-<div class="chart-two">
+<div class="page-layout">
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_POST_MONTH ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_POST.L_MONTH') ?></div>
         <div class="chart-body">
             <div id="postDay" style="height:300px;"></div>
         </div>
     </div>
     
     <div class="chart">
-        <div class="chart-head"><?= $L_STATISTICS_POST_YEAR ?></div>
+        <div class="chart-head"><?= $language->get('L_STATISTIC.L_POST.L_YEAR') ?></div>
         <div class="chart-body">
             <div id="postMonth" style="height:300px;"></div>
         </div>
@@ -84,7 +54,7 @@
 <script>
 
     var data = JSON.parse(JSON.stringify(<?= $this->data->chart ?>));
-
+    console.log(data);
     var chart = new ApexCharts(document.querySelector("#userDay"), {
         colors:['#3174d7'],
         chart: {
@@ -97,7 +67,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_USERS ?>',
+                name: '<?= $language->get('L_USERS') ?>',
                 data: data.day.users
             }
         ],
@@ -119,7 +89,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_USERS ?>',
+                name: '<?= $language->get('L_USERS') ?>',
                 data: data.month.users
             }
         ],
@@ -141,7 +111,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_TOPICS ?>',
+                name: '<?= $language->get('L_TOPICS') ?>',
                 data: data.day.topics
             }
         ],
@@ -163,7 +133,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_TOPICS ?>',
+                name: '<?= $language->get('L_TOPICS') ?>',
                 data: data.month.topics
             }
         ],
@@ -185,7 +155,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_POSTS ?>',
+                name: '<?= $language->get('L_POSTS') ?>',
                 data: data.day.posts
             }
         ],
@@ -208,7 +178,7 @@
           curve: 'straight'
         },
         series: [{
-                name: '<?= $L_POSTS ?>',
+                name: '<?= $language->get('L_POSTS') ?>',
                 data: data.month.posts
             }
         ],

@@ -1,0 +1,33 @@
+{
+    "body": {
+        "host": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "user_name": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "user_password": {
+            "options": {
+                "type": "password",
+                "required": true
+            }
+        },
+        "database": {
+            "options": {
+                "type": "text",
+                "required": true
+            }
+        },
+        "port": {
+            "options": {
+                "type": "text"
+            }
+        }
+    }
+}

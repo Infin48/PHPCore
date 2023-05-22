@@ -1,0 +1,35 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "user": {
+                    "data": {
+                        "title": "L_USER.L_SEARCH.L_SEARCH"
+                    },
+                    "body": {
+                        "user_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_USERNAME.L_USERNAME",
+                                "desc": "L_USER.L_SEARCH.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_USERNAME"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

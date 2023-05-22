@@ -1,3 +1,7 @@
-<span class="list-title"><?= $row['data']['label_name'] ?></span>
-<br>
-<span><?= $L_COLOR ?>: <span class="fw-600"><?= $row['data']['label_color'] ?></span></span>
+<div class="list-row-align">
+    <span class="list-row-id">#<?= $list->get('data.label_id') ?></span>
+    <div class="label label--<?= $list->get('data.label_class') ?>">
+        <i class="fa-solid fa-tag"></i>
+        <span><?= $list->get('data.label_name') ?></span>
+    </div>
+</div>

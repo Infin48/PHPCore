@@ -1,0 +1,103 @@
+{
+    "body": {
+        "permission": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "inherit": {
+                    "data": {
+                        "title": "L_FORUM.L_PERMISSION.L_INHERIT"
+                    },
+                    "body": {
+                        "inherit_permission": {
+                            "options": {
+                                "type": "radio",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_PERMISSION.L_INHERIT"
+                            },
+                            "body": {
+                                "yes": {
+                                    "data": {
+                                        "value": 1,
+                                        "label": "L_YES"
+                                    }
+                                },
+                                "no": {
+                                    "data": {
+                                        "value": 0,
+                                        "label": "L_NO"
+                                    }
+                                }
+                            }
+                        },
+                        "inherit_id": {
+                            "options": {
+                                "type": "select",
+                                "on": {
+                                    "show": "inherit_permission:1"
+                                }
+                            },
+                            "data": {
+                                "empty": "L_CATEGORY.L_NO",
+                                "title": "L_CATEGORY.L_INHERIT"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "convert": {
+                                            "label": "category_name",
+                                            "value": "category_id"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "groups": {
+                    "options": {
+                        "on": {
+                            "show": "inherit_permission:0"
+                        }
+                    },
+                    "data": {
+                        "desc": "L_FORUM.L_PERMISSION.L_DESC",
+                        "title": "L_FORUM.L_PERMISSION.L_PERMISSION"
+                    },
+                    "body": {
+                        "top": {
+                            "options": {
+                                "template": {
+                                    "option": "Root/Style:/Templates/Blocks/Visualization/Form/Category/Permission/Head.phtml"
+                                }
+                            },
+                            "data": {
+                                "title": "L_GROUP.L_NAME"
+                            }
+                        },
+                        "default": {
+                            "options": {
+                                "template": {
+                                    "text": "Root/Style:/Templates/Blocks/Visualization/Form/Category/Permission/Text.phtml",
+                                    "option": "Root/Style:/Templates/Blocks/Visualization/Form/Category/Permission/Option.phtml"
+                                }
+                            },
+                            "data": {
+                                "name": "see_groups"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

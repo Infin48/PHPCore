@@ -1,6 +1,6 @@
 <?php
 
-// must be called POST validation
+// must be called post validation
 
 /**
  * Transform that supplies default values for the src and alt attributes

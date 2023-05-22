@@ -1,0 +1,16 @@
+<?php if (isset($this->data->pagination['enabled']) and $this->data->pagination['enabled'] == true) : ?>
+    <div class="panel panel-top">
+        <?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>
+    </div>
+<?php endif; ?>
+<div class="block-list" js="block-list">
+    <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Block/Block.phtml'); ?>
+
+    <?php if (empty($this->data->block->get('body.profilepost.body'))) : ?>
+        <div class="block" js="block block-empty">
+            <div class="block-body"><div class="block-content"><?= strtr($language->get('L_PROFILE_POST.L_NO'), ['{user_name}' => $this->data->get('data.profile.user_name')]) ?></div></div>
+        </div>
+    <?php endif; ?>
+
+</div>
+<?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>

@@ -10,7 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model;
+namespace App\Model;
 
 /**
  * Data
@@ -20,22 +20,29 @@ class Data
     /**
      * @var array $data Page data
      */
-    public array $data = [];
+    public array $data = [
+        'previous' => 'Page\Router'
+    ];
 
     /**
-     * @var array $block Block data
+     * @var \App\Visualization\VisualizationGenerate $block Block data
      */
-    public array $block = [];
+    public \App\Visualization\VisualizationGenerate $block;
 
     /**
-     * @var array $filed Field data
+     * @var \App\Visualization\VisualizationGenerate $form Form data
      */
-    public array $field = [];
+    public \App\Visualization\VisualizationGenerate $form;
 
     /**
-     * @var array $list List data
+     * @var \App\Visualization\VisualizationGenerate $list List data
      */
-    public array $list = [];
+    public \App\Visualization\VisualizationGenerate $list;
+
+    /**
+     * @var object $d Additional data
+     */
+    public object $d;
 
     /**
      * @var array $head Head data
@@ -48,29 +55,34 @@ class Data
     public string $chart = '';
 
     /**
-     * @var array $panel Panel data
+     * @var string $notice Notice message
      */
-    public array $panel = [];
+    public string $notice = '';
 
     /**
-     * @var array $plugin Plugin settings
+     * @var \App\Visualization\VisualizationGenerate $panel Panel data
      */
-    public array $plugin = [];
+    public \App\Visualization\VisualizationGenerate $panel;
     
     /**
-     * @var array $navbar Navbar data
+     * @var \App\Visualization\VisualizationGenerate $navbar Navbar data
      */
-    public array $navbar = [];
+    public \App\Visualization\VisualizationGenerate $navbar;
 
     /**
-     * @var array $sidebar Sidebar data
+     * @var \App\Visualization\VisualizationGenerate $sidebar Sidebar data
      */
-    public array $sidebar = [];
+    public \App\Visualization\VisualizationGenerate $sidebar;
 
     /**
-     * @var array $breadcrumb Breadcrumb data
+     * @var \App\Visualization\VisualizationGenerate $breadcrumb Breadcrumb data
      */
-    public array $breadcrumb = [];
+    public \App\Visualization\VisualizationGenerate $breadcrumb;
+
+    /**
+     * @var \App\Visualization\VisualizationGenerate $notification Notification data
+     */
+    public \App\Visualization\VisualizationGenerate $notification;
 
     /**
      * @var array $pagination Pagination data
@@ -78,19 +90,105 @@ class Data
     public array $pagination = [];
 
     /**
-     * Adds data to page
+     * @var array $message Message
+     */
+    public array $message = [];
+
+    /**
+     * @var bool $header If true - big header will be showed
+     */
+    public bool $header = false;
+
+    /**
+     * @var bool $editor If true - HTML editor will be loaded
+     */
+    public bool $editor = false;
+
+    /**
+     * @var bool $plugin If true - User entered to plugin page
+     */
+    public bool $plugin = false;
+
+    public function __construct()
+    {
+        $plugin = new \App\Plugin\Plugin();
+        $plugin->loadInstalledPlugins();
+
+        $system = new \App\Model\System();
+        
+        $trumbowyg = new \App\Model\Trumbowyg( $system->get('site.language_editor') );
+
+        $this->d = new \App\Visualization\Visualization([
+            'options' => [
+                'header' => false,
+                'editor' => false,
+                'plugin' => false,
+                'photoSwipe' => false,
+                'adminAccess' => false,
+                'profileHeader' => false,
+                'setupTemplate' => false
+            ],
+            'data' => [
+                'mentionUserList' => json_encode([]),
+                'head' => [],
+                'trumbowyg' => [
+                    'big' => $trumbowyg->big(),
+                    'small' => $trumbowyg->small()
+                ]
+            ],
+            'inst' => [
+                'plugin' => $plugin,
+                'user' => new \App\Model\User(),
+                'system' => $system,
+                'language' => new \App\Model\Language( $plugin )
+            ]
+        ]);
+
+        $this->list = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->form = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->block = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->panel = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->navbar = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->sidebar = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->breadcrumb = (new \App\Visualization\Visualization())->getDataToGenerate();
+        $this->notification = (new \App\Visualization\Visualization())->getDataToGenerate();
+    }
+
+    /**
+     * Sets data
      *
-     * @param array|string $data
+     * @param string $key
      * @param mixed $value
      * 
      * @return void
      */
-    public function data( array|string $data, mixed $value = null )
+    public function set( string $key, mixed $value )
     {
-        if (is_string($data)) {
-            $this->data[$data] = $value;
-            return;
-        }
-        $this->data = array_merge($this->data, $data);
+        $this->d->set($key, $value);
+    }
+
+    /**
+     * Gets data
+     *
+     * @param string $key
+     * 
+     * @return mixed
+     */
+    public function get( string $key)
+    {
+        return $this->d->get($key);
+    }
+
+    /**
+     * Eachs data
+     *
+     * @param string $key
+     * @param callable $function
+     * 
+     * @return mixed
+     */
+    public function each( string $key, callable $function )
+    {
+        return $this->d->each($key, $function);
     }
 }

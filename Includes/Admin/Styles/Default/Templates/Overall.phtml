@@ -1,9 +1,8 @@
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-<?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
-<?php require $this->template->template('/Blocks/Visualization/Lists/Lists.phtml'); ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Form/Form.phtml'); ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
 
 <?php if (isset($this->data->pagination)) : ?>
     <?php if ($this->data->pagination['enabled'] ?? false === true) : ?>
-        <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>
     <?php endif; ?>
 <?php endif; ?>

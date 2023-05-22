@@ -92,7 +92,7 @@ class HTMLPurifier_Generator
             if ($this->_scriptFix && $tokens[$i]->name === 'script'
                 && $i + 2 < $size && $tokens[$i+2] instanceof HTMLPurifier_Token_End) {
                 // script special case
-                // the contents of the script block must be ONE token
+                // the contents of the script block must be one token
                 // for this to work.
                 $html .= $this->generateFromToken($tokens[$i++]);
                 $html .= $this->generateScriptFromToken($tokens[$i++]);
@@ -226,12 +226,12 @@ class HTMLPurifier_Generator
                     continue;
                 }
             }
-            // Workaround for Internet Explorer innerHTML bug.
-            // Essentially, Internet Explorer, when calculating
-            // innerHTML, omits quotes if there are no instances of
-            // angled brackets, quotes or spaces.  However, when parsing
-            // HTML (for example, when you assign to innerHTML), it
-            // treats backticks as quotes.  Thus,
+            // Workaround for internet explorer innerhtml bug.
+            // Essentially, internet explorer, when calculating
+            // innerhtml, omits quotes if there are no instances of
+            // angled brackets, quotes or spaces.  however, when parsing
+            // Html (for example, when you assign to innerhtml), it
+            // treats backticks as quotes.  thus,
             //      <img alt="``" />
             // becomes
             //      <img alt=`` />
@@ -239,14 +239,14 @@ class HTMLPurifier_Generator
             //      <img alt='' />
             // Fortunately, all we need to do is trigger an appropriate
             // quoting style, which we do by adding an extra space.
-            // This also is consistent with the W3C spec, which states
+            // This also is consistent with the w3c spec, which states
             // that user agents may ignore leading or trailing
             // whitespace (in fact, most don't, at least for attributes
             // like alt, but an extra space at the end is barely
-            // noticeable).  Still, we have a configuration knob for
+            // noticeable).  still, we have a configuration knob for
             // this, since this transformation is not necesary if you
-            // don't process user input with innerHTML or you don't plan
-            // on supporting Internet Explorer.
+            // don't process user input with innerhtml or you don't plan
+            // on supporting internet explorer.
             if ($this->_innerHTMLFix) {
                 if (strpos($value, '`') !== false) {
                     // check if correct quoting style would not already be
@@ -274,7 +274,7 @@ class HTMLPurifier_Generator
      */
     public function escape($string, $quote = null)
     {
-        // Workaround for APC bug on Mac Leopard reported by sidepodcast
+        // Workaround for apc bug on mac leopard reported by sidepodcast
         // http://htmlpurifier.org/phorum/read.php?3,4823,4846
         if ($quote === null) {
             $quote = ENT_COMPAT;

@@ -10,55 +10,57 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Block\Log as LogBlock;
-
-use Model\Pagination;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin;
 
 /**
  * Log
  */
-class Log extends \Page\Page
+class Log extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.?'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.log';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('other')->row('log')->active();
+        // System
+        $system = $data->get('inst.system');
+        
+        // If static mode is enabled
+		if ($system->get('site.mode') == 'static')
+		{
+            // Show 404 error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('other')->elm2('log')->active();
 
-        // BLOCK
-        $log = new LogBlock();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Log.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
-
-        // PAGINATION
-        $pagination = new Pagination();
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(20);
-        $pagination->total($log->getAllCount());
+        $pagination->total($db->select('app.log.count()'));
         $pagination->url($this->url->getURL());
-        $log->pagination = $this->data->pagination = $pagination->getData();
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $list = new Lists('/Log');
-        $list->object('log')->fill(data: $log->getAll());
-        $this->data->list = $list->getData();
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Log.json');
+        $list->elm1('log')->fill(data: $db->select('app.log.all()'));
+        $data->list = $list->getDataToGenerate();
     }
 }

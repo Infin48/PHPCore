@@ -31,11 +31,11 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
             return;
         }
 
-        // there is/are URL(s). Let's split the string.
+        // there is/are url(s). let's split the string.
         // We use this regex:
         // https://gist.github.com/gruber/249502
         // but with @cscott's backtracking fix and also
-        // the Unicode characters un-Unicodified.
+        // the unicode characters un-unicodified.
         $bits = preg_split(
             '/\\b((?:[a-z][\\w\\-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]|\\((?:[^\\s()<>]|(?:\\([^\\s()<>]+\\)))*\\))+(?:\\((?:[^\\s()<>]|(?:\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'".,<>?\x{00ab}\x{00bb}\x{201c}\x{201d}\x{2018}\x{2019}]))/iu',
             $token->data, -1, PREG_SPLIT_DELIM_CAPTURE);

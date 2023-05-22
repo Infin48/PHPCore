@@ -62,7 +62,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             $html = preg_replace_callback($comment, array($this, 'callbackUndoCommentSubst'), $html); // fix comments
         }
 
-        // preprocess html, essential for UTF-8
+        // preprocess html, essential for utf-8
         $html = $this->wrapHTML($html, $config, $context);
 
         $doc = new DOMDocument();
@@ -74,7 +74,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         }
 
         set_error_handler(array($this, 'muteErrorHandler'));
-        // loadHTML() fails on PHP 5.3 when second parameter is given
+        // loadhtml() fails on php 5.3 when second parameter is given
         if ($options) {
             $doc->loadHTML($html, $options);
         } else {
@@ -89,8 +89,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $tokens = array();
         $this->tokenizeDOM($div, $tokens, $config);
         // If the div has a sibling, that means we tripped across
-        // a premature </div> tag.  So remove the div we parsed,
-        // and then tokenize the rest of body.  We can't tokenize
+        // a premature </div> tag.  so remove the div we parsed,
+        // and then tokenize the rest of body.  we can't tokenize
         // the sibling directly as we'll lose the tags in that case.
         if ($div->nextSibling) {
             $body->removeChild($div);
@@ -113,7 +113,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $closingNodes = array();
         do {
             while (!$nodes[$level]->isEmpty()) {
-                $node = $nodes[$level]->shift(); // FIFO
+                $node = $nodes[$level]->shift(); // Fifo
                 $collect = $level > 0 ? true : false;
                 $needEndingTag = $this->createStartNode($node, $tokens, $collect, $config);
                 if ($needEndingTag) {
@@ -182,7 +182,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     protected function createStartNode($node, &$tokens, $collect, $config)
     {
-        // intercept non element nodes. WE MUST catch all of them,
+        // intercept non element nodes. we must catch all of them,
         // but we're not getting the character reference nodes because
         // those should have been preprocessed
         if ($node->nodeType === XML_TEXT_NODE) {
@@ -203,7 +203,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
                     if (substr($data, -3) === '-->') {
                         $data = substr($data, 0, -3);
                     } else {
-                        // Highly suspicious! Not sure what to do...
+                        // Highly suspicious! not sure what to do...
                     }
                 }
             }
@@ -220,11 +220,11 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             return false;
         }
         $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : array();
-        $tag_name = $this->getTagName($node); // Handle variable tagName property
+        $tag_name = $this->getTagName($node); // Handle variable tagname property
         if (empty($tag_name)) {
             return (bool) $node->childNodes->length;
         }
-        // We still have to make sure that the element actually IS empty
+        // We still have to make sure that the element actually is empty
         if (!$node->childNodes->length) {
             if ($collect) {
                 $tokens[] = $this->factory->createEmpty($tag_name, $attr);
@@ -244,7 +244,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     protected function createEndNode($node, &$tokens)
     {
-        $tag_name = $this->getTagName($node); // Handle variable tagName property
+        $tag_name = $this->getTagName($node); // Handle variable tagname property
         $tokens[] = $this->factory->createEnd($tag_name);
     }
 
@@ -256,8 +256,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     protected function transformAttrToAssoc($node_map)
     {
-        // NamedNodeMap is documented very well, so we're using undocumented
-        // features, namely, the fact that it implements Iterator and
+        // Namednodemap is documented very well, so we're using undocumented
+        // features, namely, the fact that it implements iterator and
         // has a ->length attribute
         if ($node_map->length === 0) {
             return array();

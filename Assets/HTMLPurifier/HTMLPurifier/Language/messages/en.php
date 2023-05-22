@@ -10,7 +10,7 @@ $messages = array(
     'LanguageTest: List' => '$1',
     'LanguageTest: Hash' => '$1.Keys; $1.Values',
     'Item separator' => ', ',
-    'Item separator last' => ' and ', // non-Harvard style
+    'Item separator last' => ' and ', // non-harvard style
 
     'ErrorCollector: No errors' => 'No errors detected. However, because error reporting is still incomplete, there may have been errors that the error collector was not notified of; please inspect the output HTML carefully.',
     'ErrorCollector: At line' => ' at line $line',

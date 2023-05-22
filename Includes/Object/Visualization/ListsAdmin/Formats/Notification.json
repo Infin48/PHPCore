@@ -1,0 +1,40 @@
+{
+    "body": {
+        "notification": {
+            "data": {
+                "empty": "L_NOTIFICATION.L_NO",
+                "title": "L_NOTIFICATION.L_LIST",
+                "button": {
+                    "add": {
+                        "title": "L_BTN.L_NEW_NOTIFICATION",
+                        "href": "~/add/"
+                    }
+                }
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Notification.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "notification"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

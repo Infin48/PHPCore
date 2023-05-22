@@ -1,0 +1,22 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "href": "/admin/",
+                "title": "L_BREADCRUMB.L_ADMIN"
+            }
+        },
+        "settings": {
+            "data": {
+                "href": "/admin/settings/",
+                "title": "L_BREADCRUMB.L_SETTINGS.L_SETTINGS"
+            }
+        },
+        "email": {
+            "data": {
+                "href": "/admin/settings/email/",
+                "title": "L_BREADCRUMB.L_SETTINGS.L_EMAIL"
+            }
+        }
+    }
+}

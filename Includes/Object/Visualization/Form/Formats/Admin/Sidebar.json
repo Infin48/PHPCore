@@ -1,0 +1,44 @@
+{
+    "body": {
+        "sidebar": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "sidebar": {
+                    "data": {
+                        "title": "L_SIDEBAR.L_ADD"
+                    },
+                    "body": {
+                        "sidebar_object": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_SIDEBAR.L_SIDEBAR",
+                                "empty": "L_SIDEBAR.L_NO"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "convert": {
+                                            "value": "sidebar",
+                                            "label": "sidebar_object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,25 +1,25 @@
-<?php if (!empty($this->data->block['body'])) : ?>
+<?php if ( $this->data->block->get('body') ) : ?>
     <div class="block-list">
-        <?php foreach ($this->data->block['body'] as $block) : ?>
-            <div class="block block-<?= $block['data']['color'] ?>">
+        <?php $this->data->block->each('body', function ($block) { ?>
+            <div class="block block-<?= $block->get('data.color') ?>">
                 <div class="block-content">
                     <span class="block-number">
-                        <?php if (isset($block['data']['href']) and !empty($block['data']['href'])) : ?>
-                            <a target="_blank" href="<?= $block['data']['href'] ?>">
-                                <span><?= $block['data']['value'] ?></span>
-                                <i class="fas fa-share"></i>
+                        <?php if ( $block->get('data.href') ) : ?>
+                            <a target="_blank" href="<?= $block->get('data.href') ?>">
+                                <span><?= $block->get('data.value') ?></span>
+                                <i class="fa-solid fa-share"></i>
                             </a>
                         <?php else : ?>
-                            <span><?= $block['data']['value'] ?></span>
+                            <span><?= $block->get('data.value') ?></span>
                         <?php endif; ?>
                     </span>
                     <br>
-                    <span class="block-title"><?= ${$block['data']['title']} ?></span>
+                    <span class="block-title"><?= $block->get('data.title') ?></span>
                 </div>
                 <div class="block-icon">
-                    <i class="<?= $block['data']['icon'] ?>"></i>
+                    <i class="<?= $block->get('data.icon') ?>"></i>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php }); ?>
     </div>
 <?php endif; ?>

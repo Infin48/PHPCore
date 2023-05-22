@@ -1,0 +1,23 @@
+<?php if ( $input->get('body') ) : ?>
+    <?php $input->each('body', function ($checkbox) use ($input) { ?>
+        <?php if ( $checkbox->get('options.template.option') ) : ?>
+            <?php require $checkbox->get('options.template.option'); ?>
+        <?php else : ?>
+            <div class="checkbox">
+                <input class="script" id="<?= $id = mt_rand() ?>" type="checkbox" name="<?= $input->getCurrentPositionName() ?>" value="<?= $checkbox->get('data.value') ?>" <?php if ( $checkbox->get('options.checked') ) : ?>checked<?php endif; ?>>
+                <label for="<?= $id ?>">
+                    <span class="checkbox-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </span>
+                    <?php if ( $checkbox->get('data.label') ) : ?>
+                        <span><?= $checkbox->get('data.label') ?></span>
+                    <?php endif; ?>
+                </label>
+            </div>
+        <?php endif; ?>
+    <?php }); ?>
+<?php else : ?>
+    <?php if ( $input->get('data.empty') ) : ?>
+        <?= $input->get('data.empty') ?>
+    <?php endif; ?>
+<?php endif; ?>

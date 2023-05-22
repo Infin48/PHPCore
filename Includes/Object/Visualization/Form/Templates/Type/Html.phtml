@@ -1,0 +1,1 @@
+<textarea name="<?= $input->getCurrentPositionName() ?>" trumbowyg="<?= $input->get('data.html') ?>"<?php if ( $input->get('data.placeholder') ) : ?> placeholder="<?= $input->get('data.placeholder') ?>"<?php endif; ?>><?= $this->post->get($input->getCurrentPositionName()) ?: $input->get('data.value') ?></textarea>

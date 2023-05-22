@@ -27,21 +27,21 @@ class HTMLPurifier_URIParser
     {
         $uri = $this->percentEncoder->normalize($uri);
 
-        // Regexp is as per Appendix B.
-        // Note that ["<>] are an addition to the RFC's recommended
+        // Regexp is as per appendix b.
+        // Note that ["<>] are an addition to the rfc's recommended
         // characters, because they represent external delimeters.
         $r_URI = '!'.
-            '(([a-zA-Z0-9\.\+\-]+):)?'. // 2. Scheme
-            '(//([^/?#"<>]*))?'. // 4. Authority
-            '([^?#"<>]*)'.       // 5. Path
-            '(\?([^#"<>]*))?'.   // 7. Query
-            '(#([^"<>]*))?'.     // 8. Fragment
+            '(([a-zA-Z0-9\.\+\-]+):)?'. // 2. scheme
+            '(//([^/?#"<>]*))?'. // 4. authority
+            '([^?#"<>]*)'.       // 5. path
+            '(\?([^#"<>]*))?'.   // 7. query
+            '(#([^"<>]*))?'.     // 8. fragment
             '!';
 
         $matches = array();
         $result = preg_match($r_URI, $uri, $matches);
 
-        if (!$result) return false; // *really* invalid URI
+        if (!$result) return false; // *really* invalid uri
 
         // seperate out parts
         $scheme     = !empty($matches[1]) ? $matches[2] : null;

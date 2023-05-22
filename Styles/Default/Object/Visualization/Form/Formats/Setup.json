@@ -1,0 +1,77 @@
+{
+    "body": {
+        "setup": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "setup": {
+                    "data": {
+                        "title": "Style.L_SETUP"
+                    },
+                    "body": {
+                        "background_image": {
+                            "options": {
+                                "type": "file/image"
+                            },
+                            "data": {
+                                "title": "Style.L_BACKGROUND_IMAGE_UPLOAD"
+                            }
+                        },
+                        "delete_background_image": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "Style.L_BACKGROUND_IMAGE_DELETE"
+                            },
+                            "body": {
+                                "delete_background_image": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "background_image_position": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "Style.L_BACKGROUND_IMAGE_POSITION"
+                            },
+                            "body": {
+                                "top": {
+                                    "data": {
+                                        "label": "Style.L_BACKGROUND_IMAGE_POSITION_TOP",
+                                        "value": "top"
+                                    }
+                                },
+                                "center": {
+                                    "data": {
+                                        "label": "Style.L_BACKGROUND_IMAGE_POSITION_CENTER",
+                                        "value": "center"
+                                    }
+                                },
+                                "bottom": {
+                                    "data": {
+                                        "label": "Style.L_BACKGROUND_IMAGE_POSITION_BOTTOM",
+                                        "value": "bottom"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<div class="form-row" js="form-row form-row-add-recipient">
+    <div class="form-row-body">
+        <div class="form-text vertical-align">
+            <div class="vertical-align space-between wh-full">
+                <div class="inner">
+                    <span><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_RECIPIENT') ?>:</span>
+                    <br><?= $this->language->get('L_USER.L_CONVERSATION.L_RECIPIENT.L_DESC') ?>
+                </div>
+                <a class="link f-right" ajax-action="add-recipient"><?= $this->language->get('L_BTN.L_ADD') ?></a>
+            </div>
+        </div>
+        <div class="form-option">
+            <input type="text" placeholder="<?= $this->language->get('L_PLACEHOLDER.L_USERNAME') ?>" name="<?= $input->getCurrentPositionName() ?>" value="">
+        </div>
+    </div>
+</div>

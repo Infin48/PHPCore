@@ -1,0 +1,18 @@
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Panel/Panel.phtml'); ?>
+<?php $this->data->block->each('body', function ($block) { ?>
+    <div class="block">
+        <div class="block-body" js="block-body">
+            <div class="block-content"><?= $block->get('data.text') ?></div>
+            <?php if ( $block->get('data.images') ) : ?>
+                <div class="block-images pswp-images">
+                    <?php require $this->path->build('Root/Style:/Templates/Blocks/Attachments/Images.phtml'); ?>
+                </div>
+            <?php endif; ?>
+            <?php if ( $block->get('data.attachments') ) : ?>
+                <div class="block-attachment">
+                    <?php require $this->path->build('Root/Style:/Templates/Blocks/Attachments/Files.phtml'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php }); ?>

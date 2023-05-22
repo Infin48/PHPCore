@@ -1,18 +1,22 @@
-<?php require $this->template->template('/Blocks/Visualization/Block/Block.phtml'); ?>
-<div class="page-alert">
-    <div class="page-alert-icon">
-        <i class="fas fa-exclamation"></i>
-    </div>
-    <div class="page-alert-body">
-        <div class="page-alert-content">
-            <span><?= $L_UPDATE_WARNING_PLUGINS ?></span>
+<?php if (!$this->data->form->get('body.update.body.available')) : ?>
+    <div class="list list-name-page" js="list">
+        <div class="list-body" js="list-body">
+            <div class="list-row">
+                <div class="list-row-inner" js="list-row-inner">
+                    <div class="list-row-body">
+                        <div class="list-row-big">
+                            <span class="list-title"><?= $this->language->get('L_UPDATE.L_NO') ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<?php require $this->template->template('/Blocks/Visualization/Field/Field.phtml'); ?>
+<?php endif; ?>
+<?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Form/Form.phtml'); ?>
 
 <?php if (isset($this->data->pagination)) : ?>
     <?php if ($this->data->pagination['enabled'] ?? false === true) : ?>
-        <?php require $this->template->template('/Blocks/Pagination.phtml'); ?>
+        <?php require $path->build('Root/Style:/Templates/Blocks/Pagination.phtml'); ?>
     <?php endif; ?>
 <?php endif; ?>

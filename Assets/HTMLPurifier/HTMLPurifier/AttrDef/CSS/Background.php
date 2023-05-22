@@ -44,7 +44,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         // munge rgb() decl if necessary
         $string = $this->mungeRgb($string);
 
-        // assumes URI doesn't have spaces in it
+        // assumes uri doesn't have spaces in it
         $bits = explode(' ', $string); // bits to process
 
         $caught = array();

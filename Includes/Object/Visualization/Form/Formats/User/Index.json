@@ -1,0 +1,55 @@
+{
+    "body": {
+        "about": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "about": {
+                    "body": {
+                        "user_name": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_USERNAME.L_USERNAME"
+                            }
+                        },
+                        "user_email": {
+                            "options": {
+                                "type": "field"
+                            },
+                            "data": {
+                                "title": "L_EMAIL.L_EMAIL"
+                            }
+                        },
+                        "user_registered": {
+                            "options": {
+                                "type": "date"
+                            },
+                            "data": {
+                                "title": "L_USER.L_REGISTERED"
+                            }
+                        },
+                        "user_about": {
+                            "options": {
+                                "type": "html",
+                                "max-length": "1000"
+                            },
+                            "data": {
+                                "desc": "L_USER.L_ABOUT.L_DESC",
+                                "title": "L_USER.L_ABOUT.L_ABOUT"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -35,7 +35,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             );
             return false;
         }
-        $this->base->fragment = null; // fragment is invalid for base URI
+        $this->base->fragment = null; // fragment is invalid for base uri
         $stack = explode('/', $this->base->path);
         array_pop($stack); // discard last segment
         $stack = $this->_collapseStack($stack); // do pre-parsing
@@ -61,7 +61,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             return true;
         }
         if (!is_null($uri->scheme)) {
-            // absolute URI already: don't change
+            // absolute uri already: don't change
             if (!is_null($uri->host)) {
                 return true;
             }
@@ -71,7 +71,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
                 return false;
             }
             if (!$scheme_obj->hierarchical) {
-                // non-hierarchal URI with explicit scheme, don't change
+                // non-hierarchal uri with explicit scheme, don't change
                 return true;
             }
             // special case: had a scheme but always is hierarchical and had no authority

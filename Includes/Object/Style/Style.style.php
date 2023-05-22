@@ -10,24 +10,22 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Style;
+namespace App\Style;
 
-use Model\Form;
-use Model\Session;
-
-use Plugin\Plugin;
-
+/**
+ * Style
+ */
 class Style
 {
     /**
      * @var array $templates List of templates
      */
-    private array $templates = ['shift'];
+    private static array $templates = ['shift'];
 
     /**
-     * @var array $ID List of IDs
+     * @var bool $e404 If true - 404 Error page will be displayed
      */
-    public array $ID = [];
+    public bool $e404 = false;
 
     /**
      * @var string $URL Page URL
@@ -40,116 +38,109 @@ class Style
     public string $URLcurrent = '/';
 
     /**
-     * @var \Model\Url $url Url
+     * @var \App\Model\Url $url Url
      */
-    public \Model\Url $url;
+    private \App\Model\Url $url;
 
     /**
-     * @var \Model\Form $form Form
+     * @var \App\Model\User $user User
      */
-    public \Model\Form $form;
+    private \App\Model\User $user;
 
     /**
-     * @var \Model\Data $data Data
+     * @var \App\Model\Post $post Post data
      */
-    public \Model\Data $data;
+    private \App\Model\Post $post;
 
     /**
-     * @var \Model\Build\Build $build Builder
+     * @var \App\Model\Data $data Data
      */
-    public \Model\Build\Build $build;
+    private \App\Model\Data $data;
 
     /**
-     * @var \Model\System $system System
+     * @var \stdClass $build Builder
      */
-    public \Model\System $system;
+    private \stdClass $build;
 
     /**
-     * @var \Model\Template $template Template
+     * @var \App\Model\System $system System
      */
-    public \Model\Template $template;
+    private \App\Model\System $system;
 
     /**
-     * @var \Model\Language $language Language
+     * @var \App\Plugin\Plugin $plugin Plugin
      */
-    public \Model\Language $language;
+    private \App\Plugin\Plugin $plugin;
+
+    /**
+     * @var \App\Model\Template $template Template
+     */
+    private \App\Model\Template $template;
+
+    /**
+     * @var \App\Model\Language $language Language
+     */
+    private \App\Model\Language $language;
+
+    /**
+     * @var \App\Model\Permission $permission Permission
+     */
+    private \App\Model\Permission $permission;
     
     /**
      * Constructor
      *
-     * @param  \Model\System $system
+     * @param  \Model\Data $data
      */
-    public function __construct()
+    public function __construct( \App\Model\Data $data, \App\Model\Url $url, \stdClass $build, bool $e404 = false )
     {
-        $this->form = new Form();
-    }
+        $this->e404 = $e404;
 
+        // Builders
+        $this->build = $build;
         
-    /**
-     * Initialise page
-     * 
-     * @return void
-     */
-    public function ini()
-    {
-        $this->data->plugin = Plugin::getPlugins();
+        $this->url = $url;
+        $this->path = new \App\Model\Path();
+        $this->user = $data->get('inst.user');
+        $this->post = new  \App\Model\Post();
+        $this->system = $data->get('inst.system');
+        $this->plugin = $data->get('inst.plugin');
+        $this->template = new \App\Model\Template();
+        $this->language = $data->get('inst.language');
+        $this->permission = $this->user->get('permission');
+        
+        if (isset(self::$templates[2]))
+        {
+            if (isset($this->template->get('body')[self::$templates[2] ?? '']))
+            {
+                self::$templates[1] = $this->template->get('body')[self::$templates[2]];
+            }
 
-        if (isset($this->template->get('body')[$this->templates[2] ?? ''])) {
-            $this->templates[1] = $this->template->get('body')[$this->templates[2]];
-        }
-
-        $this->data->head['title'] = str_replace('"', '&quot;', $this->data->head['title']);
-
-        // TRUNCATE DESCRIPTION
-        $this->data->head['description'] = str_replace('"', '&quot;', truncate(strip_tags($this->data->head['description']), 250));
-
-        // SUCCESS MESSAGE
-        if (Session::exists('success')) {
-
-            if (isset($this->language->get('L_NOTICE')['L_SUCCESS'][Session::get('success')])) {
-                $this->data->data([
-                    'message' => [
-                        'text' => $this->language->get('L_NOTICE')['L_SUCCESS'][Session::get('success')],
-                        'type' => 'success'
-                    ]
-                ]);
-
-                Session::delete('success');
+            if (self::$templates[2] == 'Root/Style:/Templates/Plugin.phtml')
+            {
+                if (isset($this->template->get('body')[self::$templates[3] ?? '']))
+                {
+                    self::$templates[1] = $this->template->get('body')[self::$templates[3]];
+                    unset(self::$templates[2]);
+                    array_values(self::$templates);
+                }
             }
         }
-    }
+        
+        $data->set('data.head.title', str_replace('"', '&quot;', $data->get('data.head.title')));
 
-    /**
-     * Sets notice
-     *
-     * @param  string $notice
-     * 
-     * @return void
-     */
-    public function notice( string $notice )
-    {
-        $this->data->data([
-            'message' => [
-                'text' => $notice,
-                'type' => 'warning'
-            ]
-        ]);
-    }
+        // Truncate description
+        $data->set('data.head.description', str_replace('"', '&quot;', truncate(strip_tags($data->get('data.head.description'), 250))));
+        
+        if ($this->e404 == true)
+        {
+            // Page title
+            $data->set('data.head.title', $this->language->get('L_ERROR'));
+        }
+        
+        $data->d = $data->d->getDataToGenerate();
 
-    /**
-     * Shows error page
-     * 
-     * @return void
-     */
-    public function error()
-    {
-        // PAGE TITLE
-        $this->data->head['title'] = $this->language->get('L_ERROR');
-
-        extract($this->language->get());
-
-        require $this->template->template('/Error.phtml');
-        exit();
+        $this->data = $data;
     }
     
     /**
@@ -159,9 +150,9 @@ class Style
      * 
      * @return void
      */
-    public function setTemplate( string $template )
+    public static function setTemplate( string $template )
     {
-        array_push($this->templates, $template);
+        array_push(self::$templates, $template);
     }
     
     /**
@@ -171,13 +162,23 @@ class Style
      */
     public function show()
     {
-        array_shift($this->templates);
-        extract($this->language->get());
-        
-        if (str_starts_with($this->templates[0], '~')) {
-            require ROOT . substr($this->templates[0], 1) . '.phtml';
-        } else {
-            require $this->template->template($this->templates[0] . '.phtml');
+        $url = $this->url;
+        $path = $this->path;
+        $post = $this->post;
+        $build = $this->build;
+        $plugin = $this->plugin;
+        $system = $this->system;
+        $language = $this->language;
+        $template = $this->template;
+
+        if ($this->e404 == true)
+        {
+            require $path->build('Root/Style:/Templates/Error.phtml');
+
+            exit();
         }
+        array_shift(self::$templates);
+        
+        require $path->build(self::$templates[0]);
     }
 }

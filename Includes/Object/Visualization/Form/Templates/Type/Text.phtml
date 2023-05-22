@@ -1,0 +1,1 @@
+<input type="text"<?php if ( $input->get('data.placeholder') ) : ?> placeholder="<?= $input->get('data.placeholder') ?>"<?php endif; ?> name="<?= $input->getCurrentPositionName() ?>" value="<?= htmlspecialchars($this->post->get($input->getCurrentPositionName()) ?: $input->get('data.value')) ?>">

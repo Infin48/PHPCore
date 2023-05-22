@@ -1,13 +1,13 @@
-<div id="new" class="block" ajax-selector="block block-form" ajax-process-id="<?= $this->url->getID() ?>" ajax-process-type="/ConversationMessage">
+<div id="new" class="block block-form" js="block block-form" ajax-id="<?= $block->get('data.html.ajax-id') ?>" ajax-item="message">
     <form method="post">
         <div class="block-head">
-            <?= $this->build->user->image($this->user->get()) ?>
-            <div class="inner vertical-align space-between">
-                <div class="block-title"><?= $L_RE ?>: <?= $this->data->data['conversation_name'] ?></div>
-                <a class="button f-right" ajax="create" ajax-process="/Create"><?= $L_BUTTON['L_SUBMIT'] ?></a>
+            <?= $this->build->user->image(data: $this->user->get(), size: '50x50') ?>
+            <div class="inner ">
+                <div class="label-list"><span><?= $this->language->get('L_RE') ?>: <?= $block->get('data.conversation_name') ?></span></div>
+                <a class="button f-right" ajax-action="create"><?= $this->language->get('L_BTN.L_SUBMIT') ?></a>
             </div>
         </div>
-        <textarea name="message_text" textarea-to-editor placeholder="<?= $L_TEXT ?>"></textarea>
+        <textarea name="message_text" trumbowyg="big" placeholder="<?= $this->language->get('L_PLACEHOLDER.L_TEXT') ?>"></textarea>
         <input type="hidden" value="<?= SESSION_ID ?>" name="key">
     </form>
 </div>

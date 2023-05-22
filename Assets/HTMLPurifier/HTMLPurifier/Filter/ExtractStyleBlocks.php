@@ -1,6 +1,6 @@
 <?php
 
-// why is this a top level function? Because PHP 5.2.0 doesn't seem to
+// why is this a top level function? because php 5.2.0 doesn't seem to
 // understand how to interpret this filter if it's a static method.
 // It's all really silly, but if we go this route it might be reasonable
 // to coalesce all of these methods into one.
@@ -95,7 +95,7 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
         if ($tidy !== null) {
             $this->_tidy = $tidy;
         }
-        // NB: this must be NON-greedy because if we have
+        // Nb: this must be non-greedy because if we have
         // <style>foo</style>  <style>bar</style>
         // we must not grab foo</style>  <style>bar
         $html = preg_replace_callback('#<style(?:\s.*)?>(.*)<\/style>#isU', array($this, 'styleCallback'), $html);
@@ -128,7 +128,7 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
         } else {
             $scopes = array();
         }
-        // remove comments from CSS
+        // remove comments from css
         $css = trim($css);
         if (strncmp('<!--', $css, 4) === 0) {
             $css = substr($css, 4);
@@ -144,7 +144,7 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
         $html_definition = $config->getDefinition('HTML');
         $new_css = array();
         foreach ($this->_tidy->css as $k => $decls) {
-            // $decls are all CSS declarations inside an @ selector
+            // $decls are all css declarations inside an @ selector
             $new_decls = array();
             foreach ($decls as $selector => $style) {
                 $selector = trim($selector);
@@ -152,40 +152,40 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
                     continue;
                 } // should not happen
                 // Parse the selector
-                // Here is the relevant part of the CSS grammar:
+                // Here is the relevant part of the css grammar:
                 //
                 // ruleset
-                //   : selector [ ',' S* selector ]* '{' ...
+                //   : selector [ ',' s* selector ]* '{' ...
                 // selector
-                //   : simple_selector [ combinator selector | S+ [ combinator? selector ]? ]?
+                //   : simple_selector [ combinator selector | s+ [ combinator? selector ]? ]?
                 // combinator
-                //   : '+' S*
-                //   : '>' S*
+                //   : '+' s*
+                //   : '>' s*
                 // simple_selector
-                //   : element_name [ HASH | class | attrib | pseudo ]*
-                //   | [ HASH | class | attrib | pseudo ]+
+                //   : element_name [ hash | class | attrib | pseudo ]*
+                //   | [ hash | class | attrib | pseudo ]+
                 // element_name
-                //   : IDENT | '*'
+                //   : ident | '*'
                 //   ;
                 // class
-                //   : '.' IDENT
+                //   : '.' ident
                 //   ;
                 // attrib
-                //   : '[' S* IDENT S* [ [ '=' | INCLUDES | DASHMATCH ] S*
-                //     [ IDENT | STRING ] S* ]? ']'
+                //   : '[' s* ident s* [ [ '=' | includes | dashmatch ] s*
+                //     [ ident | string ] s* ]? ']'
                 //   ;
                 // pseudo
-                //   : ':' [ IDENT | FUNCTION S* [IDENT S*]? ')' ]
+                //   : ':' [ ident | function s* [ident s*]? ')' ]
                 //   ;
                 //
                 // For reference, here are the relevant tokens:
                 //
-                // HASH         #{name}
-                // IDENT        {ident}
-                // INCLUDES     ==
-                // DASHMATCH    |=
-                // STRING       {string}
-                // FUNCTION     {ident}\(
+                // Hash         #{name}
+                // Ident        {ident}
+                // Includes     ==
+                // Dashmatch    |=
+                // String       {string}
+                // Function     {ident}\(
                 //
                 // And the lexical scanner tokens
                 //
@@ -203,13 +203,13 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
                 // We'll implement a subset (in order to reduce attack
                 // surface); in particular:
                 //
-                //      - No Unicode support
-                //      - No escapes support
-                //      - No string support (by proxy no attrib support)
+                //      - no unicode support
+                //      - no escapes support
+                //      - no string support (by proxy no attrib support)
                 //      - element_name is matched against allowed
                 //        elements (some people might find this
                 //        annoying...)
-                //      - Pseudo-elements one of :first-child, :link,
+                //      - pseudo-elements one of :first-child, :link,
                 //        :visited, :active, :hover, :focus
 
                 // handle ruleset

@@ -49,7 +49,7 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
         }
 
         // We need to validate the attributes now since this doesn't normally
-        // happen until after MakeWellFormed. If all the attributes are removed
+        // happen until after makewellformed. if all the attributes are removed
         // the span needs to be removed too.
         $this->attrValidator->validateToken($token, $this->config, $this->context);
         $token->armor['ValidateAttributes'] = true;

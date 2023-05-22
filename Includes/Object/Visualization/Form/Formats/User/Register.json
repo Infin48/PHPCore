@@ -1,0 +1,89 @@
+{
+    "body": {
+        "register": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    },
+                    "token": {
+                        "type": "hidden",
+                        "name": "token"
+                    }
+                }
+            },
+            "body": {
+                "register": {
+                    "data": {
+                        "icon": "fa-solid fa-user",
+                        "title": "L_REGISTER.L_REGISTER",
+                        "links": {
+                            "login": {
+                                "href": "/login/",
+                                "title": "L_REGISTER.L_ALREADY"
+                            }
+                        }
+                    },
+                    "body": {
+                        "user_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-user",
+                                "placeholder": "L_PLACEHOLDER.L_USERNAME"
+                            }
+                        },
+                        "user_email": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-envelope",
+                                "placeholder": "L_PLACEHOLDER.L_EMAIL"
+                            }
+                        },
+                        "user_password": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-lock",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD"
+                            }
+                        },
+                        "user_password_confirm": {
+                            "options": {
+                                "type": "password",
+                                "required": true
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-lock",
+                                "placeholder": "L_PLACEHOLDER.L_PASSWORD_CONFIRM"
+                            }
+                        },
+                        "agree": {
+                            "options": {
+                                "type": "checkbox",
+                                "required": true
+                            },
+                            "body": {
+                                "agree": {
+                                    "data": {
+                                        "value": 1,
+                                        "label": "L_REGISTER.L_AGREE"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

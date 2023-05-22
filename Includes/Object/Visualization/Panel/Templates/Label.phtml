@@ -1,0 +1,13 @@
+<a>
+    <label class="label label--<?= $panel->get('data.label_class') ?>" for="l<?= $panel->get('data.label_id') ?>">
+        <i class="fa-solid fa-tag"></i><?= $panel->get('data.label_name') ?>
+    </label>
+    <div class="label-checkbox label--<?= $panel->get('data.label_class') ?>">
+        <input id="l<?= $panel->get('data.label_id') ?>" type="checkbox" name="<?= $panel->get('data.name') ?>[]" value="<?= $panel->get('data.label_id') ?>"<?php if ($panel->get('options.checked')) : ?> checked<?php endif; ?>>
+        <label for="l<?= $panel->get('data.label_id') ?>">
+            <span class="checkbox-icon">
+                <i class="check fa-solid fa-check"></i>
+            </span>
+        </label>
+    </div>
+</a>

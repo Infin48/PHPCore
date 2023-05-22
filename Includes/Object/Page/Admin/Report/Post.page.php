@@ -10,73 +10,84 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Report;
-
-use Block\Report;
-
-use Model\Pagination;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Admin\Block\Block;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Report;
 
 /**
  * Post
  */
-class Post extends \Page\Page
+class Post extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.forum'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.forum';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('forum')->row('reported')->active()->option('post')->active();
-
-        // POST BLOCK
-        $report = new Report();
-
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Report/Index');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // System
+        $system = $data->get('inst.system');
         
-        // REPORT STATS
-        $stats = $report->getStats();
+        // If forum is not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('forum')->elm2('reported')->active()->elm3('post')->active();
 
-        // PAGINATION
-        $pagination = new Pagination();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Report/Post.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+        
+        // Save statistics about reported contents
+        $data->set('data.stats', $db->select('app.report.stats()'));
+
+        // Pagination
+        $pagination = new \App\Model\Pagination();
         $pagination->max(MAX_REPORTED_POST);
-        $pagination->total($stats['post']);
+        $pagination->total($data->get('data.stats.post'));
         $pagination->url($this->url->getURL());
-        $report->pagination = $this->data->pagination = $pagination->getData();
+        $data->pagination = $pagination->getData();
 
-        // LIST
-        $list = new Lists('/Report/Post');
-        $list->object('post')->fill(data: $report->getAllPost(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
+        // List
+        $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Report/Post.json');
 
-            if ($list->obj->get->data('report_status') == 0) {
-                
+        // Fill list with reported contents
+        $list->elm1('post')->fill(data: $db->select('app.report.post()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list )
+        {
+            // If report is not closed
+            if ($list->get('data.report_status') == 0)
+            {
+                // Show label
                 $list->addLabel(
                     color: 'red',
-                    icon: 'fas fa-exclamation'
+                    icon: 'fa-solid fa-exclamation'
                 );
             }
         });
-        $this->data->list = $list->getData();
 
-        // BLOCK
-        $block = new Block('/Report/Post');
-        $block->object('post')->value($stats['post']);
-        $this->data->block = $block->getData();
+        // Save list and get ready to generate
+        $data->list = $list->getDataToGenerate();
+
+        // Block
+        $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Report/Post.json');
+
+        // Set number of reported posts
+        $block->elm1('post')->value($data->get('data.post'));
+
+        // Save block and get ready to generate
+        $data->block = $block->getDataToGenerate();
     }
 }

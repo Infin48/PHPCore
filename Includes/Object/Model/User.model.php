@@ -10,13 +10,9 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model;
+namespace App\Model;
 
-use Block\User as BlockUser;
-
-use Model\Cookie;
-use Model\Permission;
-use Model\Database\Query;
+use \App\Model\Cookie;
 
 /**
  * User
@@ -24,14 +20,19 @@ use Model\Database\Query;
 class User
 {
     /**
-     * @var \Model\Permission $perm Permission
+     * @var \App\Model\Permission $perm Permission
      */
-    public \Model\Permission $perm;
+    public \App\Model\Permission $perm;
 
     /**
      * @var bool $admin If true - logged user is admin otherwise false
      */
     public bool $admin = false;
+
+    /**
+     * @var bool $logged If true - user is logged
+     */
+    public bool $logged = false;
 
     /**
      * @var int $index Logged user group index
@@ -41,50 +42,56 @@ class User
     /**
      * @var array $data Logged user data
      */
-    private array $data = [];
+    private array $data = [
+        'user_id'       => 0,
+        'group_id'      => 0,
+        'user_name'     => 'visitor',
+        'group_class'   => 'visitor',
+        'group_index'   => 0
+    ];
     
     /**
      * Constructor
      */
     public function __construct()
-    {
-        $this->db = new Query();
-        $this->perm = new Permission();
+    {        
+        $db = new \App\Model\Database\Query();
+        $this->perm = new \App\Model\Permission();
 
+        $data = $this->data;
+        $data['permission'] = new \App\Model\Permission();
         $hash = Cookie::exists('token') ? Cookie::get('token') : Session::get('token');
+        if ($hash)
+        {
+            if ($_ = $db->select('app.user.byHash()', $hash))
+            {
+                $data = $_;
+                
+                $data['unread'] = $db->select('app.user.unread()', $data['user_id']);
+                $data['user_last_activity'] = date(DATE);
+                $data['permission'] = new \App\Model\Permission(
+                    permission: array_filter(explode(',', $data['group_permission'])),
+                    id: $data['group_id']
+                );
 
-        if ($hash) {
+                $this->logged = true;
 
-            $user = new BlockUser();
-
-            if ($this->data = $user->getByHash((string)$hash)) {
-
-                $this->data['unread'] = $user->getUnread($this->data['user_id']);
-                $this->data['user_last_activity'] = date(DATE);
-                $this->data['groupPermission'] = array_filter(explode(',', $this->data['group_permission']));
-                $this->data['group_index'] = $this->data['user_admin'] == 1 ? 9999999999 + 1 : (int)$this->data['group_index'];
-
-                $this->index = $this->data['group_index'];
-                $this->admin = (bool)$this->data['user_admin'];
-
-                if ($this->data['user_admin'] == 1) {
-                    $this->perm->admin();
-                }
-                $this->perm->setIndex($this->data['group_index']);
-                $this->perm->set($this->data['groupPermission']);
-
-                // UPDATE LAST ACTIVITY
-                $this->db->update(TABLE_USERS, [
+                // Update last activity
+                $db->update(TABLE_USERS, [
                     'user_last_activity' => DATE_DATABASE
-                ], $this->data['user_id']);
-
-                return true;
-
-
+                ], $data['user_id']);
             }
         }
-
-        return false;
+        $this->data = $data;
+        if (!defined('LOGGED_USER_ID'))
+        {
+            // User constants
+            define('LOGGED_USER_ID', $this->get('user_id'));
+            define('LOGGED_USER_NAME', $this->get('user_name'));
+            define('LOGGED_USER_GROUP_CLASS', $this->get('group_class'));
+            define('LOGGED_USER_GROUP_INDEX', $this->get('group_index'));
+            define('LOGGED_USER_GROUP_ID', $this->get('group_id'));
+        }
     }
 
     /**
@@ -94,11 +101,7 @@ class User
      */
     public function isLogged() 
     {
-        if (empty($this->data) === false) {
-            return true;
-        }
-        
-        return false;
+        return $this->logged;
     }
 
     /**
@@ -110,10 +113,10 @@ class User
      */
     public function get( string $value = null )
     {
-        if (is_null($value)) {
+        if (is_null($value))
+        {
             return $this->data;
         }
-
         return $this->data[$value] ?? '';
     }
 

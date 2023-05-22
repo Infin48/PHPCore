@@ -312,8 +312,8 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             false
         );
 
-        // MUST be called after other font properties, as it references
-        // a CSSDefinition object
+        // Must be called after other font properties, as it references
+        // a cssdefinition object
         $this->info['font'] = new HTMLPurifier_AttrDef_CSS_Font($config);
 
         // same here
@@ -356,8 +356,8 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
 
         $this->info['border-spacing'] = new HTMLPurifier_AttrDef_CSS_Multiple(new HTMLPurifier_AttrDef_CSS_Length(), 2);
 
-        // These CSS properties don't work on many browsers, but we live
-        // in THE FUTURE!
+        // These css properties don't work on many browsers, but we live
+        // in the future!
         $this->info['white-space'] = new HTMLPurifier_AttrDef_Enum(
             array('nowrap', 'normal', 'pre', 'pre-wrap', 'pre-line')
         );
@@ -388,7 +388,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
      */
     protected function doSetupProprietary($config)
     {
-        // Internet Explorer only scrollbar colors
+        // Internet explorer only scrollbar colors
         $this->info['scrollbar-arrow-color'] = new HTMLPurifier_AttrDef_CSS_Color();
         $this->info['scrollbar-base-color'] = new HTMLPurifier_AttrDef_CSS_Color();
         $this->info['scrollbar-darkshadow-color'] = new HTMLPurifier_AttrDef_CSS_Color();
@@ -403,7 +403,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         // only opacity, for now
         $this->info['filter'] = new HTMLPurifier_AttrDef_CSS_Filter();
 
-        // more CSS3
+        // more css3
         $this->info['page-break-after'] =
         $this->info['page-break-before'] = new HTMLPurifier_AttrDef_Enum(
             array(
@@ -426,7 +426,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $this->info['border-top-right-radius'] =
         $this->info['border-bottom-right-radius'] =
         $this->info['border-bottom-left-radius'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_radius, 2);
-        // TODO: support SLASH syntax
+        // Todo: support slash syntax
         $this->info['border-radius'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_radius, 4);
 
     }
@@ -513,7 +513,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             }
             // emit errors
             foreach ($allowed_properties as $name => $d) {
-                // :TODO: Is this htmlspecialchars() call really necessary?
+                // :todo: is this htmlspecialchars() call really necessary?
                 $name = htmlspecialchars($name);
                 trigger_error("Style attribute '$name' is not supported $support", E_USER_WARNING);
             }

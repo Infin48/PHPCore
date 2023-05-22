@@ -10,10 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Model\File;
-
-use Model\File\Form;
-
+namespace App\Model\File;
 
 /**
  * File
@@ -21,39 +18,39 @@ use Model\File\Form;
 class File
 {
     /**
-     * @var int Flag to remove path to file
-     */
-    const PATH_REMOVE = 1;
-
-    /**
-     * @var int Flag to keep file extension
-     */
-    const EXTENSION_KEEP = 2;
-
-    /**
      * @var int Flag to remove file extension
      */
-    const EXTENSION_REMOVE = 4;
+    const REMOVE_EXTENSION = 2;
 
     /**
-     * @var int Flag to remove all file extensions
+     * @var int Flag to search only folders
      */
-    const EXTENSION_REMOVE_FULL = 8;
-
-    /**
-     * @var int Flag to search in forlder
-     */
-    const FOLDER_SEARCH = 16;
+    const ONLY_FOLDERS = 4;
 
     /**
      * @var int Flag to skip folders
      */
-    const FOLDER_SKIP = 32;
+    const SKIP_FOLDERS = 8;
 
     /**
-     * @var \Model\File\Form $form Form
+     * @var int Flag to disable nesting
      */
-    public \Model\File\Form $form;
+    const DO_NOT_NEST = 16;
+
+    /**
+     * @var int Flag to sort files by last created
+     */
+    const SORT_BY_DATE = 32;
+
+    /**
+     * @var \App\Model\File\Form $form Form
+     */
+    public \App\Model\File\Form $form;
+
+    /**
+     * @var \App\Model\System $system System instance
+     */
+    public static \App\Model\System $system;
 
     /**
      * Loads file from form
@@ -61,14 +58,171 @@ class File
      * @param  string $file Name of file
      * @param  string $type File type
      * 
-     * @return object File type
+     * @return object|array File type
      */
     public function form( string $file, string $type )
     {
+        if (str_ends_with($type, '[]'))
+        {
+            if (!isset($_FILES[$file]))
+            {
+                return [];
+            }
+
+            if (!isset($_FILES[$file]['name'][0]))
+            {
+                return [];
+            }
+
+            if (empty($_FILES[$file]['name'][0]))
+            {
+                return [];
+            }
+        }
+        if (!isset($_FILES[$file]) or empty($_FILES[$file]['name']))
+        {
+            return match($type)
+            {
+                'file/zip' => new \App\Model\File\Type\Zip($this, []),
+                'file/misc' => new \App\Model\File\Type\Misc($this, []),
+                'file/image' => new \App\Model\File\Type\Image($this, [])
+            };
+        }
+
+        if (str_ends_with($type, '[]'))
+        {
+            $array = [];
+            
+            if (isset($_FILES[$file]['tmp_name']))
+            {
+                $count = count($_FILES[$file]['tmp_name']);
+                
+                for ($i = 0; $i <= $count - 1; $i++)
+                {
+                    foreach ($_FILES[$file] as $name => $data)
+                    {
+                        $array[$i][$name] = $data[$i];
+                    }
+                    
+                    if ($type === FILE_TYPE_IMAGE)
+                    {
+                        if ($array[$i]['tmp_name'])
+                        {
+                            $size = getimagesize($array[$i]['tmp_name']);
+                            if ($size)
+                            {
+                                $array[$i]['width'] = $size[0];
+                                $array[$i]['height'] = $size[1];
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach ($array as $i => $data)
+            {
+                $array[$i] = match($type)
+                {
+                    'file/zip[]' => new \App\Model\File\Type\Zip($this, $data),
+                    'file/misc[]' => new \App\Model\File\Type\Misc($this, $data),
+                    'file/image[]' => new \App\Model\File\Type\Image($this, $data)
+                };
+            }
+
+
+            return $array;
+        }
+
+
+        if ($type === 'file/image')
+        {
+            if (!empty($_FILES[$file]['tmp_name']))
+            {
+                $size = getimagesize($_FILES[$file]['tmp_name']);
+                if ($size)
+                {
+                    $_FILES[$file]['width'] = $size[0];
+                    $_FILES[$file]['height'] = $size[1];
+                }
+            }
+        }
         return match($type) {
-            FILE_TYPE_ZIP => new \Model\File\Type\Zip($this, $file),
-            FILE_TYPE_IMAGE => new \Model\File\Type\Image($this, $file)
+            'file/zip' => new \App\Model\File\Type\Zip($this, $_FILES[$file]),
+            'file/misc' => new \App\Model\File\Type\Misc($this, $_FILES[$file]),
+            'file/image' => new \App\Model\File\Type\Image($this, $_FILES[$file])
         };
+    }
+    
+    /**
+     * Returs file with extensions
+     *
+     * @param  string $file Path to file
+     * @param  string $prefix
+     * 
+     * @return string
+     */
+    public function getFile( string $file, string $prefix = '/' )
+    {
+        $ex = explode('/', $file);
+        return $prefix . $ex[count($ex) - 1];
+    }
+    
+    /**
+     * Removes all extensions from file
+     *
+     * @param  string $file File
+     * 
+     * @return string
+     */
+    public function removeExt( string $file )
+    {
+        return explode('.', $file)[0];
+    }
+
+    /**
+     * Returns file or folder
+     *
+     * @param  string $file File/folder path
+     * 
+     * @return string
+     */
+    public function getType( string $file )
+    {
+        if (is_dir($file))
+        {
+            return FILE_TYPE_FOLDER;
+        }
+
+        if (in_array(explode('.', array_pop(explode('/', $file)))[1], ['svg', 'jpg', 'jpge', 'png']))
+        {
+            return FILE_TYPE_IMAGE;
+        }
+
+        return FILE_TYPE_MISC;
+    }
+
+    /**
+     * Returns image width
+     *
+     * @param  string $image Image path
+     * 
+     * @return int
+     */
+    public function getImageWidth( string $image )
+    {
+        return getimagesize($image)[0] ?? 0;
+    }
+
+    /**
+     * Returns image height
+     *
+     * @param  string $image Image path
+     * 
+     * @return int
+     */
+    public function getImageHeight( string $image )
+    {
+        return getimagesize($image)[1] ?? 0;
     }
 
     /**
@@ -79,32 +233,57 @@ class File
      * 
      * @return array
      */
-    public function getFiles( string $path, int $flag = null )
+    public function getFiles( string $path, int $flag = null, callable $function = null )
     {
         $files = [];
-        foreach (glob(ROOT . $path) as $_path) {
-            
-            if (is_dir($_path)) {
 
-                if ((bool)($flag & self::FOLDER_SKIP) === false) {
-                    $files = array_merge($files, $this->getFiles(str_replace(ROOT, '', $_path) . '/*', $flag));
+        $glob = glob(ROOT . $path);
+        if ($flag & self::SORT_BY_DATE)
+        {
+            $glob = array_combine($glob, array_map('filectime', $glob));
+            arsort($glob);
+            $glob = array_keys($glob);
+        }
+
+        foreach ($glob as $_path)
+        {
+            if (is_dir($_path))
+            {
+                if ($flag & self::DO_NOT_NEST)
+                {
+                    if ($function)
+                    {
+                        $function($this, $_path);
+                    }
+
+                    array_push($files, $_path);
+                    continue;
                 }
+                if ($flag & self::SKIP_FOLDERS) continue;
+
+                if ($function)
+                {
+                    $function($this, $_path);
+                }
+
+                $files = array_merge($files, $this->getFiles(str_replace(ROOT, '', $_path) . '/*', $flag, $function));
+
+                array_push($files, $_path);
                 continue;
             }
+
+            if ($flag & self::ONLY_FOLDERS) continue;
+
             $file = $_path;
-            if ($flag & self::EXTENSION_REMOVE) {
-                $ex = explode('.', $file);
-                array_pop($ex);
-                $file = implode('.', $ex);
-            }
-
-            if ($flag & self::EXTENSION_REMOVE_FULL) {
-                $file = explode('.', $file)[0];
-            }
-
-            if ($flag & self::PATH_REMOVE) {
+            if ($flag & self::REMOVE_EXTENSION)
+            {
                 $ex = explode('/', $file);
-                $file = $ex[count($ex) - 1];
+                $file = explode('.', array_pop($ex))[0];
+            }
+
+            if ($function)
+            {
+                $function($this, $file);
             }
 
             array_push($files, $file);
@@ -126,6 +305,30 @@ class File
     }
 
     /**
+     * Returns true if file exists otherwise false
+     *
+     * @param string $path Path o file
+     * 
+     * @return bool
+     */
+    public function exists( string $path )
+    {
+        return file_exists(ROOT . $path);
+    }
+
+    /**
+     * Returns true if folder exists otherwise false
+     *
+     * @param string $path Path o folder
+     * 
+     * @return bool
+     */
+    public function is_dir( string $path )
+    {
+        return is_dir(ROOT . $path);
+    }
+
+    /**
      * Recursively deletes files
      *
      * @param string $path 
@@ -134,93 +337,60 @@ class File
      */
     public function delete( string $path )
     {
-        if (file_exists($path)) {
-            if (is_file($path)) {
-                unlink($path);
-                return;
-            }
-
-            foreach (array_diff(scandir($path), ['.', '..']) as $file) {
-                (is_dir($path . '/' . $file)) ? $this->delete($path . '/' . $file) : unlink($path . '/' . $file);
-            }
-            return rmdir($path);
+        if (!str_contains($path, ROOT))
+        {
+            $path = ROOT . $path;
         }
-    }
 
-    /**
-     * Deletes image
-     * This method deletes only image with allowed format
-     *
-     * @param string $path Path to image without format
-     * 
-     * @return void
-     */
-    public function deleteImage( string $path )
-    {
-        foreach (['jpg', 'jpeg', 'png', 'svg', 'gif'] as $format) {
-            if (file_exists(ROOT . '/Uploads' . $path . '.' . $format)) {
-                unlink(ROOT . '/Uploads' . $path . '.' . $format);
-            }
+        if (is_file($path))
+        {
+            @chmod($path, 0777);
+            @unlink($path);
+            return;
         }
-    }
 
-    /**
-     * Copies recursively files and folders from path to path
-     *
-     * @param string $from Path from
-     * @param string $to Path to
-     * 
-     * @return void
-     */
-    public function copyRec( string $from, string $to )
-    {
-        $dir = opendir($from);
-        @mkdir($to);
-        while(( $file = readdir($dir)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($from . '/' . $file) ) {
-                    $this->copyRec($from .'/'. $file, $to .'/'. $file);
+        foreach (glob($path) as $file)
+        {
+            if (file_exists($file))
+            {
+                if (is_file($file))
+                {
+                    @chmod($file, 0777);
+                    @unlink($file);
+                    continue;
                 }
-                else {
-                    copy($from .'/'. $file,$to .'/'. $file);
+
+                foreach (glob($file . '/*') as $_file)
+                {
+                    if (is_dir($_file))
+                    {
+                        $this->delete($_file . '/*');
+                        continue;
+                    }
+                    @unlink($_file);
                 }
+
+                @chmod($file, 0777);
+                @rmdir($file);
             }
         }
-        closedir($dir);
+        $folder = str_replace('/*', '', $path);
+        if (is_dir($folder))
+        {
+            @chmod($folder, 0777);
+            @rmdir($folder);  
+        }
     }
 
     /**
-     * Downloads file from url
+     * Creates folder
      *
-     * @param string $url Url to download
-     * @param string $path Path where downloaded files will be saved
+     * @param string $path Path to folder
      * 
      * @return void
      */
-    public function download( string $url, string $path )
+    public function createFolder( string $path )
     {
-        $this->delete('/'.$path);
-        copy($url, $path, CONTEXT);
-    }
-
-    /**
-     * Unzips given zip file and saves content of zip to given path
-     *
-     * @param string $fileToUnzip Path to zip file
-     * @param string $saveTo Path where content of the zip will be saved
-     * 
-     * @return bool
-     */
-    public function unZip( string $fileToUnzip, string $saveTo )
-    {
-        $zip = new \ZipArchive;
-        $res = $zip->open(ltrim($fileToUnzip, '/'));
-
-        if ($res === true) {
-            $zip->extractTo(ltrim($saveTo, '/') . '/');
-            $zip->close();
-            return true;
-        }
-        return false;
+        @mkdir(ROOT . $path);
     }
 }

@@ -48,7 +48,7 @@ class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier_AttrDef
         if ($string === '') {
             return false;
         }
-        $parts = explode(' ', $string); // parseCDATA replaced \r, \t and \n
+        $parts = explode(' ', $string); // parsecdata replaced \r, \t and \n
         $length = count($parts);
         $final = '';
         for ($i = 0, $num = 0; $i < $length && $num < $this->max; $i++) {

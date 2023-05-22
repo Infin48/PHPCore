@@ -1,0 +1,43 @@
+<?php $this->data->form->each('body', function ($form) { ?>
+    <?php $form->each('body', function ($frame) use ($form) { ?>
+        <div class="page-column page-column-name-<?= $frame->getCurrentPositionName() ?>">
+            <div class="page-column-icon"><i class="<?= $frame->get('data.icon') ?>"></i></div>
+            <div class="page-column-title"><?= $frame->get('data.title') ?></div>
+            <?php if ( $frame->get('data.desc') ) : ?>
+                <div class="page-column-description"><?= $frame->get('data.desc') ?></div>
+            <?php endif; ?>
+            
+            <?php if ( $this->data->get('data.message.text') ) : ?>
+                <div class="form-alert form-alert-type-<?= $this->data->get('data.message.type') ?>">
+                    <?= $this->data->get('data.message.text') ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="post">
+                <div class="page-column-body">
+                    <?php $frame->each('body', function ($input) { ?>
+                        <div class="page-column-input">
+                            <?php if ( $input->get('options.template.option') ) : ?>
+                                <?php require $input->get('options.template.option'); ?>
+                            <?php endif; ?>
+                            <?php if ( $input->get('data.icon') ) : ?>
+                                <i class="<?= $input->get('data.icon') ?>"></i>
+                            <?php endif; ?>
+                        </div>
+                    <?php }); ?>
+
+                    <div class="form-submit">
+                        <input type="hidden" value="<?= SESSION_ID ?>" name="key">
+                        <?php $form->each('data.button', function ($button) { ?>
+                            <input class="button" type="<?= $button->get('type') ?>" name="<?= $button->get('name') ?>" value="<?= $button->get('value') ?>">
+                        <?php }); ?>
+                    </div>
+
+                    <?php $this->data->each('data.link', function ($link) { ?>
+                        <?= $link ?>
+                    <?php }); ?>
+                </div>
+            </form>
+        </div>
+    <?php }); ?>
+<?php }); ?>

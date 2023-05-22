@@ -1,0 +1,14 @@
+<div class="checkbox">
+    <label class="role role--<?= $checkbox->get('data.role_class') ?>">
+        <?php if ( $checkbox->get('data.role_icon') ) : ?>
+            <i class="<?= $checkbox->get('data.role_icon') ?>"></i>
+        <?php endif; ?>
+        <input id="<?= $checkbox->get('data.role_id') ?>" type="checkbox" name="user_roles[]" value="<?= $checkbox->get('data.role_id') ?>"<?php if ( $checkbox->get('options.checked') ) : ?> checked<?php endif; ?>>
+        <label for="<?= $checkbox->get('data.role_id') ?>">
+            <span class="checkbox-icon">
+                <i class="fa-solid fa-check"></i>
+            </span>
+            <?= $checkbox->get('data.role_name') ?>
+        </label>
+    </label>
+</div>

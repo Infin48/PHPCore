@@ -10,68 +10,118 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin;
 
 /**
  * Status
  */
-class Status extends \Page\Page
+class Status extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Status',
-        'permission' => 'admin.?'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.?';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('other')->row('status')->active();
+        // System
+        $system = $data->get('inst.system');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Language
+        $language = $data->get('inst.language');
 
-        // FIELD
-        $field = new Field('/Admin/Status');
-        $field->disButtons();
-        $field->object('extension');
+        // Navbar
+        $this->navbar->elm1('other')->elm2('status')->active();
 
-        foreach (['GD', 'mbstring', 'PDO', 'PDO_mysql', 'SPL', 'zip'] as $ext) {
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Status.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-            if (extension_loaded($ext)) {
-                $field->row($ext)->setData('color', 'green');
-            }
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Status.json');
 
+        $form
+            ->form('status')
+
+                // Setup extensions
+                ->frame('extension')->get('body', function ( \App\Visualization\Form\Form $form, string $key )
+                {
+                    $form->input($key);
+
+                    // If extension is loaded
+                    if (extension_loaded($key))
+                    {
+                        // Mark extension by green color
+                        $form->set('data.color', 'green');
+                    }
+                })
+
+                // Setup writable files
+                ->frame('writable')->get('body', function ( \App\Visualization\Form\Form $form, string $key )
+                {
+                    $form->input($key);
+
+                    // If file is writable
+                    if (is_writable(ROOT . $key))
+                    {
+                        // Mark path by green color
+                        $form->set('data.color', 'green');
+                    } 
+                })
+
+                // Setup executable files
+                ->frame('exec')->get('body', function ( \App\Visualization\Form\Form $form, string $key )
+                {
+                    $form->input($key);
+
+                    // If file is writable and executable
+                    if (is_writable(ROOT . $key) and is_executable(ROOT . $key))
+                    {
+                        // Mark path by green color
+                        $form->set('data.color', 'green');
+                    } 
+                });
+
+        // Message about wrong php version
+        $failedPHP = strtr($language->get('L_STATUS.L_PHP.L_ERROR'), ['{php_version}' => PHP_VERSION]);
+
+        // Message about failed locale set
+        $failedLoacaleWeb = strtr($language->get('L_STATUS.L_LOCALISATION.L_ERROR'), ['{locale}' => $system->get('site.locale')]);
+
+        // Set to locale by default failed message
+        $form->frame('other')->input('localeWeb')->set('data.titleIcon', $failedLoacaleWeb);
+
+        // Set to locale by default failed message
+        $form->frame('other')->input('php')->set('data.titleIcon', $failedPHP);
+
+        // If localization was successfully set
+        if (setlocale(LC_ALL, $system->get('site.locale') . '.UTF-8') !== false)
+        {
+            $form->frame('other')->input('localeWeb')
+                // Mark locale by green color
+                ->set('data.color', 'green')
+                // Set current set locale name
+                ->set('data.titleIcon', $system->get('site.locale'));
         }
-        $field->object('writable');
-        foreach (['/Includes/.htdata.json', '/Includes/Template/css/Group.min.css', '/Includes/Template/css/Label.min.css'] as $file) {
-            
-            if (is_writable(ROOT . $file)) {
-                $field->row($file)->setData('color', 'green');
-            }  
+
+        // If required PHP version is correct
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0)
+        {
+            // Mark version by green color and write current installed version
+            $form->frame('other')->input('php')->set('data.color', 'green')->set('data.titleIcon', PHP_VERSION);
         }
 
-        $failedLoacaleWeb = strtr($this->language->get('L_STATUS_LOCALISATION_FAILED'), ['{locale}' => $this->system->get('site.locale')]);
-
-        $field->object('other')->row('localeWeb')->setData('titleIcon', '$' . $failedLoacaleWeb);
-
-        if (setlocale(LC_ALL, $this->system->get('site.locale') . '.UTF-8') !== false) {
-            $field->object('other')->row('localeWeb')
-                ->setData('color', 'green')
-                ->setData('titleIcon', '$' . $this->system->get('site.locale'));
-        }
-
-        $this->data->field = $field->getData();
+        // Save form and get ready to generate
+        $data->form = $form->getDataToGenerate();
     }
 }

@@ -10,120 +10,148 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Block\Log;
-use Block\User;
-use Block\Chart;
-use Block\Other;
-use Block\Admin\Forum;
-
-use Visualization\Admin\Lists\Lists;
-use Visualization\Admin\Block\Block;
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin;
 
 /**
  * Index
  */
-class Index extends \Page\Page
+class Index extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Index',
-        'permission' => 'admin.?'
-    ];
+    protected string $template = 'Root/Style:/Templates/Index.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.?';
     
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('index')->active();
+        // System
+        $system = $data->get('inst.system');
 
-        // BLOCK
-        $log = new Log();
-        $user = new User();
-        $forum = new Forum();
-        $other = new Other();
+        // User
+        $user = $data->get('inst.user');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
-        
-        // FORUM STATS
-        $stats = $forum->getStats();
+        // User permission
+        $permission = $user->get('permission');
 
-        // BLOCK
-        $block = new Block('/Index');
-        $block->object('user')->value($stats['user'])
-            ->object('users')->value($user->getRecentCount())
-            ->object('topic')->value($stats['topic'])
-            ->object('post')->value($stats['post']);
-        $this->data->block = $block->getData();
+        // Navbar
+        $this->navbar->elm1('dashboard')->elm2('index')->active();
 
-        // LIST
-        $list = new Lists('/Index');
-        $list->object('log')->fill(data: $log->getLast());
-        $list->object('users')->fill(data: $user->getRecent(), function: function ( \Visualization\Admin\Lists\Lists $list ) { 
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Index.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-            if ($this->user->perm->has('admin.user') === false or $this->user->perm->compare(index: $list->obj->get->data('group_index'), admin: $list->obj->get->data('user_admin')) === false) {
+        // Save forum stats and unite with others
+        $data->set('data.stats', $db->select('app.forum.stats()'));
 
-                $list->delButton('edit');
-            }
-        });
-        $list->object('news')->fill(data: json_decode(@file_get_contents('http://api.phpcore.cz/novinky/') ?: '', true) ?: []);
-        $this->data->list = $list->getData();
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Index.json');
+        $form
+            ->form('info')
+                ->disButtons()
+                ->frame('info')
+                    ->input('version')->value(PHPCORE_VERSION)
+                    ->input('php')->value(phpversion())
+                    ->input('database')->value($db->select('app.other.version()'))
+                    ->input('started')->value($system->get('site.started'));
+        $data->form = $form->getDataToGenerate();
 
-        // FIELD
-        $field = new Field('/Admin/Index');
-        $field->disButtons();
-        $field->object('info')
-            ->row('version')->setValue($this->system->get('site.version'))
-            ->row('php')->setValue(phpversion())
-            ->row('database')->setValue($other->version())
-            ->row('started')->setValue($this->system->get('site.started'));
-        $this->data->field = $field->getData();
-
-        // CHART BLOCK
-        $chart = new Chart();
-
-        $statsDay = $chart->getDay();
-
-        // GENERATE ARRAY OF LAST 30 DAYS
-        $dayDate = $dayDateTranslated = [];
-        for ($i = 30; $i >= 0; $i--)
+        switch ($system->get('site.mode'))
         {
-            array_push($dayDate, date('Y-m-d', strtotime('-' . $i . ' days')));
-            array_push($dayDateTranslated, mb_convert_case(strftime('%B %e, %Y', strtotime('-' . $i . ' days')), MB_CASE_TITLE));
-        }
+            case 'forum':
+                // Block
+                $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Index.json');
+                $block->elm1('user')->value($data->get('data.stats.user'))
+                    ->elm1('users')->value($db->select('app.user.recentCount()'))
+                    ->elm1('topic')->value($data->get('data.stats.topic'))
+                    ->elm1('post')->value($data->get('data.stats.post'));
+                $data->block = $block->getDataToGenerate();
 
-        $dayUsers = $dayPosts = $dayTopics = array_combine($dayDate, array_fill(0, count($dayDate), 0));
-        
-        // FILL DAYS
-        foreach ($statsDay as $value)
-        {
-            foreach ($dayDate as $_date)
-            {
-                if ($value['day'] == $_date) {
-                    $dayUsers[$_date] = $value['users'];
-                    $dayPosts[$_date] = $value['posts'];
-                    $dayTopics[$_date] = $value['topics'];
-                    continue 2;
+                $JSON = new \App\Model\File\JSON('http://api.phpcore.cz/novinky/');
+
+                $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Index.json');
+                $list->elm1('log')->show()->fill(data: $db->select('app.log.last()'));
+                $list->elm1('news')->show()->fill(data: $JSON->get());
+                $list->elm1('user')->show()->fill(data: $db->select('app.user.last()'), function: function ( \App\Visualization\ListsAdmin\ListsAdmin $list ) use ($permission)
+                {
+                    if ($list->get('data.group_index') < LOGGED_USER_GROUP_INDEX or $list->get('data.user_id') == LOGGED_USER_ID)
+                    {
+                        if ($permission->has('admin.user'))
+                        {
+                            $list->show('data.button.edit');
+                        }
+                    }
+                });
+                $list->split(1, 1, 1);
+                $data->list = $list->getDataToGenerate();
+
+                $statsDay = $db->select('app.chart.day()');
+
+                // Generate array of last 30 days
+                $dayDate = $dayDateTranslated = [];
+                for ($i = 30; $i >= 0; $i--)
+                {
+                    array_push($dayDate, date('Y-m-d', strtotime('-' . $i . ' days')));
+                    array_push($dayDateTranslated, mb_convert_case(strftime('%B %e, %Y', strtotime('-' . $i . ' days')), MB_CASE_TITLE));
                 }
-            }
-        }
 
-        $this->data->chart = json_encode([
-            'date' => $dayDateTranslated,
-            'users' => array_values($dayUsers),
-            'posts' => array_values($dayPosts),
-            'topics' => array_values($dayTopics),
-        ], JSON_UNESCAPED_UNICODE);
+                $dayUsers = $dayPosts = $dayTopics = array_combine($dayDate, array_fill(0, count($dayDate), 0));
+                
+                // Fill days
+                foreach ($statsDay as $value)
+                {
+                    foreach ($dayDate as $_date)
+                    {
+                        if ($value['day'] == $_date) {
+                            $dayUsers[$_date] = $value['users'];
+                            $dayPosts[$_date] = $value['posts'];
+                            $dayTopics[$_date] = $value['topics'];
+                            continue 2;
+                        }
+                    }
+                }
+
+                $data->chart = json_encode([
+                    'date' => $dayDateTranslated,
+                    'users' => array_values($dayUsers),
+                    'posts' => array_values($dayPosts),
+                    'topics' => array_values($dayTopics),
+                ], JSON_UNESCAPED_UNICODE);
+
+            break;
+
+            case 'blog':
+            
+                $JSON = new \App\Model\File\JSON('http://api.phpcore.cz/novinky/');
+
+                $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Index.json');
+                $list->elm1('log')->show()->fill(data: $db->select('app.log.last()'));
+                $list->elm1('news')->show()->fill(data: $JSON->get());
+                $list->split(1, 1);
+                $data->list = $list->getDataToGenerate();
+
+            break;
+
+            case 'static':
+            
+                $JSON = new \App\Model\File\JSON('http://api.phpcore.cz/novinky/');
+
+                $list = new \App\Visualization\ListsAdmin\ListsAdmin('Root/ListsAdmin:/Formats/Index.json');
+                $list->elm1('news')->show()->fill(data: $JSON->get());
+                $list->split(1, 1);
+                $data->list = $list->getDataToGenerate();
+
+            break;
+
+        }
     }
 }

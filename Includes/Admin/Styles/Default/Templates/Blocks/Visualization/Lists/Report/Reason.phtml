@@ -1,14 +1,14 @@
-<div class="vertical-align">
-    <?= $this->build->user->image($row['data']) ?>
+<div class="list-row-align">
+    <?= $this->build->user->image(data: $list->get('data')) ?>
     <div class="inner">
-    <?php if ($row['data']['report_reason_type'] == 0 ) : ?>
-        <?= $this->build->user->link($row['data'], true) ?> <?= $this->build->date->long($row['data']['report_reason_created'], true) ?>
+    <?php if ($list->get('data.report_reason_type') == 0 ) : ?>
+        <?= $this->build->user->link(data: $list->get('data')) ?> <?= $this->build->date->long($list->get('data.report_reason_created'), true) ?>
         <br>
-        <?= $row['data']['report_reason_text'] ?>
+        <?= $list->get('data.report_reason_text') ?>
     <?php else : ?>
-        <?= $this->build->date->long($row['data']['report_reason_created'], true) ?>
+        <?= $this->build->date->long($list->get('data.report_reason_created'), true) ?>
         <br>
-        <?= $this->build->user->link($row['data'], true) ?> <?= $L_REPORT_REASON_TYPE_CLOSED ?>
+        <?= $this->build->user->link(data: $list->get('data')) ?> <?= $this->language->get('L_REPORT.L_CLOSED_BY') ?>
     <?php endif; ?>
     </div>
 </div>

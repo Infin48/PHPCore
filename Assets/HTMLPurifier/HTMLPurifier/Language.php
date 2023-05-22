@@ -172,7 +172,7 @@ class HTMLPurifier_Language
                     $subst['$'.$i.'.Compact'] =
                     $subst['$'.$i.'.Serialized'] = $generator->generateFromToken($value);
                     // a more complex algorithm for compact representation
-                    // could be introduced for all types of tokens. This
+                    // could be introduced for all types of tokens. this
                     // may need to be factored out into a dedicated class
                     if (!empty($value->attr)) {
                         $stripped_token = clone $value;

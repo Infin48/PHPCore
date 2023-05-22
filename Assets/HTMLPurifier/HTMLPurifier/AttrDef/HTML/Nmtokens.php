@@ -38,11 +38,11 @@ class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
      */
     protected function split($string, $config, $context)
     {
-        // OPTIMIZABLE!
+        // Optimizable!
         // do the preg_match, capture all subpatterns for reformulation
 
-        // we don't support U+00A1 and up codepoints or
-        // escaping because I don't know how to do that with regexps
+        // we don't support u+00a1 and up codepoints or
+        // escaping because i don't know how to do that with regexps
         // and plus it would complicate optimization efforts (you never
         // see that anyway).
         $pattern = '/(?:(?<=\s)|\A)' . // look behind for space or string start

@@ -15,8 +15,8 @@ class HTMLPurifier_HTMLModule_StyleAttribute extends HTMLPurifier_HTMLModule
      * @type array
      */
     public $attr_collections = array(
-        // The inclusion routine differs from the Abstract Modules but
-        // is in line with the DTD and XML Schemas.
+        // The inclusion routine differs from the abstract modules but
+        // is in line with the dtd and xml schemas.
         'Style' => array('style' => false), // see constructor
         'Core' => array(0 => array('Style'))
     );

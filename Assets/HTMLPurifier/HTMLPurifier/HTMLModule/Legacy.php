@@ -166,8 +166,8 @@ class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
         $ul->attr['type'] = 'Enum#square,disc,circle';
 
         // "safe" modifications to "unsafe" elements
-        // WARNING: If you want to add support for an unsafe, legacy
-        // attribute, make a new TrustedLegacy module with the trusted
+        // Warning: if you want to add support for an unsafe, legacy
+        // attribute, make a new trustedlegacy module with the trusted
         // bit set appropriately
 
         $form = $this->addBlankElement('form');

@@ -1,0 +1,177 @@
+{
+    "body": {
+        "forum": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "forum": {
+                    "data": {
+                        "title": ""
+                    },
+                    "body": {
+                        "forum_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "forum_description": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_DESCRIPTION.L_DESCRIPTION",
+                                "desc": "L_FORUM.L_DESCRIPTION.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_DESCRIPTION"
+                            }
+                        },
+                        "category_id": {
+                            "options": {
+                                "type": "select",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_MOVE"
+                            },
+                            "body": {
+                                "default": {
+                                    "data": {
+                                        "convert": {
+                                            "label": "category_name",
+                                            "value": "category_id"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "enable_link": {
+                            "options": {
+                                "type": "radio",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_LINK.L_ENABLE"
+                            },
+                            "body": {
+                                "yes": {
+                                    "data": {
+                                        "value": 1,
+                                        "label": "L_YES"
+                                    }
+                                },
+                                "no": {
+                                    "data": {
+                                        "value": 0,
+                                        "label": "L_NO"
+                                    }
+                                }
+                            }
+                        },
+                        "forum_link": {
+                            "options": {
+                                "type": "text",
+                                "on": {
+                                    "show": "enable_link:1"
+                                }
+                            },
+                            "data": {
+                                "title": "L_FORUM.L_LINK.L_LINK",
+                                "desc": "L_FORUM.L_LINK.L_DESC",
+                                "placeholder": "L_PLACEHOLDER.L_LINK"
+                            }
+                        },
+                        "forum_main": {
+                            "options": {
+                                "type": "checkbox",
+                                "on": {
+                                    "show": "enable_link:0"
+                                }
+                            },
+                            "data": {
+                                "desc": "L_FORUM.L_MAIN.L_DESC",
+                                "title": "L_FORUM.L_MAIN.L_MAIN"
+                            },
+                            "body": {
+                                "forum_main": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "icon": {
+                    "data": {
+                        "title": "L_ICON.L_ICON"
+                    },
+                    "body": {
+                        "link": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "desc": "L_ICON.L_LIST.L_DESC",
+                                "icon": "fa-solid fa-icons",
+                                "href": "$https://fontawesome.com/search?o=r&m=free",
+                                "title": "L_ICON.L_LIST.L_LIST",
+                                "button": "L_BTN.L_ICON_LIST"
+                            }
+                        },
+                        "forum_icon": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "title": "L_ICON.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_ICON"
+                            }
+                        },
+                        "forum_icon_style": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_ICON.L_STYLE"
+                            },
+                            "body": {
+                                "solid": {
+                                    "data": {
+                                        "value": "solid",
+                                        "label": "solid"
+                                    }
+                                },
+                                "regular": {
+                                    "data": {
+                                        "value": "regular",
+                                        "label": "regular"
+                                    }
+                                },
+                                "brands": {
+                                    "data": {
+                                        "value": "brands",
+                                        "label": "brands"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

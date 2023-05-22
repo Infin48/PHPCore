@@ -1,0 +1,9 @@
+<div class="align wh-full fw-600">
+    <?php if (empty($this->data->get('data.forum.forum_link'))) : ?>
+        <div class="ta-center wh-full"><?= $this->language->get('L_FORUM.L_PERMISSION.L_POST') ?></div>
+        <div class="ta-center wh-full"><?= $this->language->get('L_FORUM.L_PERMISSION.L_TOPIC') ?></div>
+    <?php endif; ?>
+    <?php if (!$this->data->get('data.forum.forum_main')) : ?>
+        <div class="ta-center wh-full"><?= $this->language->get('L_FORUM.L_PERMISSION.L_SEE') ?></div>
+    <?php endif; ?>
+</div>

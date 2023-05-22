@@ -1,0 +1,46 @@
+<div class="loading">
+    <span class="loading-title"><?= $language->get('L_UPDATE.L_INSTALLATION') ?></span>
+    <br>
+    <span class="loading-description"><?= $language->get('L_UPDATE.L_THANKS') ?></span>
+    <div class="loading-bottom">
+        <div class="loading-circle">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>                
+<script src="/Assets/jQuery/jQuery.min.js?33"></script>
+<script>
+
+    $.get('/update/install/', function (data) {
+
+        try {
+            var data = $.parseJSON(data);
+        } catch (error)
+        {
+            data = {
+                status: 'error',
+                error: data
+            };
+        }
+
+        switch (data.status ?? '')
+        {
+            case 'ok':
+                location.href = '/update/end/';
+            break;
+
+            default:
+
+                $('.loading').addClass('loading-red');
+
+                $('.loading-description').text(data.error);
+                $('.loading-title').html('<?= $language->get('L_UPDATE.L_ERROR') ?>');
+                $('.loading .loading-bottom').after('<br><a href="/update/installing/"><i class="fa-solid fa-sync-alt"></i> <?= $language->get('L_RETRY') ?></a>');
+                $('.loading .loading-bottom').remove();
+            break;
+        }
+    });
+</script>

@@ -42,7 +42,7 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
      */
     public function setup($config)
     {
-        // create fixes, initialize fixesForLevel
+        // create fixes, initialize fixesforlevel
         $fixes = $this->makeFixes();
         $this->makeFixesForLevel($fixes);
 
@@ -146,8 +146,8 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
                         $type = "info_$type";
                         $e = $this;
                     }
-                    // PHP does some weird parsing when I do
-                    // $e->$type[$attr], so I have to assign a ref.
+                    // Php does some weird parsing when i do
+                    // $e->$type[$attr], so i have to assign a ref.
                     $f =& $e->$type;
                     $f[$attr] = $fix;
                     break;

@@ -1,0 +1,16 @@
+{
+    "body": {
+        "index": {
+            "data": {
+                "href": "/",
+                "title": "L_BREADCRUMB.L_TITLE_PAGE"
+            }
+        },
+        "plugin": {
+            "data": {
+                "href": "",
+                "title": ""
+            }
+        }
+    }
+}

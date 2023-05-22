@@ -12,8 +12,8 @@
 class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
 {
 
-    // selector is NOT a valid thing to use for IDREFs, because IDREFs
-    // *must* target IDs that exist, whereas selector #ids do not.
+    // selector is not a valid thing to use for idrefs, because idrefs
+    // *must* target ids that exist, whereas selector #ids do not.
 
     /**
      * Determines whether or not we're validating an ID in a CSS
@@ -78,12 +78,12 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
             }
         } else {
             if (ctype_alpha($id)) {
-                // OK
+                // Ok
             } else {
                 if (!ctype_alpha(@$id[0])) {
                     return false;
                 }
-                // primitive style of regexps, I suppose
+                // primitive style of regexps, i suppose
                 $trim = trim(
                     $id,
                     'A..Za..z0..9:-._'
@@ -103,7 +103,7 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
             $id_accumulator->add($id);
         }
 
-        // if no change was made to the ID, return the result
+        // if no change was made to the id, return the result
         // else, return the new id if stripping whitespace made it
         //     valid, or return false.
         return $id;

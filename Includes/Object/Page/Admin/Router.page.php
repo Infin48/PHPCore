@@ -10,146 +10,260 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin;
-
-use Block\Report;
-use Block\Plugin;
-use Block\Deleted;
-
-use Model\Url;
-use Model\User;
-use Model\Data;
-use Model\Template;
-use Model\Language;
-use Model\Build\Build;
-use Model\System;
-
-use Process\Process;
-
-use Style\Style;
-
-use Visualization\Navbar\Navbar;
+namespace App\Page\Admin;
 
 /**
  * Router
  */
-class Router extends \Page\Page
-{    
+class Router extends \App\Page\Page
+{
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Body.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.?';
+
+    /**
+     * Run ajax according to received item and action
+     *
+     * @param  string $ajax Received ajax
+     * 
+     * @return string Name of method
+     */
+    protected function ajax( string $ajax )
+    {
+        return match($ajax)
+        {
+            'window/delete-attachment',
+            'window/notification/delete',
+            'window/group/delete',
+            'window/forum/delete',
+            'window/category/delete',
+            'window/label/delete',
+            'window/role/delete',
+            'window/sidebar-object/delete',
+            'window/template/delete',
+            'window/language/delete',
+            'window/plugin/delete',
+            'window/url/delete',
+            'window/button/delete',
+            'window/user/promote',
+            'window/plugin/uninstall',
+            'window/sub-button/delete',
+            'window/deleted-post/delete' ,
+            'window/deleted-profile-post/delete',
+            'window/deleted-profile-post-comment/delete',
+            'window/deleted-topic/delete',
+            'window/user/delete',
+            'window/page/delete' => 'window',
+
+            'run/delete-attachment' => 'deleteAttachment',
+
+            default => ''
+        };
+    }
+
+    /**
+     * Load data according to received ajax
+     *
+     * @param  string $ajax Received ajax
+     * 
+     * @return array Data
+     */
+    public function ajaxData( string $ajax )
+    {
+        return match($ajax)
+        {
+            'run/delete-attachment' => [
+                'id' => STRING
+            ],
+
+            default => []
+        };
+    }
+
     /**
      * Body of this page
      *
      * @return void
      */
-    public function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        $this->style                = new Style();
-        $this->style->setTemplate('/Body');
-        
-        $this->data                 = new Data();
+        // System
+        $system = $data->get('inst.system');
 
-        $this->loadPlugins();
+        // Put system model to file
+        \App\Model\File\File::$system = $system;
 
-        $this->system               = new System();
-
-        $plugins = new Plugin();
-        $this->language             = new Language(
-            language: $this->system->get('site.language'),
-            admin: true,
-            plugins: array_column($plugins->getAll(), 'plugin_name_folder')
-        );
-        
-        $this->build                = (new Build())->load();
-        $this->build->system        = $this->system;
-        $this->build->language      = $this->language;
-        
-        $this->user                 = new User();
-
-        $this->url                  = new Url();
-        
-        $this->process              = new Process();
-        $this->process->system      = $this->system;
-        $this->process->perm        = $this->user->perm;
-
-        $this->template             = new Template(
-            template: 'Default',
-            templateInitial: $this->system->get('site.template'),
-            path: '/Includes/Admin/Styles'
+        // Set default template
+        $template = new \App\Model\Template(
+            path: '/Includes/Admin/Styles',
+            template: 'Default'
         );
 
-        // DEFAULT PAGE TITLE
-        $this->data->head['title']          = $this->system->get('site.name');
+        // Set default language
+        $language = $data->get('inst.language');
+        $language->load( language: $system->get('site.language'), template: $template, folder: 'admin' );
 
-        // DEFAULT PAGE DESCRIPTION
-        $this->data->head['description']    = $this->system->get('site.description');
+        // Put language to visualizators
+        \App\Visualization\Visualization::$language = $language;
 
-        // SET PAGE FAVICON
+        // Default page title
+        $data->set('data.head.title', $system->get('site.name'));
+
+        // Default page description
+        $data->set('data.head.description', $system->get('site.description'));
+
+        // Set page favicon
         $favicon = '/Uploads/Site/PHPCore_icon.svg';
-        if ($this->system->get('site.favicon')) {
-            $favicon = '/Uploads/Site/Favicon.' . $this->system->get('site.favicon');
+        if ($system->get('site.favicon'))
+        {
+            $favicon = '/Uploads/Site/Favicon.' . $system->get('site.favicon');
         }
-        $this->data->head['favicon'] =  $favicon;
-
-        if ($this->user->isLogged() === false) {
-            $this->error();
-        }
-
-        if ((bool)$this->user->perm->has('admin.?') == false) {
-            $this->error();
-        }
-
-        setlocale(LC_ALL, $this->system->get('site.locale').'.UTF-8');
-        date_default_timezone_set($this->system->get('site.timezone'));
-
-        if ($this->user->isLogged()) {
-
-            define('LOGGED_USER_ID', $this->user->get('user_id'));
-            define('LOGGED_USER_GROUP_INDEX', $this->user->get('group_index'));
-            define('LOGGED_USER_GROUP_ID', $this->user->get('group_id'));
-        } else {
-            define('LOGGED_USER_ID', 0);
-            define('LOGGED_USER_GROUP_INDEX', 0);
-            define('LOGGED_USER_GROUP_ID', 0);
-        }
-
-        $controllerName = $this->build();
-
-        $this->page = new $controllerName;
+        $data->set('data.head.favicon', $favicon);
         
-        $this->navbar = new Navbar('/Admin');
-        $this->navbar->perm = $this->user->perm;
+        setlocale(LC_ALL, $system->get('site.locale').'.UTF-8');
+        date_default_timezone_set($system->get('site.timezone'));
 
-        $report = new Report();
-        $deleted = new Deleted();
+        // Check for ajax
+        $this->checkForAjax();
 
-        if (($count = $report->getCount())['total'] != 0) {
-            $this->navbar->object('forum')->row('reported')->notifiCount($count['total']);
-            $this->navbar->object('forum')->row('reported')->option('post')->notifiCount($count['post']);
-            $this->navbar->object('forum')->row('reported')->option('topic')->notifiCount($count['topic']);
-            $this->navbar->object('forum')->row('reported')->option('profilepost')->notifiCount($count['profile_post']);
-            $this->navbar->object('forum')->row('reported')->option('profilepostcomment')->notifiCount($count['profile_post_comment']);
+        $page = $this->buildPage();
+
+        // Load navbar
+        $this->navbar = new \App\Visualization\Navbar\Navbar('Root/Navbar:/Formats/Admin.json');
+
+        // Count of deleted content
+        $deleted = $db->select('app.deleted.count()');
+
+        // Save counts of reported content and unite with others
+        $data->set('data.report-stats', $db->select('app.report.count()'));
+
+        // If any content is reported
+        if ($data->get('data.total') != 0)
+        {
+            $this->navbar->elm1('forum')->elm2('reported')
+                ->set('data.notifiCount', $data->get('data.report-stats.total'))
+                ->elm3('post')->set('data.notifiCount', $data->get('data.report-stats.post'))
+                ->elm3('topic')->set('data.notifiCount', $data->get('data.report-stats.topic'))
+                ->elm3('profilepost')->set('data.notifiCount', $data->get('data.report-stats.profile_post'))
+                ->elm3('profilepostcomment')->set('data.notifiCount', $data->get('data.report-stats.profile_post_comment'));
         }
 
-        if (($count = $deleted->getAllCount()) != 0) {
-            $this->navbar->object('forum')->row('deleted')->notifiCount($count);
+        // If any content is deleted
+        if ($deleted != 0) {
+            $this->navbar->elm1('forum')->elm2('deleted')->set('data.notifiCount', $deleted);
         }
 
-        $this->page->url = $this->url;
-        $this->page->data = $this->data;
-        $this->page->style = $this->style;
-        $this->page->user = $this->user;
-        $this->page->build = $this->build;
-        $this->page->navbar = $this->navbar;
-        $this->page->system = $this->system;
-        $this->page->process = $this->process;
-        $this->page->language = $this->language;
-        $this->page->template = $this->template;
+        switch ($system->get('site.mode'))
+        {
+            // If blog mode is enabled
+            case 'blog':
 
-        $this->page->ini();
-        $this->page->body();
+                $this->navbar
+                    ->elm1('settings')
+                        ->elm2('settings')
+                            ->elm3('registration')->disable()
+                    ->elm1('forum')
+                        ->elm2('reported')->disable()
+                        ->elm2('deleted')->disable()
+                        ->elm2('forum')->disable()
+                    ->elm1('other')
+                        ->elm2('stats')->disable();
 
-        $this->data->navbar = $this->page->navbar->getData();
+            break;
 
-        $this->iniStyle();
+            // If static mode is enabled
+            case 'static':
+
+                $this->navbar
+                    ->elm1('settings')
+                        ->elm2('notification')->disable()
+                        ->elm2('settings')
+                            ->elm3('registration')->disable()
+                    ->elm1('users')
+                        ->elm2('group')->disable()
+                        ->elm2('user')->disable()
+                        ->elm2('role')->disable()
+                    ->elm1('appearance')
+                        ->elm2('sidebar')->disable()
+                    ->elm1('forum')
+                        ->elm2('reported')->disable()
+                        ->elm2('deleted')->disable()
+                        ->elm2('forum')->disable()
+                        ->elm2('label')->disable()
+                    ->elm1('other')
+                        ->elm2('stats')->disable()
+                        ->elm2('log')->disable()
+                        ->elm2('other')->disable();
+
+            break;
+        }
+
+        // If profiles are disabled
+		if ($system->get('site.mode.blog.profiles') == 0)
+		{
+            $this->navbar->elm1('users')->elm2('role')->disable();
+		}
+
+        $page->navbar = $this->navbar;
+        $page->body( $data, $db );
+
+        // Check for ajax
+        $page->checkForAjax();
+
+        $data->navbar = $page->navbar->getDatatoGenerate();
+
+        $this->checkFormSubmit();
+
+        $this->end();
    }
 
+   /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function window( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // Language
+        $language = $data->get('inst.language');
+
+        return [
+            'title' => $language->get('L_WINDOW.L_TITLE.L_CONFIRM'),
+            'close' => $language->get('L_NO'),
+            'submit' => $language->get('L_YES'),
+            'content' => $language->get('L_WINDOW.L_DESC.' . $post->get('ajax'))
+        ];
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function deleteAttachment( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // File
+        $file = new \App\Model\File\File();
+       
+        if (!$file->exists($post->get('id')))
+        {
+            return false;
+        }
+        
+        $file->delete($post->get('id'));
+    }
 }

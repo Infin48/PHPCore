@@ -1,0 +1,24 @@
+{
+    "body": {
+        "edit":{
+            "options": {
+                "type": "button"
+            },
+            "data": {
+                "href": "~/edit/",
+                "icon": "fa-solid fa-edit",
+                "title": "L_BTN.L_EDIT"
+            }
+        },
+        "edit-admin":{
+            "options": {
+                "type": "button"
+            },
+            "data": {
+                "title": "L_BTN.L_EDIT_IN_ADMIN",
+                "icon": "fa-solid fa-edit",
+                "href": "~/edit/"
+            }
+        }
+    }
+}

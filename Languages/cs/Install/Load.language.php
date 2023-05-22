@@ -11,48 +11,51 @@
  */
 
 $language = [
-
-    'L_BREADCRUMB' => [
-
-        'L_LANGUAGE' => 'Jazyk',
-        'L_DATABASE' => 'Databáze',
-        'L_ADMIN' => 'Administrátor',
-        'L_SETTINGS' => 'Nastavení',
-        'L_END' => 'Konec',
-
-        'L_UPDATE' => 'Aktualizace'
+    
+    'L_TITLE' => [
+        '\Index' => 'Instalace',
+        '\Language' => 'Jazyk',
+        '\Database' => 'Databáze',
+        '\Install\Admin' => 'Administrátor',
+        '\Install\Settings' => 'Nastavení',
     ],
 
-    'L_START' => 'Titulní stránka',
-    'L_LANGUAGE' => 'Jazyk',
-    'L_INSTALL' => 'Instalace',
-    'L_DATABASE' => 'Databáze',
-    'L_ADMIN' => 'Administrátor',
-    'L_SETTINGS_SETTINGS' => 'Globální nastavení',
-    'L_BACK_TO_INDEX' => 'Zpět na titulní stránku',
-    'L_BACK' => 'Zpět',
 
-    'L_EXTENSIONS' => 'Vyžadovaná rozšíření',
-    'L_PERMISSION_WRITE' => 'Soubory vyžadující oprávnění zapisovat',
+    'L_START' => 'Titulní stránka',
+    'L_LANGUAGE' => 'Vyberte jazyk',
+    'L_DATABASE' => 'Databáze',
+    'L_BACK_TO_INDEX' => 'Zpět na titulní stránku',
+    
+    'L_BTN' => [
+        'L_BACK' => 'Zpět',
+        'L_UPDATE' => 'Aktualizovat',
+        'L_INSTALL' => 'Instalace',
+        'L_EXTENSIONS' => 'Rozšíření',
+        'L_PERMISSION' => 'Soubory važadující opravánění',
+    ],
+
+    'L_EXTENSIONS' => [
+        'L_PHP' => 'PHP 8.0.0 nebo vyšší',
+        'L_EXTENSIONS' => 'Vyžadovaná rozšíření',
+    ],
+    'L_PERMISSION' => [
+        'L_PERMISSION' => 'Soubory  a složky važadující opravánění číst, vykonávat a zapisovat'
+    ],
 
     // UPDATE
 
-    'L_UPDATE_INSTALLED' => 'Aktualizace {name} byla úspěšně nainstalována!',
-    'L_UPDATE_INSTALLATION' => 'Probíhá aktualizace, prosím nezavírejte stránku!',
-    'L_UPDATE_ERROR' => 'Během aktualizace se vyskytla chyba!',
-    'L_UPDATE_THANKS' => 'Děkujeme, že používáte aplikaci PHPCore.',
-    
+    'L_UPDATE' => [
+        'L_INSTALLED' => 'PHPCore byl úspěšně aktualizován!',
+        'L_INSTALLATION' => 'Probíhá aktualizace, prosím nezavírejte stránku!',
+        'L_ERROR' => 'Během aktualizace se vyskytla chyba!',
+        'L_THANKS' => 'Děkujeme, že používáte aplikaci PHPCore.',
+    ],
+
     'L_RETRY' => 'Opakovat',
-
-
-    // INDEX PAGE
-
-    'L_PHP_VERSION' => 'PHP 8.0.0 nebo vyšší',
     
 
     // BASICS
 
-    'L_UPDATE' => 'Aktualizovat',
     'L_NEXT' => 'Další',
     'L_NAME' => 'Název',
     'L_USERNAME' => 'Uživatelské jméno',
@@ -66,7 +69,7 @@ $language = [
 
     'L_CONTINUE' => 'Pokračovat',
 
-    'L_INTERNAL_ERROR' => 'Byla nalezena interní chyba',
+    'L_INTERNAL_ERROR' => 'Byla nalezena chyba',
     
     // LANGUAGE
 
@@ -75,31 +78,38 @@ $language = [
 
     // DATABASE
 
-    'L_DATABASE_HOST' => 'Databázový server',
+    'L_DATABASE' => [
 
-    'L_DATABASE_USERNAME' => 'Uživatelské jméno',
+        'L_DATABASE' => 'Databáze',
 
-    'L_DATABASE_PASSWORD' => 'Heslo k databázi',
-
-    'L_DATABASE_NAME' => 'Název databáze',
-
-    'L_PORT' => 'Port',
-    'L_DATABASE_PORT_DESC' => 'Pokud necháte port prázdný, bude použit výchozí port 3306',
+        'L_HOST' => 'Databázový server',
+        'L_USERNAME' => 'Uživatelské jméno',
+        'L_PASSWORD' => 'Heslo',
+        'L_NAME' => 'Název databáze',
+        'L_PORT' => 'Port'
+    ],
 
 
     // ADMIN
 
-    'L_ADMIN_USERNAME' => 'Jméno admina',
-    'L_ADMIN_PASSWORD' => 'Heslo admina',
-    'L_ADMIN_EMAIL' => 'E-mail admina',
+    'L_ADMIN' => [
 
+        'L_ADMIN' => 'Administrátor',
+
+        'L_USERNAME' => 'Uživatelské jméno',
+        'L_PASSWORD' => 'Heslo',
+        'L_EMAIL' => 'E-mail',
+    ],
 
     // WEBSITE
 
-    'L_SETTINGS_NAME' => 'Název webových stránek',
+    'L_SETTINGS' => [
 
-    'L_SETTINGS_DESCRIPTION' => 'Popis webových stránek',
+        'L_SETTINGS' => 'Základní nastavení',
 
+        'L_NAME' => 'Název webových stránek',
+        'L_DESCRIPTION' => 'Popis webových stránek',
+    ],
     // OTHER
 
     'L_INSTALLED_SUCESS' => 'PHPCore byl úspěšně nainstalován',
@@ -107,5 +117,3 @@ $language = [
     'L_INSTALLATION' => 'Instalace',
 
 ];
-
-require 'Notice.language.php';

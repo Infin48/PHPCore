@@ -10,125 +10,143 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-$language = array_merge($language, [
-    'L_LOG_LIST' => 'Audit log',
-    'L_LOG_LIST_NO' => 'Žádné záznamy',
-    'L_LOG_LIST_LAST' => 'Poslední záznamy z auditu',
-]);
+$language = [
 
-$language['L_LOG_PROTOCOL'] = [
+    'L_LOG' => [
+        'L_LIST' => 'Audit log',
+        'L_NO' => 'Žádné záznamy',
+        'L_LAST' => 'Poslední záznamy z auditu',
 
-    '/Admin/Update' => 'aktualizoval systém',
+        'L_PROTOCOL' => [
 
-    '/Admin/Deleted/Topic/Back' => 'vrátil z koše do fóra zpět téma',
-    '/Admin/Deleted/Topic/Delete' => 'smazal z koše téma',
+            'moveTopicBack' => 'vrátil z koše do fóra zpět téma',
+            'deleteDeletedTopic' => 'smazal z koše téma',
+            
+            'movePostBack' => 'vrátil z koše do fóra zpět příspěvek',
+            'deleteDeletedPost' => 'smazal z koše příspěvek',
+            
+            'moveProfilePostBack' => 'vrátil z koše zpět na web profilový příspěvek',
+            'deleteDeletedProfilePost' => 'smazal z koše profilový příspěvek',
+            
+            'moveProfilePostCommentBack' => 'vrátil z koše zpět na web profilový komentář',
+            'deleteDeletedProfilePostComment' => 'smazal z koše profilový komentář',
+            
+            'markReportedContentAsClosed' => 'uzavřel hlášení',
+            
+            'deletePlugin' => 'smazal plugin',
+            'installPlugin' => 'nainstaloval plugin',
+            'uninstallPlugin' => 'odinstaloval plugin',
 
-    '/Admin/Deleted/Post/Back' => 'vrátil z koše do fóra zpět příspěvek',
-    '/Admin/Deleted/Post/Delete' => 'smazal z koše příspěvek',
+            'newRole' => 'vytvořil roli',
+            'editRole' => 'upravil roli',
+            'deleteRole' => 'smazal roli',
+            'moveRoleUp' => 'posunul roli',
+            'moveRoleDown' => 'posunul roli',
+            
+            'newForum' => 'vytvořil nové fórum',
+            'editForum' => 'upravil fórum',
+            'deleteForum' => 'smazal fórum',
+            'moveForumUp' => 'posunul fórum',
+            'moveForumDown' => 'posunul fórum',
+            'editForumPermission' => 'upravil oprávnění u fóra',
+            
+            'newCategory' => 'vytvořil novou kategorii',
+            'editCategory' => 'upravil kategorii',
+            'deleteCategory' => 'smazal kategorii',
+            'moveCategoryUp' => 'posunul kategoii',
+            'moveCategoryDown' => 'posunul kategorii',
+            'editCategoryPermission' => 'upravil oprávnění u kategorie',
+            
+            'newGroup' => 'vytvořil novou skupinu',
+            'editGroup' => 'upravil skupinu',
+            'deleteGroup' => 'smazal skupinu',
+            'moveGroupUp' => 'posunul skupinu',
+            'moveGroupDown' => 'posunul skupinu',
+            'editGroupPermission' => 'upravil oprávnění u skupiny',
+            
+            'newLabel' => 'vytvořil nový štítek',
+            'editLabel' => 'upravil štítek',
+            'deleteLabel' => 'smazal štítek',
+            'moveLabelUp' => 'posunul štítek',
+            'moveLabelDown' => 'posunul štítek',
+            
+            'newUser' => 'vytvořil nového uživatele',
+            'editUser' => 'upravil uživatele',
+            'deleteUser' => 'smazal uživatele',
+            'promoteUser' => 'převedl administrátorské oprávnění na uživatele',
+            'activateUser' => 'aktivoval účet uživateli',
+            
+            'newCustomPage' => 'vytvořil novou stránku',
+            'editCustomPage' => 'upravil stránku',
+            'deleteCustomPage' => 'smazal stránku',
+            'editCustomPageThroughAdminPanel' => 'upravil stránku',
+            
+            'deleteTemplate' => 'smazal šablonu',
+            'activateTemplate' => 'změnil výchozí šablonu webových stránek',
+            'editTemplateSettings' => 'upravil nastavení šablony',
+            
+            'newNotification' => 'vytvořil nové oznámení',
+            'editNotification' => 'upravil oznámení',
+            'deleteNotification' => 'smazal oznámení',
+            'moveNotificationUp' => 'posunul oznámení',
+            'moveNotificationDown' => 'posunul oznámení',
+            
+            'newDropdown' => 'vytvořil nový rozbalovací seznam',
+            'editDropdown' => 'upravil rozbalovací seznam',
+            
+            'newButton' => 'vytvořil nové tlačítko',
+            'editButton' => 'upravil tlačítko',
+            'deleteButton' => 'odstranil tlačítko',
+            'moveButtonUp' => 'posunul tlačítko',
+            'moveButtonDown' => 'posunul tlačítko',
+            
+            'newSubButton' => 'vytvořil nové tlačítko',
+            'editSubButton' => 'upravil tlačítko',
+            'deleteSubButton' => 'odstranil tlačítko',
+            'moveSubButtonUp' => 'posunul tlačítko',
+            'moveSubButtonDown' => 'posunul tlačítko',
+            
+            'editEmailSettings' => 'upravil nastavení webových stránek',
+            'editWebsiteSettings' => 'upravil nastavení webových stránek',
+            'editRegistrationSettings' => 'upravit nastavení registrace',
 
-    '/Admin/Deleted/ProfilePost/Back' => 'vrátil z koše zpět na web profilový příspěvek',
-    '/Admin/Deleted/ProfilePost/Delete' => 'smazal z koše profilový příspěvek',
+            'deleteLanguage' => 'smazal jazyk',
+            'activateLanguage' => 'změnil výchozí jazyk webových stránek',
+            
+            'newTranslateForURL' => 'vytvořil překlad pro URL',
+            'deleteTranslateForURL' => 'smazal překlad pro URL',
 
-    '/Admin/Deleted/ProfilePostComment/Back' => 'vrátil z koše zpět na web profilový komentář',
-    '/Admin/Deleted/ProfilePostComment/Delete' => 'smazal z koše profilový komentář',
+            'newSidebarObject' => 'přidal prvek na postranní panel',
+            'deleteSidebarObject' => 'smazal prvek z postranního panelu',
+            'moveSidebarObjectUp' => 'posunul prvek na postranním panelu',
+            'moveSidebarObjectDown' => 'posunul prvek na postranním panelu',
+            
+            'synchronizeRoles' => 'synchronizoval role',
+            'synchronizeGroups' => 'synchronizoval skupiny',
+            'synchronizeLabels' => 'synchronizoval štítky',
+            'synchronizeStyles' => 'synchronizoval styly',
+            'synchronizeTemplate' => 'synchronizoval šablonu',
+            'synchronizeScripts' => 'synchronizoval skripty',
+            
+            'optimizeTables' => 'optimalizoval tabulky v databázi',
+            
+            'stickArticle' => 'přilepil článek',
+            'deleteArticle' => 'smazal článek',
+            'unstickArticle' => 'odlepil článek',
+            'markArticleWithLabels' => 'upravil štítky u článku',
 
-    '/Admin/Report/Close' => 'uzavřel hlášení',
-
-    '/Admin/Plugin/Delete' => 'smazal plugin',
-    '/Admin/Plugin/Install' => 'nainstaloval plugin',
-    '/Admin/Plugin/Uninstall' => 'odinstaloval plugin',
-
-    '/Admin/Forum/Up' => 'posunul fórum',
-    '/Admin/Forum/Create' => 'vytvořil nové fórum',
-    '/Admin/Forum/Edit' => 'upravil fórum',
-    '/Admin/Forum/Down' => 'posunul fórum',
-    '/Admin/Forum/Delete' => 'smazal fórum',
-    '/Admin/Forum/Permission' => 'upravit oprávnění u fóra',
-
-    '/Admin/Category/Up' => 'posunul kategoii',
-    '/Admin/Category/Create' => 'vytvořil novou kategorii',
-    '/Admin/Category/Edit' => 'upravil kategorii',
-    '/Admin/Category/Down' => 'posunul kategorii',
-    '/Admin/Category/Delete' => 'smazal kategorii',
-    '/Admin/Category/Permission' => 'upravit oprávnění u kategorie',
-
-    '/Admin/Group/Up' => 'posunul skupinu',
-    '/Admin/Group/Create' => 'vytvořil novou skupinu',
-    '/Admin/Group/Edit' => 'upravil skupinu',
-    '/Admin/Group/Down' => 'posunul skupinu',
-    '/Admin/Group/Delete' => 'smazal skupinu',
-    '/Admin/Group/Permission' => 'upravil oprávnění u skupiny',
-
-    '/Admin/Label/Create' => 'vytvořil nový štítek',
-    '/Admin/Label/Edit' => 'upravil štítek',
-    '/Admin/Label/Delete' => 'smazal štítek',
-    '/Admin/Label/Down' => 'posunul štítek',
-    '/Admin/Label/Up' => 'posunul štítek',
-
-    '/Admin/User/Edit' => 'upravil uživatele',
-    '/Admin/User/Delete' => 'smazal uživatele',
-    '/Admin/User/Promote' => 'převedl administrátorskké oprávnění na uživatele',
-    '/Admin/User/Activate' => 'aktivoval účet uživateli',
-
-    '/Admin/Page/Create' => 'vytvořil novou stránku',
-    '/Admin/Page/Edit' => 'upravil stránku',
-    '/Admin/Page/Delete' => 'smazal stránku',
-
-    '/Admin/Template/Activate' => 'změnil výchozí šablonu webových stránek na',
-    '/Admin/Template/Delete' => 'smazal šablonu',
-    
-    '/Admin/Notification/Up' => 'posunul oznámení',
-    '/Admin/Notification/Create' => 'vytvořil nové oznámení',
-    '/Admin/Notification/Edit' => 'upravil oznámení',
-    '/Admin/Notification/Down' => 'posunul oznámení',
-    '/Admin/Notification/Delete' => 'smazal oznámení',
-
-    '/Admin/Menu/Dropdown/Up' => 'posunul rozbalovací seznam',
-    '/Admin/Menu/Dropdown/Create' => 'vytvořil nový rozbalovací seznam',
-    '/Admin/Menu/Dropdown/Edit' => 'upravil rozbalovací seznam',
-    '/Admin/Menu/Dropdown/Down' => 'posunul rozbalovací seznam ',
-    '/Admin/Menu/Dropdown/Delete' => 'odstranil rozbalovací seznam',
-
-    '/Admin/Menu/Button/Up' => 'posunul tlačítko',
-    '/Admin/Menu/Button/Create' => 'vytvořil nové tlačítko',
-    '/Admin/Menu/Button/Edit' => 'upravil tlačítko',
-    '/Admin/Menu/Button/Down' => 'posunul tlačítko',
-    '/Admin/Menu/Button/Delete' => 'odstranil tlačítko',
-
-    '/Admin/Menu/ButtonSub/Up' => 'posunul tlačítko',
-    '/Admin/Menu/ButtonSub/Create' => 'vytvořil nové tlačítko',
-    '/Admin/Menu/ButtonSub/Edit' => 'upravil tlačítko',
-    '/Admin/Menu/ButtonSub/Down' => 'posunul tlačítko',
-    '/Admin/Menu/ButtonSub/Delete' => 'odstranil tlačítko',
-
-    '/Admin/Settings/Index' => 'upravil nastavení webových stránek',
-    '/Admin/Settings/Registration' => 'upravit nastavení registrace',
-    '/Admin/Settings/Other' => 'upravit nastavení webových stránek',
-    '/Admin/Settings/Email' => 'upravil nastavení webových stránek',
-    '/Admin/Settings/Language/Activate' => 'změnil výchozí jazyk webových stránek',
-    '/Admin/Settings/Language/Delete' => 'smazal jazyk',
-
-    '/Admin/Settings/URL/Create' => 'vytvořil překlad pro URL',
-    '/Admin/Settings/URL/Delete' => 'smazal překlad pro URL',
-
-    '/Admin/Synchronize/Scripts' => 'synchronizoval skripty',
-    '/Admin/Synchronize/Styles' => 'synchronizoval styly',
-
-    '/Admin/Optimize' => 'optimalizoval tabulky v databázi',
-
-    '/Topic/Move' => 'přesunul téma',
-    '/Topic/Lock' => 'zamknul téma',
-    '/Topic/Stick' => 'přilepil téma',
-    '/Topic/Delete' => 'smazal téma',
-    '/Topic/Unlock' => 'odemknul téma',
-    '/Topic/Unstick' => 'odlepil téma',
-    '/Topic/Label' => 'upravil štítky v tématu',
-    '/Topic/Report' => 'nahlásil téma',
-
-    '/Post/Delete' => 'smazal příspěvek v tématu',
-    '/Post/Report' => 'nahlásil příspěvek v tématu',
-
-    '/ProfilePost/Delete' => 'smazal profilový příspěvěk',
-    '/ProfilePostComment/Delete' => 'smazal komentář pod profilovým příspěvěkem',
-
+            'moveTopic' => 'přesunul téma',
+            'lockTopic' => 'zamknul téma',
+            'stickTopic' => 'přilepil téma',
+            'deleteTopic' => 'smazal téma',
+            'unlockTopic' => 'odemknul téma',
+            'unstickTopic' => 'odlepil téma',
+            'markTopicWithLabels' => 'upravil štítky v tématu',
+            
+            'deletePost' => 'smazal příspěvek v tématu',
+            
+            'deleteProfilePost' => 'smazal profilový příspěvěk',
+            'deleteProfilePostComment' => 'smazal komentář pod profilovým příspěvěkem'
+        ]
+    ]
 ];

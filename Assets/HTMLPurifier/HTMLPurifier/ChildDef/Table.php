@@ -111,23 +111,23 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                 break;
             case 'thead':
                 $tbody_mode = true;
-                // XXX This breaks rendering properties with
+                // Xxx this breaks rendering properties with
                 // Firefox, which never floats a <thead> to
-                // the top. Ever. (Our scheme will float the
-                // first <thead> to the top.)  So maybe
+                // the top. ever. (our scheme will float the
+                // first <thead> to the top.)  so maybe
                 // <thead>s that are not first should be
-                // turned into <tbody>? Very tricky, indeed.
+                // turned into <tbody>? very tricky, indeed.
                 if ($thead === false) {
                     $thead = $node;
                     $ws_accum =& $after_thead_ws;
                 } else {
-                    // Oops, there's a second one! What
-                    // should we do?  Current behavior is to
+                    // Oops, there's a second one! what
+                    // should we do?  current behavior is to
                     // transmutate the first and last entries into
                     // tbody tags, and then put into content.
                     // Maybe a better idea is to *attach
                     // it* to the existing thead or tfoot?
-                    // We don't do this, because Firefox
+                    // We don't do this, because firefox
                     // doesn't float an extra tfoot to the
                     // bottom like it does for the first one.
                     $node->name = 'tbody';
@@ -153,8 +153,8 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                 $ws_accum =& $cols;
                 break;
             case '#PCDATA':
-                // How is whitespace handled? We treat is as sticky to
-                // the *end* of the previous element. So all of the
+                // How is whitespace handled? we treat is as sticky to
+                // the *end* of the previous element. so all of the
                 // nonsense we have worked on is to keep things
                 // together.
                 if (!empty($node->is_whitespace)) {

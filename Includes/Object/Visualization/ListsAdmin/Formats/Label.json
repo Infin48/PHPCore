@@ -1,0 +1,40 @@
+{
+    "body": {
+        "label": {
+            "data": {
+                "empty": "L_LABEL.L_NO",
+                "title": "L_LABEL.L_LIST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Label.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "label"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "show": {
+                                "target": "_blank",
+                                "href": "/label/{id}.{label_class}/",
+                                "icon": "fa fa-eye",
+                                "title": "L_BTN.L_SHOW"
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

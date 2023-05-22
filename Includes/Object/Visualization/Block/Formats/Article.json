@@ -1,0 +1,18 @@
+{
+    "body": {
+        "article": {
+            "body": {
+                "default": {
+                    "data": {}
+                }
+            }
+        },
+        "another": {
+            "body": {
+                "default": {
+                    "data": {}
+                }
+            }
+        }
+    }
+}

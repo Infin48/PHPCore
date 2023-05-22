@@ -10,11 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page;
-
-use Block\Plugin as BlockPlugin;
-
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page;
 
 /**
  * Plugin 
@@ -22,47 +18,58 @@ use Visualization\Breadcrumb\Breadcrumb;
 class Plugin extends Page
 {
     /**
-     * @var array $settings Page settings
+     * @var bool $ID If true - ID from URL will be loaded
      */
-    protected array $settings = [
-        'id' => int,
-        'template' => '~/Includes/Template/Plugin'
-    ];
+    protected bool $ID = true;
+
+    /**
+     * @var string $template Page template
+     */
+    protected string $template = 'Root/Style:/Templates/Plugin.phtml';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // BLOCK
-        $plugin = new BlockPlugin();
+        $data->set('options.plugin', true);
         
-        $data = $plugin->get($this->url->getID()) or $this->error();
-        $this->data->data['plugin'] = $data;
+        if (!$this->url->getID())
+        {
+            $this->error404(); 
+        }
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Index');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // Plugin
+        $plugin = $data->get('inst.plugin');
 
-        $page = 'Page\Plugin\Plugins\Plugin' . str_replace('Page', '', $this->build(ROOT . '/Plugins/' . $data['plugin_name_folder'] . '/Object/Page/Plugin/'));
-        $pageExploded = array_filter(explode('\\', $page));
+        // Laod plugin
+        $plugin = $plugin->findByID($this->url->getID());
 
-        $this->data->data['pageName'] = 'plugin plugin-' . strtolower($data['plugin_name_folder']) . ' plugin-' . strtolower($data['plugin_name_folder']) . '-' . strtolower($pageExploded[4]); 
+        // If plugin is not installed
+        if (!$plugin->isInstalled())
+        {
+            // Show error page
+            $this->error404();
+        }
 
-        $this->page = new $page;
-        $this->page->url = $this->url;
-        $this->page->data = $this->data;
-        $this->page->user = $this->user;
-        $this->page->style = $this->style;
-        $this->page->build = $this->build;
-        $this->page->system = $this->system;
-        $this->page->process = $this->process;
-        $this->page->language = $this->language;
-        $this->page->template = $this->template;
+        $data->set('data.plugin', $plugin->get());
 
-        $this->page->ini();
-        $this->page->body();
+        // Define plugin root
+        define('PLUGIN_ROOT', '/plugin/' . $plugin->get('id') . '/');
+
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Index.json');
+        $breadcrumb->create()->jumpTo()->title($plugin->get('name'))->href('/plugin/' . $plugin->get('settings.plugin_id'));
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
+
+        $page = $this->buildPage(
+            path: '/Plugins/' . $plugin->get('folder') . '/Object/Page/Plugin',
+            object: 'Plugin\\' . $plugin->get('folder') . '\Page\Plugin'
+        );
+
+        $page->body( $data, $db );
+        $page->checkForAjax();
     }
 }

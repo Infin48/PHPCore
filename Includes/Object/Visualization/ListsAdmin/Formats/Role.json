@@ -1,0 +1,40 @@
+{
+    "body": {
+        "role": {
+            "data": {
+                "empty": "L_ROLE.L_NO",
+                "title": "L_ROLE.L_LIST",
+                "button": {
+                    "add": {
+                        "href": "/admin/role/add/",
+                        "title": "L_BTN.L_NEW_ROLE"
+                    }
+                }
+            },
+            "body": {
+                "default": {
+                    "options": {  
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Role.phtml"
+                        }
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "role"
+                        },
+                        "button": {
+                            "up": {
+                                "disabled": true
+                            },
+                            "down": {
+                                "disabled": true
+                            },
+                            "edit": {},
+                            "delete": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

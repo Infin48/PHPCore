@@ -10,44 +10,108 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Page\Admin\Settings;
-
-use Visualization\Field\Field;
-use Visualization\Breadcrumb\Breadcrumb;
+namespace App\Page\Admin\Settings;
 
 /**
  * Registration
  */
-class Registration extends \Page\Page
+class Registration extends \App\Page\Page
 {
     /**
-     * @var array $settings Page settings
+     * @var string $template Page template
      */
-    protected array $settings = [
-        'template' => '/Overall',
-        'permission' => 'admin.settings'
-    ];
+    protected string $template = 'Root/Style:/Templates/Overall.phtml';
+
+    /**
+     * @var string $permission Required permission
+     */
+    protected string $permission = 'admin.settings';
 
     /**
      * Body of this page
      *
      * @return void
      */
-    protected function body()
+    public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
-        // NAVBAR
-        $this->navbar->object('settings')->row('settings')->active()->option('registration')->active();
+        // System
+        $system = $data->get('inst.system');
 
-        // BREADCRUMB
-        $breadcrumb = new Breadcrumb('/Admin/Admin');
-        $this->data->breadcrumb = $breadcrumb->getData();
+        // If forum in not enabled
+		if ($system->get('site.mode') != 'forum')
+		{
+            // Show error page
+			$this->error404();
+		}
+        
+        // Navbar
+        $this->navbar->elm1('settings')->elm2('settings')->active()->elm3('registration')->active();
 
-        // FIELD
-        $field = new Field('/Admin/Settings/Registration');
-        $field->data($this->system->get());
-        $this->data->field = $field->getData();
+        // Breadcrumb
+        $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Admin/Settings/Registration.json');
+        $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
-        // EDIT SETTINGS
-        $this->process->form(type: '/Admin/Settings/Registration');
+        // Form
+        $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Settings/Registration.json');
+        $form
+            ->form('registration')
+                ->callOnSuccess($this, 'editRegistrationSettings')
+                ->data($system->get());
+        $data->form = $form->getDataToGenerate();
+    }
+
+    /**
+     * Form was successfully submitted
+     * 
+     * @param \App\Model\Data $data Loaded page data
+     * @param \App\Model\Database\Query  $db Database query compiler
+     * @param \App\Model\Post $post Post data
+     *
+     * @return void
+     */
+    public function editRegistrationSettings( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
+    {
+        // If registration is enabled
+        if ($post->get('registration_enabled'))
+        {
+            // If is not enetered one of key
+            if (!$post->get('registration_key_site') or !$post->get('registration_key_secret'))
+            {
+                return true;
+            }
+
+            // Set key to recaptcha file
+            $text = new \App\Model\File\Text('/Assets/reCAPTCHA/reCAPTCHA.org.min.js');
+            $text->set('site_key', $post->get('registration_key_site'));
+            $text->save('/Assets/reCAPTCHA/reCAPTCHA.min.js');
+        }
+
+        if (!$post->get('registration_verify'))
+        {
+            $db->delete( table: TABLE_VERIFY_ACCOUNT );
+        }
+
+        // Edit registration settings
+        $db->table(TABLE_SETTINGS, [
+            'site.allow_forgot_password' => $post->get('registration_enabled') ? 0 : (int)$post->get('site_allow_forgot_password'),
+
+            'registration.verify' => $post->get('registration_verify'),
+            'registration.terms' => $post->get('registration_terms'),
+            'registration.enabled' => (int)$post->get('registration_enabled'),
+            'registration.key_site' => $post->get('registration_key_site'),
+            'registration.key_secret' => $post->get('registration_key_secret')
+        ]);
+
+        // Update sessions
+        $db->table(TABLE_SETTINGS, [
+            'session' => RAND,
+            'session.scripts' => RAND
+        ]);
+
+        // Add record to log
+        $db->addToLog( name: __FUNCTION__ );
+
+        // Show success message
+        $data->set('data.message.success', __FUNCTION__);
     }
 }

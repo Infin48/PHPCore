@@ -1,0 +1,9 @@
+<div class="list-row-align">
+    <span class="list-row-id">#<?= $list->get('data.role_id') ?></span>
+    <div class="role role--<?= $list->get('data.role_class') ?>">
+        <?php if ($list->get('data.role_icon')) : ?>
+            <i class="<?= $list->get('data.role_icon') ?>"></i>
+        <?php endif; ?>
+        <span><?= $list->get('data.role_name') ?></span>
+    </div>
+</div>

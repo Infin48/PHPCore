@@ -20,14 +20,14 @@ class HTMLPurifier_AttrValidator
         $definition = $config->getHTMLDefinition();
         $e =& $context->get('ErrorCollector', true);
 
-        // initialize IDAccumulator if necessary
+        // initialize idaccumulator if necessary
         $ok =& $context->get('IDAccumulator', true);
         if (!$ok) {
             $id_accumulator = HTMLPurifier_IDAccumulator::build($config, $context);
             $context->register('IDAccumulator', $id_accumulator);
         }
 
-        // initialize CurrentToken if necessary
+        // initialize currenttoken if necessary
         $current_token =& $context->get('CurrentToken', true);
         if (!$current_token) {
             $context->register('CurrentToken', $token);
@@ -40,7 +40,7 @@ class HTMLPurifier_AttrValidator
         }
 
         // create alias to global definition array, see also $defs
-        // DEFINITION CALL
+        // Definition call
         $d_defs = $definition->info_global_attr;
 
         // don't update token until the very end, to ensure an atomic update
@@ -70,7 +70,7 @@ class HTMLPurifier_AttrValidator
 
         // create alias to this element's attribute definition array, see
         // also $d_defs (global attribute definition array)
-        // DEFINITION CALL
+        // Definition call
         $defs = $definition->info[$token->name]->attr;
 
         $attr_key = false;
@@ -88,7 +88,7 @@ class HTMLPurifier_AttrValidator
                     // This is usually when there's a global definition
                     // that must be overridden.
                     // Theoretically speaking, we could have a
-                    // AttrDef_DenyAll, but this is faster!
+                    // Attrdef_denyall, but this is faster!
                     $result = false;
                 } else {
                     // validate according to the element's definition
@@ -107,7 +107,7 @@ class HTMLPurifier_AttrValidator
                     $context
                 );
             } else {
-                // system never heard of the attribute? DELETE!
+                // system never heard of the attribute? delete!
                 $result = false;
             }
 
@@ -123,7 +123,7 @@ class HTMLPurifier_AttrValidator
                 unset($attr[$attr_key]);
             } elseif (is_string($result)) {
                 // generally, if a substitution is happening, there
-                // was some sort of implicit correction going on. We'll
+                // was some sort of implicit correction going on. we'll
                 // delegate it to the attribute classes to say exactly what.
 
                 // simple substitution
@@ -165,7 +165,7 @@ class HTMLPurifier_AttrValidator
 
         $token->attr = $attr;
 
-        // destroy CurrentToken if we made it ourselves
+        // destroy currenttoken if we made it ourselves
         if (!$current_token) {
             $context->destroy('CurrentToken');
         }

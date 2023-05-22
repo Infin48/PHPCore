@@ -6,23 +6,21 @@
             },
             "body": {
                 "default": {
-                    "options": {
-                        "type": "/Topic"
-                    },
                     "data": {
-                        "convert": {
-                            "id": "topic_id",
-                            "text": "topic_text",
-                            "name": "topic_name",
-                            "edited": "topic_edited",
-                            "edited_at": "topic_edited_at",
-                            "created": "topic_created"
+                        "html": {
+                            "name": "topic",
+                            "ajax-item": "topic"
                         },
-                        "type": "topic",
                         "button": {
-                            "report": {},
-                            "like": {},
-                            "unlike": {}
+                            "report": {
+                                "hide": true
+                            },
+                            "like": {
+                                "hide": true
+                            },
+                            "unlike": {
+                                "hide": true
+                            }
                         }
                     }
                 }
@@ -31,19 +29,11 @@
         "post": {
             "body": {
                 "default": {
-                    "options": {
-                        "type": "/Post"
-                    },
                     "data": {
-                        "convert": {
-                            "id": "post_id",
-                            "text": "post_text",
-                            "name": "topic_name",
-                            "edited": "post_edited",
-                            "edited_at": "post_edited_at",
-                            "created": "post_created"
+                        "html": {
+                            "name": "post",
+                            "ajax-item": "post"
                         },
-                        "type": "post",
                         "notice": {
                             "reported": {
                                 "hide": true
@@ -53,21 +43,31 @@
                             }
                         },
                         "button": {
-                            "quote": {},
-                            "report": {},
-                            "like": {},
-                            "unlike": {},
-                            "edit": {},
-                            "delete": {}
+                            "quote": {
+                                "hide": true
+                            },
+                            "report": {
+                                "hide": true
+                            },
+                            "like": {
+                                "hide": true
+                            },
+                            "unlike": {
+                                "hide": true
+                            },
+                            "edit": {
+                                "hide": true
+                            },
+                            "delete": {
+                                "hide": true
+                            }
                         }
                     }
                 },
                 "bottom": {
                     "options": {
                         "hide": true,
-                        "template": {
-                            "body": "%/PostNew.phtml"
-                        }
+                        "template": "/Includes/Object/Visualization/Block/Templates/PostNew.phtml"
                     }
                 }
             }

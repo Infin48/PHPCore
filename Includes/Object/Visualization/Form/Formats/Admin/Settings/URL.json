@@ -1,0 +1,62 @@
+{
+    "body": {
+        "url": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "url": {
+                    "data": {
+                        "title": "L_SETTINGS.L_URL.L_NEW"
+                    },
+                    "body": {
+                        "settings_url_from": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_URL.L_FROM.L_DESC",
+                                "title": "L_SETTINGS.L_URL.L_FROM.L_FROM",
+                                "placeholder": "L_PLACEHOLDER.L_URL"
+                            }
+                        },
+                        "settings_url_to": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "desc": "L_SETTINGS.L_URL.L_TO.L_DESC",
+                                "title": "L_SETTINGS.L_URL.L_TO.L_TO",
+                                "placeholder": "L_PLACEHOLDER.L_URL"
+                            }
+                        },
+                        "settings_url_hidden": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_URL.L_HIDE.L_HIDE",
+                                "desc": "L_SETTINGS.L_URL.L_HIDE.L_DESC"
+                            },
+                            "body": {
+                                "settings_url_hidden": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

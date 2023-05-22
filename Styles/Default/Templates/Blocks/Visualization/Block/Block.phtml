@@ -1,57 +1,75 @@
-<?php foreach ($this->data->block['body'] ?? [] as $objectName => $object) : ?>
-    <?php foreach ((array)$object['body'] as $row) : ?>
-        <?php if (isset($row['options']['template']['body'])) : ?>
-            <?php require $row['options']['template']['body']; ?>
-        <?php else : ?>
-            <div id="<?= $row['data']['id'] ?>" class="block<?= $row['options']['selected'] ?? false ? ' block-selected' : '' ?><?= $row['options']['disabled'] ?? false ? ' block-disabled' : '' ?><?= $row['options']['closed'] ?? false ? ' block-closed' : '' ?>" ajax-selector="block" ajax-process-id="<?= $row['data']['id'] ?>" ajax-process-type="<?= $row['options']['type'] ?? '' ?>" >
-                <div class="block-head">
-                    <?= $this->build->user->image($row['data'], true) ?>
-                    <div class="inner">
-                        <div class="block-title">
-                            <?php require $this->template->template('/Blocks/Labels.phtml'); ?>
-                            <span ajax-selector="name"><?= $row['data']['name'] ?></span>
-                        </div>
-                        <?= $this->build->user->link($row['data'], true) ?>
-                        <span class="block-description">
-                            <span ajax="title" data-title="<?= $L_CREATED ?>">
-                                <i class="fas fa-clock"></i> 
-                                <?= $this->build->date->long($row['data']['created']) ?>
-                            </span>
-                            <?php if ($row['data']['edited'] == 1) : ?>
-                                <span ajax="title" data-title="<?= $L_LAST_EDITED ?>">
-                                    <i class="fas fa-edit"></i> 
-                                    <?= $this->build->date->long($row['data']['edited_at']) ?>
-                                </span>
-                            <?php endif; ?>
-                        </span>
+<?php $this->data->block->each('body', function ($block) { ?>
+    <?php if ($block->get('options.template')) : ?>
+        <?php require $block->get('options.template'); return; ?>
+    <?php endif; ?>
+    <?php $block->each('body', function ($block) { ?>
+        <?php if ($block->get('options.template')) : ?>
+            <?php require $block->get('options.template'); return; ?>
+        <?php endif; ?>
+        <div id="<?= $block->get('data.html.ajax-id') ?>" class="block block-name-<?= $block->getCurrentPositionName() ?><?php if ($block->get('options.selected')) : ?> block-selected<?php endif; ?><?php if ($block->get('options.disabled')) : ?> block-disabled<?php endif; ?><?php if ($block->get('options.closed')) : ?> block-closed<?php endif; ?>"<?php if ($block->get('options.selected')) : ?> ajax-selected<?php endif; ?> js="block" ajax-id="<?= $block->get('data.html.ajax-id') ?>" ajax-item="<?= $block->get('data.html.ajax-item') ?>" >
+            <div class="block-head" js="block-head">  
+                <?= $block->get('data.user_image') ?>
+                <div class="inner">
+                    <div class="label-list">
+                        <?php require $this->path->build('Root/Style:/Templates/Blocks/Labels.phtml'); ?>
+                        <span js="name"><?= $block->get('data.name') ?></span>
                     </div>
-                </div>
-                <?php if (!empty($row['data']['image_url'])) : ?>
-                    <div class="block-image" style="background-image: url(<?= $row['data']['image_url'] ?>);"></div>
-                <?php endif; ?>
-
-                <?php require $this->template->template('/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
-
-                <div class="block-body" ajax-selector="block-body">
-                    <div class="block-content" ajax-selector="block-content"><?= $row['data']['text'] ?></div>
-                    <?php if (!empty($row['data']['user_signature'])) : ?>
-                        <div class="block-signature">
-                            <?= $row['data']['user_signature'] ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (!empty($row['data']['likes'])) : ?>
-                        <?php require $this->template->template('/Blocks/Visualization/Block/Likes.phtml'); ?>
-                    <?php endif; ?>
-                    <div ajax-place="likes"></div>
-                    <?php if (!empty($row['data']['button'])) : ?>
-                        <div class="block-bottom" ajax-selector="block-bottom">
-                            <?php foreach ((array)$row['data']['button'] as $button) : ?>
-                                <?php require $button; ?>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
+                    <span class="block-description">
+                        <?= $block->get('data.user') ?>
+                        <?= $block->get('data.group') ?>
+                        <?= $block->get('data.reputation') ?>
+                        <span ajax="title" ajax-title="<?= $this->language->get('L_CREATED') ?>">
+                            <i class="fa-solid fa-clock"></i> 
+                            <?= $block->get('data.date') ?>
+                        </span>
+                        <?php if ( $block->get('data.edited') ) : ?>
+                            <span ajax="title" ajax-title="<?= $this->language->get('L_LAST_EDITED') ?>">
+                                <i class="fa-solid fa-edit"></i> 
+                                <?= $block->get('data.edited') ?>
+                            </span>
+                        <?php endif; ?>
+                    </span>
                 </div>
             </div>
-        <?php endif; ?>
-    <?php endforeach; ?>
-<?php endforeach; ?>
+            <?php if ( $block->get('data.image_url') ) : ?>
+                <div class="block-image" style="background-image: url(<?= $block->get('data.image_url') ?>);"></div>
+            <?php endif; ?>
+
+            <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/Load.phtml'); ?>
+
+            <div class="block-body" js="block-body">
+                <div class="block-content" js="block-content"><?= $block->get('data.text') ?></div>
+                <?php if ( $block->get('data.user_signature') ) : ?>
+                    <div class="block-signature trumbowyg">
+                        <?= $block->get('data.user_signature') ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ( $block->get('data.images') ) : ?>
+                    <div class="block-images pswp-images">
+                        <?php require $this->path->build('Root/Style:/Templates/Blocks/Attachments/Images.phtml'); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ( $block->get('data.attachments') ) : ?>
+                    <div class="block-attachment">
+                        <?php require $this->path->build('Root/Style:/Templates/Blocks/Attachments/Files.phtml'); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ( $block->get('data.likes') ) : ?>
+                    <?php require $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Likes.phtml'); ?>
+                <?php endif; ?>
+                <div js-place="likes"></div>
+                <?php if ( $block->get('data.button') ) : ?>
+                    <div class="block-bottom" js="block-bottom">
+                        <?php $block->each('data.button', function ($button) { ?>
+                            <?php if (is_string($button)) : ?>
+                                <?php require $button; ?>
+                            <?php else : ?>
+                                <a <?php if ( $button->get('side') ) : ?>class="block-bottom-right"<?php endif; ?><?php if ( $button->get('href')) : ?>href="<?= $button->get('href') ?>"<?php endif; ?><?php if ( $button->get('ajax-action') ) : ?> ajax-action="<?= $button->get('ajax-action') ?>"<?php endif; ?>><?php if ( $button->get('icon') ) : ?><i class="<?= $button->get('icon') ?>"></i> <?php endif; ?><?= $button->get('title') ?></a>
+                            <?php endif; ?>
+                        <?php }); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php }); ?>
+<?php }); ?>

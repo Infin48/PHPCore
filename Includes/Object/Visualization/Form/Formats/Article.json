@@ -1,0 +1,103 @@
+{
+    "body": {
+        "article": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "article": {
+                    "body": {
+                        "article_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true,
+                                "max-length": "150"
+                            },
+                            "data": {
+                                "title": "L_ARTICLE.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "article_text": {
+                            "options": {
+                                "type": "html",
+                                "required": true
+                            },
+                            "data": {
+                                "placeholder": "L_PLACEHOLDER.L_TEXT"
+                            }
+                        },
+                        "article_label": {
+                            "options": {
+                                "type": "checkbox[]",
+                                "hide": true,
+                                "max-length": "5"
+                            },
+                            "data": {
+                                "empty": "L_LABEL.L_NO",
+                                "desc": "L_LABEL.L_DESC",
+                                "title": "L_LABEL.L_LIST"
+                            },
+                            "body": {
+                                "default": {
+                                    "options": {
+                                        "template": {
+                                            "option": "Root/Form:/Templates/Label.phtml"
+                                        }
+                                    },
+                                    "data": {}
+                                }
+                            }
+                        },
+                        "article_image": {
+                            "options": {
+                                "type": "file/image"
+                            },
+                            "data": {
+                                "title": "L_TOPIC.L_IMAGE.L_IMAGE"
+                            }
+                        },
+                        "delete_article_image": {
+                            "options": {
+                                "type": "checkbox",
+                                "hide": true
+                            },
+                            "data": {
+                                "title": "L_ARTICLE.L_IMAGE.L_DELETE"
+                            },
+                            "body": {
+                                "delete_article_image": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
+                        "article_images": {
+                            "options": {
+                                "type": "file/image[]"
+                            },
+                            "data": {
+                                "title": "L_IMAGES"
+                            }
+                        },
+                        "article_attachments": {
+                            "options": {
+                                "type": "file/misc[]"
+                            },
+                            "data": {
+                                "title": "L_ATTACHMENTS"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

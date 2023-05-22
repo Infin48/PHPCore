@@ -1,0 +1,37 @@
+{
+    "body": {
+        "profilepostcomment": {
+            "body": {
+                "default": {
+                    "options": {
+                        "template": "Root/Style:/Templates/Blocks/Visualization/Block/ProfilePostComment.phtml"
+                    },
+                    "data": {
+                        "html": {
+                            "ajax-item": "profile-post-comment"
+                        },
+                        "notice": {
+                            "reported": {
+                                "hide": true
+                            },
+                            "deleted": {
+                                "hide": true
+                            }
+                        },
+                        "button": {
+                            "report": {
+                                "hide": true
+                            },
+                            "edit": {
+                                "hide": true
+                            },
+                            "delete": {
+                                "hide": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

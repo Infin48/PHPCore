@@ -1,0 +1,74 @@
+@font-face {
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(Fonts/Quicksand-Light.woff2) format("woff2");
+}
+@font-face {
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(Fonts/Quicksand-Regular.woff2) format("woff2");
+}
+@font-face {
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(Fonts/Quicksand-Medium.woff2) format("woff2");
+}
+@font-face {
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(Fonts/Quicksand-Bold.woff2) format("woff2");
+}
+* {
+    box-sizing: border-box;
+}
+html {
+    overflow-y: scroll;
+    position: relative;
+    font-size: 94%;
+}
+body,
+html {
+    margin: 0;
+    background-color: #f4f4f4;
+    font-family: Quicksand, sans-serif !important;
+    color: #4e4e4e;
+    height: 100%;
+    min-height: 100%;
+}
+
+.error .error-body {
+    background-color: #fff;
+    padding: 1rem 1.33rem;
+    box-shadow: 1px 1px 13px 0 #ccc;
+}
+.error .error-message {
+    padding: 0.67rem;
+    border: 2px solid #282828;
+    font-family: code;
+    word-break: break-word;
+}
+.error h1 {
+    margin-top: 0;
+}
+.error .error-header {
+    padding: 1rem 1.33rem;
+    background-color: #dc3636;
+    box-shadow: 1px 1px 13px 0 #ccc;
+    margin-bottom: 2rem;
+}
+.error .error-header img {
+    width: 10rem;
+}
+.error .error-container {
+    max-width: 86.67rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}

@@ -1,0 +1,105 @@
+{
+    "body": {
+        "other": {
+            "body": {
+                "sync": {
+                    "data": {
+                        "title": "L_OTHER.L_SYNC.L_SYNC"
+                    },
+                    "body": {
+                        "group": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_GROUP.L_GROUP",
+                                "desc": "L_OTHER.L_SYNC.L_GROUP.L_DESC",
+                                "ajax-action": "synchronize-groups",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        },
+                        "labels": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_LABEL.L_LABEL",
+                                "desc": "L_OTHER.L_SYNC.L_LABEL.L_DESC",
+                                "ajax-action": "synchronize-labels",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        },
+                        "roles": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_ROLE.L_ROLE",
+                                "desc": "L_OTHER.L_SYNC.L_ROLE.L_DESC",
+                                "ajax-action": "synchronize-roles",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        },
+                        "css": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_CSS.L_CSS",
+                                "desc": "L_OTHER.L_SYNC.L_CSS.L_DESC",
+                                "ajax-action": "synchronize-styles",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        },
+                        "js": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_JS.L_JS",
+                                "desc": "L_OTHER.L_SYNC.L_JS.L_DESC",
+                                "ajax-action": "synchronize-scripts",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        },
+                        "template": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "title": "L_OTHER.L_SYNC.L_TEMPLATE.L_TEMPLATE",
+                                "desc": "L_OTHER.L_SYNC.L_TEMPLATE.L_DESC",
+                                "ajax-action": "synchronize-template",
+                                "button": "L_BTN.L_SYNC"
+                            }
+                        }
+                    }
+                },
+                "optimize": {
+                    "data": {
+                        "title": "L_OTHER.L_OPTIMIZE.L_OPTIMIZE"
+                    },
+                    "body": {
+                        "table": {
+                            "options": {
+                                "type": "button"
+                            },
+                            "data": {
+                                "icon": "fa-solid fa-sync-alt",
+                                "ajax-action": "optimize-tables",
+                                "title": "L_OTHER.L_OPTIMIZE.L_TABLE",
+                                "button": "L_BTN.L_OPTIMIZE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

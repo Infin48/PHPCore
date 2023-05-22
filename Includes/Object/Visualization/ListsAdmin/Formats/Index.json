@@ -1,0 +1,81 @@
+{
+    "body": {
+        "news": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "empty": "L_NEWS.L_NO",
+                "title": "L_NEWS.L_NEWS"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/News.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "url": "url"
+                        },
+                        "button": {
+                            "info": {
+                                "target": "_blank",
+                                "href": "{url}"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "user": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "icon": "fa-solid fa-user",
+                "title": "L_FRONT_USER"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/User.phtml"
+                        }
+                    },
+                    "data": {
+                        "convert": {
+                            "id": "user_id"
+                        },
+                        "button": {
+                            "edit": {
+                                "hide": true,
+                                "href": "/admin/user/show/{id}/"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "log": {
+            "options": {
+                "hide": true
+            },
+            "data": {
+                "empty": "L_LOG.L_NO",
+                "title": "L_LOG.L_LAST"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Log.phtml"
+                        }
+                    },
+                    "data": {}
+                }
+            }
+        }
+    }
+}

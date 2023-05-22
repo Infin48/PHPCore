@@ -1,15 +1,15 @@
-<div class="vertical-align">
-    <?php if ($row['data']['button_icon'] ?? false) : ?>
-        <i class="list-icon <?= $row['data']['button_icon_style'] ?> fa-<?= $row['data']['button_icon'] ?>"></i>
+<div class="list-row-align">
+    <?php if ( $list->get('data.button_icon') ) : ?>
+        <div class="list-row-icon"><i class="<?= $list->get('data.button_icon') ?>"></i></div>
     <?php endif; ?>
     <div class="inner">
-        <span class="list-title"><?= str_starts_with($row['data']['title'], '$') ? substr($row['data']['title'] , 1) : $row['data']['title'] ?></span>
+        <span class="list-title"><?= str_starts_with($list->get('data.title'), '$') ? substr($list->get('data.title') , 1) : $list->get('data.title') ?></span>
         <br>
         <span>
-            <?php if (isset($row['data']['button_dropdown']) and $row['data']['button_dropdown'] == 1) : ?>
-                <strong><?= $L_MENU_DROPDOWN ?></strong>
+            <?php if ( $list->get('data.button_dropdown') == 1 ) : ?>
+                <strong><?= $language->get('L_DROPDOWN.L_DROPDOWN') ?></strong>
             <?php else : ?>
-                <?= $L_MENU_BUTTON_REFERS_TO ?> <strong> <?= $row['data']['button_sub_link'] ?? $row['data']['button_link'] ?></strong>
+                <?= $language->get('L_BUTTON.L_REFERS_TO') ?> <strong> <?= $list->get('data.button_sub_link') ?: $list->get('data.button_link') ?></strong>
             <?php endif; ?>
         </span>
     </div>

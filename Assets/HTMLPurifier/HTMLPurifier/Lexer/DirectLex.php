@@ -79,8 +79,8 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
         $context->register('CurrentLine', $current_line);
         $context->register('CurrentCol', $current_col);
         $nl = "\n";
-        // how often to manually recalculate. This will ALWAYS be right,
-        // but it's pretty wasteful. Set to 0 to turn off
+        // how often to manually recalculate. this will always be right,
+        // but it's pretty wasteful. set to 0 to turn off
         $synchronize_interval = $config->get('Core.DirectLexLineNumberSyncInterval');
 
         $e = false;
@@ -151,7 +151,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 if ($cursor === strlen($html)) {
                     break;
                 }
-                // Create Text of rest of string
+                // Create text of rest of string
                 $token = new
                 HTMLPurifier_Token_Text(
                     $this->parseText(
@@ -182,7 +182,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
                 if ($segment === false) {
                     // somehow, we attempted to access beyond the end of
-                    // the string, defense-in-depth, reported by Nate Abele
+                    // the string, defense-in-depth, reported by nate abele
                     break;
                 }
 
@@ -192,7 +192,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                     $position_comment_end = strpos($html, '-->', $cursor);
                     if ($position_comment_end === false) {
                         // uh oh, we have a comment that extends to
-                        // infinity. Can't be helped: set comment
+                        // infinity. can't be helped: set comment
                         // end position to end of string
                         if ($e) {
                             $e->send(E_WARNING, 'Lexer: Unclosed comment');
@@ -238,10 +238,10 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 }
 
                 // Check leading character is alnum, if not, we may
-                // have accidently grabbed an emoticon. Translate into
+                // have accidently grabbed an emoticon. translate into
                 // text and go our merry way
                 if (!ctype_alpha($segment[0])) {
-                    // XML:  $segment[0] !== '_' && $segment[0] !== ':'
+                    // Xml:  $segment[0] !== '_' && $segment[0] !== ':'
                     if ($e) {
                         $e->send(E_NOTICE, 'Lexer: Unescaped lt');
                     }
@@ -256,9 +256,9 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 }
 
                 // Check if it is explicitly self closing, if so, remove
-                // trailing slash. Remember, we could have a tag like <br>, so
+                // trailing slash. remember, we could have a tag like <br>, so
                 // any later token processing scripts must convert improperly
-                // classified EmptyTags from StartTags.
+                // classified emptytags from starttags.
                 $is_self_closing = (strrpos($segment, '/') === $strlen_segment - 1);
                 if ($is_self_closing) {
                     $strlen_segment--;
@@ -331,7 +331,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 if ($maintain_line_numbers) {
                     $token->rawPosition($current_line, $current_col);
                 }
-                // no cursor scroll? Hmm...
+                // no cursor scroll? hmm...
                 $array[] = $token;
                 break;
             }

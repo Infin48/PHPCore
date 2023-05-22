@@ -1,0 +1,36 @@
+{
+    "body": {
+        "post": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_POST.L_REPORTED",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_TOPIC.L_REPORTED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "profile_post": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_PROFILE_POST.L_REPORTED",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "profile_post_comment": {
+            "data": {
+                "icon": "fa-solid fa-bug",
+                "title": "L_PROFILE_POST_COMMENT.L_REPORTED",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

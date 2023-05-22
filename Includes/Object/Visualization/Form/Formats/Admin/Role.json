@@ -1,0 +1,102 @@
+{
+    "body": {
+        "role": {
+            "data": {
+                "button": {
+                    "submit": {
+                        "value": "L_BTN.L_SUBMIT",
+                        "name": "submit",
+                        "type": "submit"
+                    }
+                }
+            },
+            "body": {
+                "role": {
+                    "data": {
+                        "title": ""
+                    },
+                    "body": {
+                        "role_name": {
+                            "options": {
+                                "type": "text",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_ROLE.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_NAME"
+                            }
+                        },
+                        "role_color": {
+                            "options": {
+                                "type": "color",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_ROLE.L_COLOR",
+                                "desc": "L_COLOR.L_DESC"
+                            }
+                        }
+                    }
+                },
+                "icon": {
+                    "data": {
+                        "title": "L_ICON.L_ICON"
+                    },
+                    "body": {
+                        "link": {
+                            "options": {
+                                "type": "button",
+                                "target": "_blank"
+                            },
+                            "data": {
+                                "desc": "L_ICON.L_LIST.L_DESC",
+                                "icon": "fa-solid fa-icons",
+                                "href": "$https://fontawesome.com/search?o=r&m=free",
+                                "title": "L_ICON.L_LIST.L_LIST",
+                                "button": "L_BTN.L_ICON_LIST"
+                            }
+                        },
+                        "role_icon": {
+                            "options": {
+                                "type": "text"
+                            },
+                            "data": {
+                                "title": "L_ICON.L_NAME",
+                                "placeholder": "L_PLACEHOLDER.L_ICON"
+                            }
+                        },
+                        "role_icon_style": {
+                            "options": {
+                                "type": "select",
+                                "required": true
+                            },
+                            "data": {
+                                "title": "L_ICON.L_STYLE"
+                            },
+                            "body": {
+                                "solid": {
+                                    "data": {
+                                        "value": "solid",
+                                        "label": "solid"
+                                    }
+                                },
+                                "regular": {
+                                    "data": {
+                                        "value": "regular",
+                                        "label": "regular"
+                                    }
+                                },
+                                "brands": {
+                                    "data": {
+                                        "value": "brands",
+                                        "label": "brands"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

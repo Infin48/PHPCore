@@ -1,0 +1,39 @@
+<?php $this->data->block->each('body', function ($block) use ($path, $build, $language) { ?>
+    <?php $block->each('body', function ($block) use ($path, $build, $language) { ?>
+        <div class="block block-two-column block-image<?php if ( $block->get('options.disabled') ) : ?> block-disabled<?php endif; ?>" js="block">
+            <?php if ( $block->get('data.image_url') ) : ?>
+                <div class="block-image" style="background-image: url(<?= $block->get('data.image_url') ?>);"></div>
+            <?php endif; ?>
+            <div class="block-body">
+                <div class="label-list">
+                    <?php require $path->build('Root/Style:/Templates/Blocks/Labels.phtml'); ?>
+                    <?= $block->get('data.link') ?>
+                </div>
+                <div class="block-content" js="block-content"><?= $block->get('data.text') ?></div>
+                <div class="block-bottom block-bottom-two-column ta-right">
+                    <div class="block-bottom-column">
+                        <span ajax="title" ajax-title="<?= $language->get('L_VIEWS')  ?>"><i class="fa-solid fa-eye"></i> <?= $block->get('data.views') ?></span>
+                        <?php if ($block->get('data.posts')) : ?>
+                            <span ajax="title" ajax-title="<?= $language->get('L_POST.L_TOTAL')  ?>"><i class="fa-solid fa-comment"></i> <?= $block->get('data.posts') ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <?php if ($block->get('data.user')) : ?>
+                        <div class="block-bottom-column block-bottom-column-flex">
+                            <div>
+                                <?= $block->get('data.user') ?>
+                                <?= $block->get('data.group') ?>
+                                <br>
+                                <?= $block->get('data.date') ?>
+                            </div>
+                            <?= $block->get('data.user_image') ?>
+                        </div>
+                    <?php else : ?>
+                        <div class="block-bottom-column block-bottom-column-flex">
+                            <?= $block->get('data.date') ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    <?php }); ?>
+<?php }); ?>

@@ -10,9 +10,7 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Plugin;
-
-use Model\Database\Query;
+namespace App\Plugin;
 
 /**
  * Plugin
@@ -20,92 +18,186 @@ use Model\Database\Query;
 class Plugin
 {
     /**
-     * @var array $plugins Plugins settings
+     * @var array $settings Plugins settings
      */
-    private static array $plugins = [];
+    public array $settings = [];
 
     /**
-     * @var string $plugin Plugin name
+     * @var \App\Model\Database\Query $db Query compiler
      */
-    private string $plugin;
+    public \App\Model\Database\Query $db;
 
     /**
      * Constructor
-     * 
-     * @param  string $name Plugin name
      */
-    public function __construct( string $plugin )
+    public function __construct()
     {
-        $this->plugin = $plugin;
+        $this->db = new \App\Model\Database\Query();
+    }
+
+    /**
+     * Finds plugin by name
+     *
+     * @param string $pluginName Plugin name
+     * 
+     * @return \Plugin\PluginSettings
+     */
+    public function findByName( string $pluginName )
+    {
+        // Set plugin
+        return new \App\Plugin\PluginSettings($this, $pluginName);
+    }
+
+    /**
+     * Finds plugin by ID
+     *
+     * @param int $pluginID Plugin ID
+     * 
+     * @return \App\Plugin\PluginSettings
+     */
+    public function findByID( int $pluginID )
+    {
+        // Foreach every installed plugin
+        foreach ($this->settings as $pluginName => $settings)
+        {
+            if ($settings['id'] == $pluginID)
+            {
+                // Set plugin
+                return new \App\Plugin\PluginSettings($this, $pluginName);
+            }
+        }
+
+        // Set plugin
+        return new \App\Plugin\PluginSettings($this, '');
     }
     
     /**
-     * Loads plugin settings
+     * Loads installed plugins
      *
      * @return void
      */
-    public function loadSettings()
+    public function loadInstalledPlugins()
     {
-        define('TABLE_PLUGIN_' . strtoupper($this->plugin), 'phpcore_plugins_' . strtolower($this->plugin));
+        // File model
+        $file = new \App\Model\File\File();
 
-        $query = new Query();
-        $result = $query->query('SELECT * FROM ' . 'phpcore_plugins_' . strtolower($this->plugin), [], ROWS);
+        // Model for translating paths
+        $path = new \App\Model\Path();
 
-        foreach ($result as $option) {
-            self::$plugins[$this->plugin . '.' . $option['key']] = $option['value'];
+        // Foreach every installed plugin
+        foreach ($this->db->select('app.plugin.all()') as $item)
+        {
+            // If this plugin is already loaded
+            if (isset($this->settings[$item['plugin_name_folder']]))
+            {
+                continue;
+            }
+
+            // Build path to initialize file
+            $_ini = '/Plugins/' . $item['plugin_name_folder'] . '/Ini.plugin.php';
+            
+            // If initialization file exists
+            if ($file->exists($_ini))
+            {
+                // Load file
+                require $path->build($_ini);
+            }
+
+            // Load JSON information about plugin
+            $JSON = new \App\Model\File\JSON('/Plugins/' . $item['plugin_name_folder'] . '/Info.json');
+            
+            // Plugin informations & settings
+            $data = [];
+            
+            // If JSON exists
+            if ($JSON->exists())
+            {
+                // Save JSON information
+                $data = $JSON->get();
+            }
+
+            // Set default value to false
+            // This value will be true if logged user enters to page which is from plugin
+            $data['visited'] = false;
+
+            // Here will be saved current visited plugin page
+            $data['page'] = '';
+
+            // Here will be plugin settings from database
+            $data['settings'] = json_decode($item['plugin_settings'] ?: '{}', true);
+
+            // Save list of tables which were created due to this plugin
+            $data['tables'] = array_filter(explode(',', $item['plugin_tables'] ?? ''));
+
+            // Save plugin ID
+            $data['id'] = $item['plugin_id'];
+
+            // Save plugin template
+            $data['template'] = $item['plugin_template'];
+
+            // Save plugin folder name
+            $data['folder'] = $item['plugin_name_folder'];
+
+            // Save plugin language
+            $data['language'] = $item['plugin_language'];
+
+            // Store plugin information and setting to class
+            $this->settings[$item['plugin_name_folder']] = $data;
+        }
+
+        if (!defined('LIST_OF_INSTALLED_PLUGINS'))
+        {
+            define('LIST_OF_INSTALLED_PLUGINS', array_values(array_keys($this->settings)));
         }
     }
-    
+
     /**
-     * Returns plugins settings
-     *
-     * @return array
+     * Returns plugin data
+     * 
+     * @param string $key Key to data
+     * 
+     * @return mixed
      */
-    public static function getPlugins()
+    public function get( string $key = null )
     {
-        return self::$plugins;
+        $return = $this->settings;
+
+        if (is_null($key))
+        {
+            return $return;
+        }
+
+        foreach (explode('.', $key) as $_key)
+        {
+            if (!isset($return[$_key]))
+            {
+                return '';
+            }
+
+            $return = $return[$_key];
+        }
+
+        return $return;
     }
 
     /**
-     * Returns plugin visualization
+     * Sets value to plugin
      * 
-     * @param string $type Visualization type
-     * @param string $path Visualization path
+     * @param string $key Key to data
      * 
-     * @return \Plugin\PluginVisualization 
+     * @return void
      */
-    public function visual( string $type, string $path )
+    public function set( string $key, mixed $value )
     {
-        return new PluginVisualization($this->plugin, $type, $path);
-    }
+        $path = '';
 
-    /**
-     * Returns plugin installation
-     * 
-     * @return \Plugin\PluginInstall 
-     */
-    public function install()
-    {
-        return new PluginInstall($this->plugin);
-    }
+        $keys = preg_split('/(?<=[a-zA-Z0-9-_\/\[\]])[.]/', $key);
 
-    /**
-     * Returns plugin initialization
-     * 
-     * @return \Plugin\PluginInitialization 
-     */
-    public function ini()
-    {
-        return new PluginInitialization();
-    }
+        foreach ($keys as $_key)
+        {
+            $path .= '[\'' . str_replace('\.', '.', $_key) . '\']';
+        }
 
-    /**
-     * Returns plugin uninstallation
-     * 
-     * @return \Plugin\PluginUninstall 
-     */
-    public function uninstall()
-    {
-        return new PluginUninstall($this->plugin);
+        eval('$this->settings' . $path . ' = $value;');
     }
 }

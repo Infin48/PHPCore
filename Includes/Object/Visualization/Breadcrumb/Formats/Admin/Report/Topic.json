@@ -2,20 +2,20 @@
     "body": {
         "index": {
             "data": {
-                "href": "$/admin/",
-                "title": "L_ADMIN"
+                "href": "/admin/",
+                "title": "L_BREADCRUMB.L_ADMIN"
             }
         },
         "report": {
             "data": {
-                "href": "$/admin/report/",
-                "title": "L_REPORT"
+                "href": "/admin/report/",
+                "title": "L_BREADCRUMB.L_REPORT"
             }
         },
         "topic": {
             "data": {
-                "href": "$/admin/report/topic/",
-                "title": "L_REPORT_TOPIC"
+                "href": "/admin/report/topic/",
+                "title": "L_BREADCRUMB.L_REPORT_TOPIC"
             }
         }
     }

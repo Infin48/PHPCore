@@ -1,0 +1,36 @@
+{
+    "body": {
+        "user": {
+            "data": {
+                "icon": "fa-solid fa-user",
+                "title": "L_USER.L_TOTAL",
+                "value": "",
+                "color": "red"
+            }
+        },
+        "users": {
+            "data": {
+                "icon": "fa-solid fa-users",
+                "title": "L_USER.L_REGISTERED",
+                "value": "",
+                "color": "green"
+            }
+        },
+        "topic": {
+            "data": {
+                "icon": "fa-solid fa-comments",
+                "title": "L_TOPIC.L_TOTAL",
+                "value": "",
+                "color": "blue"
+            }
+        },
+        "post": {
+            "data": {
+                "icon": "fa-solid fa-comment",
+                "title": "L_POST.L_TOTAL",
+                "value": "",
+                "color": "yellow"
+            }
+        }
+    }
+}

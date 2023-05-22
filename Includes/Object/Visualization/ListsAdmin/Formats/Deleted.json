@@ -1,0 +1,24 @@
+{
+    "body": {
+        "deleted": {
+            "data": {
+                "empty": "L_DELETED.L_NO",
+                "title": "L_DELETED.L_DELETED"
+            },
+            "body": {
+                "default": {
+                    "options": {
+                        "template": {
+                            "big": "Root/Style:/Templates/Blocks/Visualization/Lists/Deleted.phtml"
+                        }
+                    },
+                    "data": {
+                        "button": {
+                            "info": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

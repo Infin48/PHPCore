@@ -10,13 +10,62 @@
  * @license GNU General Public License, version 3 (GPL-3.0)
  */
 
-namespace Visualization\Block;
+namespace App\Visualization\Block;
 
 /**
  * Block
  */
-class Block extends \Visualization\Visualization
+class Block extends \App\Visualization\Visualization
 {
+    /**
+     * @var array $translate List of keys which will be translated to language
+     */
+    protected array $translate = [
+        'body.?.body.?.data.button.?.title',
+        'body.?.body.?.body.?.data.button.?.title'
+    ];
+
+    /**
+     * @var array $defaultValues List of keys and their default values
+     */
+    protected array $defaultValues = [
+        'body.?.body.?.data.button' => '',
+        'body.?.body.?.data.likes' => '',
+        'body.?.body.?.data.images' => '',
+        'body.?.body.?.data.attachments' => '',
+        'body.?.body.?.data.image_url' => '',
+        'body.?.body.?.options.selected' => false,
+        'body.?.body.?.options.disabled' => false,
+        'body.?.body.?.options.closed' => false
+    ];
+
+    /**
+     * @var array $parseToPath List of keys which their values will be parsed to path
+     */
+    protected array $parseToPath = [
+        'body.?.options.template',
+        'body.?.body.?.options.template',
+        'body.?.body.?.body.?.options.template'
+    ];
+
+    /**
+     * @var array $parseToURL List of keys which their values will be parsed to URLs
+     */
+    protected array $parseToURL = [];
+
+    /**
+     * @var array $buttons List of buttons
+     */
+    protected array $buttons = [
+        'save' => 'Save',
+        'like' => 'Like',
+        'edit' => 'Edit',
+        'quote' => 'Quote',
+        'unlike' => 'Unlike',
+        'report' => 'Report',
+        'delete' => 'Delete'
+    ];
+
     /**
      * Opens current object
      *
@@ -24,7 +73,7 @@ class Block extends \Visualization\Visualization
      */
     public function open()
     {
-        $this->obj->set->options('closed', false);
+        $this->set('options.closed', false);
         return $this;
     }
 
@@ -35,7 +84,7 @@ class Block extends \Visualization\Visualization
      */
     public function close()
     {
-        $this->obj->set->options('closed', true);
+        $this->set('options.closed', true);
         return $this;
     }
 
@@ -48,7 +97,7 @@ class Block extends \Visualization\Visualization
      */
     public function notice( string $notice )
     {
-        $this->obj->set->notice($notice, ['hide' => false]);
+        $this->set('data.notice.' . $notice, ['hide' => false]);
         return $this;
     }
 
@@ -59,60 +108,59 @@ class Block extends \Visualization\Visualization
      * 
      * @return void|false
      */
-    protected function each_clb( \Visualization\Visualization $visual )
+    protected function clb_each()
     {
-        if ($visual->obj->get->data('notice')) {
+        if ($this->obj->get('data.notice'))
+        {
+            foreach ($this->obj->get('data.notice') as $noticeName => $notice)
+            {    
+                if ($this->obj->get('data.notice.' . $noticeName . '.hide') === true)
+                {
 
-            foreach ($visual->obj->get->data('notice') as $noticeName => $notice) {
-                
-                if ($notice['hide'] === true) {
-                    $visual->obj->set->notice($noticeName, false);
-                } else {
-                    $visual->obj->set->notice($noticeName, $this->template->template('/Blocks/Visualization/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
+                    $this->obj->delete('data.notice.' . $noticeName);
+                    continue;
                 }
+                
+                $this->obj->set('data.notice.' . $noticeName, $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
+
+                $this->obj->set('data.href', match ($noticeName) {
+                    'deleted' => \App\Model\Url::build('/admin/deleted/show/' . $this->obj->get('data.deleted_id')),
+                    'reported' => \App\Model\Url::build('/admin/report/show/' . $this->obj->get('data.report_id')),
+                });
             }
         }
 
-        if ($visual->obj->get->data('button')) {
-            foreach (array_keys((array)$visual->obj->get->data('button')) as $btn) {
-
-                // IF LOGGED USER ID IS SAME AS OBJECT USER ID
-                if ($visual->obj->get->data('user_id') == LOGGED_USER_ID) {
-
-                    // DELETE 'LIKE' AND 'UNLIKE' BUTTONS
-                    if (in_array($btn, ['like', 'unlike'])) {
-                        $visual->obj->delete->button($btn);
+        if ($this->obj->get('data.button'))
+        {
+            foreach ($this->obj->get('data.button') as $btnName => $btn)
+            {
+                if (!isset($btn['title']))
+                {
+                    if (!isset($this->buttons[$btnName]))
+                    {
+                        $this->obj->delete('data.button.' . $btnName);
                         continue;
                     }
-                } else {
-
-                    // DELETE 'EDIT' BUTTON
-                    $visual->obj->delete->button('edit');
-
-                    switch ($btn) {
-    
-                        case 'like':
-                        
-                            // DELETE 'LIKE' BUTTON IF LOGGED USER ALREADY LIKED THIS OBJECT
-                            if (in_array(LOGGED_USER_ID, array_column((array)$visual->obj->get->data('likes'), 'user_id'))) {
-                                $visual->obj->delete->button($btn);
-                                continue 2;
-                            } 
-                        break;
-    
-                        case 'unlike':
-
-                            // DELETE 'UNLIKE' BUTTON IF LOGGED USER DOESN'T LIKED THIS OBJECT
-                            if (!in_array(LOGGED_USER_ID, array_column((array)$visual->obj->get->data('likes'), 'user_id'))) {
-                                $visual->obj->delete->button($btn);
-                                continue 2;
-                            }
-                        break;
-                    }
                 }
-                
-                // ASSIGN BUTTON TEMPLATE
-                $visual->obj->set->button($btn, $visual->template->template('/Blocks/Visualization/Block/Buttons/' . ucfirst($btn) . '.phtml'));
+                if ($this->obj->get('data.button.' . $btnName . '.hide') == true)
+                {
+                    $this->obj->delete('data.button.' . $btnName);
+                    continue;
+                }
+
+                if (is_string($btn) or isset($btn['template']))
+                {
+                    // Assign button template
+                    $this->obj->set('data.button.' . $btnName, $this->path->build(path: $btn['template'] ?? $btn));
+
+                    continue;
+                }
+
+                if (isset($this->buttons[$btnName]))
+                {
+                    // Assign template to button
+                    $this->obj->set('data.button.' . $btnName, $this->path->build(path: 'Root/Style:/Templates/Blocks/Visualization/Block/Buttons/' . $this->buttons[$btnName] . '.phtml'));
+                }
             }
         }
     }

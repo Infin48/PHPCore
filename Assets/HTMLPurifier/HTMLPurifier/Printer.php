@@ -1,7 +1,7 @@
 <?php
 
-// OUT OF DATE, NEEDS UPDATING!
-// USE XMLWRITER!
+// Out of date, needs updating!
+// Use xmlwriter!
 
 class HTMLPurifier_Printer
 {
