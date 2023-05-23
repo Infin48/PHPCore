@@ -57,7 +57,7 @@ class Edit extends \App\Page\Page
 
         // Breadcrumb
         $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Index.json');
-        $breadcrumb->create()->jumpTo()->title($data->get('data.custom.page_name'))->href('/custom/' . $data->get('data.custom.page_id') . '/');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.custom.page_name'))->href('/custom/' . $data->get('data.custom.page_url') . '/');
         $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
         $body = @file_get_contents(ROOT . '/Pages/' . $data->get('data.custom.page_id') . '/html.html');

@@ -61,11 +61,11 @@ class Index extends \App\Page\Page
         $data->set('data.custom', $row);
 
         // Save current URL
-        $this->url->set('/custom/' . $id . '.' . $data->get('data.custom.page_url'));
+        $this->url->set('/custom/' . $data->get('data.custom.page_url'));
 
         // Breadcrumb
         $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Index.json');
-        $breadcrumb->create()->jumpTo()->title($data->get('data.custom.page_name'))->href('/custom/' . $data->get('data.custom.page_id') . '/');
+        $breadcrumb->create()->jumpTo()->title($data->get('data.custom.page_name'))->href('/custom/' . $data->get('data.custom.page_url') . '/');
         $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
         // If logged user has permission to manage custom pages

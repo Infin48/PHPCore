@@ -115,7 +115,7 @@ class Show extends \App\Page\Page
                 ->callOnSuccess($this, 'editCustomPageThroughAdminPanel')
                 ->frame('page')
                     ->input('show')
-                        ->set('data.href', $this->url->build('/custom/' . $this->url->getID() . '.' . $data->get('data.custom.page_url')))
+                        ->set('data.href', $this->url->build('/custom/' . $data->get('data.custom.page_url')))
                     ->input('page_images')->fill($images)
                     ->input('page_attachments')->fill($attachments);
         $data->form = $form->getDataToGenerate();
@@ -152,7 +152,7 @@ class Show extends \App\Page\Page
 
         // Edit page
         $db->update(TABLE_PAGES, [
-            'page_url' => parse($post->get('page_name')),
+            'page_url' => $db->lastInsertId() . '.' . parse($post->get('page_name')),
             'page_name' => $post->get('page_name')
         ], $data->get('data.custom.page_id'));
 

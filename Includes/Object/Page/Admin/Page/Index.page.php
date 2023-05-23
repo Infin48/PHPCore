@@ -133,6 +133,11 @@ class Index extends \App\Page\Page
         // Css file
         @file_put_contents(ROOT . '/Pages/' . $db->lastInsertId() . '/css.css', '');
 
+        // Add page
+        $db->UPDATE(TABLE_PAGES, [
+            'page_url' => $db->lastInsertId() . '.' . parse($post->get('page_name'))
+        ], $db->lastInsertId());
+
         // Show success message
         $data->set('data.message.success', __FUNCTION__);
 

@@ -37,6 +37,15 @@ class Install extends \App\Page\Page
             }
         }
 
+        foreach ($db->query('SELECT * FROM phpcore_pages', [], ROWS) as $page)
+        {
+            if (!is_numeric(explode('.', $page['page_url'])[0]))
+            {
+                $url = $page['page_id'] . '.' . $page['page_url'];
+                $db->query('UPDATE phpcore_pages SET page_url = ? WHERE page_id = ?', [$url, $page['page_id']]);
+            }
+        }
+
         foreach ($db->query('SELECT * FROM phpcore_topics', [], ROWS) as $topic)
         {
             if (!is_numeric(explode('.', $topic['topic_url'])[0]))
