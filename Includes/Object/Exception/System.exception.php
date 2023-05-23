@@ -46,6 +46,18 @@ class System extends \Exception
             exit();
         }
 
+        $preview = '';
+
+        // If in session is saved template to preview
+        if (\App\Model\Session::exists('preview'))
+        {
+            // If this template really exists
+            if (file_exists(ROOT . '/Styles/' . \App\Model\Session::get('preview')))
+            {
+                $preview = \App\Model\Session::get('preview');
+            }
+        }
+
         require ROOT . '/Includes/Object/Exception/Template/Body.phtml';
         exit();
     }

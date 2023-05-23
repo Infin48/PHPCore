@@ -72,3 +72,79 @@ html {
     margin: 0 auto;
     padding: 0 1rem;
 }
+.setup,
+.setup *,
+.preview *,
+.preview {
+    box-sizing: border-box;
+}
+.setup .setup-icon,
+.setup .setup-text {
+    padding: 0.8rem 1rem;
+}
+.preview .preview-name,
+.preview a,
+.setup {
+    font-weight: 600;
+}
+.preview a,
+.setup .setup-text {
+    color: #fff;
+    background-color: #00000026;
+}
+.preview a,
+.setup i,
+.setup span {
+    display: block;
+}
+.setup {
+    top: 10rem;
+    left: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    margin-left: 3.2rem;
+    transition: transform 0.6s ease-in-out;
+    display: flex;
+    color: #fff;
+    line-height: 1.5;
+    text-decoration: none;
+}
+.setup i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+.setup:hover {
+    transform: translateX(-3.2rem);
+}
+.setup.setup-template {
+    top: 14rem;
+}
+.preview,
+.setup {
+    background-color: #dc3636;
+    position: fixed;
+}
+.preview {
+    bottom: 0;
+    width: 100%;
+    padding: 0.67rem 1.33rem;
+    color: #fff;
+    z-index: 99;
+    font-size: 1.1rem;
+    left: 0;
+}
+.preview .preview-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.preview a {
+    padding: 0.33rem 0.67rem;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+.preview a:hover {
+    background-color: #282828 !important;
+    color: #fff !important;
+}
