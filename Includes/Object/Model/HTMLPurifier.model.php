@@ -52,7 +52,7 @@ class HTMLPurifier {
      */
     private function big()
     {
-        $this->config->set('HTML.Allowed', 'ul,li,ol,h1,h2,h3,h4,blockquote,code,pre,em[style],strong[style],del[style],a[contenteditable|href|class|mention|target|title],p[style],br,span[style|data-user],iframe[src|allowfullscreen],video,img[src|alt|width|height]');
+        $this->config->set('HTML.Allowed', 'u,table,tbody,tr[class],td,thead,ul,li,ol,h1,h2,h3,h4,blockquote,code,pre,em[style],strong[style],del[style],a[contenteditable|href|class|mention|target|title],p[style],br,span[style|data-user],iframe[src|allowfullscreen],video,img[src|alt|width|height]');
         $this->config->set('HTML.SafeIframe', true);
         $this->config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%');
 
@@ -83,6 +83,7 @@ class HTMLPurifier {
                 'type' => 'CDATA'
             ]
         );
+        $def->addAttribute('tr', 'class', new \HTMLPurifier_AttrDef_Enum(['tr-category']));
         $def->addAttribute('span', 'data-user', 'Text');
         $def->addAttribute('a', 'mention', 'Text');
         $def->addAttribute('a', 'title', 'Text');
@@ -97,7 +98,7 @@ class HTMLPurifier {
      */
     private function small()
     {
-        $this->config->set('HTML.Allowed', 'em,strong,del,a[contenteditable|href|class|mention|target|title]');
+        $this->config->set('HTML.Allowed', 'u,em,strong,del,a[contenteditable|href|class|mention|target|title]');
         $def = $this->config->getHTMLDefinition(true);
         $def->addAttribute('a', 'mention', 'Text');
         $def->addAttribute('a', 'title', 'Text');
@@ -112,7 +113,7 @@ class HTMLPurifier {
      */
     private function notification()
     {
-        $this->config->set('HTML.Allowed', 'em,strong,del,a[href|target|title],br');
+        $this->config->set('HTML.Allowed', 'u,em,strong,del,a[href|target|title],br');
         $def = $this->config->getHTMLDefinition(true);
         $def->addAttribute('a', 'title', 'Text');
         $def->addAttribute('a', 'target', new \HTMLPurifier_AttrDef_Enum(['_self', '_parent', '_top', '_blank']));
