@@ -152,7 +152,7 @@ class Show extends \App\Page\Page
 
         // Edit page
         $db->update(TABLE_PAGES, [
-            'page_url' => $db->lastInsertId() . '.' . parse($post->get('page_name')),
+            'page_url' => $data->get('data.custom.page_id') . '.' . parse($post->get('page_name')),
             'page_name' => $post->get('page_name')
         ], $data->get('data.custom.page_id'));
 
