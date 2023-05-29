@@ -78,7 +78,7 @@ class Update extends \App\Page\Page
         if ($JSON->get('0'))
         {
             // If this latest release is newer then installed 
-            if (version_compare($JSON->get('0.tag_name'), PHPCORE_VERSION, '>='))
+            if (version_compare($JSON->get('0.tag_name'), PHPCORE_VERSION, '>'))
             {
                 // Form
                 $form = new \App\Visualization\Form\Form('Root/Form:/Formats/Admin/Update.json');
