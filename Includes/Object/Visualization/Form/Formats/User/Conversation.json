@@ -37,6 +37,7 @@
                                 "hide": true,
                                 "type": "select[]",
                                 "required": true,
+                                "skipCheck": true,
                                 "template": {
                                     "root": "/Includes/Object/Visualization/Form/Templates/User/Conversation/Recipient.phtml"
                                 }

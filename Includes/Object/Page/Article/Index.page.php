@@ -80,8 +80,7 @@ class Index extends \App\Page\Page
             ],
 
             'run/article/label' => [
-                'id' => STRING,
-                'labels' => ARR
+                'id' => STRING
             ],
 
             default => []
@@ -401,9 +400,17 @@ class Index extends \App\Page\Page
      */
     public function markArticleWithLabels( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
     {
-        if (count($post->get('labels')) > 5)
+        if ($post->get('labels'))
         {
-            throw new \App\Exception\Notice('article_label_length_max');
+            if (!is_array($post->get('labels')))
+            {
+                return false;
+            }
+            
+            if (count($post->get('labels')) > 5)
+            {
+                throw new \App\Exception\Notice('article_label_length_max');
+            }
         }
 
         // Delete all labels from article
@@ -412,13 +419,21 @@ class Index extends \App\Page\Page
             WHERE article_id = ?
         ', [$data->get('data.article.article_id')]);
 
-        foreach ($post->get('labels') as $labelID)
+        if ($post->get('labels'))
         {
-            // Insert new labels to article
-            $db->insert(TABLE_ARTICLES_LABELS, [
-                'article_id' => $data->get('data.article.article_id'),
-                'label_id' => $labelID
-            ]);
+            if (!is_array($post->get('labels')))
+            {
+                return false;
+            }
+
+            foreach ($post->get('labels') as $labelID)
+            {
+                // Insert new labels to article
+                $db->insert(TABLE_ARTICLES_LABELS, [
+                    'article_id' => $data->get('data.article.article_id'),
+                    'label_id' => $labelID
+                ]);
+            }
         }
 
         // Add record to log

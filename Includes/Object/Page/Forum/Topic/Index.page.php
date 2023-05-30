@@ -119,8 +119,7 @@ class Index extends \App\Page\Page
             ],
 
             'run/topic/label' => [
-                'id' => STRING,
-                'labels' => ARR
+                'id' => STRING
             ],
 
             'run/topic/move' => [
@@ -950,9 +949,17 @@ class Index extends \App\Page\Page
      */
     public function markTopicWithLabels( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
     {
-        if (count($post->get('labels')) > 5)
+        if ($post->get('labels'))
         {
-            throw new \App\Exception\Notice('topic_label_length_max');
+            if (!is_array($post->get('labels')))
+            {
+                return false;
+            }
+
+            if (count($post->get('labels')) > 5)
+            {
+                throw new \App\Exception\Notice('topic_label_length_max');
+            }
         }
 
         if (!array_intersect([LOGGED_USER_GROUP_ID, '*'], $data->get('data.topic.permission_topic')))
@@ -966,8 +973,13 @@ class Index extends \App\Page\Page
             WHERE topic_id = ?
         ', [$data->get('data.topic.topic_id')]);
 
-        if (!empty($post->get('labels')))
+        if ($post->get('labels'))
         {
+            if (!is_array($post->get('labels')))
+            {
+                return false;
+            }
+
             foreach ($post->get('labels') as $labelID)
             {
                 // Insert new labels to topic

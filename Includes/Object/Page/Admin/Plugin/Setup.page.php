@@ -147,21 +147,21 @@ class Setup extends \App\Page\Page
             );
             $form->input('plugin_template')->fill($listTemplates);
             $data->form = $form->getDataToGenerate();
-
-            if ($page)
-            {
-                $page->navbar = $this->navbar;
-                
-                // Run plugin page
-                $page->body( data: $data, db: $db );
-
-                // Check for ajax
-                $page->checkForAjax();
-            }
-
-            // Set page title
-            $data->set('data.head.title', $language->get('L_PLUGIN.L_PLUGIN') . ' - ' . $data->get('data.plugin.folder'));
         }
+
+        if ($page)
+        {
+            $page->navbar = $this->navbar;
+            
+            // Run plugin page
+            $page->body( data: $data, db: $db );
+
+            // Check for ajax
+            $page->checkForAjax();
+        }
+
+        // Set page title
+        $data->set('data.head.title', $language->get('L_PLUGIN.L_PLUGIN') . ' - ' . $data->get('data.plugin.folder'));
     }
 
     /**

@@ -547,7 +547,9 @@ abstract class Page
                         $value = match($type)
                         {
                             ARR => [],
-                            STRING => ''
+                            STRING => '',
+
+                            default => throw new \App\Exception\System('Unknown "' . $type . '" data type for ajax!')
                         };
                     }
 
@@ -1004,42 +1006,45 @@ abstract class Page
 
                     $name = str_replace('.', '_', $name);
 
-                    if (in_array($input->get('options.type'), ['select', 'select[]', 'radio', 'checkbox[]']))
+                    if (!$input->get('options.skipCheck'))
                     {
-                        $filter = [];
-                        foreach ($input->get('body') ?: [] as $option)
+                        if (in_array($input->get('options.type'), ['select', 'select[]', 'radio', 'checkbox[]']))
                         {
-                            $option = new \App\Visualization\Visualization($option);
-
-                            array_push($filter, $option->get('data.value'));
-                        }
-
-                        if (!isset($_POST[$name]))
-                        {
-                            $_POST[$name] = '';
-
-                            if (str_ends_with($input->get('options.type'), '[]'))
+                            $filter = [];
+                            foreach ($input->get('body') ?: [] as $option)
                             {
-                                $_POST[$name] = [];
+                                $option = new \App\Visualization\Visualization($option);
+
+                                array_push($filter, $option->get('data.value'));
                             }
-                        }
 
-                        $arr = $_POST[$name];
-                        if (!is_array($arr))
-                        {
-                            $arr = [$arr];
-                        }
-
-                        if (!array_intersect($filter, $arr))
-                        {
-                            $_POST[$name] = '';
-
-                            if (str_ends_with($input->get('options.type'), '[]'))
+                            if (!isset($_POST[$name]))
                             {
-                                $_POST[$name] = [];
+                                $_POST[$name] = '';
+
+                                if (str_ends_with($input->get('options.type'), '[]'))
+                                {
+                                    $_POST[$name] = [];
+                                }
                             }
+
+                            $arr = $_POST[$name];
+                            if (!is_array($arr))
+                            {
+                                $arr = [$arr];
+                            }
+
+                            if (!array_intersect($filter, $arr))
+                            {
+                                $_POST[$name] = '';
+
+                                if (str_ends_with($input->get('options.type'), '[]'))
+                                {
+                                    $_POST[$name] = [];
+                                }
+                            }
+                            
                         }
-                        
                     }
 
                     // Input is required
@@ -1053,9 +1058,28 @@ abstract class Page
                                 throw new \App\Exception\Notice($name);
                             }
                             
-                            if (!str_starts_with($input->get('options.type'), 'file/') and (!isset($_POST[$name]) or trim($_POST[$name]) == ''))
+                            if (!str_starts_with($input->get('options.type'), 'file/'))
                             {
-                                throw new \App\Exception\Notice($name);
+                                if (!isset($_POST[$name]))
+                                {
+                                    throw new \App\Exception\Notice($name);
+                                }
+                            
+                                if (in_array($input->get('options.type'), ['text', 'html', 'checkbox', 'radio', 'select', 'number']))
+                                {
+                                    if (trim($_POST[$name]) == '')
+                                    {
+                                        throw new \App\Exception\Notice($name);
+                                    }
+                                }
+
+                                if (in_array($input->get('options.type'), ['checkbox[]', 'select[]']))
+                                {
+                                    if (empty($_POST[$name]))
+                                    {
+                                        throw new \App\Exception\Notice($name);
+                                    }
+                                }
                             }
                         }
                     }
