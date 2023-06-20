@@ -106,7 +106,6 @@ class Path
             throw new \App\Exception\System('File "' . $p1 . '" neither "' . $p2 . '" was not found!'); 
         }
         
-
         $newPath .= match ($what)
         {
             'Block' => '/Object/Visualization/Block',
@@ -119,13 +118,19 @@ class Path
             'Notification' => '/Object/Visualization/Notification',
             'Panel' => '/Object/Visualization/Panel',
             'Sidebar' => '/Object/Visualization/Sidebar',
-            default => throw new \App\Exception\Exception('Path "' . $wholePath . '" has unsupported format!')
+            'Root' => '',
+            default => throw new \App\Exception\System('Path "' . $wholePath . '" has unsupported format!')
         };
 
         $newPath .= $path;
 
         if (file_exists(ROOT . $newPath))
         {
+            if (str_ends_with($newPath, '.css') or str_ends_with($newPath, '.js'))
+            {
+                return $newPath;
+            }
+
             return ROOT . $newPath;
         }
 

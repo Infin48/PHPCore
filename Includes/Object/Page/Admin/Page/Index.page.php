@@ -95,7 +95,7 @@ class Index extends \App\Page\Page
             $list
                 ->set('data.title', $list->get('data.page_name'))
                 ->set('data.html.ajax-id', $list->get('data.page_id'))
-                ->set('data.button.show.href', '/custom/' . $list->get('data.page_id') . '.' . $list->get('data.page_url'))
+                ->set('data.button.show.href', '/custom/' . $list->get('data.page_url'))
                 ->set('data.button.edit.href', '/admin/page/show/' . $list->get('data.page_id'));
         });
         $data->list = $list->getDataToGenerate();

@@ -49,7 +49,7 @@
     <script defer src="/Assets/Cookie/Cookie.min.js?<?= $system->get('session.scripts') ?>"></script>
 <?php endif; ?>
 
-<?php if ($this->data->d->get('data.page') == 'Register') : ?>
+<?php if ($this->data->get('data.page') == 'App\Page\Register') : ?>
     <script defer src="https://www.google.com/recaptcha/api.js?render=<?= $system->get('registration.key_site') ?>"></script>
     <script defer src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $system->get('session.scripts') ?>"></script>
 <?php endif; ?>

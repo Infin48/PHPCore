@@ -52,7 +52,7 @@ class HTMLPurifier {
      */
     private function big()
     {
-        $this->config->set('HTML.Allowed', 'u,table[border|cellspacing|cellpadding],tbody,tr[class],td[rowspan|valign],thead,ul,li,ol,h1,h2,h3,h4,blockquote,code,pre,em[style],strong[style],del[style],a[contenteditable|href|class|mention|target|title],p[style],br,span[style|data-user],iframe[src|allowfullscreen],video,img[src|alt|width|height]');
+        $this->config->set('HTML.Allowed', 'u,table[border|cellspacing|cellpadding],tbody,tr[class],th[rowspan|valign|colspan],td[rowspan|valign|colspan],thead,ul,li,ol,h1,h2,h3,h4,blockquote,code,pre,em[style],strong[style],del[style],a[contenteditable|href|class|mention|target|title],p[style],br,span[style|data-user],iframe[src|allowfullscreen],video,img[src|alt|width|height]');
         $this->config->set('HTML.SafeIframe', true);
         $this->config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%');
 
@@ -87,8 +87,12 @@ class HTMLPurifier {
         $def->addAttribute('table', 'cellspacing', 'Number');
         $def->addAttribute('table', 'cellpadding', 'Number');
         $def->addAttribute('tr', 'class', new \HTMLPurifier_AttrDef_Enum(['tr-category']));
+        $def->addAttribute('th', 'rowspan', 'Number');
+        $def->addAttribute('th', 'colspan', 'Number');
+        $def->addAttribute('th', 'valign', new \HTMLPurifier_AttrDef_Enum(['top', 'center', 'bottom', 'baseline']));
         $def->addAttribute('td', 'rowspan', 'Number');
-        $def->addAttribute('td', 'valign', new \HTMLPurifier_AttrDef_Enum(['top', 'center', 'bottom']));
+        $def->addAttribute('td', 'colspan', 'Number');
+        $def->addAttribute('td', 'valign', new \HTMLPurifier_AttrDef_Enum(['top', 'center', 'bottom', 'baseline']));
         $def->addAttribute('span', 'data-user', 'Text');
         $def->addAttribute('a', 'mention', 'Text');
         $def->addAttribute('a', 'title', 'Text');
