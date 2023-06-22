@@ -78,7 +78,10 @@ class Add extends \App\Page\Page
             if ($permission->has('article.label'))
             {    
                 // Show 'labels list
-                $form->show()->fill($db->select('app.label.all()'));
+                $form->show()->fill( data: $db->select('app.label.all()'), function: function ( \App\Visualization\Form\Form $form )
+                {
+                    $form->set('data.value', $form->get('data.label_id'));
+                });
 
             }
         });

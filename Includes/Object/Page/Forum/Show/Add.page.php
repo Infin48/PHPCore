@@ -112,7 +112,10 @@ class Add extends \App\Page\Page
                         }
                     })
                     // Fill row with labels
-                    ->input('topic_label')->fill(data: $db->select('app.label.all()'));
+                    ->input('topic_label')->fill(data: $db->select('app.label.all()'), function: function ( \App\Visualization\Form\Form $form )
+                    {
+                        $form->set('data.value', $form->get('data.label_id'));
+                    });
         $data->form = $form->getDataToGenerate();
 
         // Head
