@@ -44,7 +44,7 @@ class Add extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();
@@ -80,7 +80,7 @@ class Add extends \App\Page\Page
                     ->input('user_roles', function ( \App\Visualization\Form\Form $form ) use ($roles, $system)
                     {
                         // Logged user has permission to edit roles
-                        if ($system->get('site.mode') != 'blog')
+                        if ($system->get('site_mode') != 'blog')
                         {
                             $form->show()->fill($roles);
                         }

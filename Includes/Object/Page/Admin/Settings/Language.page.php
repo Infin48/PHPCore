@@ -142,7 +142,7 @@ class Language extends \App\Page\Page
                                     $list->set('data.html.ajax-id', $list->get('data.id'));
                                     
                                     // If language is default
-                                    if ($system->get('site.language') === $list->get('data.id'))
+                                    if ($system->get('site_language') === $list->get('data.id'))
                                     {
                                         $list->delete('data.button');
                                         $list->addLabel(
@@ -184,7 +184,7 @@ class Language extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If this language is set as default
-        if ($post->get('id') == $system->get('site.language'))
+        if ($post->get('id') == $system->get('site_language'))
         {
             return false;
         }
@@ -218,7 +218,7 @@ class Language extends \App\Page\Page
     {
         // Change default language
         $db->table(TABLE_SETTINGS, [
-            'site.language' => $post->get('id')
+            'site_language' => $post->get('id')
         ]);
 
         // Add record to log

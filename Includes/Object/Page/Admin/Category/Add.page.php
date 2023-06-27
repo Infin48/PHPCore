@@ -38,7 +38,7 @@ class Add extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If forum is not enabled
-		if ($system->get('site.mode') != 'forum')
+		if ($system->get('site_mode') != 'forum')
 		{
             // Show 404 error page
 			$this->error404();

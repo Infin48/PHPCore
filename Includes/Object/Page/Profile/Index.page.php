@@ -49,7 +49,7 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If profiles are disabled
-        if ($system->get('site.mode.blog.profiles') == 0)
+        if ($system->get('site_mode_blog_profiles') == 0)
         {
             // Show 404 error page
             $this->error404();
@@ -90,7 +90,7 @@ class Index extends \App\Page\Page
         });
 
         
-        if ($system->get('site.mode') != 'blog')
+        if ($system->get('site_mode') != 'blog')
         {
             $sidebar->elm1('user')->elm2('topics')->show()->elm2('posts')->show();
         } else {
@@ -103,7 +103,7 @@ class Index extends \App\Page\Page
         {
             // Setup "send pm" button
             // If os disabled blog mode
-            if ($system->get('site.mode') != 'blog')
+            if ($system->get('site_mode') != 'blog')
             {
                 // If user is logged
                 if ($user->isLogged())
@@ -204,7 +204,7 @@ class Index extends \App\Page\Page
             default => '\App\Page\Profile\Tab\ProfilePost'
         };
 
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             $page = '\App\Page\Profile\Tab\About';
         }

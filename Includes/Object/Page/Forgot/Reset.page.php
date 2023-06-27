@@ -46,7 +46,7 @@ class Reset extends \App\Page\Page
         $language = $data->get('inst.language');
         
         // If is not allowed to reset forgot password
-        if (!$system->get('site.allow_forgot_password') and !$system->get('registration.enabled'))
+        if (!$system->get('site_allow_forgot_password') and !$system->get('registration_enabled'))
         {
             // Show 404 error page
             $this->error404();

@@ -166,7 +166,7 @@ class Index extends \App\Page\Page
                         } else $list->set('data.image', '');
 
                         // If template is set as default
-                        if ($system->get('site.template') === $list->get('data.id')) {
+                        if ($system->get('site_template') === $list->get('data.id')) {
 
                             $list->delete('data.button.delete')
                                 ->delete('data.button.preview')
@@ -251,7 +251,7 @@ class Index extends \App\Page\Page
     {
         // Set template as default
         $db->table(TABLE_SETTINGS, [
-            'site.template' => $post->get('id')
+            'site_template' => $post->get('id')
         ]);
 
         // Add record to log

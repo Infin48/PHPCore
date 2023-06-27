@@ -56,7 +56,7 @@ class Index extends Page
         $file = new \App\Model\File\File();
 
         // If is neabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
 		{
             // If user is logged
             if ($user->isLogged())
@@ -93,7 +93,7 @@ class Index extends Page
                     ->set('data.views', $block->get('data.article_views'));
 
                 // If profiles are enabled
-                if ($system->get('site.mode.blog.profiles'))
+                if ($system->get('site_mode_blog_profiles'))
                 {
                     $block
                         // data.user = Link to user

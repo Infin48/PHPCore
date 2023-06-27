@@ -16,11 +16,11 @@
                         "title": "L_SETTINGS.L_REGISTER.L_REGISTER"
                     },
                     "body": {
-                        "site.allow_forgot_password": {
+                        "site_allow_forgot_password": {
                             "options": {
                                 "type": "checkbox",
                                 "on": {
-                                    "show": "registration.enabled:0"
+                                    "show": "registration_enabled:0"
                                 }
                             },
                             "data": {
@@ -28,14 +28,14 @@
                                 "title": "L_SETTINGS.L_ALLOW_FORGOT_PASSWORD.L_ALLOW_FORGOT_PASSWORD"
                             },
                             "body": {
-                                "site.allow_forgot_password": {
+                                "site_allow_forgot_password": {
                                     "data": {
                                         "value": 1
                                     }
                                 }
                             }
                         },
-                        "registration.enabled": {
+                        "registration_enabled": {
                             "options": {
                                 "type": "checkbox"
                             },
@@ -43,18 +43,18 @@
                                 "title": "L_SETTINGS.L_REGISTER.L_ALLOW"
                             },
                             "body": {
-                                "registration.enabled": {
+                                "registration_enabled": {
                                     "data": {
                                         "value": 1
                                     }
                                 }
                             }
                         },
-                        "registration.verify": {
+                        "registration_verify": {
                             "options": {
                                 "type": "checkbox",
                                 "on": {
-                                    "show": "registration.enabled:1"
+                                    "show": "registration_enabled:1"
                                 }
                             },
                             "data": {
@@ -62,18 +62,18 @@
                                 "desc": "L_SETTINGS.L_REGISTER.L_VERIFY.L_DESC"
                             },
                             "body": {
-                                "registration.verify": {
+                                "registration_verify": {
                                     "data": {
                                         "value": 1
                                     }
                                 }
                             }
                         },
-                        "registration.key_site": {
+                        "registration_key_site": {
                             "options": {
                                 "type": "text",
                                 "on": {
-                                    "show": "registration.enabled:1"
+                                    "show": "registration_enabled:1"
                                 }
                             },
                             "data": {
@@ -82,11 +82,11 @@
                                 "placeholder": "L_PLACEHOLDER.L_KEY"
                             }
                         },
-                        "registration.key_secret": {
+                        "registration_key_secret": {
                             "options": {
                                 "type": "text",
                                 "on": {
-                                    "show": "registration.enabled:1"
+                                    "show": "registration_enabled:1"
                                 }
                             },
                             "data": {
@@ -95,11 +95,11 @@
                                 "placeholder": "L_PLACEHOLDER.L_KEY"
                             }
                         },
-                        "registration.terms": {
+                        "registration_terms": {
                             "options": {
                                 "type": "textarea",
                                 "on": {
-                                    "show": "registration.enabled:1"
+                                    "show": "registration_enabled:1"
                                 }
                             },
                             "data": {

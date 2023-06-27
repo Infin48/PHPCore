@@ -24,7 +24,7 @@ class Register extends Email
     {
         parent::__construct( system: $system, language: $language );
         
-        $this->mail->Subject = $system->get('site.name') . ' - ' . $language->get('L_EMAIL.L_ACTIVATION.L_SUBJECT');
+        $this->mail->Subject = $system->get('site_name') . ' - ' . $language->get('L_EMAIL.L_ACTIVATION.L_SUBJECT');
         $this->mail->Body    = strtr($language->get('L_EMAIL.L_ACTIVATION.L_BODY'), [
             '{url}' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/verify/type-account/code-{code}/'
         ]);

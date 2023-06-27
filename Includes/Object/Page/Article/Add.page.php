@@ -54,7 +54,7 @@ class Add extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If blog mode is disabled
-		if ($system->get('site.mode') != 'blog')
+		if ($system->get('site_mode') != 'blog')
 		{
             // Show error page
 			$this->error404();

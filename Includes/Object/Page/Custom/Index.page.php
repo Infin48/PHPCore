@@ -49,9 +49,9 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         $id = $this->url->getID();
-        if (!$id and $system->get('site.mode') == 'static')
+        if (!$id and $system->get('site_mode') == 'static')
         {
-            $id = $system->get('site.mode.static.index') ?: 0;
+            $id = $system->get('site_mode_static_index') ?: 0;
         }
         
         // Page

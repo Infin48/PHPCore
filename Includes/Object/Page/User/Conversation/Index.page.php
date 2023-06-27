@@ -41,7 +41,7 @@ class Index extends \App\Page\Page
         $user = $data->get('inst.user');
 
         // If is enabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show 404 error page
             $this->error404();

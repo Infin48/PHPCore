@@ -46,7 +46,7 @@ class Show extends \App\Page\Page
         $language = $data->get('inst.language');
         
         // If forum is not enabled
-		if ($system->get('site.mode') != 'forum')
+		if ($system->get('site_mode') != 'forum')
 		{
             // Show error page
 			$this->error404();
@@ -87,6 +87,13 @@ class Show extends \App\Page\Page
                     ->input('category_id')
                         ->show()
                         ->fill(data: $categories)
+                    ->input('forum_main', function ( \App\Visualization\Form\Form $form ) use ($system)
+                    {
+                        if ($system->get('site_mode_forum_index') == 0)
+                        {
+                            $form->hide();
+                        }
+                    })
                     ->input('enable_link', function ( \App\Visualization\Form\Form $form ) use ($data)
                     {
                         if ($data->get('data.forum.forum_link'))

@@ -14,7 +14,7 @@
 define('INDEX', '/');
 
 // Phpcore version
-define('PHPCORE_VERSION', '2.0.0');
+define('PHPCORE_VERSION', '2.1.0');
 
 // Tables
 define('TABLE_ARTICLES', 'phpcore_articles a');

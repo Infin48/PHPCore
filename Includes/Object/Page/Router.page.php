@@ -85,7 +85,7 @@ class Router extends Page
         // Set default template
         $template = new \App\Model\Template(
             path: '/Styles',
-            template: $system->get('site.template')
+            template: $system->get('site_template')
         );
 
         // If in session is saved template to preview
@@ -106,7 +106,7 @@ class Router extends Page
 
         // Set default language
         $language = $data->get('inst.language');
-        $language->load( language: $system->get('site.language'), template: $template, folder: 'website' );
+        $language->load( language: $system->get('site_language'), template: $template, folder: 'website' );
 
         // Put language to visualizators
         \App\Visualization\Visualization::$language = $language;
@@ -115,25 +115,25 @@ class Router extends Page
         \App\Model\File\File::$system = $system;
 
         // Set default locale and timezone
-        setlocale(LC_ALL, $system->get('site.locale') . '.UTF-8');
-        date_default_timezone_set($system->get('site.timezone'));
+        setlocale(LC_ALL, $system->get('site_locale') . '.UTF-8');
+        date_default_timezone_set($system->get('site_timezone'));
 
         // Check for ajax
         $this->checkForAjax();
 
         // Set page favicon
         $favicon = '/Uploads/Site/PHPCore_icon.svg';
-        if ($system->get('site.favicon'))
+        if ($system->get('site_favicon'))
         {
-            $favicon = '/Uploads/Site/Favicon.' . $system->get('site.favicon');
+            $favicon = '/Uploads/Site/Favicon.' . $system->get('site_favicon');
         }
         $data->set('data.head.favicon', $favicon);
         
         // Default page title
-        $data->set('data.head.title', $system->get('site.name'));
+        $data->set('data.head.title', $system->get('site_name'));
 
         // Default page description
-        $data->set('data.head.description', $system->get('site.description'));
+        $data->set('data.head.description', $system->get('site_description'));
         
         // Navbar
         $navbar = new \App\Visualization\Navbar\Navbar('Root/Navbar:/Formats/Basic.json');
@@ -193,7 +193,7 @@ class Router extends Page
                             ->set('data.href', $navbar->url($this->build->url->profile($user->get())));
 
                 // If system has enabled blog mode
-                if ($system->get('site.mode') == 'blog')
+                if ($system->get('site_mode') == 'blog')
                 {
                     $navbar
                         // Hide notifications
@@ -203,7 +203,7 @@ class Router extends Page
                 }
 
                 // If system has enabled static mode
-                if ($system->get('site.mode') == 'static')
+                if ($system->get('site_mode') == 'static')
                 {
                     $navbar
                         // Hide notifications
@@ -221,7 +221,7 @@ class Router extends Page
                 }
 
                 // If profiles are disabled
-                if ($system->get('site.mode.blog.profiles') == 0)
+                if ($system->get('site_mode_blog_profiles') == 0)
                 {
                     $navbar->elm2('user')
                         // Delete user image from navbar
@@ -325,7 +325,7 @@ class Router extends Page
                 $navbar->elm2('register', function ( \App\Visualization\Navbar\Navbar $navbar ) use ($system)
                 {
                     // If system has allowed registration
-                    if ($system->get('registration.enabled') == 1)
+                    if ($system->get('registration_enabled') == 1)
                     {
                         // Show this button
                         $navbar->show();
@@ -355,7 +355,7 @@ class Router extends Page
             $data->set('options.adminAccess', true);
         }
 
-        if ($system->get('site.mode') == 'static')
+        if ($system->get('site_mode') == 'static')
         {
             $class = '\App\Page\Custom\Index';
             if (in_array('edit', $this->url->get()))
@@ -378,6 +378,19 @@ class Router extends Page
             
             // Save loaded page class
             $page = $this->buildPage();
+
+            // If is loading index page
+            if (get_class($page) == 'App\Page\Index')
+            {
+                // And index page with news is disabled
+                if ($system->get('site_mode_forum_index') == 0)
+                {
+                    // Show forum
+                    $page = $this->buildPage( class: '\App\Page\Forum\Index' );
+
+                    $this->url->set('/');
+                }
+            }
 
             // Load page
             $page->body( $data, $db );
@@ -595,7 +608,7 @@ class Router extends Page
      */
     public function mentionUser( \App\Model\Data $data, \App\Model\Database\Query $db, \App\Model\Post $post )
     {
-        if ($system->get('site.mode.blog.profiles') == 0)
+        if ($system->get('site_mode_blog_profiles') == 0)
         {
             return;
         }

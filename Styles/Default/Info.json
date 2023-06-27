@@ -6,7 +6,7 @@
     "language": "cs",
     "version": {
         "version": "2.0.0",
-        "system": ["2.0.0"]
+        "system": ["2.1.0"]
     },
     "author": {
         "name": "Infin48",

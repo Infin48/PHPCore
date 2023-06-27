@@ -46,7 +46,7 @@ class Signature extends \App\Page\Page
         $user = $data->get('inst.user');
 
         // If blog mode is enabled
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show error page
             $this->error404();
@@ -78,7 +78,7 @@ class Signature extends \App\Page\Page
             ->elm1('conversation', function ($sidebar) use ($system)
             {
                 // If is enabled blog mode
-                if ($system->get('site.mode') != 'blog')
+                if ($system->get('site_mode') != 'blog')
                 {
                     // Show this buttoin in sidebar
                     $sidebar->show();

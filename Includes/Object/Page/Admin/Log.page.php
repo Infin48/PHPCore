@@ -38,7 +38,7 @@ class Log extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show 404 error page
 			$this->error404();

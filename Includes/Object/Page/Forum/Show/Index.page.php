@@ -49,7 +49,7 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If is enabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show 404 error page
             $this->error404();

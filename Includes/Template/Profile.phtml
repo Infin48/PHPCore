@@ -1,11 +1,11 @@
 <div class="tab">
-    <?php if ($this->system->get('site.mode') != 'blog') : ?>
+    <?php if ($this->system->get('site_mode') != 'blog') : ?>
         <a href="<?= $url->build(tab: 'profilepost') ?>" class="tab-button<?php if (!TAB or TAB === 'profilepost') : ?> tab-button-active<?php endif; ?>"><?= $language->get('L_PROFILE_POST.L_TOTAL') ?></a>
     <?php endif; ?>
-    <?php if (!empty($this->data->get('data.profile.user_about')) or $this->system->get('site.mode') == 'blog') : ?>
-        <a href="<?= $url->build(tab: 'about') ?>" class="tab-button<?php if ($this->system->get('site.mode') == 'blog' or TAB === 'about') : ?> tab-button-active<?php endif; ?>"><?= $language->get('L_USER.L_ABOUT.L_ABOUT') ?></a>
+    <?php if (!empty($this->data->get('data.profile.user_about')) or $this->system->get('site_mode') == 'blog') : ?>
+        <a href="<?= $url->build(tab: 'about') ?>" class="tab-button<?php if ($this->system->get('site_mode') == 'blog' or TAB === 'about') : ?> tab-button-active<?php endif; ?>"><?= $language->get('L_USER.L_ABOUT.L_ABOUT') ?></a>
     <?php endif; ?>
-    <?php if ($this->system->get('site.mode') != 'blog') : ?>
+    <?php if ($this->system->get('site_mode') != 'blog') : ?>
         <?php if (!empty($this->data->get('data.profile.user_signature'))) : ?>
             <a href="<?= $url->build(tab: 'signature') ?>" class="tab-button<?php if (TAB === 'signature') : ?> tab-button-active<?php endif; ?>"><?= $language->get('L_USER.L_SIGNATURE.L_SIGNATURE') ?></a>
         <?php endif; ?>

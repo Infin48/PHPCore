@@ -1,5 +1,5 @@
 <div class="list-row-align">
-    <div class="list-row-icon"><?php if ($list->get('data.forum_main')) : ?><i class="fa-solid fa-star"></i><?php endif; ?></div>
+    <div class="list-row-icon"><?php if ($list->get('data.forum_main') and $this->system->get('site_mode_forum_index') == 1) : ?><i class="fa-solid fa-star"></i><?php endif; ?></div>
     <?php if ($list->get('data.forum_icon')) : ?>
         <div class="list-row-icon"><i class="<?= $list->get('data.forum_icon') ?>"></i></div>
     <?php endif; ?>

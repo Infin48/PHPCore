@@ -80,7 +80,7 @@ class Label extends Page
         $pagination->url($this->url->getURL());
 
         // If blog mode is enabled
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Setup pagination
             $pagination->total($db->select('app.article.labelCount()', $this->url->getID()));
@@ -104,7 +104,7 @@ class Label extends Page
                     ->set('data.views', $block->get('data.article_views'));
 
                 // If profiles are enabled
-                if ($system->get('site.mode.blog.profiles'))
+                if ($system->get('site_mode_blog_profiles'))
                 {
                     $block
                         // data.user = Link to user

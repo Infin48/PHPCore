@@ -252,7 +252,7 @@ class User
         }
 
         // If profiles are enabled
-        if ($this->system->get('site.mode.blog.profiles'))
+        if ($this->system->get('site_mode_blog_profiles'))
         {
             // If href was not passed manually
             if (!$href)

@@ -1,20 +1,20 @@
 <meta charset="UTF-8" />
-<title><?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?></title>
+<title><?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site_name') ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
 <meta name="description" content="<?= $this->data->get('data.head.description') ?>" />
-<meta name="keywords" content="<?= $system->get('site.keywords') ?? '' ?>" />
+<meta name="keywords" content="<?= $system->get('site_keywords') ?? '' ?>" />
 
 <link rel="icon" href="<?= $this->data->get('data.head.favicon') ?>?<?= $system->get('session') ?>" type="image/svg+xml">
 <link rel="apple-touch-icon" href="<?= $this->data->get('data.head.favicon') ?>?<?= $system->get('session') ?>" />
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="<?= $_SERVER['SERVER_NAME'] ?>">
 <meta property="og:url" content="<?= $this->url->getURL() ?>">
-<meta property="og:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?>">
+<meta property="og:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site_name') ?>">
 <meta property="og:description" content="<?= $this->data->get('data.head.description') ?>">
 
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:site" content="<?= $_SERVER['SERVER_NAME'] ?>">
-<meta property="twitter:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site.name') ?>">
+<meta property="twitter:title" content="<?= ($this->data->get('data.head.title') ? $this->data->get('data.head.title') . ' | ' : '') . $this->system->get('site_name') ?>">
 <meta property="twitter:description" content="<?= $this->data->get('data.head.description') ?>">
 
 <?php if ($this->data->get('data.topic.topic_image') and $this->data->get('data.topic.topic_id')) : ?>
@@ -29,7 +29,7 @@
 
 <?php if ( $this->user->isLogged() ) : ?>
     <?php if ( $this->data->get('options.editor') ) : ?>
-        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $system->get('session.styles') ?>">
+        <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/ui/trumbowyg.min.css?<?= $system->get('session_styles') ?>">
         <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css">
         <link rel="stylesheet" type="text/css" href="/Assets/Trumbowyg/plugins/mention/ui/trumbowyg.mention.min.css">
     <?php endif; ?>
@@ -43,16 +43,16 @@
     <link rel="preload" as="image" href="/Uploads/Site/header.<?= $system->get('background_image') ?>?<?= $system->get('session') ?>">
 <?php endif; ?>
 
-<link rel="preload" as="style" href="/Includes/Template/css/Group.min.css?<?= $system->get('session.groups') ?>">
-<link rel="preload" as="style" href="/Includes/Template/css/Label.min.css?<?= $system->get('session.labels') ?>">
-<link rel="preload" as="style" href="/Includes/Template/css/Role.min.css?<?= $system->get('session.roles') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Group.min.css?<?= $system->get('session_groups') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Label.min.css?<?= $system->get('session_labels') ?>">
+<link rel="preload" as="style" href="/Includes/Template/css/Role.min.css?<?= $system->get('session_roles') ?>">
 
 <link rel="preload" as="style" href="/Assets/FontAwesome/css/all.min.css?10">
 <link rel="stylesheet" type="text/css" href="/Assets/FontAwesome/css/all.min.css?10">
 
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $system->get('session.groups') ?>">
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $system->get('session.labels') ?>">
-<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Role.min.css?<?= $system->get('session.roles') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Group.min.css?<?= $system->get('session_groups') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Label.min.css?<?= $system->get('session_labels') ?>">
+<link defer rel="stylesheet" type="text/css" href="/Includes/Template/css/Role.min.css?<?= $system->get('session_roles') ?>">
 
 
 <?php if ( $this->data->get('options.photoSwipe') ) : ?>

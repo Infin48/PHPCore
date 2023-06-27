@@ -56,7 +56,7 @@ class Index extends \App\Page\Page
                 ->data($user->get());
 
         // If blog mode is enabled and profiles are disabled
-        if ($system->get('site.mode') == 'blog' and $system->get('site.mode.blog.profiles') == 0)
+        if ($system->get('site_mode') == 'blog' and $system->get('site_mode_blog_profiles') == 0)
         {
             // Delete button from form
             $form->disButtons();
@@ -69,10 +69,10 @@ class Index extends \App\Page\Page
                 ->input('user_about', function ( \App\Visualization\Form\Form $form ) use ($system)
                 {
                     // If blog mode is enabled
-                    if ($system->get('site.mode') == 'blog')
+                    if ($system->get('site_mode') == 'blog')
                     {
                         // If profiles are disabled
-                        if ($system->get('site.mode.blog.profiles') == 0)
+                        if ($system->get('site_mode_blog_profiles') == 0)
                         {
                             // Hide this input
                             $form->hide();
@@ -99,10 +99,10 @@ class Index extends \App\Page\Page
                 ->elm2('settings', function ($sidebar) use ($system)
                 {
                     // If is enabled blog mode
-                    if ($system->get('site.mode') == 'blog')
+                    if ($system->get('site_mode') == 'blog')
                     {
                         // And also profiles are disabled
-                        if ($system->get('site.mode.blog.profiles') == 0)
+                        if ($system->get('site_mode_blog_profiles') == 0)
                         {
                             // Hide this ubtton in sidebar
                             $sidebar->hide();
@@ -114,7 +114,7 @@ class Index extends \App\Page\Page
                 ->elm2('signature', function ($sidebar) use ($system)
                 {
                     // If is enabled blog mode
-                    if ($system->get('site.mode') != 'blog')
+                    if ($system->get('site_mode') != 'blog')
                     {
                         // Show this button in sidebar
                         $sidebar->show();
@@ -124,7 +124,7 @@ class Index extends \App\Page\Page
             ->elm1('conversation', function ($sidebar) use ($system)
             {
                 // If is enabled blog mode
-                if ($system->get('site.mode') != 'blog')
+                if ($system->get('site_mode') != 'blog')
                 {
                     // Show this buttoin in sidebar
                     $sidebar->show();

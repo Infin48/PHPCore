@@ -96,7 +96,7 @@ class Status extends \App\Page\Page
         $failedPHP = strtr($language->get('L_STATUS.L_PHP.L_ERROR'), ['{php_version}' => PHP_VERSION]);
 
         // Message about failed locale set
-        $failedLoacaleWeb = strtr($language->get('L_STATUS.L_LOCALISATION.L_ERROR'), ['{locale}' => $system->get('site.locale')]);
+        $failedLoacaleWeb = strtr($language->get('L_STATUS.L_LOCALISATION.L_ERROR'), ['{locale}' => $system->get('site_locale')]);
 
         // Set to locale by default failed message
         $form->frame('other')->input('localeWeb')->set('data.titleIcon', $failedLoacaleWeb);
@@ -105,13 +105,13 @@ class Status extends \App\Page\Page
         $form->frame('other')->input('php')->set('data.titleIcon', $failedPHP);
 
         // If localization was successfully set
-        if (setlocale(LC_ALL, $system->get('site.locale') . '.UTF-8') !== false)
+        if (setlocale(LC_ALL, $system->get('site_locale') . '.UTF-8') !== false)
         {
             $form->frame('other')->input('localeWeb')
                 // Mark locale by green color
                 ->set('data.color', 'green')
                 // Set current set locale name
-                ->set('data.titleIcon', $system->get('site.locale'));
+                ->set('data.titleIcon', $system->get('site_locale'));
         }
 
         // If required PHP version is correct

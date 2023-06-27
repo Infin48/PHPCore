@@ -62,10 +62,10 @@ class Index extends \App\Page\Page
                     ->input('version')->value(PHPCORE_VERSION)
                     ->input('php')->value(phpversion())
                     ->input('database')->value($db->select('app.other.version()'))
-                    ->input('started')->value($system->get('site.started'));
+                    ->input('started')->value($system->get('site_started'));
         $data->form = $form->getDataToGenerate();
 
-        switch ($system->get('site.mode'))
+        switch ($system->get('site_mode'))
         {
             case 'forum':
                 // Block

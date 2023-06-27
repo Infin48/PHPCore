@@ -54,7 +54,7 @@ class Email
                 $this->mail->Port       = (int)$system->get('email.smtp_port');
             }
 
-            $this->mail->setFrom($system->get('email.prefix') . '@' . $_SERVER['SERVER_NAME'], $system->get('site.name'));
+            $this->mail->setFrom($system->get('email.prefix') . '@' . $_SERVER['SERVER_NAME'], $system->get('site_name'));
 
         } catch (Exception $e) {
             throw new \App\Exception\Notice($this->mail->ErrorInfo);

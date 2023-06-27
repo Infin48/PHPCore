@@ -45,6 +45,7 @@ $language = [
             'button_sub_name' => 'Zadejte název tlačítka.',
             'button_sub_name_length_max' => 'Název tlačítka je příliš dlouhý.',
 
+            'user_roles_length_max' => 'Uživateli můžete přiřadit maximálně 6 rolí.',
 
             'category_name' => 'Zadejte název kategorie.',
             'category_name_length_max' => 'Název kategorie je příliš dlouhý.',

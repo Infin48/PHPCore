@@ -41,11 +41,11 @@ class Settings extends \App\Page\Page
         $JSON->save();
         
         $db->table(TABLE_SETTINGS, [
-            'site.language' => $JSON->get('language'),
-            'site.started' => DATE_DATABASE,
-            'site.name' => $post->get('name'),
-            'site.updated' => DATE_DATABASE,
-            'site.description' => $post->get('description')
+            'site_language' => $JSON->get('language'),
+            'site_started' => DATE_DATABASE,
+            'site_name' => $post->get('name'),
+            'site_updated' => DATE_DATABASE,
+            'site_description' => $post->get('description')
         ]);
 
         redirect('/install/end/');

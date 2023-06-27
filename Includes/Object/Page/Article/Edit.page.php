@@ -58,7 +58,7 @@ class Edit extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If blog mode is disabled
-		if ($system->get('site.mode') != 'blog')
+		if ($system->get('site_mode') != 'blog')
 		{
             // Show error page
 			$this->error404();
@@ -74,7 +74,7 @@ class Edit extends \App\Page\Page
         if ($data->get('data.article.user_id') != LOGGED_USER_ID)
         {
             // And is not allowed to edit articles from other users
-            if ($system->get('site.mode.blog.editing') == 0)
+            if ($system->get('site_mode_blog_editing') == 0)
             {
                 // Show error page
                 $this->error404();

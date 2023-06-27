@@ -116,7 +116,7 @@ class Data
 
         $system = new \App\Model\System();
         
-        $trumbowyg = new \App\Model\Trumbowyg( $system->get('site.language_editor') );
+        $trumbowyg = new \App\Model\Trumbowyg( $system->get('site_language_editor') );
 
         $this->d = new \App\Visualization\Visualization([
             'options' => [

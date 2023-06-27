@@ -35,7 +35,7 @@
                         },
                         "topic_label": {
                             "options": {
-                                "type": "checkbox",
+                                "type": "checkbox[]",
                                 "max-length": "5",
                                 "hide": true
                             },

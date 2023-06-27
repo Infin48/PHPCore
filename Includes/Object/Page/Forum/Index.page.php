@@ -49,7 +49,7 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If is enabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show 404 error page
             $this->error404();
@@ -114,12 +114,12 @@ class Index extends \App\Page\Page
                 {
                     // Define values
                     // data.lastpost.link = Link to topic or post
-                    // data.lastpost.date = Date of created last post or topic
-                    // data.lastpost.user = Link to user
-                    // date.lastpost.user_image = User's profile image
                     $list->set('data.lastpost.link', '<a href="' . $this->build->url->topic($list->get('data')). '">' . truncate($list->get('data.topic_name'), 25) . '</a>');
+                    // data.lastpost.date = Date of created last post or topic
                     $list->set('data.lastpost.date', $this->build->date->short($list->get('data.created'), true));
+                    // data.lastpost.user = Link to user
                     $list->set('data.lastpost.user', $this->build->user->link(data: $list->get('data')));
+                    // date.lastpost.user_image = User's profile image
                     $list->set('data.lastpost.user_image', $this->build->user->image(data: $list->get('data'), role: true));
                 }
 

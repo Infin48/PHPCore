@@ -79,7 +79,7 @@ class Add extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If is enabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show 404 error page
             $this->error404();

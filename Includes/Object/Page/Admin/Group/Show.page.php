@@ -46,7 +46,7 @@ class Show extends \App\Page\Page
         $language = $data->get('inst.language');
         
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();
@@ -152,7 +152,7 @@ class Show extends \App\Page\Page
 
         // Update group session
         $db->table(TABLE_SETTINGS, [
-            'session.groups' => RAND
+            'session_groups' => RAND
         ]);
         
         // Add record to log

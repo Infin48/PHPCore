@@ -66,7 +66,7 @@ class Update extends \App\Page\Page
             // Set current PHPCore version
             ->elm1('version')->value(PHPCORE_VERSION)
             // Set date of last update
-            ->elm1('last_updated')->value($this->build->date->short($system->get('site.updated')));
+            ->elm1('last_updated')->value($this->build->date->short($system->get('site_updated')));
 
         // Save block and get ready to generate
         $data->block = $block->getDataToGenerate();

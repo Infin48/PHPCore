@@ -74,14 +74,14 @@ class Index extends \App\Page\Page
                 ->callOnSuccess($this, 'editWebsiteSettings')
                 ->data($system->get())
                 ->frame('language')
-                    ->input('site.language_editor')
+                    ->input('site_language_editor')
                         ->fill(data: $list)
                 ->frame('settings')
-                    ->input('site.mode.static.index')
+                    ->input('site_mode_static_index')
                         ->fill(data: $db->select('app.page.all()'))
                     ->input('delete_site_favicon', function ( \App\Visualization\Form\Form $form ) use ($system)
                     {
-                        if ($system->get('site.favicon'))
+                        if ($system->get('site_favicon'))
                         {
                             $form->show();
                         }
@@ -108,34 +108,35 @@ class Index extends \App\Page\Page
                 // System
                 $system = $data->get('inst.system');
 
-                $mode = $system->get('site.mode');
+                $mode = $system->get('site_mode');
             }
         }
 
         // System settings
         $settings = [
-            'site.name' => $post->get('site_name'),
-            'site.locale' => $post->get('site_locale'),
-            'site.timezone' => $post->get('site_timezone'),
-            'site.keywords' => $post->get('site_keywords'),
-            'site.description' => $post->get('site_description'),
-            'site.language_editor' => $post->get('site_language_editor'),
+            'site_name' => $post->get('site_name'),
+            'site_locale' => $post->get('site_locale'),
+            'site_timezone' => $post->get('site_timezone'),
+            'site_keywords' => $post->get('site_keywords'),
+            'site_description' => $post->get('site_description'),
+            'site_language_editor' => $post->get('site_language_editor'),
 
-            'site.mode' => $mode,
-            'site.mode.static.index' => $post->get('site_mode_static_index'),
-            'site.mode.blog.profiles' => $mode == 'blog' ? (int)$post->get('site_mode_blog_profiles') : 1,
-            'site.mode.blog.editing' => $mode == 'blog' ? (int)$post->get('site_mode_blog_editing') : 0,
+            'site_mode' => $mode,
+            'site_mode_forum_index' => $mode == 'forum' ? $post->get('site_mode_forum_index') : 1,
+            'site_mode_static_index' => $post->get('site_mode_static_index'),
+            'site_mode_blog_profiles' => $mode == 'blog' ? (int)$post->get('site_mode_blog_profiles') : 1,
+            'site_mode_blog_editing' => $mode == 'blog' ? (int)$post->get('site_mode_blog_editing') : 0,
 			
-			'image.gif' => (int)$post->get('image_gif'),
-            'image.max_size' => (int)$post->get('image_max_size'),
+			'image_gif' => (int)$post->get('image_gif'),
+            'image_max_size' => (int)$post->get('image_max_size'),
 
-            'cookie.text' => $post->get('cookie_text'),
-            'cookie.enabled' => (int)$post->get('cookie_enabled')
+            'cookie_text' => $post->get('cookie_text'),
+            'cookie_enabled' => (int)$post->get('cookie_enabled')
         ];
 
         if ($mode == 'blog')
         {
-            $settings['registration.enabled'] = 0;
+            $settings['registration_enabled'] = 0;
         }
 
         // Fiele model
@@ -153,7 +154,7 @@ class Index extends \App\Page\Page
             // Upload image
             $favicon->upload('/Uploads/Site', 'Favicon');
 
-            $settings['site.favicon'] = $favicon->getFormat();
+            $settings['site_favicon'] = $favicon->getFormat();
         }
 
         // If is checked "delete site favicon"
@@ -162,7 +163,7 @@ class Index extends \App\Page\Page
             // Delete image
             $file->delete('/Uploads/Site/Favicon.*');
 
-            $settings['site.favicon'] = '';
+            $settings['site_favicon'] = '';
         }
 
         // Update settings
@@ -171,7 +172,7 @@ class Index extends \App\Page\Page
         // Update sessions
         $db->table(TABLE_SETTINGS, [
             'session' => RAND,
-            'session.scripts' => RAND
+            'session_scripts' => RAND
         ]);
 
         // Add record to log

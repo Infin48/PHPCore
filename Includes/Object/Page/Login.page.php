@@ -49,14 +49,14 @@ class Login extends Page
         $data->form = $form->getDataToGenerate();
 
         // If is allowed to reset password using email
-        if ($system->get('site.allow_forgot_password') == 1 or $system->get('registration.enabled'))
+        if ($system->get('site_allow_forgot_password') == 1 or $system->get('registration_enabled'))
         {
             // data.link.forgot - Link to reset password
             $data->set('data.link.forgot', '<a href="' . $this->url->build('/forgot/') . '">' . $language->get('L_FORGOT.L_FORGOT') . '</a>');
         }
 
         // If registration is allowed
-        if ($system->get('registration.enabled') == 1)
+        if ($system->get('registration_enabled') == 1)
         {
             // data.link.register - Link to register page
             $data->set('data.link.register', '<a href="' . $this->url->build('/register/')  . '">' . $language->get('L_REGISTER.L_NO') . '</a>');

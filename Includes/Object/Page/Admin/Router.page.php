@@ -107,27 +107,27 @@ class Router extends \App\Page\Page
 
         // Set default language
         $language = $data->get('inst.language');
-        $language->load( language: $system->get('site.language'), template: $template, folder: 'admin' );
+        $language->load( language: $system->get('site_language'), template: $template, folder: 'admin' );
 
         // Put language to visualizators
         \App\Visualization\Visualization::$language = $language;
 
         // Default page title
-        $data->set('data.head.title', $system->get('site.name'));
+        $data->set('data.head.title', $system->get('site_name'));
 
         // Default page description
-        $data->set('data.head.description', $system->get('site.description'));
+        $data->set('data.head.description', $system->get('site_description'));
 
         // Set page favicon
         $favicon = '/Uploads/Site/PHPCore_icon.svg';
-        if ($system->get('site.favicon'))
+        if ($system->get('site_favicon'))
         {
-            $favicon = '/Uploads/Site/Favicon.' . $system->get('site.favicon');
+            $favicon = '/Uploads/Site/Favicon.' . $system->get('site_favicon');
         }
         $data->set('data.head.favicon', $favicon);
         
-        setlocale(LC_ALL, $system->get('site.locale').'.UTF-8');
-        date_default_timezone_set($system->get('site.timezone'));
+        setlocale(LC_ALL, $system->get('site_locale').'.UTF-8');
+        date_default_timezone_set($system->get('site_timezone'));
 
         // Check for ajax
         $this->checkForAjax();
@@ -159,7 +159,7 @@ class Router extends \App\Page\Page
             $this->navbar->elm1('forum')->elm2('deleted')->set('data.notifiCount', $deleted);
         }
 
-        switch ($system->get('site.mode'))
+        switch ($system->get('site_mode'))
         {
             // If blog mode is enabled
             case 'blog':
@@ -205,7 +205,7 @@ class Router extends \App\Page\Page
         }
 
         // If profiles are disabled
-		if ($system->get('site.mode.blog.profiles') == 0)
+		if ($system->get('site_mode_blog_profiles') == 0)
 		{
             $this->navbar->elm1('users')->elm2('role')->disable();
 		}

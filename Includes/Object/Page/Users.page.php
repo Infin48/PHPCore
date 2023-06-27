@@ -33,7 +33,7 @@ class Users extends Page
         $system = $data->get('inst.system');
 
         // If profiles are disabled
-        if ($system->get('site.mode.blog.profiles') == 0)
+        if ($system->get('site_mode_blog_profiles') == 0)
         {
             // Show 404 error page
             $this->error404();
@@ -68,7 +68,7 @@ class Users extends Page
                 ->set('data.user_image', $this->build->user->image(data: $list->get('data'), role: true));
 
             // If blog mode is disabled
-            if ($system->get('site.mode') != 'blog')
+            if ($system->get('site_mode') != 'blog')
             {
                 // data.reputation - User's reputation label
                 $list->set('data.reputation', $this->build->user->reputation($list->get('data.user_reputation')));

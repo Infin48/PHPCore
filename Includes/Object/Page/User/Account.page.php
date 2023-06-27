@@ -66,10 +66,10 @@ class Account extends \App\Page\Page
                 ->elm2('settings', function ($sidebar) use ($system)
                 {
                     // If is enabled blog mode
-                    if ($system->get('site.mode') == 'blog')
+                    if ($system->get('site_mode') == 'blog')
                     {
                         // And also profiles are disabled
-                        if ($system->get('site.mode.blog.profiles') == 0)
+                        if ($system->get('site_mode_blog_profiles') == 0)
                         {
                             // Hide this ubtton in sidebar
                             $sidebar->hide();
@@ -81,7 +81,7 @@ class Account extends \App\Page\Page
                 ->elm2('signature', function ($sidebar) use ($system)
                 {
                     // If is enabled blog mode
-                    if ($system->get('site.mode') != 'blog')
+                    if ($system->get('site_mode') != 'blog')
                     {
                         // Show this button in sidebar
                         $sidebar->show();
@@ -91,7 +91,7 @@ class Account extends \App\Page\Page
             ->elm1('conversation', function ($sidebar) use ($system)
             {
                 // If is enabled blog mode
-                if ($system->get('site.mode') != 'blog')
+                if ($system->get('site_mode') != 'blog')
                 {
                     // Show this buttoin in sidebar
                     $sidebar->show();

@@ -38,7 +38,7 @@ class Add extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If static mode is enabled or profiles are disabled
-		if ($system->get('site.mode') == 'static' or $system->get('site.mode.blog.profiles') == 0)
+		if ($system->get('site_mode') == 'static' or $system->get('site_mode_blog_profiles') == 0)
 		{
             // Show error page
 			$this->error404();
@@ -99,7 +99,7 @@ class Add extends \App\Page\Page
 
         // Update roles session
         $db->table(TABLE_SETTINGS, [
-            'session.roles' => RAND
+            'session_roles' => RAND
         ]);
 
         // Add record to log

@@ -62,7 +62,7 @@ class Other extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show 404 error page
 			$this->error404();
@@ -106,7 +106,7 @@ class Other extends \App\Page\Page
 
        // Update group session
        $db->table(TABLE_SETTINGS, [
-           'session.groups' => RAND
+           'session_groups' => RAND
        ]);
 
        // Add record to log
@@ -142,7 +142,7 @@ class Other extends \App\Page\Page
 
        // Update labels session
        $db->table(TABLE_SETTINGS, [
-           'session.labels' => RAND
+           'session_labels' => RAND
        ]);
 
        // Add record to log
@@ -178,7 +178,7 @@ class Other extends \App\Page\Page
 
        // Update roles session
        $db->table(TABLE_SETTINGS, [
-           'session.roles' => RAND
+           'session_roles' => RAND
        ]);
 
        // Add record to log
@@ -204,7 +204,7 @@ class Other extends \App\Page\Page
     {
         // Update styles session
         $db->table(TABLE_SETTINGS, [
-            'session.styles' => RAND
+            'session_styles' => RAND
         ]);
 
         // Add record to log
@@ -230,7 +230,7 @@ class Other extends \App\Page\Page
     {
         // Update scripts session
         $db->table(TABLE_SETTINGS, [
-            'session.scripts' => RAND
+            'session_scripts' => RAND
         ]);
 
         // Add record to log
@@ -256,7 +256,7 @@ class Other extends \App\Page\Page
     {
         // Update template session
         $db->table(TABLE_SETTINGS, [
-            'session.template' => RAND
+            'session_template' => RAND
         ]);
 
         // Add record to log

@@ -38,7 +38,7 @@ class Registration extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If forum in not enabled
-		if ($system->get('site.mode') != 'forum')
+		if ($system->get('site_mode') != 'forum')
 		{
             // Show error page
 			$this->error404();
@@ -93,19 +93,19 @@ class Registration extends \App\Page\Page
 
         // Edit registration settings
         $db->table(TABLE_SETTINGS, [
-            'site.allow_forgot_password' => $post->get('registration_enabled') ? 0 : (int)$post->get('site_allow_forgot_password'),
+            'site_allow_forgot_password' => $post->get('registration_enabled') ? 0 : (int)$post->get('site_allow_forgot_password'),
 
-            'registration.verify' => $post->get('registration_verify'),
-            'registration.terms' => $post->get('registration_terms'),
-            'registration.enabled' => (int)$post->get('registration_enabled'),
-            'registration.key_site' => $post->get('registration_key_site'),
-            'registration.key_secret' => $post->get('registration_key_secret')
+            'registration_verify' => $post->get('registration_verify'),
+            'registration_terms' => $post->get('registration_terms'),
+            'registration_enabled' => (int)$post->get('registration_enabled'),
+            'registration_key_site' => $post->get('registration_key_site'),
+            'registration_key_secret' => $post->get('registration_key_secret')
         ]);
 
         // Update sessions
         $db->table(TABLE_SETTINGS, [
             'session' => RAND,
-            'session.scripts' => RAND
+            'session_scripts' => RAND
         ]);
 
         // Add record to log

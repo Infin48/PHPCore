@@ -279,6 +279,9 @@ $language = [
 
     'L_SETTINGS' => [
 
+        'L_FORUM_INDEX_PAGE' => 'Povolit titulní stránku s novinkami',
+        'L_FORUM_INDEX_PAGE_DESC' => 'Na titulní stránce budou zobrazena témata vytvořená v hlavním fóru. Pokud toto nastavení vypnete, bude na titulní stránce zobrazeno fórum.',
+
         'L_INDEX_PAGE' => 'Titulní stránka statických webových stránek',
         'L_INDEX_PAGE_EMPTY' => 'Žádné stránky',
 

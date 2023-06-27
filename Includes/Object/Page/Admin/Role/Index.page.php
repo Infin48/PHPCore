@@ -78,7 +78,7 @@ class Index extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If static mode is enabled or profiles are disabled
-		if ($system->get('site.mode') == 'static' or $system->get('site.mode.blog.profiles') == 0)
+		if ($system->get('site_mode') == 'static' or $system->get('site_mode_blog_profiles') == 0)
 		{
             // Show error page
 			$this->error404();

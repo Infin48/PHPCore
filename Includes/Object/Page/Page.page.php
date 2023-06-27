@@ -132,7 +132,7 @@ abstract class Page
         }
         
         // Set page description
-        $data->set('data.head.description', $system->get('site.description'));
+        $data->set('data.head.description', $system->get('site_description'));
 
         // If page has set any required permission
         if ($this->permission)
@@ -171,7 +171,7 @@ abstract class Page
         {
             $data->set('options.editor', true);
 
-            if ($system->get('site.mode.blog.profiles'))
+            if ($system->get('site_mode_blog_profiles'))
             {
                 // List of all registered users
                 $users = $db->select('app.user.all()');
@@ -870,7 +870,7 @@ abstract class Page
         // for website not for admin panel
         $template = new \App\Model\Template(
             path: '/Styles',
-            template: $system->get('site.template')
+            template: $system->get('site_template')
         );
 
         // If in session is saved template to preview
@@ -887,7 +887,7 @@ abstract class Page
         // Because if any admin page was loaded we must load the basic language
         // for website not for admin panel
         $language = $data->get('inst.language');
-        $language->load( language: $system->get('site.language'), template: $template, folder: 'website' );
+        $language->load( language: $system->get('site_language'), template: $template, folder: 'website' );
 
         // If ajax is enabled
         if (defined('AJAX'))
@@ -903,9 +903,9 @@ abstract class Page
 
         // Set page favicon
         $favicon = '/Uploads/Site/PHPCore_icon.svg';
-        if ($system->get('site.favicon'))
+        if ($system->get('site_favicon'))
         {
-            $favicon = '/Uploads/Site/Favicon.' . $system->get('site.favicon');
+            $favicon = '/Uploads/Site/Favicon.' . $system->get('site_favicon');
         }
         $data->set('data.head.favicon', $favicon);
 
@@ -1117,7 +1117,7 @@ abstract class Page
                             if (!is_string($_POST[$name]))
                             {
                                 $_POST[$name] = '';
-                                continue;
+                                continue 2;
                             }
 
                             $_POST[$name] = trim($_POST[$name]);
@@ -1128,7 +1128,7 @@ abstract class Page
                             if ($_POST[$name] != 1)
                             {
                                 $_POST[$name] = 0;
-                                continue;
+                                continue 2;
                             }
                         break;
     
@@ -1137,7 +1137,7 @@ abstract class Page
                             if (!ctype_digit($_POST[$name]))
                             {
                                 $_POST[$name] = 0;
-                                continue;
+                                continue 2;
                             }
 
                         break;
@@ -1157,7 +1157,7 @@ abstract class Page
                                 if (in_array($input->get('options.type'), ['file/image', 'file/image[]']))
                                 {
                                     // If system has allowed to uplaod gif images
-                                    if ($system->get('image.gif') == 1)
+                                    if ($system->get('image_gif') == 1)
                                     {
                                         // If logged user has permission to uplaod gif images
                                         if ($permission->has('image.gif'))
@@ -1178,7 +1178,7 @@ abstract class Page
                                     if (in_array($input->get('options.type'), ['file/image', 'file/image[]']))
                                     {
                                         // If system has allowed to uplaod gif images
-                                        if ($system->get('image.gif') == 1)
+                                        if ($system->get('image_gif') == 1)
                                         {
                                             // If logged user has permission to uplaod gif images
                                             if ($permission->has('image.gif'))

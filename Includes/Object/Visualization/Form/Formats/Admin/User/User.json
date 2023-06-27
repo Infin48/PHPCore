@@ -100,7 +100,8 @@
                         "user_roles": {
                             "options": {
                                 "hide": true,
-                                "type": "checkbox[]"
+                                "type": "checkbox[]",
+                                "max-length": "6"
                             },
                             "data": {
                                 "empty": "L_ROLE.L_NO",

@@ -24,7 +24,7 @@ class Test extends Email
     {
         parent::__construct( system: $system, language: $language );
 
-        $this->mail->Subject = $system->get('site.name') . ' - ' . $language->get('L_EMAIL.L_TEST.L_SUBJECT');
+        $this->mail->Subject = $system->get('site_name') . ' - ' . $language->get('L_EMAIL.L_TEST.L_SUBJECT');
         $this->mail->Body    = $language->get('L_EMAIL.L_TEST.L_BODY');
     }
 }

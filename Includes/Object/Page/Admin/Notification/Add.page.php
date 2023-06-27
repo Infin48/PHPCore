@@ -38,7 +38,7 @@ class Add extends \App\Page\Page
         $system = $data->get('inst.system');
         
         // If static mode is enabled or profiles are disabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();

@@ -1,7 +1,7 @@
 <h1 class="username user--<?= $this->data->get('data.profile.group_class') ?>"><?= $this->data->get('data.profile.user_name') ?></h1>
 <span><?= $this->data->get('data.profile.user_text') ?></span>
 <div class="statue statue--<?= $this->data->get('data.profile.group_class') ?>"><?= $this->data->get('data.profile.group_name') ?></div>
-<?php if ($this->system->get('site.mode') != 'blog') : ?>
+<?php if ($this->system->get('site_mode') != 'blog') : ?>
     <div class="statue<?php if ($this->data->get('data.profile.user_reputation') > 0) : ?> statue-green<?php else :?> statue-grey<?php endif; ?>" ajax="title" ajax-title="<?= $this->language->get('L_USER.L_REPUTATION') ?>" ajax-class="reputation">
         <?php if ($this->data->get('data.profile.user_reputation') > 0) : ?>    
             <i class="fa-solid fa-thumbs-up"></i>

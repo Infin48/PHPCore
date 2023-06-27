@@ -191,7 +191,7 @@ class Index extends \App\Page\Page
         $language = $data->get('inst.language');
 
         // If is enabled blog mode
-        if ($system->get('site.mode') == 'blog')
+        if ($system->get('site_mode') == 'blog')
         {
             // Show 404 error page
             $this->error404();
@@ -479,7 +479,7 @@ class Index extends \App\Page\Page
                 ->elm1('new', function ( \App\Visualization\Panel\Panel $panel ) use ($data, $system, $permission)
                 {
                     // Topic is not locked
-                    if ($system->get('site.mode') != 'blog')
+                    if ($system->get('site_mode') != 'blog')
                     {
                         // Topic is not locked
                         if ($data->get('data.topic.topic_locked') == 0)

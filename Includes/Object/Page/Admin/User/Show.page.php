@@ -71,7 +71,7 @@ class Show extends \App\Page\Page
         $language = $data->get('inst.language');
 
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();
@@ -143,7 +143,7 @@ class Show extends \App\Page\Page
                     ->input('user_roles', function ( \App\Visualization\Form\Form $form ) use ($roles, $system, $data)
                     {
                         // If profiles are enabled
-                        if ($system->get('site.mode.blog.profiles'))
+                        if ($system->get('site_mode_blog_profiles'))
                         {
                             $form->show()->fill( data: $roles );
                         }

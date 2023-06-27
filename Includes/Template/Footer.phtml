@@ -25,33 +25,33 @@
 <?php if ($this->system->get('cookie.enabled') == 1) : ?>
     <?php require $path->build('Root/Style:/Templates/Blocks/Cookie.phtml'); ?>
 <?php endif; ?>
-<script src="/Assets/jQuery/jQuery.min.js?<?= $system->get('session.scripts') ?>"></script>
-<script defer src="/Assets/cAjax/cAjax.min.js?<?= $system->get('session.scripts') ?>"></script>
+<script src="/Assets/jQuery/jQuery.min.js?<?= $system->get('session_scripts') ?>"></script>
+<script defer src="/Assets/cAjax/cAjax.min.js?<?= $system->get('session_scripts') ?>"></script>
 <script>var mentionUserList=<?= $this->data->d->get('data.mentionUserList') ?>;</script>
 <?php if ( $this->user->isLogged() ) : ?>
     <?php if ( $this->data->get('options.editor') ) : ?>
-        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $system->get('session.scripts') ?>"></script>
-        <?php if ( $this->system->get('site.language_editor') != 'en' ) : ?>
-            <script src="/Assets/Trumbowyg/langs/<?= $system->get('site.language_editor') ?>.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/trumbowyg.min.js?<?= $system->get('session_scripts') ?>"></script>
+        <?php if ( $this->system->get('site_language_editor') != 'en' ) : ?>
+            <script src="/Assets/Trumbowyg/langs/<?= $system->get('site_language_editor') ?>.min.js?<?= $system->get('session_scripts') ?>"></script>
         <?php endif; ?>
-        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $system->get('session.scripts') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/upload/trumbowyg.upload.min.js?<?= $system->get('session.scripts') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/noembed/trumbowyg.noembed.min.js?<?= $system->get('session.scripts') ?>"></script>
-        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js?<?= $system->get('session.scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/emoji/trumbowyg.emoji.min.js?<?= $system->get('session_scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/upload/trumbowyg.upload.min.js?<?= $system->get('session_scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/noembed/trumbowyg.noembed.min.js?<?= $system->get('session_scripts') ?>"></script>
+        <script src="/Assets/Trumbowyg/plugins/preformatted/trumbowyg.preformatted.min.js?<?= $system->get('session_scripts') ?>"></script>
         <script src="/Assets/Trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>
-        <?php if ( $this->system->get('site.mode.blog.profiles') ) : ?>
+        <?php if ( $this->system->get('site_mode_blog_profiles') ) : ?>
             <script src="/Assets/Trumbowyg/plugins/mention/trumbowyg.mention.min.js"></script>
         <?php endif; ?>
     <?php endif; ?>
 <?php endif; ?>
-<script defer src="/Includes/Template/js/js.min.js?<?= $system->get('session.scripts') ?>"></script>
+<script defer src="/Includes/Template/js/js.min.js?<?= $system->get('session_scripts') ?>"></script>
 <?php if ($this->system->get('cookie.enabled') == 1) : ?>
-    <script defer src="/Assets/Cookie/Cookie.min.js?<?= $system->get('session.scripts') ?>"></script>
+    <script defer src="/Assets/Cookie/Cookie.min.js?<?= $system->get('session_scripts') ?>"></script>
 <?php endif; ?>
 
 <?php if ($this->data->get('data.page') == 'App\Page\Register') : ?>
-    <script defer src="https://www.google.com/recaptcha/api.js?render=<?= $system->get('registration.key_site') ?>"></script>
-    <script defer src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $system->get('session.scripts') ?>"></script>
+    <script defer src="https://www.google.com/recaptcha/api.js?render=<?= $system->get('registration_key_site') ?>"></script>
+    <script defer src="/Assets/reCAPTCHA/reCAPTCHA.min.js?<?= $system->get('session_scripts') ?>"></script>
 <?php endif; ?>
 
 <?php

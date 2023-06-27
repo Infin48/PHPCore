@@ -126,7 +126,7 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If blog mode is disabled
-		if ($system->get('site.mode') != 'blog')
+		if ($system->get('site_mode') != 'blog')
 		{
             // Show 404 error page
 			$this->error404();
@@ -200,7 +200,7 @@ class Index extends \App\Page\Page
                 {
                     // This article is from logged user
                     // Or in system is nable to edit article from another user
-                    if ($system->get('site.mode.blog.editing') or LOGGED_USER_ID == $data->get('data.article.user_id'))
+                    if ($system->get('site_mode_blog_editing') or LOGGED_USER_ID == $data->get('data.article.user_id'))
                     {
                         // Logged user has permission to edit articles
                         if ($permission->has('article.edit'))
@@ -284,7 +284,7 @@ class Index extends \App\Page\Page
                 ->set('data.date', $this->build->date->long($block->get('data.article_created'), true));
 
             // If profiles are enabled
-            if ($system->get('site.mode.blog.profiles'))
+            if ($system->get('site_mode_blog_profiles'))
             {
                 // Define another variables
                 $block
@@ -324,7 +324,7 @@ class Index extends \App\Page\Page
                 ->set('data.views', $block->get('data.article_views'));
 
             // If profiles are enabled
-            if ($system->get('site.mode.blog.profiles'))
+            if ($system->get('site_mode_blog_profiles'))
             {
                 $block
                     // data.user = Link to user

@@ -78,7 +78,7 @@ class Index extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If static mode is enabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();
@@ -162,7 +162,7 @@ class Index extends \App\Page\Page
 
         // Update labels session
         $db->table(TABLE_SETTINGS, [
-            'session.labels' => RAND
+            'session_labels' => RAND
         ]);
 
         // Show success message
@@ -208,7 +208,7 @@ class Index extends \App\Page\Page
 
         // Update labels session
         $db->table(TABLE_SETTINGS, [
-            'session.labels' => RAND
+            'session_labels' => RAND
         ]);
 
         // Add record to log

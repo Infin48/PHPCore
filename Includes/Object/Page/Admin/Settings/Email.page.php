@@ -83,16 +83,16 @@ class Email extends \App\Page\Page
     {
         // Change system e-mail settings
         $db->table(TABLE_SETTINGS, [
-            'email.prefix' => $post->get('email_prefix')
+            'email_prefix' => $post->get('email_prefix')
         ]);
 
         // Change smtp settings
         $db->table(TABLE_SETTINGS, [
-            'email.smtp.host' => $post->get('email_smtp_host'),
-            'email.smtp.port' => (int)$post->get('email_smtp_port'),
-            'email.smtp.enabled' => (int)$post->get('email_smtp_enabled'),
-            'email.smtp.username' => $post->get('email_smtp_username'),
-            'email.smtp.password' => $post->get('email_smtp_password')
+            'email_smtp_host' => $post->get('email_smtp_host'),
+            'email_smtp_port' => (int)$post->get('email_smtp_port'),
+            'email_smtp_enabled' => (int)$post->get('email_smtp_enabled'),
+            'email_smtp_username' => $post->get('email_smtp_username'),
+            'email_smtp_password' => $post->get('email_smtp_password')
         ]);
 
         // Add record to log

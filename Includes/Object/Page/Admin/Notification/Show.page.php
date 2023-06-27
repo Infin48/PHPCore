@@ -46,7 +46,7 @@ class Show extends \App\Page\Page
         $language = $data->get('inst.language');
         
         // If static mode is enabled or profiles are disabled
-		if ($system->get('site.mode') == 'static')
+		if ($system->get('site_mode') == 'static')
 		{
             // Show error page
 			$this->error404();

@@ -41,7 +41,7 @@ class Register extends Page
         $language = $data->get('inst.language');
 
         // If registration isn't allowed
-        if ($system->get('registration.enabled') == 0)
+        if ($system->get('registration_enabled') == 0)
         {
             // Show error page
             $this->error404();
@@ -93,7 +93,7 @@ class Register extends Page
                 'header'  => 'Content-type: application/x-www-form-urlencoded\r\n',
                 'method'  => 'POST',
                 'content' => http_build_query([
-                    'secret' => $system->get('registration.key_secret'),
+                    'secret' => $system->get('registration_key_secret'),
                     'response' => $post->get('token'),
                     'remoteip' => $_SERVER['REMOTE_ADDR']
                 ])
@@ -129,7 +129,7 @@ class Register extends Page
         // Delete email verification to registered email
         $db->delete(table: TABLE_VERIFY_EMAIL, key: 'user_email', id: $post->get('user_email'));
         
-        if ($system->get('registration.verify'))
+        if ($system->get('registration_verify'))
         {
             $code = md5(mt_rand());
 

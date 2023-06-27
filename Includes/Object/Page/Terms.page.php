@@ -36,7 +36,7 @@ class Terms extends Page
         $language = $data->get('inst.language');
 
         // If registration isn't allowed
-        if ($system->get('registration.enabled') == 0)
+        if ($system->get('registration_enabled') == 0)
         {
             // Show error page
             $this->error404();

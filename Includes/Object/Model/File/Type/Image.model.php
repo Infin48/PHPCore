@@ -34,7 +34,7 @@ class Image extends \App\Model\File\Form
      */
     public function ini()
     {
-        $this->size = (int)$this->file::$system->get('image.max_size');
+        $this->size = (int)$this->file::$system->get('image_max_size');
     }
     
     /**

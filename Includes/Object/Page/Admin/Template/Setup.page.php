@@ -81,7 +81,7 @@ class Setup extends \App\Page\Page
             $this->error404();
         }
 
-        foreach ([$system->get('site.language'), $JSON->get('language')] as $_)
+        foreach ([$system->get('site_language'), $JSON->get('language')] as $_)
         {
             $INFO = new \App\Model\File\JSON('/Styles/' . $this->url->get('name') . '/Languages/' . $_ . '/Info.json');
 
@@ -156,7 +156,7 @@ class Setup extends \App\Page\Page
         if ($page)
         {
             $form = new \App\Visualization\Form\Form($data->form);
-            if ($data->get('data.template.template_name_folder') != $system->get('site.template'))
+            if ($data->get('data.template.template_name_folder') != $system->get('site_template'))
             {
                 $form->set('body.plugin.body.plugin.body.show', [
                     'options' => [
