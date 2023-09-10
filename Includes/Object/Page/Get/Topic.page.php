@@ -25,7 +25,14 @@ class Topic extends \App\Page\Page
     public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
         // Form
-        $post = new \App\Model\Post;
+        $post = new \App\Model\Post();
+
+        // Load ID
+        $id = (int)$post->get('id') ?: (int)$this->url->get('id');
+        if (!$id)
+        {
+            throw new \App\Exception\System('Id parameter not found in POST neither GET.');
+        }
 
         // User
         $user = $data->get('inst.user');
@@ -46,12 +53,12 @@ class Topic extends \App\Page\Page
         $file = new \App\Model\File\File();
 
         // Block
-        $row = $db->select('app.topic.get()', $post->get('id'), $deleted) or $this->error404();
+        $row = $db->select('app.topic.get()', $id, $deleted) or $this->error404();
 
         $row['images'] = [];
         // Search fimages
         $file->getFiles(
-            path: '/Uploads/Topics/' . $post->get('id') . '/Images/*',
+            path: '/Uploads/Topics/' . $id . '/Images/*',
             function: function ( \App\Model\File\File $file, string $path ) use (&$row)
             {
                 $size = getimagesize($path);
@@ -66,7 +73,7 @@ class Topic extends \App\Page\Page
         $row['attachments'] = [];
         // Search attachments
         $file->getFiles(
-            path: '/Uploads/Topics/' . $post->get('id') . '/Attachments/*',
+            path: '/Uploads/Topics/' . $id . '/Attachments/*',
             flag: \App\Model\File\File::SORT_BY_DATE,
             function: function ( \App\Model\File\File $file, string $path ) use (&$row)
             {

@@ -52,11 +52,125 @@ class Index extends Page
         $breadcrumb = new \App\Visualization\Breadcrumb\Breadcrumb('Root/Breadcrumb:/Formats/Index.json');
         $data->breadcrumb = $breadcrumb->getDataToGenerate();
 
+        // If logged user has permission to see deleted topic
+        $deleted = false;
+        if ($permission->has('admin.forum')) 
+        {
+            $deleted = true;
+        }
+
+        if (in_array($system->get('site_mode'), ['forum', 'blog_with_forum']))
+        {
+            // Forum stats
+            $stats = $db->select('app.forum.stats()');
+
+            // List of online users
+            $onlineUsers = $db->select('app.user.online()');
+
+            // Sidebar
+            $sidebar = new \App\Visualization\Sidebar\Sidebar('Root/Sidebar:/Formats/Basic.json');
+
+            $sidebar
+                // Setup last posts
+                ->elm1('posts')->fill(data: $db->select('app.post.last()', 5, $deleted), function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
+                {
+                    // Define variables
+                    $sidebar
+                        // data.user = Link to user
+                        ->set('data.user', $this->build->user->link(data: $sidebar->get('data')))
+                        // data.date = Date of created post or topic
+                        ->set('data.date', $this->build->date->short($sidebar->get('data.created'), true))
+                        // date.user_image = User's profile image
+                        ->set('data.user_image', $this->build->user->image(data: $sidebar->get('data'), role: true))
+                        // data.name = Name of topic
+                        ->set('data.name', truncate($sidebar->get('data.topic_name'), 30));
+                
+                    // Set default href to topic
+                    $href = $this->build->url->topic($sidebar->get('data'));
+                    // But if exists post_id
+                    // Means that it is created newest post
+                    if ($sidebar->get('data.post_id'))
+                    {
+                        // So change href to this post
+                        $href = $this->build->url->post($sidebar->get('data'));
+                    }
+                    // Build the link
+                    $sidebar->set('data.link', '<a href="' . $href . '">' . $sidebar->get('data.topic_name') . '</a>');
+
+                    // If this post or topic is deleted
+                    if ($sidebar->get('data.deleted_id'))
+                    {
+                        // Disable this row
+                        $sidebar->disable();
+                    }
+
+                    // If topic has more than two labels
+                    if (count($sidebar->get('data.labels')) > 2)
+                    {
+                        // Shorten list of labels to three
+                        $labels = array_slice($sidebar->get('data.labels'), 0, 3);
+                        $labels[2]['label_name'] = '...';
+                        $sidebar->set('data.labels', $labels);
+                    }
+                })
+
+                // Setup profile posts
+                ->elm1('profileposts')->fill(data: $db->select('app.profile-post.last()', 5, $deleted), function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
+                {
+                    // Define variables
+                    $sidebar
+                        // data.date = Date of creating profile post
+                        ->set('data.date', $this->build->date->short($sidebar->get('data.profile_post_created')))
+                        // data.text = Text of profile post
+                        ->set('data.text', truncate($sidebar->get('data.profile_post_text'), 100))
+                        // data.user = Link to user
+                        ->set('data.user', $this->build->user->link(data: $sidebar->get('data'), href: $this->build->url->profilepost($sidebar->get('data'))))
+                        // date.user_image = User's profile image
+                        ->set('data.user_image', $this->build->user->image(data: $sidebar->get('data'), role: true));
+
+                    // If user didn't created profile post on own profile
+                    if ((int)$sidebar->get('data.profile_id') !== (int)$sidebar->get('data.user_id'))
+                    {
+                        // Show name of user where was profile psot created
+                        $data = getKeysWithPrefix($sidebar->get('data'), prefix: 'two_');
+                        $sidebar->set('data.user_second', '<i class="fa-solid fa-caret-right"></i> ' . $this->build->user->link(data: $data, href: $this->build->url->profilepost($sidebar->get('data'))));
+                    }
+
+                    // If profile post is deleted
+                    if ($sidebar->get('data.deleted_id'))
+                    {
+                        // Disable this row
+                        $sidebar->disable();
+                    }
+                })
+                // Setup stats
+                ->elm1('stats')->elm2('table')
+                    // Insert numer of created topics in the whole forum 
+                    ->elm3('topics')->value($stats['topic'])
+                    // Insert numer of created posts in the whole forum
+                    ->elm3('posts')->value($stats['post'])
+                    // Insert numer of registered users in the whole website
+                    ->elm3('users')->value($stats['user'])
+                // Setup online users
+                ->elm1('onlineusers')
+                    // Inset number or online users
+                    ->elm2('bottom')->set('data.count', count($onlineUsers))
+                    // Insert online users to sidebar
+                    ->elm2('users')->fill(data: $onlineUsers, function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
+                    {
+                        // Define user profile image
+                        $sidebar->set('data.user_image', $this->build->user->linkImg($sidebar->get('data'), size: '25x25', role: true));
+                    });
+
+            // Save sidebar and get ready to generate
+            $data->sidebar = $sidebar->getDataToGenerate();
+        }
+
         // File model
         $file = new \App\Model\File\File();
 
         // If is neabled blog mode
-        if ($system->get('site_mode') == 'blog')
+        if (in_array($system->get('site_mode'), ['blog', 'blog_with_forum']))
 		{
             // If user is logged
             if ($user->isLogged())
@@ -118,13 +232,6 @@ class Index extends Page
             return;
 		}
 
-        // If logged user has permission to see deleted topic
-        $deleted = false;
-        if ($permission->has('admin.forum')) 
-        {
-            $deleted = true;
-        }
-
         // Pagination
         $pagination = new \App\Model\Pagination();
         $pagination->max(MAX_NEWS);
@@ -180,109 +287,5 @@ class Index extends Page
 
         // Finish block and get ready for generate
         $data->block = $block->getDataToGenerate();
-
-        // Forum stats
-        $stats = $db->select('app.forum.stats()');
-
-        // List of online users
-        $onlineUsers = $db->select('app.user.online()');
-
-        // Sidebar
-        $sidebar = new \App\Visualization\Sidebar\Sidebar('Root/Sidebar:/Formats/Basic.json');
-
-        $sidebar
-            // Setup last posts
-            ->elm1('posts')->fill(data: $db->select('app.post.last()', 5, $deleted), function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
-            {
-                // Define variables
-                $sidebar
-                    // data.user = Link to user
-                    ->set('data.user', $this->build->user->link(data: $sidebar->get('data')))
-                    // data.date = Date of created post or topic
-                    ->set('data.date', $this->build->date->short($sidebar->get('data.created'), true))
-                    // date.user_image = User's profile image
-                    ->set('data.user_image', $this->build->user->image(data: $sidebar->get('data'), role: true))
-                    // data.name = Name of topic
-                    ->set('data.name', truncate($sidebar->get('data.topic_name'), 30));
-            
-                // Set default href to topic
-                $href = $this->build->url->topic($sidebar->get('data'));
-                // But if exists post_id
-                // Means that it is created newest post
-                if ($sidebar->get('data.post_id'))
-                {
-                    // So change href to this post
-                    $href = $this->build->url->post($sidebar->get('data'));
-                }
-                // Build the link
-                $sidebar->set('data.link', '<a href="' . $href . '">' . $sidebar->get('data.topic_name') . '</a>');
-
-                // If this post or topic is deleted
-                if ($sidebar->get('data.deleted_id'))
-                {
-                    // Disable this row
-                    $sidebar->disable();
-                }
-
-                // If topic has more than two labels
-                if (count($sidebar->get('data.labels')) > 2)
-                {
-                    // Shorten list of labels to three
-                    $labels = array_slice($sidebar->get('data.labels'), 0, 3);
-                    $labels[2]['label_name'] = '...';
-                    $sidebar->set('data.labels', $labels);
-                }
-            })
-
-            // Setup profile posts
-            ->elm1('profileposts')->fill(data: $db->select('app.profile-post.last()', 5, $deleted), function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
-            {
-                // Define variables
-                $sidebar
-                    // data.date = Date of creating profile post
-                    ->set('data.date', $this->build->date->short($sidebar->get('data.profile_post_created')))
-                    // data.text = Text of profile post
-                    ->set('data.text', truncate($sidebar->get('data.profile_post_text'), 100))
-                    // data.user = Link to user
-                    ->set('data.user', $this->build->user->link(data: $sidebar->get('data'), href: $this->build->url->profilepost($sidebar->get('data'))))
-                    // date.user_image = User's profile image
-                    ->set('data.user_image', $this->build->user->image(data: $sidebar->get('data'), role: true));
-
-                // If user didn't created profile post on own profile
-                if ((int)$sidebar->get('data.profile_id') !== (int)$sidebar->get('data.user_id'))
-                {
-                    // Show name of user where was profile psot created
-                    $data = getKeysWithPrefix($sidebar->get('data'), prefix: 'two_');
-                    $sidebar->set('data.user_second', '<i class="fa-solid fa-caret-right"></i> ' . $this->build->user->link(data: $data, href: $this->build->url->profilepost($sidebar->get('data'))));
-                }
-
-                // If profile post is deleted
-                if ($sidebar->get('data.deleted_id'))
-                {
-                    // Disable this row
-                    $sidebar->disable();
-                }
-            })
-            // Setup stats
-            ->elm1('stats')->elm2('table')
-                // Insert numer of created topics in the whole forum 
-                ->elm3('topics')->value($stats['topic'])
-                // Insert numer of created posts in the whole forum
-                ->elm3('posts')->value($stats['post'])
-                // Insert numer of registered users in the whole website
-                ->elm3('users')->value($stats['user'])
-            // Setup online users
-            ->elm1('onlineusers')
-                // Inset number or online users
-                ->elm2('bottom')->set('data.count', count($onlineUsers))
-                // Insert online users to sidebar
-                ->elm2('users')->fill(data: $onlineUsers, function: function ( \App\Visualization\Sidebar\Sidebar $sidebar )
-                {
-                    // Define user profile image
-                    $sidebar->set('data.user_image', $this->build->user->linkImg($sidebar->get('data'), size: '25x25', role: true));
-                });
-
-        // Save sidebar and get ready to generate
-        $data->sidebar = $sidebar->getDataToGenerate();
     }
 }

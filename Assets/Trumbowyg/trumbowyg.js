@@ -1223,9 +1223,6 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     // Wrap groups of inline elements in paragraphs (recursive)
                     var wrapInlinesInParagraphsFrom = function ($from) {
                         if ($from.length !== 0) {
-
-                            console.log('asdasd');
-
                             var $finalParagraph = $from.nextUntil(blockElementsSelector).addBack().wrapAll('<p/>').parent(),
                                 $nextElement = $finalParagraph.nextAll(inlineElementsSelector).first();
                             $finalParagraph.next('br').remove();

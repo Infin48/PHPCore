@@ -1474,7 +1474,7 @@ class Index extends \App\Page\Page
             'user_id' => LOGGED_USER_ID,
             'deleted_type' => 'Post',
             'deleted_type_id' => $post->get('id'),
-            'deleted_type_user_id' => $_['user_id']
+            'deleted_type_user_id' => $row['user_id']
         ]);
 
         $db->query('
@@ -1491,7 +1491,7 @@ class Index extends \App\Page\Page
         $db->sendNotification(
             name: __FUNCTION__,
             ID: $post->get('id'),
-            to: $_['user_id']
+            to: $row['user_id']
         );
 
         // Add record to log
@@ -1609,13 +1609,13 @@ class Index extends \App\Page\Page
         // Adds reputation
         $db->update(TABLE_USERS, [
             'user_reputation' => [PLUS],
-        ], $_['user_id']);
+        ], $row['user_id']);
 
         // Send user notification
         $db->sendNotification(
             name: __FUNCTION__,
             ID: $post->get('id'),
-            to: $_['user_id'],
+            to: $row['user_id'],
             replace: true
         );
 
@@ -1659,13 +1659,13 @@ class Index extends \App\Page\Page
         // Reduces user reputation
         $db->update(TABLE_USERS, [
             'user_reputation' => [MINUS]
-        ], $_['user_id']);
+        ], $row['user_id']);
 
         // Delete old user notification
         $db->query('
             DELETE un FROM ' . TABLE_USERS_NOTIFICATIONS . '
             WHERE to_user_id = ? AND user_notification_item = "\Post\Like" AND user_notification_item_id = ?
-        ', [$_['user_id'], $post->get('id')]);
+        ', [$row['user_id'], $post->get('id')]);
 
         // Content
         $content = new \App\Model\Content();

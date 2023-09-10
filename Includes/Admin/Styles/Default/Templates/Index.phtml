@@ -1,5 +1,5 @@
 <div class="page-layout">
-    <?php if ( $this->system->get('site_mode') == 'forum' ) : ?>
+    <?php if ( in_array($this->system->get('site_mode'), ['forum', 'blog_with_forum']) ) : ?>
         <div class="chart">
             <div class="chart-head"><?= $language->get('L_STATISTIC.L_TOPIC_POST.L_MONTH') ?></div>
             <div class="chart-body">
@@ -8,7 +8,7 @@
         </div>
     <?php endif; ?>
     <?php require $path->build('Root/Style:/Templates/Blocks/Visualization/Lists/Lists.phtml'); ?>
-    <?php if ( $this->system->get('site_mode') == 'forum' ) : ?>
+    <?php if ( in_array($this->system->get('site_mode'), ['forum', 'blog_with_forum']) ) : ?>
         <div class="chart">
             <div class="chart-head"><?= $language->get('L_STATISTIC.L_USER.L_MONTH') ?></div>
             <div class="chart-body">

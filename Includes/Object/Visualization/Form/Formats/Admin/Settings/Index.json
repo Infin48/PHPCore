@@ -84,7 +84,7 @@
                                 }
                             }
                         },
-                        "image.gif": {
+                        "image_gif": {
                             "options": {
                                 "type": "checkbox"
                             },
@@ -93,7 +93,7 @@
                                 "title": "L_SETTINGS.L_GIF.L_GIF"
                             },
                             "body": {
-                                "image.gif": {
+                                "image_gif": {
                                     "data": {
                                         "value": 1
                                     }
@@ -120,6 +120,12 @@
                                     "data": {
                                         "label": "L_SETTINGS.L_MODE.L_BLOG",
                                         "value": "blog"
+                                    }
+                                },
+                                "blog_with_forum": {
+                                    "data": {
+                                        "label": "L_SETTINGS.L_MODE.L_BLOG_WITH_FORUM",
+                                        "value": "blog_with_forum"
                                     }
                                 },
                                 "static": {

@@ -25,7 +25,14 @@ class Profile extends \App\Page\Page
     public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
         // Form
-        $post = new \App\Model\Post;
+        $post = new \App\Model\Post();
+
+        // Load ID
+        $id = (int)$post->get('id') ?: (int)$this->url->get('id');
+        if (!$id)
+        {
+            throw new \App\Exception\System('Id parameter not found in POST neither GET.');
+        }
 
         // User
         $user = $data->get('inst.user');
@@ -38,12 +45,6 @@ class Profile extends \App\Page\Page
         if ($permission->has('admin.forum'))
         {
             $deleted = true;
-        }
-
-        $id = $post->get('id');
-        if (!$id)
-        {
-            $id = $this->url->get('id');
         }
 
         $row = $db->select('app.profile-post.get()', $id, $deleted) or $this->error404();

@@ -88,7 +88,13 @@ class Database
      */
     public function file( string $file )
     {
-        self::$connect->exec(file_get_contents(ROOT . $file));
+        $content = file_get_contents(ROOT . $file);
+        if (!$content)
+        {
+            return;
+        }
+
+        self::$connect->exec($content);
     }
 
     /**

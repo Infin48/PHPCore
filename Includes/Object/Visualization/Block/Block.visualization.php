@@ -121,9 +121,10 @@ class Block extends \App\Visualization\Visualization
                     continue;
                 }
                 
-                $this->obj->set('data.notice.' . $noticeName, $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
+                $this->obj->set('data.notice.' . $noticeName . '.template', $this->path->build('Root/Style:/Templates/Blocks/Visualization/Block/Notices/' . ucfirst($noticeName) . '.phtml'));
 
-                $this->obj->set('data.href', match ($noticeName) {
+                $this->obj->set('data.notice.' . $noticeName . '.href', match ($noticeName)
+                {
                     'deleted' => \App\Model\Url::build('/admin/deleted/show/' . $this->obj->get('data.deleted_id')),
                     'reported' => \App\Model\Url::build('/admin/report/show/' . $this->obj->get('data.report_id')),
                 });

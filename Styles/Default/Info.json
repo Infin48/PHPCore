@@ -5,8 +5,8 @@
     "info": "Oficiální šablona pro aplikaci PHPCore. Webová stránka šablony <a href=\"https://phpcore.cz/addon/template/default/\" target=\"_blank\">zde</a>.<br><strong>Pokud naleznete chybu nebo šablona nebude správně fungovat, co nejdříve prosím nahlašte tuto skutečnost na <a href=\"https://phpcore.cz/forum/\" target=\"_blank\">fóru</a> nebo našem Discord serveru.</strong>",
     "language": "cs",
     "version": {
-        "version": "2.0.0",
-        "system": ["2.1.0"]
+        "version": "2.1.0",
+        "system": ["2.2.0"]
     },
     "author": {
         "name": "Infin48",

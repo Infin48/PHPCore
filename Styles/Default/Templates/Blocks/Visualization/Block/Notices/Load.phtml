@@ -1,6 +1,6 @@
 <?php $block->each('data.notice', function ($notice) use ($block) { ?>
-    <?php if (is_string($notice)) : ?>
-        <?php require $notice; ?>
+    <?php if ($notice->get('template')) : ?>
+        <?php require $notice->get('template'); ?>
     <?php else : ?>
         <div js-place="notice-<?= $notice->getCurrentPositionName() ?>"></div>
     <?php endif; ?>

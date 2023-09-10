@@ -45,18 +45,4 @@ class Breadcrumb extends \App\Visualization\Visualization
      * @var string $languagePrefix Default language prefix
      */
     protected string $languagePrefix = 'L_BREADCRUMB';
-
-    /**
-     * Adds href value to data
-     *
-     * @param  string $href
-     * 
-     * @return $this
-     */
-    public function href( string $href )
-    {
-        $this->set('data.href', $href);
-
-        return $this;
-    }
 }

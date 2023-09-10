@@ -58,7 +58,7 @@ class Edit extends \App\Page\Page
         $system = $data->get('inst.system');
 
         // If blog mode is disabled
-		if ($system->get('site_mode') != 'blog')
+		if (!in_array($system->get('site_mode'), ['blog', 'blog_with_forum']))
 		{
             // Show error page
 			$this->error404();

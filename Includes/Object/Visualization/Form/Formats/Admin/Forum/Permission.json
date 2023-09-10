@@ -21,8 +21,7 @@
                     "body": {
                         "inherit_permission": {
                             "options": {
-                                "type": "radio",
-                                "required": true
+                                "type": "radio"
                             },
                             "data": {
                                 "title": "L_FORUM.L_PERMISSION.L_INHERIT"

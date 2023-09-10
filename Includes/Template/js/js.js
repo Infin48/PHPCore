@@ -3,10 +3,11 @@ function parseNewLines(t) {
         o = [],
         n = null,
         a = null;
+        
     (t = $(t)),
         $.each(t, function (t, o) {
-            (e[t] = $(o).prop("outerHTML")), (html = $(o).html() || ''), (html = html.replace(/&nbsp;/g, ' ')),
-                ("" !=
+            (e[t] = $(o).prop("outerHTML")), (html = $(o).prop("outerHTML") || ''), (html = html.replace(/&nbsp;/g, ' ')),
+                ($(html).is('img') || $(html).find('img').length || "" !=
                     html
                         .replace(/(<([^>]+)>)/gi, "").trim()) &&
                     (null == a && (a = t), (n = t));

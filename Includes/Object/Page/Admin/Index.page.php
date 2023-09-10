@@ -67,6 +67,7 @@ class Index extends \App\Page\Page
 
         switch ($system->get('site_mode'))
         {
+            case 'blog_with_forum':
             case 'forum':
                 // Block
                 $block = new \App\Visualization\BlockAdmin\BlockAdmin('Root/BlockAdmin:/Formats/Index.json');

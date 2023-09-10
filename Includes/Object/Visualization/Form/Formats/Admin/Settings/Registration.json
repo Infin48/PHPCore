@@ -16,6 +16,21 @@
                         "title": "L_SETTINGS.L_REGISTER.L_REGISTER"
                     },
                     "body": {
+                        "registration_enabled": {
+                            "options": {
+                                "type": "checkbox"
+                            },
+                            "data": {
+                                "title": "L_SETTINGS.L_REGISTER.L_ALLOW"
+                            },
+                            "body": {
+                                "registration_enabled": {
+                                    "data": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        },
                         "site_allow_forgot_password": {
                             "options": {
                                 "type": "checkbox",
@@ -29,21 +44,6 @@
                             },
                             "body": {
                                 "site_allow_forgot_password": {
-                                    "data": {
-                                        "value": 1
-                                    }
-                                }
-                            }
-                        },
-                        "registration_enabled": {
-                            "options": {
-                                "type": "checkbox"
-                            },
-                            "data": {
-                                "title": "L_SETTINGS.L_REGISTER.L_ALLOW"
-                            },
-                            "body": {
-                                "registration_enabled": {
                                     "data": {
                                         "value": 1
                                     }

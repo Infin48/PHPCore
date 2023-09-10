@@ -98,7 +98,7 @@ class Show extends \App\Page\Page
         $language = $data->get('inst.language');
         
         // If forum is not enabled
-		if ($system->get('site_mode') != 'forum')
+		if (!in_array($system->get('site_mode'), ['forum', 'blog_with_forum']))
 		{
             // Show error page
 			$this->error404();

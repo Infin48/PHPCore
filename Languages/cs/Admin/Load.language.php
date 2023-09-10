@@ -288,10 +288,11 @@ $language = [
         'L_SETTINGS' => 'Základní nastavení',
         'L_MODE' => [
             'L_MODE' => 'Režim webových stránek',
-            'L_DESC' => '<strong>Fórum</strong> - Výchozí nastavený režim, web funguje jako fórum. <strong>Blog</strong> - Webové stránky budou fungovat jako blog. Na titulní stránce budou zobrazeny vytvořené články a bude vypnuta registrace. <strong>Statický</strong> - V tomto režimu se budou zobrazovat pouze jednotlivé vytvořené statické stránky.',
+            'L_DESC' => '<strong>Fórum</strong> - Výchozí nastavený režim, web funguje jako fórum. <strong>Blog</strong> - Webové stránky budou fungovat jako blog. Na titulní stránce budou zobrazeny vytvořené články a bude vypnuta registrace. <strong>Blog s fórem</strong> - Na titulní stránce budou články stejně jako v režimu blog. Fórum bude k dispozici stejně jako v režimu fórum. <strong>Statický</strong> - V tomto režimu se budou zobrazovat pouze jednotlivé vytvořené statické stránky.',
             'L_FORUM' => 'Fórum',
             'L_BLOG' => 'Blog',
             'L_STATIC' => 'Statický',
+            'L_BLOG_WITH_FORUM' => 'Blog s fórem'
         ],
 
 

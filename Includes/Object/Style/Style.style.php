@@ -154,6 +154,18 @@ class Style
     {
         array_push(self::$templates, $template);
     }
+	
+	/**
+     * Changes page body
+     *
+     * @param  string $body Body
+     * 
+     * @return void
+     */
+    public static function changeBody( string $body )
+    {
+		self::$templates[1] = $body;
+    }
     
     /**
      * Shows template

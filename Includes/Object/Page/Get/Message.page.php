@@ -24,14 +24,21 @@ class Message extends \App\Page\Page
      */
     public function body( \App\Model\Data $data, \App\Model\Database\Query $db )
     {
+        // Form
+        $post = new \App\Model\Post();
+
+        // Load ID
+        $id = (int)$post->get('id') ?: (int)$this->url->get('id');
+        if (!$id)
+        {
+            throw new \App\Exception\System('Id parameter not found in POST neither GET.');
+        }
+
         // Language
         $language = $data->get('inst.language');
 
-        // Form
-        $post = new \App\Model\Post;
-
         // Message data
-        $row = $db->select('app.message.get()', $post->get('id')) or $this->error404();
+        $row = $db->select('app.message.get()', $id) or $this->error404();
 
         // Block
         $block = new \App\Visualization\Block\Block('Root/Block:/Formats/Conversation.json');

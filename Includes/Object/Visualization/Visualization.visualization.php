@@ -238,6 +238,20 @@ class Visualization
     }
 
     /**
+     * Adds href value to data
+     *
+     * @param  string $href
+     * 
+     * @return $this
+     */
+    public function href( string $href )
+    {
+        $this->set('data.href', $href);
+
+        return $this;
+    }
+
+    /**
      * Sets type
      *
      * @param string $type The type

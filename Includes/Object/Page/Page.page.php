@@ -118,12 +118,19 @@ abstract class Page
         // Language
         $language = $data->get('inst.language');
 
-        // IF page has set any template
+        // If page has set any template
         if (isset($this->template) and $this->template)
         {
             // Add it to list of templates
             \App\Style\Style::setTemplate($this->template);
         }
+		
+		// If page has different body
+		if (isset($this->body) and $this->body)
+		{
+			// Change to new body
+			\App\Style\Style::changeBody($this->body);
+		}
 
         if (!in_array(get_class($this), ['App\Page\Router', 'App\Page\Admin\Router']))
         {

@@ -1915,7 +1915,8 @@ div.radio input+label div,input[type=checkbox]+label .checkbox-icon,input[type=c
     padding: 0;
     box-shadow: none;
     background-color: transparent;
-    display: inherit
+    display: inherit;
+    min-width: 6rem;
 }
 
 .form .attachment-list.attachment-list-images .delete {
@@ -2007,7 +2008,7 @@ div.radio input+label div,input[type=checkbox]+label .checkbox-icon,input[type=c
     display: flex
 }
 
-.block .block-content>:first-child, .trumbowyg-editor>:first-child, .trumbowyg>:first-child, html.html-profile-tab-about .form.form-name-about .form-text>:first-child {
+.block .block-content>:first-child,.trumbowyg-editor>:first-child,.trumbowyg>:first-child,html.html-profile-tab-about .form.form-name-about .form-text>:first-child {
     margin-top: 0
 }
 

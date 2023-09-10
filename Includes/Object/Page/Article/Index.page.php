@@ -126,7 +126,7 @@ class Index extends \App\Page\Page
         $permission = $user->get('permission');
 
         // If blog mode is disabled
-		if ($system->get('site_mode') != 'blog')
+		if (!in_array($system->get('site_mode'), ['blog', 'blog_with_forum']))
 		{
             // Show 404 error page
 			$this->error404();

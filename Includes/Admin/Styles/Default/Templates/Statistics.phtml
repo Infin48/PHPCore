@@ -54,7 +54,6 @@
 <script>
 
     var data = JSON.parse(JSON.stringify(<?= $this->data->chart ?>));
-    console.log(data);
     var chart = new ApexCharts(document.querySelector("#userDay"), {
         colors:['#3174d7'],
         chart: {

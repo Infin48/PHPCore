@@ -476,7 +476,6 @@ CREATE TABLE IF NOT EXISTS `phpcore_settings` (
 INSERT INTO `phpcore_settings` (`key`, `value`) VALUES
     ('site_name', ''),
     ('site_locale', 'cs_CZ'),
-    ('site_version', '1.2.0'),
     ('site_favicon', ''),
     ('site_updated', ''),
     ('site_started', ''),

@@ -1,8 +1,8 @@
 {
     "name": "Česky",
     "version": {
-        "version": "1.1.0",
-        "system": ["2.0.0"]
+        "version": "1.2.0",
+        "system": ["2.2.0"]
     },
     "author": {
         "name": "Infin48",
