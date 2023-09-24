@@ -181,6 +181,7 @@ class Setup extends \App\Page\Page
             $page->url->set('/admin/template/setup/name-' . $data->get('data.template.template_name_folder'));
 
             $page->body( $data, $db );
+            $page->checkForAjax();
         }
     }
 

@@ -185,7 +185,7 @@ $language = [
     ],
 
     'L_LINK_TO_PROFILE' => [
-        'L_LINK_TO_PROFILE' => 'Odkaz na profil',
+        'L_LINK_TO_PROFILE' => 'Zobrazit profil',
         'L_DESC' => 'Kliknutím na tlačítko budete přesměrování na profil uživatele.'
     ],
 

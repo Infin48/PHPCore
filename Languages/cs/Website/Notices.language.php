@@ -80,7 +80,7 @@ $language = [
 
             'user_signature_length_max' => 'Podpis je příliš dlouhý.',
 
-            'file_size' => 'Nahraný obrázek je příliš velký.',
+            'file_size' => 'Nahraný soubor je příliš velký.',
             'file_format' => 'Formát nahraného obrázku není podporován.',
             'image_gif_size' => 'Nahraný gif musí mít velikost {width}x{height}.',
             'image_svg_size' => 'Nahraný vektorový obrázek musí mít velikost {width}x{height}.',

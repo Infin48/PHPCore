@@ -64,5 +64,5 @@ class Misc extends \App\Model\File\Form
     /**
      * @var int $size Max file size
      */
-    public int $size = 500000;
+    public int $size = 50000000;
 }

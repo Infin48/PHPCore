@@ -97,8 +97,15 @@ class Url
                     continue;
                 }
             }
+
+            // Do not include parameters like "button-2" to list of URL
+            // which is used to load correct Page
+            if (!str_contains($param, '-'))
+            {
+                array_push(self::$URLs, $param);
+            }
+
             
-            array_push(self::$URLs, $param);
             if (preg_match('~[-]+~', $param))
             {
                 $dash = explode('-', $param);

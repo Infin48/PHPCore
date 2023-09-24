@@ -126,9 +126,12 @@ class Show extends \App\Page\Page
                 ->frame('user')
                     ->id($data->get('data.profile.user_id'))
                     ->delete('data.title')
-                    ->input('show', function ( \App\Visualization\Form\Form $form ) use ($groups, $data)
+                    ->input('show', function ( \App\Visualization\Form\Form $form ) use ($groups, $data, $system)
                     {
-                        $form->show()->set('data.href', $this->build->url->profile($data->get('data.profile')));
+                        if ($system->get('site_mode_blog_profiles') != 0)
+                        {
+                            $form->show()->set('data.href', $this->build->url->profile($data->get('data.profile')));
+                        }
                     })
 
                     ->input('group_id', function ( \App\Visualization\Form\Form $form ) use ($groups, $data)

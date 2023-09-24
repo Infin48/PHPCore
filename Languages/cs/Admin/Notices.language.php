@@ -73,7 +73,7 @@ $language = [
             'page_name' => 'Zadejte název stránky.',
             'page_name_length_max' => 'Název stránky je příliš dlouhý.',
 
-            'file_size' => 'Nahraný obrázek je příliš velký.',
+            'file_size' => 'Nahraný soubor je příliš velký.',
             'file_format' => 'Formát nahraného obrázku není podporován.',
 
             'site_name' => 'Zadejte název webových stránek.',

@@ -500,11 +500,12 @@ abstract class Page
 
             // Get name of method to execute
             $method = $this->ajax($ajax);
+
             if (!$method)
             {
                 return;
             }
-
+            
             while (method_exists($this, 'ajaxPermisssion'))
             {
                 // User
