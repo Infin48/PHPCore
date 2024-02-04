@@ -35,6 +35,12 @@ class Image extends \App\Model\File\Form
     public function ini()
     {
         $this->size = (int)$this->file::$system->get('image_max_size');
+
+        if (isset($this->uploadedFile['tmp_name']))
+        {
+            $exif = exif_read_data($this->uploadedFile['tmp_name']);
+            $this->uploadedFile['orientation'] = $exif['Orientation'];
+        }
     }
     
     /**
@@ -70,13 +76,12 @@ class Image extends \App\Model\File\Form
     /**
      * Resizes image
      *
-     * @param string $path Image path
      * @param int $width Image width
      * @param int $height Image height
      * 
      * @return bool
      */
-    function resize( int $width, int $height )
+    public function resize( int $width, int $height )
     {
         if ($this->uploadedFile['type'] === 'image/gif' or $this->uploadedFile['type'] === 'image/svg+xml')
         {
@@ -128,6 +133,97 @@ class Image extends \App\Model\File\Form
             'image/jpg', 'image/jpeg' => imagejpeg($resizedImage, $path)
         };
          
+        return true;
+    }
+
+    /**
+     * Compress uploaded image
+     * 
+     * @param string $quality Compress quality
+     * 
+     * @return bool
+     */
+    public function compress( int $quality = 25 )
+    {
+        if (!$this->uploadedFile)
+        {
+            return false;
+        }
+
+        $info = getimagesize($this->uploadedFile['tmp_name']);
+        if (!$info['mime'])
+        {
+            return false;
+        }
+
+        if ($info['mime'] == 'image/gif')
+        {
+            return true;
+        }
+
+        $image = match ($info['mime'])
+        {
+            'image/webp' => imagecreatefromwebp($this->uploadedFile['tmp_name']),
+            'image/jpeg' => imagecreatefromjpeg($this->uploadedFile['tmp_name']),
+            'image/gif' => imagecreatefromgif($this->uploadedFile['tmp_name']),
+            'image/png' => imagecreatefrompng($this->uploadedFile['tmp_name']),
+
+            default => ''
+        };
+        
+        if (!$image)
+        {
+            return true;
+        }
+
+        imagejpeg($image, $this->uploadedFile['tmp_name'], $quality);
+        $this->uploadedFile['type'] = 'image/jpg';
+
+        return true;
+    }
+
+    /**
+     * Check image orientation before upload
+     * 
+     * @return bool
+     */
+    public function beforeUpload()
+    {
+        if (in_array($this->uploadedFile['type'], ['image/gif', 'image/svg+xml']))
+        {
+            return false;
+        }
+
+        if (empty($this->uploadedFile['orientation']))
+        {
+            return false;
+        }
+
+        if ($this->uploadedFile['orientation'] == 1)
+        {
+            return false;
+        }
+
+        $image = match ($this->uploadedFile['type']) {
+            'image/png' => imagecreatefrompng($this->uploadedFile['tmp_name']),
+            'image/jpg', 'image/jpeg' => imagecreatefromjpeg($this->uploadedFile['tmp_name']),
+            default => throw new \Exception\System('Unsupported image format!')
+        };
+
+        $image = match ($this->uploadedFile['orientation'])
+        {
+            8 => imagerotate($image, 90, 0),
+            3 => imagerotate($image, 180, 0),
+            6 => imagerotate($image, -90, 0),
+            default => $image
+        };
+
+        match ($this->uploadedFile['type']) {
+            'image/png' => imagepng($image, $this->uploadedFile['tmp_name']),
+            'image/jpg', 'image/jpeg' => imagejpeg($image, $this->uploadedFile['tmp_name']),
+            default => throw new \Exception\System('Unsupported image format!')
+        };
+
         return true;
     }
 }

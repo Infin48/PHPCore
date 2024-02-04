@@ -68,7 +68,8 @@ class Form
      */
     public function check()
     {
-        if (!$this->uploadedFile) {
+        if (!$this->uploadedFile)
+        {
             return false;
         }
         
@@ -102,6 +103,11 @@ class Form
             return false;
         }
 
+        if (method_exists($this, 'beforeUpload'))
+        {
+            $this->{'beforeUpload'}();
+        }
+
         if (is_null($name))
         {
             $name = $this->uploadedFile['name'];
@@ -109,57 +115,12 @@ class Form
 
         $this->path = $path . '/' . $name;
 
-        if (move_uploaded_file($this->uploadedFile['tmp_name'], ROOT . $this->path)) {
+        if (move_uploaded_file($this->uploadedFile['tmp_name'], ROOT . $this->path))
+        {
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Compress uploaded file
-     * 
-     * @param string $quality Compress quality
-     * 
-     * @return bool
-     */
-    public function compress( int $quality = 25 )
-    {
-        if (!$this->uploadedFile)
-        {
-            return false;
-        }
-
-        $info = getimagesize($this->uploadedFile['tmp_name']);
-
-        if (!$info['mime'])
-        {
-            return;
-        }
-
-        if ($info['mime'] == 'image/gif')
-        {
-            return true;
-        }
-
-        $image = match ($info['mime'])
-        {
-            'image/webp' => imagecreatefromwebp($this->uploadedFile['tmp_name']),
-            'image/jpeg' => imagecreatefromjpeg($this->uploadedFile['tmp_name']),
-            'image/gif' => imagecreatefromgif($this->uploadedFile['tmp_name']),
-            'image/png' => imagecreatefrompng($this->uploadedFile['tmp_name']),
-
-            default => ''
-        };
-        
-        if (!$image)
-        {
-            return true;
-        }
-
-        imagejpeg($image, $this->uploadedFile['tmp_name'], $quality);
-
-        return true;
     }
 
     /**
@@ -169,7 +130,8 @@ class Form
      */
     public function getFormat()
     {
-        if (!empty($this->uploadedFile)) {
+        if (!empty($this->uploadedFile))
+        {
             return pathinfo(basename($this->uploadedFile['name']), PATHINFO_EXTENSION);
         }
     }
